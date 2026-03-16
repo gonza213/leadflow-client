@@ -93,15 +93,6 @@ const handleSubmit = async () => {
             {{ authStore.loading ? 'Ingresando...' : 'Ingresar' }}
           </button>
         </form>
-
-        <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-1">
-          <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
-            SuperAdmin: superadmin@system.com / password123
-          </p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
-            Manager: manager@demo.com / password123
-          </p>
-        </div>
       </div>
     </div>
   </div>
