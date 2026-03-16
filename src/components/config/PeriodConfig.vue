@@ -3,10 +3,12 @@ import { ref, watch } from 'vue'
 
 const props = defineProps({
   fechaInicio: String,
-  fechaFin: String
+  fechaFin: String,
+  onSave: {
+    type: Function,
+    default: null
+  }
 })
-
-const emit = defineEmits(['update'])
 
 const formatDate = (date) => {
   if (!date) return ''
@@ -38,9 +40,19 @@ const handleSave = async () => {
   }
 
   error.value = ''
-  await emit('update', localFechaInicio.value, localFechaFin.value)
-  success.value = 'Período actualizado correctamente'
-  setTimeout(() => success.value = '', 3000)
+  success.value = ''
+
+  try {
+    const result = await props.onSave(localFechaInicio.value, localFechaFin.value)
+    if (result?.success === false) {
+      error.value = result.error || 'Error al actualizar período'
+    } else {
+      success.value = 'Período actualizado correctamente'
+      setTimeout(() => success.value = '', 3000)
+    }
+  } catch (err) {
+    error.value = 'Error al actualizar período'
+  }
 }
 </script>
 
