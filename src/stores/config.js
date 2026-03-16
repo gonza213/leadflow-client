@@ -1,0 +1,74 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import { configApi } from '../services/api'
+import { useAuthStore } from './auth'
+
+export const useConfigStore = defineStore('config', () => {
+  const authStore = useAuthStore()
+
+  const config = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+
+  async function fetchConfig() {
+    if (!authStore.tenantSlug) return
+
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await configApi.get(authStore.tenantSlug)
+      config.value = response.data.config
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al cargar configuración'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function updateConfig(data) {
+    if (!authStore.tenantSlug) return { success: false, error: 'No tenant' }
+
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await configApi.update(authStore.tenantSlug, data)
+      config.value = response.data.config
+      return { success: true }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al actualizar configuración'
+      return { success: false, error: error.value }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function updateTeams(equipos) {
+    return updateConfig({ equipos })
+  }
+
+  async function updatePeriod(fecha_inicio, fecha_fin) {
+    return updateConfig({ fecha_inicio, fecha_fin })
+  }
+
+  async function updateStages(opportunity_stages) {
+    return updateConfig({ opportunity_stages })
+  }
+
+  async function updateGhlWebhook(ghl_webhook_url) {
+    return updateConfig({ ghl_webhook_url })
+  }
+
+  return {
+    config,
+    loading,
+    error,
+    fetchConfig,
+    updateConfig,
+    updateTeams,
+    updatePeriod,
+    updateStages,
+    updateGhlWebhook
+  }
+})

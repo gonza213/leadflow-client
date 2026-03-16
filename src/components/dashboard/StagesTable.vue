@@ -1,0 +1,62 @@
+<script setup>
+defineProps({
+  stages: {
+    type: Array,
+    default: () => []
+  }
+})
+
+const stageColors = {
+  'Sin Etapa': 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300',
+  'Contactado': 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300',
+  'En Negociación': 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300',
+  'Propuesta Enviada': 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300',
+  'Cerrado Ganado': 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300',
+  'Cerrado Perdido': 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
+}
+
+const getStageColor = (stage) => {
+  return stageColors[stage] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+}
+</script>
+
+<template>
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-gray-200 dark:border-gray-700">
+          <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Etapa</th>
+          <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Leads</th>
+          <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="stage in stages"
+          :key="stage.stage"
+          class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+        >
+          <td class="py-3 px-2">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              :class="getStageColor(stage.stage)"
+            >
+              {{ stage.stage }}
+            </span>
+          </td>
+          <td class="py-3 px-2 text-right text-gray-600 dark:text-gray-300">
+            {{ stage.leads }}
+          </td>
+          <td class="py-3 px-2 text-right font-medium text-gray-900 dark:text-white">
+            {{ stage.porcentaje }}%
+          </td>
+        </tr>
+        <tr v-if="stages.length === 0">
+          <td colspan="3" class="py-8 text-center text-gray-500 dark:text-gray-400">
+            No hay datos disponibles
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
