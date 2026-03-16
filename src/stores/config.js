@@ -7,7 +7,8 @@ export const useConfigStore = defineStore('config', () => {
   const authStore = useAuthStore()
 
   const config = ref(null)
-  const loading = ref(false)
+  const loading = ref(false)  // solo para el fetch inicial
+  const saving = ref(false)   // para operaciones de guardado (no oculta el componente)
   const error = ref(null)
 
   async function fetchConfig() {
@@ -29,7 +30,7 @@ export const useConfigStore = defineStore('config', () => {
   async function updateConfig(data) {
     if (!authStore.tenantSlug) return { success: false, error: 'No tenant' }
 
-    loading.value = true
+    saving.value = true
     error.value = null
 
     try {
@@ -40,7 +41,7 @@ export const useConfigStore = defineStore('config', () => {
       error.value = err.response?.data?.message || 'Error al actualizar configuración'
       return { success: false, error: error.value }
     } finally {
-      loading.value = false
+      saving.value = false
     }
   }
 
@@ -63,6 +64,7 @@ export const useConfigStore = defineStore('config', () => {
   return {
     config,
     loading,
+    saving,
     error,
     fetchConfig,
     updateConfig,

@@ -19,7 +19,7 @@ const success = ref('')
 
 watch(() => props.stages, (val) => {
   localStages.value = [...val]
-}, { deep: true })
+}, { deep: true, immediate: true })
 
 const addStage = () => {
   if (!newStage.value.trim()) {
@@ -45,17 +45,17 @@ const removeStage = (index) => {
 
 const moveUp = (index) => {
   if (index > 0) {
-    const temp = localStages.value[index]
-    localStages.value[index] = localStages.value[index - 1]
-    localStages.value[index - 1] = temp
+    const arr = [...localStages.value]
+    ;[arr[index], arr[index - 1]] = [arr[index - 1], arr[index]]
+    localStages.value = arr
   }
 }
 
 const moveDown = (index) => {
   if (index < localStages.value.length - 1) {
-    const temp = localStages.value[index]
-    localStages.value[index] = localStages.value[index + 1]
-    localStages.value[index + 1] = temp
+    const arr = [...localStages.value]
+    ;[arr[index], arr[index + 1]] = [arr[index + 1], arr[index]]
+    localStages.value = arr
   }
 }
 

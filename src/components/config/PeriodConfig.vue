@@ -22,11 +22,11 @@ const success = ref('')
 
 watch(() => props.fechaInicio, (val) => {
   localFechaInicio.value = formatDate(val)
-})
+}, { immediate: true })
 
 watch(() => props.fechaFin, (val) => {
   localFechaFin.value = formatDate(val)
-})
+}, { immediate: true })
 
 const handleSave = async () => {
   if (!localFechaInicio.value || !localFechaFin.value) {

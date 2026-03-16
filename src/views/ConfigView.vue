@@ -192,7 +192,7 @@ onMounted(async () => {
         v-else-if="activeTab === 'period'"
         :fecha-inicio="configStore.config.fecha_inicio"
         :fecha-fin="configStore.config.fecha_fin"
-        @update="configStore.updatePeriod"
+        :on-save="configStore.updatePeriod"
       />
       <StagesConfig
         v-else-if="activeTab === 'stages'"
