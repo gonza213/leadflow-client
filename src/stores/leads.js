@@ -123,6 +123,36 @@ export const useLeadsStore = defineStore('leads', () => {
     leadsFilters.opportunity_stage = ''
   }
 
+  async function editLead(id, data) {
+    if (!authStore.tenantSlug) return { success: false, error: 'No tenant' }
+
+    try {
+      await leadsApi.editLead(authStore.tenantSlug, id, data)
+      // Update local list
+      const index = leadsList.value.findIndex(l => l._id === id)
+      if (index !== -1) {
+        leadsList.value[index] = { ...leadsList.value[index], ...data }
+      }
+      return { success: true }
+    } catch (err) {
+      return { success: false, error: err.response?.data?.message || 'Error al editar lead' }
+    }
+  }
+
+  async function deleteLead(id) {
+    if (!authStore.tenantSlug) return { success: false, error: 'No tenant' }
+
+    try {
+      await leadsApi.deleteLead(authStore.tenantSlug, id)
+      // Remove from local list
+      leadsList.value = leadsList.value.filter(l => l._id !== id)
+      pagination.total--
+      return { success: true }
+    } catch (err) {
+      return { success: false, error: err.response?.data?.message || 'Error al eliminar lead' }
+    }
+  }
+
   return {
     // Report
     reportData,
@@ -144,6 +174,8 @@ export const useLeadsStore = defineStore('leads', () => {
     leadsFilters,
     fetchLeads,
     setLeadsFilter,
-    resetLeadsFilters
+    resetLeadsFilters,
+    editLead,
+    deleteLead
   }
 })

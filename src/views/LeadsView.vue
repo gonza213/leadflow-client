@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import { useLeadsStore } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
@@ -11,6 +11,26 @@ const sellersStore = useSellersStore()
 const authStore = useAuthStore()
 
 const showFilters = ref(false)
+
+// Edit modal
+const showEditModal = ref(false)
+const editingLead = ref(null)
+const editForm = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  source: '',
+  state: '',
+  opportunity_stage: '',
+  seller_user_id: ''
+})
+const editError = ref('')
+const editLoading = ref(false)
+
+// Delete confirmation
+const showDeleteConfirm = ref(false)
+const deletingLead = ref(null)
+const deleteLoading = ref(false)
 
 onMounted(async () => {
   await configStore.fetchConfig()
@@ -32,6 +52,62 @@ const handleResetFilters = () => {
 
 const handlePageChange = (page) => {
   leadsStore.fetchLeads(page)
+}
+
+// Edit functions
+const openEditModal = (lead) => {
+  editingLead.value = lead
+  editForm.name = lead.name || ''
+  editForm.email = lead.email || ''
+  editForm.phone = lead.phone || ''
+  editForm.source = lead.source || ''
+  editForm.state = lead.state || ''
+  editForm.opportunity_stage = lead.opportunity_stage || ''
+  editForm.seller_user_id = lead.seller_id || ''
+  editError.value = ''
+  showEditModal.value = true
+}
+
+const closeEditModal = () => {
+  showEditModal.value = false
+  editingLead.value = null
+  editError.value = ''
+}
+
+const handleEdit = async () => {
+  editLoading.value = true
+  editError.value = ''
+
+  const result = await leadsStore.editLead(editingLead.value._id, editForm)
+
+  if (result.success) {
+    closeEditModal()
+    await leadsStore.fetchLeads(leadsStore.pagination.page)
+  } else {
+    editError.value = result.error
+  }
+  editLoading.value = false
+}
+
+// Delete functions
+const openDeleteConfirm = (lead) => {
+  deletingLead.value = lead
+  showDeleteConfirm.value = true
+}
+
+const closeDeleteConfirm = () => {
+  showDeleteConfirm.value = false
+  deletingLead.value = null
+}
+
+const handleDelete = async () => {
+  deleteLoading.value = true
+  const result = await leadsStore.deleteLead(deletingLead.value._id)
+
+  if (result.success) {
+    closeDeleteConfirm()
+  }
+  deleteLoading.value = false
 }
 
 const formatDate = (date) => {
@@ -201,7 +277,27 @@ const getStateClass = (state) => {
             <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary-50 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">
               {{ lead.opportunity_stage }}
             </span>
-            <span v-if="lead.source" class="text-xs text-gray-400">{{ lead.source }}</span>
+            <div class="flex items-center gap-3">
+              <span v-if="lead.source" class="text-xs text-gray-400">{{ lead.source }}</span>
+              <div v-if="authStore.isManager" class="flex items-center gap-2">
+                <button
+                  @click="openEditModal(lead)"
+                  class="text-blue-600 dark:text-blue-400"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+                <button
+                  @click="openDeleteConfirm(lead)"
+                  class="text-red-600 dark:text-red-400"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -225,6 +321,7 @@ const getStateClass = (state) => {
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Vendedor</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Etapa</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Source</th>
+                <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -260,9 +357,31 @@ const getStateClass = (state) => {
                 <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                   {{ lead.source || '-' }}
                 </td>
+                <td v-if="authStore.isManager" class="px-4 py-3 text-sm">
+                  <div class="flex items-center gap-2">
+                    <button
+                      @click="openEditModal(lead)"
+                      class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+                      title="Editar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </button>
+                    <button
+                      @click="openDeleteConfirm(lead)"
+                      class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                      title="Eliminar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
               </tr>
               <tr v-if="leadsStore.leadsList.length === 0">
-                <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td :colspan="authStore.isManager ? 10 : 9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   No se encontraron leads
                 </td>
               </tr>
@@ -296,5 +415,110 @@ const getStateClass = (state) => {
         </div>
       </div>
     </template>
+
+    <!-- Edit Modal -->
+    <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Editar Lead</h3>
+          <button @click="closeEditModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 space-y-4">
+          <div v-if="editError" class="p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-sm">
+            {{ editError }}
+          </div>
+
+          <div>
+            <label class="label">Nombre</label>
+            <input v-model="editForm.name" type="text" class="input" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="label">Email</label>
+              <input v-model="editForm.email" type="email" class="input" />
+            </div>
+            <div>
+              <label class="label">Telefono</label>
+              <input v-model="editForm.phone" type="text" class="input" />
+            </div>
+          </div>
+
+          <div>
+            <label class="label">Source</label>
+            <input v-model="editForm.source" type="text" class="input" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="label">Estado</label>
+              <select v-model="editForm.state" class="input">
+                <option value="new">new</option>
+                <option value="contacted">contacted</option>
+                <option value="qualified">qualified</option>
+                <option value="lost">lost</option>
+              </select>
+            </div>
+            <div>
+              <label class="label">Etapa</label>
+              <select v-model="editForm.opportunity_stage" class="input">
+                <option
+                  v-for="stage in configStore.config?.opportunity_stages || []"
+                  :key="stage"
+                  :value="stage"
+                >
+                  {{ stage }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="label">Vendedor</label>
+            <select v-model="editForm.seller_user_id" class="input">
+              <option value="">Sin cambiar</option>
+              <option
+                v-for="seller in sellersStore.sellers"
+                :key="seller._id"
+                :value="seller._id"
+              >
+                {{ seller.seller_name }} ({{ seller.team }})
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2">
+          <button @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
+          <button @click="handleEdit" :disabled="editLoading" class="btn btn-primary">
+            {{ editLoading ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteConfirm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
+        <div class="p-6 text-center">
+          <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Eliminar Lead</h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Estas seguro que deseas eliminar el lead <strong>{{ deletingLead?.name }}</strong>? Esta accion no se puede deshacer.
+          </p>
+          <div class="flex justify-center gap-3">
+            <button @click="closeDeleteConfirm" class="btn btn-secondary">Cancelar</button>
+            <button @click="handleDelete" :disabled="deleteLoading" class="btn bg-red-600 hover:bg-red-700 text-white">
+              {{ deleteLoading ? 'Eliminando...' : 'Eliminar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
