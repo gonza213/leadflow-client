@@ -35,6 +35,13 @@ const handleCreateTenant = async (data) => {
 const handleToggleActive = async (tenantId) => {
   await tenantsStore.toggleActive(tenantId)
 }
+
+const handleDelete = async (tenantId, tenantName) => {
+  if (!confirm(`¿Estás seguro de eliminar el tenant "${tenantName}"? Esta acción eliminará TODOS los datos asociados (usuarios, leads, vendedores, configuración) y no se puede deshacer.`)) {
+    return
+  }
+  await tenantsStore.deleteTenant(tenantId)
+}
 </script>
 
 <template>
@@ -80,6 +87,7 @@ const handleToggleActive = async (tenantId) => {
         :key="tenant._id"
         :tenant="tenant"
         @toggle-active="handleToggleActive"
+        @delete="handleDelete"
       />
     </div>
 

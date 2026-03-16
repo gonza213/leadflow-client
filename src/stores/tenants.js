@@ -95,6 +95,20 @@ export const useTenantsStore = defineStore('tenants', () => {
     }
   }
 
+  async function deleteTenant(id) {
+    try {
+      await adminApi.deleteTenant(id)
+      tenants.value = tenants.value.filter(t => t._id !== id)
+      if (currentTenant.value?._id === id) {
+        currentTenant.value = null
+      }
+      return { success: true }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al eliminar tenant'
+      return { success: false, error: error.value }
+    }
+  }
+
   return {
     tenants,
     currentTenant,
@@ -105,6 +119,7 @@ export const useTenantsStore = defineStore('tenants', () => {
     createTenant,
     updateTenant,
     toggleActive,
-    regenerateApiKey
+    regenerateApiKey,
+    deleteTenant
   }
 })

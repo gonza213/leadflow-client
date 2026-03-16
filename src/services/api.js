@@ -65,6 +65,7 @@ export const adminApi = {
   getTenant: (id) => api.get(`/admin/tenants/${id}`),
   createTenant: (data) => api.post('/admin/tenants', data),
   updateTenant: (id, data) => api.patch(`/admin/tenants/${id}`, data),
+  deleteTenant: (id) => api.delete(`/admin/tenants/${id}`),
   regenerateApiKey: (id) => api.post(`/admin/tenants/${id}/regenerate-api-key`)
 }
 
