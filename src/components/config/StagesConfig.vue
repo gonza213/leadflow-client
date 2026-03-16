@@ -5,10 +5,12 @@ const props = defineProps({
   stages: {
     type: Array,
     default: () => []
+  },
+  onSave: {
+    type: Function,
+    default: null
   }
 })
-
-const emit = defineEmits(['update'])
 
 const localStages = ref([...props.stages])
 const newStage = ref('')
@@ -64,9 +66,19 @@ const handleSave = async () => {
   }
 
   error.value = ''
-  await emit('update', localStages.value)
-  success.value = 'Etapas actualizadas correctamente'
-  setTimeout(() => success.value = '', 3000)
+  success.value = ''
+
+  try {
+    const result = await props.onSave(localStages.value)
+    if (result?.success === false) {
+      error.value = result.error || 'Error al actualizar etapas'
+    } else {
+      success.value = 'Etapas actualizadas correctamente'
+      setTimeout(() => success.value = '', 3000)
+    }
+  } catch (err) {
+    error.value = 'Error al actualizar etapas'
+  }
 }
 </script>
 

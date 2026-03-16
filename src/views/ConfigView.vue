@@ -197,7 +197,7 @@ onMounted(async () => {
       <StagesConfig
         v-else-if="activeTab === 'stages'"
         :stages="configStore.config.opportunity_stages"
-        @update="configStore.updateStages"
+        :on-save="configStore.updateStages"
       />
       <GhlConfig
         v-else-if="activeTab === 'ghl'"
