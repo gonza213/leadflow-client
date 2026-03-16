@@ -19,14 +19,15 @@ const tabs = [
   { id: 'ghl', name: 'GHL', icon: 'link' }
 ]
 
+// Use VITE_API_URL for production, fallback to localhost for development
+const apiBaseUrl = import.meta.env.VITE_API_URL || window.location.origin.replace(':5173', ':3000')
+
 const webhookUrl = computed(() => {
-  const baseUrl = window.location.origin.replace(':5173', ':3000')
-  return `${baseUrl}/api/${authStore.tenantSlug}/webhook/lead`
+  return `${apiBaseUrl}/api/${authStore.tenantSlug}/webhook/lead`
 })
 
 const stageWebhookUrl = computed(() => {
-  const baseUrl = window.location.origin.replace(':5173', ':3000')
-  return `${baseUrl}/api/${authStore.tenantSlug}/webhook/stage`
+  return `${apiBaseUrl}/api/${authStore.tenantSlug}/webhook/stage`
 })
 
 const copiedStage = ref(false)
