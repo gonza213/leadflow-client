@@ -122,7 +122,7 @@ onMounted(async () => {
         <div class="flex items-center gap-2 mb-2">
           <span class="text-purple-600 dark:text-purple-400 font-bold text-lg">3.</span>
           <h3 class="font-semibold text-purple-800 dark:text-purple-300">GHL notifica cambio de etapa</h3>
-          <span class="ml-auto text-xs bg-purple-600 text-white px-2 py-0.5 rounded">PUT</span>
+          <span class="ml-auto text-xs bg-purple-600 text-white px-2 py-0.5 rounded">POST</span>
         </div>
         <p class="text-sm text-purple-700 dark:text-purple-400 mb-3">
           Cuando cambia la etapa de una oportunidad en GHL, envia los datos a esta URL para sincronizar el estado del lead.
