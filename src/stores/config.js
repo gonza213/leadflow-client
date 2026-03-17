@@ -61,6 +61,10 @@ export const useConfigStore = defineStore('config', () => {
     return updateConfig({ ghl_webhook_url })
   }
 
+  async function updateGhlConfig({ ghl_webhook_url, timezone }) {
+    return updateConfig({ ghl_webhook_url, timezone })
+  }
+
   return {
     config,
     loading,
@@ -71,6 +75,7 @@ export const useConfigStore = defineStore('config', () => {
     updateTeams,
     updatePeriod,
     updateStages,
-    updateGhlWebhook
+    updateGhlWebhook,
+    updateGhlConfig
   }
 })

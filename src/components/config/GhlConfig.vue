@@ -2,17 +2,30 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  ghlWebhookUrl: String
+  ghlWebhookUrl: String,
+  timezone: String
 })
 
 const emit = defineEmits(['update'])
 
+const timezones = [
+  { value: 'America/New_York', label: 'Eastern (EST/EDT - Nueva York)', offset: 'GMT-5/-4' },
+  { value: 'America/Chicago', label: 'Central (CST/CDT - Chicago)', offset: 'GMT-6/-5' },
+  { value: 'America/Denver', label: 'Mountain (MST/MDT - Denver)', offset: 'GMT-7/-6' },
+  { value: 'America/Los_Angeles', label: 'Pacific (PST/PDT - Los Angeles)', offset: 'GMT-8/-7' }
+]
+
 const localWebhookUrl = ref(props.ghlWebhookUrl || '')
+const localTimezone = ref(props.timezone || 'America/Chicago')
 const error = ref('')
 const success = ref('')
 
 watch(() => props.ghlWebhookUrl, (val) => {
   localWebhookUrl.value = val || ''
+})
+
+watch(() => props.timezone, (val) => {
+  localTimezone.value = val || 'America/Chicago'
 })
 
 const isValidUrl = (string) => {
@@ -32,7 +45,10 @@ const handleSave = async () => {
   }
 
   error.value = ''
-  await emit('update', localWebhookUrl.value || null)
+  emit('update', {
+    ghl_webhook_url: localWebhookUrl.value || null,
+    timezone: localTimezone.value
+  })
   success.value = 'Configuracion GHL actualizada correctamente'
   setTimeout(() => success.value = '', 3000)
 }
@@ -45,6 +61,19 @@ const handleSave = async () => {
       Configura la URL del webhook de GHL para que el sistema notifique automaticamente
       cuando se asigna un vendedor a un lead.
     </p>
+
+    <!-- Timezone -->
+    <div class="mb-6">
+      <label class="label">Zona Horaria</label>
+      <select v-model="localTimezone" class="input">
+        <option v-for="tz in timezones" :key="tz.value" :value="tz.value">
+          {{ tz.label }} ({{ tz.offset }})
+        </option>
+      </select>
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        La zona horaria se usa para calcular correctamente los leads de "hoy" y "esta semana".
+      </p>
+    </div>
 
     <div class="mb-6">
       <label class="label">URL Webhook GHL (respuesta)</label>

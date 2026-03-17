@@ -202,7 +202,8 @@ onMounted(async () => {
       <GhlConfig
         v-else-if="activeTab === 'ghl'"
         :ghl-webhook-url="configStore.config.ghl_webhook_url"
-        @update="configStore.updateGhlWebhook"
+        :timezone="configStore.config.timezone"
+        @update="configStore.updateGhlConfig"
       />
     </div>
   </div>
