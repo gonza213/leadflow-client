@@ -45,6 +45,7 @@ export const authApi = {
 export const leadsApi = {
   getReport: (tenantSlug, params) => api.get(`/${tenantSlug}/report`, { params }),
   getLeads: (tenantSlug, params) => api.get(`/${tenantSlug}/leads`, { params }),
+  getNextAssignment: (tenantSlug) => api.get(`/${tenantSlug}/next-assignment`),
   updateLead: (tenantSlug, contactId, data) => api.put(`/${tenantSlug}/lead/${contactId}`, data),
   editLead: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/leads/${id}`, data),
   deleteLead: (tenantSlug, id) => api.delete(`/${tenantSlug}/leads/${id}`)

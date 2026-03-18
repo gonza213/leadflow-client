@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useSellersStore } from '../stores/sellers'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
@@ -10,6 +10,23 @@ const configStore = useConfigStore()
 const authStore = useAuthStore()
 
 const selectedTeam = ref('')
+const currentPage = ref(1)
+const sellersPerPage = 9
+
+// Pagination computed
+const totalPages = computed(() => Math.ceil(sellersStore.sellers.length / sellersPerPage))
+const paginatedSellers = computed(() => {
+  const start = (currentPage.value - 1) * sellersPerPage
+  const end = start + sellersPerPage
+  return sellersStore.sellers.slice(start, end)
+})
+
+// Reset page when filters change
+watch(() => sellersStore.sellers.length, () => {
+  if (currentPage.value > totalPages.value && totalPages.value > 0) {
+    currentPage.value = totalPages.value
+  }
+})
 const showAddModal = ref(false)
 const showEditModal = ref(false)
 const editingSeller = ref(null)
@@ -34,6 +51,7 @@ onMounted(async () => {
 })
 
 const handleFilterByTeam = () => {
+  currentPage.value = 1
   sellersStore.fetchSellers(selectedTeam.value || null)
 }
 
@@ -124,17 +142,78 @@ const handleEditSeller = async () => {
     </div>
 
     <!-- Grid de vendedores -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <SellerCard
-        v-for="seller in sellersStore.sellers"
-        :key="seller._id"
-        :seller="seller"
-        :can-edit="authStore.canEdit"
-        :can-delete="authStore.canDelete"
-        @toggle-active="handleToggleActive"
-        @edit="handleOpenEdit"
-        @delete="handleDeleteSeller"
-      />
+    <div v-else>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <SellerCard
+          v-for="seller in paginatedSellers"
+          :key="seller._id"
+          :seller="seller"
+          :can-edit="authStore.canEdit"
+          :can-delete="authStore.canDelete"
+          @toggle-active="handleToggleActive"
+          @edit="handleOpenEdit"
+          @delete="handleDeleteSeller"
+        />
+      </div>
+
+      <!-- Paginación -->
+      <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 mt-6">
+        <button
+          @click="currentPage = 1"
+          :disabled="currentPage === 1"
+          class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        >
+          &laquo;
+        </button>
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        >
+          &lsaquo;
+        </button>
+
+        <template v-for="page in totalPages" :key="page">
+          <button
+            v-if="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+            @click="currentPage = page"
+            :class="[
+              'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+              currentPage === page
+                ? 'bg-primary-600 text-white'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+            ]"
+          >
+            {{ page }}
+          </button>
+          <span
+            v-else-if="page === currentPage - 2 || page === currentPage + 2"
+            class="px-2 text-gray-500"
+          >
+            ...
+          </span>
+        </template>
+
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        >
+          &rsaquo;
+        </button>
+        <button
+          @click="currentPage = totalPages"
+          :disabled="currentPage === totalPages"
+          class="px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+        >
+          &raquo;
+        </button>
+      </div>
+
+      <!-- Info de paginación -->
+      <p v-if="totalPages > 1" class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
+        Mostrando {{ (currentPage - 1) * sellersPerPage + 1 }}-{{ Math.min(currentPage * sellersPerPage, sellersStore.sellers.length) }} de {{ sellersStore.sellers.length }} vendedores
+      </p>
     </div>
 
     <!-- Modal agregar vendedor -->

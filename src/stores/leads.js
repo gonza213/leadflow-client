@@ -25,6 +25,11 @@ export const useLeadsStore = defineStore('leads', () => {
   const states = computed(() => reportData.value?.states || [])
   const leads = computed(() => reportData.value?.leads || [])
 
+  // Next assignment preview
+  const nextAssignment = ref(null)
+  const nextTeam = computed(() => nextAssignment.value?.nextTeam || null)
+  const nextSeller = computed(() => nextAssignment.value?.nextSeller || null)
+
   // Leads list (paginated)
   const leadsList = ref([])
   const leadsLoading = ref(false)
@@ -78,6 +83,17 @@ export const useLeadsStore = defineStore('leads', () => {
       equipo: 'Todos',
       usuario: '',
       opportunity_stage: ''
+    }
+  }
+
+  async function fetchNextAssignment() {
+    if (!authStore.tenantSlug) return
+
+    try {
+      const response = await leadsApi.getNextAssignment(authStore.tenantSlug)
+      nextAssignment.value = response.data.data
+    } catch (err) {
+      console.error('Error fetching next assignment:', err)
     }
   }
 
@@ -168,6 +184,11 @@ export const useLeadsStore = defineStore('leads', () => {
     fetchReport,
     setFilter,
     resetFilters,
+    // Next assignment
+    nextAssignment,
+    nextTeam,
+    nextSeller,
+    fetchNextAssignment,
     // Leads list
     leadsList,
     leadsLoading,
