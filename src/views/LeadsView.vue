@@ -20,7 +20,6 @@ const editForm = reactive({
   email: '',
   phone: '',
   source: '',
-  state: '',
   opportunity_stage: '',
   seller_user_id: ''
 })
@@ -61,7 +60,6 @@ const openEditModal = (lead) => {
   editForm.email = lead.email || ''
   editForm.phone = lead.phone || ''
   editForm.source = lead.source || ''
-  editForm.state = lead.state || ''
   editForm.opportunity_stage = lead.opportunity_stage || ''
   editForm.seller_user_id = lead.seller_id || ''
   editError.value = ''
@@ -453,28 +451,17 @@ const getStateClass = (state) => {
             <input v-model="editForm.source" type="text" class="input" />
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="label">Estado</label>
-              <select v-model="editForm.state" class="input">
-                <option value="new">new</option>
-                <option value="contacted">contacted</option>
-                <option value="qualified">qualified</option>
-                <option value="lost">lost</option>
-              </select>
-            </div>
-            <div>
-              <label class="label">Etapa</label>
-              <select v-model="editForm.opportunity_stage" class="input">
-                <option
-                  v-for="stage in configStore.config?.opportunity_stages || []"
-                  :key="stage"
-                  :value="stage"
-                >
-                  {{ stage }}
-                </option>
-              </select>
-            </div>
+          <div>
+            <label class="label">Etapa</label>
+            <select v-model="editForm.opportunity_stage" class="input">
+              <option
+                v-for="stage in configStore.config?.opportunity_stages || []"
+                :key="stage"
+                :value="stage"
+              >
+                {{ stage }}
+              </option>
+            </select>
           </div>
 
           <div>
