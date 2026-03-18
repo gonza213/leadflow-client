@@ -22,6 +22,7 @@ export const useLeadsStore = defineStore('leads', () => {
   const totalLeads = computed(() => reportData.value?.total_leads || 0)
   const sellers = computed(() => reportData.value?.sellers || [])
   const stages = computed(() => reportData.value?.stages || [])
+  const states = computed(() => reportData.value?.states || [])
   const leads = computed(() => reportData.value?.leads || [])
 
   // Leads list (paginated)
@@ -162,6 +163,7 @@ export const useLeadsStore = defineStore('leads', () => {
     totalLeads,
     sellers,
     stages,
+    states,
     leads,
     fetchReport,
     setFilter,

@@ -7,6 +7,7 @@ import SellersTable from '../components/dashboard/SellersTable.vue'
 import SellersChart from '../components/dashboard/SellersChart.vue'
 import StagesTable from '../components/dashboard/StagesTable.vue'
 import StagesChart from '../components/dashboard/StagesChart.vue'
+import StatesChart from '../components/dashboard/StatesChart.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -144,6 +145,12 @@ const handleResetFilters = () => {
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tabla de Etapas</h2>
           <StagesTable :stages="leadsStore.stages" />
         </div>
+      </div>
+
+      <!-- Leads por Estado Geográfico -->
+      <div class="card">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Estado</h2>
+        <StatesChart :states="leadsStore.states" />
       </div>
     </template>
   </div>
