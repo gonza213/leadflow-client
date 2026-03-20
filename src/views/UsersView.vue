@@ -176,6 +176,9 @@ const formatDate = (date) => {
             >
               {{ getRoleLabel(user.role) }}
             </span>
+            <span v-if="user._id === usersStore.originalManagerId" class="ml-1 text-xs text-amber-600 dark:text-amber-400 font-medium">
+              (Principal)
+            </span>
           </div>
           <p v-if="user.role === 'seller' && user.sellerId" class="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Vinculado a: {{ user.sellerId.seller_name }}
@@ -191,7 +194,7 @@ const formatDate = (date) => {
                 Editar
               </button>
               <button
-                v-if="user._id !== authStore.user?._id"
+                v-if="user._id !== authStore.user?._id && user._id !== usersStore.originalManagerId"
                 @click="handleDeleteUser(user._id)"
                 class="text-sm text-red-600 dark:text-red-400 hover:text-red-800"
               >
@@ -233,6 +236,9 @@ const formatDate = (date) => {
                 >
                   {{ getRoleLabel(user.role) }}
                 </span>
+                <span v-if="user._id === usersStore.originalManagerId" class="ml-1 text-xs text-amber-600 dark:text-amber-400 font-medium">
+                  (Principal)
+                </span>
                 <span v-if="user.role === 'seller' && user.sellerId" class="ml-2 text-xs text-gray-500 dark:text-gray-400">
                   ({{ user.sellerId.seller_name }})
                 </span>
@@ -248,7 +254,7 @@ const formatDate = (date) => {
                   Editar
                 </button>
                 <button
-                  v-if="user._id !== authStore.user?._id"
+                  v-if="user._id !== authStore.user?._id && user._id !== usersStore.originalManagerId"
                   @click="handleDeleteUser(user._id)"
                   class="text-red-600 dark:text-red-400 hover:text-red-800"
                 >

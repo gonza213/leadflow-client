@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { usersApi } from '../services/api'
 import { useAuthStore } from './auth'
 
@@ -9,6 +9,14 @@ export const useUsersStore = defineStore('users', () => {
   const users = ref([])
   const loading = ref(false)
   const error = ref(null)
+
+  // Get the original manager (first manager created for the tenant)
+  const originalManagerId = computed(() => {
+    const managers = users.value
+      .filter(u => u.role === 'manager')
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+    return managers.length > 0 ? managers[0]._id : null
+  })
 
   async function fetchUsers() {
     if (!authStore.tenantSlug) return
@@ -66,6 +74,7 @@ export const useUsersStore = defineStore('users', () => {
     users,
     loading,
     error,
+    originalManagerId,
     fetchUsers,
     createUser,
     updateUser,
