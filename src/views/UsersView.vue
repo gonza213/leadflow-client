@@ -2,9 +2,11 @@
 import { onMounted, ref } from 'vue'
 import { useUsersStore } from '../stores/users'
 import { useAuthStore } from '../stores/auth'
+import { useSellersStore } from '../stores/sellers'
 
 const usersStore = useUsersStore()
 const authStore = useAuthStore()
+const sellersStore = useSellersStore()
 
 const showAddModal = ref(false)
 const showEditModal = ref(false)
@@ -14,29 +16,39 @@ const newUser = ref({
   name: '',
   email: '',
   password: '',
-  role: 'viewer'
+  role: 'viewer',
+  sellerId: ''
 })
 
 const editForm = ref({
   name: '',
   email: '',
   password: '',
-  role: 'viewer'
+  role: 'viewer',
+  sellerId: ''
 })
 
 onMounted(async () => {
-  await usersStore.fetchUsers()
+  await Promise.all([
+    usersStore.fetchUsers(),
+    sellersStore.fetchSellers()
+  ])
 })
 
 const handleAddUser = async () => {
-  const result = await usersStore.createUser(newUser.value)
+  const data = { ...newUser.value }
+  if (data.role !== 'seller') {
+    delete data.sellerId
+  }
+  const result = await usersStore.createUser(data)
   if (result.success) {
     showAddModal.value = false
     newUser.value = {
       name: '',
       email: '',
       password: '',
-      role: 'viewer'
+      role: 'viewer',
+      sellerId: ''
     }
   }
 }
@@ -47,7 +59,8 @@ const handleOpenEdit = (user) => {
     name: user.name,
     email: user.email,
     password: '',
-    role: user.role
+    role: user.role,
+    sellerId: user.sellerId?._id || ''
   }
   showEditModal.value = true
 }
@@ -59,6 +72,10 @@ const handleEditUser = async () => {
     name: editForm.value.name,
     email: editForm.value.email,
     role: editForm.value.role
+  }
+
+  if (editForm.value.role === 'seller') {
+    data.sellerId = editForm.value.sellerId
   }
 
   if (editForm.value.password) {
@@ -82,6 +99,8 @@ const getRoleBadgeClass = (role) => {
   switch (role) {
     case 'manager':
       return 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300'
+    case 'seller':
+      return 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300'
     case 'viewer':
       return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
     default:
@@ -93,6 +112,8 @@ const getRoleLabel = (role) => {
   switch (role) {
     case 'manager':
       return 'Manager'
+    case 'seller':
+      return 'Vendedor'
     case 'viewer':
       return 'Viewer'
     default:
@@ -156,6 +177,9 @@ const formatDate = (date) => {
               {{ getRoleLabel(user.role) }}
             </span>
           </div>
+          <p v-if="user.role === 'seller' && user.sellerId" class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+            Vinculado a: {{ user.sellerId.seller_name }}
+          </p>
 
           <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
             <span class="text-xs text-gray-400">Creado: {{ formatDate(user.createdAt) }}</span>
@@ -209,6 +233,9 @@ const formatDate = (date) => {
                 >
                   {{ getRoleLabel(user.role) }}
                 </span>
+                <span v-if="user.role === 'seller' && user.sellerId" class="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                  ({{ user.sellerId.seller_name }})
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                 {{ formatDate(user.createdAt) }}
@@ -261,11 +288,27 @@ const formatDate = (date) => {
             <label class="label text-sm">Rol</label>
             <select v-model="newUser.role" class="input">
               <option value="manager">Manager - Acceso completo</option>
+              <option value="seller">Vendedor - Solo sus datos</option>
               <option value="viewer">Viewer - Solo ver y editar</option>
             </select>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              El Viewer puede ver y editar, pero no crear ni eliminar.
+              <span v-if="newUser.role === 'seller'">El Vendedor solo ve sus propios leads y estadísticas.</span>
+              <span v-else-if="newUser.role === 'viewer'">El Viewer puede ver y editar, pero no crear ni eliminar.</span>
+              <span v-else>El Manager tiene acceso completo al tenant.</span>
             </p>
+          </div>
+          <div v-if="newUser.role === 'seller'">
+            <label class="label text-sm">Vendedor vinculado <span class="text-red-500">*</span></label>
+            <select v-model="newUser.sellerId" class="input">
+              <option value="">Seleccionar vendedor</option>
+              <option
+                v-for="seller in sellersStore.sellers"
+                :key="seller._id"
+                :value="seller._id"
+              >
+                {{ seller.seller_name }} ({{ seller.team }})
+              </option>
+            </select>
           </div>
         </div>
 
@@ -276,7 +319,7 @@ const formatDate = (date) => {
           <button
             @click="handleAddUser"
             class="btn btn-primary flex-1"
-            :disabled="!newUser.name || !newUser.email || !newUser.password"
+            :disabled="!newUser.name || !newUser.email || !newUser.password || (newUser.role === 'seller' && !newUser.sellerId)"
           >
             Guardar
           </button>
@@ -306,7 +349,21 @@ const formatDate = (date) => {
             <label class="label text-sm">Rol</label>
             <select v-model="editForm.role" class="input">
               <option value="manager">Manager - Acceso completo</option>
+              <option value="seller">Vendedor - Solo sus datos</option>
               <option value="viewer">Viewer - Solo ver y editar</option>
+            </select>
+          </div>
+          <div v-if="editForm.role === 'seller'">
+            <label class="label text-sm">Vendedor vinculado <span class="text-red-500">*</span></label>
+            <select v-model="editForm.sellerId" class="input">
+              <option value="">Seleccionar vendedor</option>
+              <option
+                v-for="seller in sellersStore.sellers"
+                :key="seller._id"
+                :value="seller._id"
+              >
+                {{ seller.seller_name }} ({{ seller.team }})
+              </option>
             </select>
           </div>
         </div>
@@ -318,7 +375,7 @@ const formatDate = (date) => {
           <button
             @click="handleEditUser"
             class="btn btn-primary flex-1"
-            :disabled="!editForm.name || !editForm.email"
+            :disabled="!editForm.name || !editForm.email || (editForm.role === 'seller' && !editForm.sellerId)"
           >
             Guardar
           </button>

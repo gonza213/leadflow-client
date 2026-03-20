@@ -10,17 +10,69 @@ const tenantsStore = useTenantsStore()
 const editing = ref(false)
 const editForm = ref({ name: '' })
 
+// User editing
+const showEditUserModal = ref(false)
+const editingUser = ref(null)
+const editUserForm = ref({
+  name: '',
+  email: '',
+  password: ''
+})
+
 onMounted(async () => {
   const result = await tenantsStore.fetchTenant(route.params.id)
   if (result.success) {
     editForm.value.name = result.tenant.name
   }
+  await tenantsStore.fetchTenantUsers(route.params.id)
 })
 
 const handleSave = async () => {
   const result = await tenantsStore.updateTenant(route.params.id, editForm.value)
   if (result.success) {
     editing.value = false
+  }
+}
+
+const openEditUserModal = (user) => {
+  editingUser.value = user
+  editUserForm.value = {
+    name: user.name,
+    email: user.email,
+    password: ''
+  }
+  showEditUserModal.value = true
+}
+
+const handleSaveUser = async () => {
+  if (!editingUser.value) return
+
+  const data = {
+    name: editUserForm.value.name,
+    email: editUserForm.value.email
+  }
+
+  if (editUserForm.value.password) {
+    data.password = editUserForm.value.password
+  }
+
+  const result = await tenantsStore.updateTenantUser(route.params.id, editingUser.value._id, data)
+  if (result.success) {
+    showEditUserModal.value = false
+    editingUser.value = null
+  } else {
+    alert(result.error)
+  }
+}
+
+const getRoleBadgeClass = (role) => {
+  switch (role) {
+    case 'manager':
+      return 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300'
+    case 'seller':
+      return 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300'
+    default:
+      return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
   }
 }
 
@@ -166,21 +218,45 @@ const handleRegenerateApiKey = async () => {
         </div>
       </div>
 
-      <!-- Manager -->
-      <div class="card">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Usuario Manager</h3>
+      <!-- Usuarios del Tenant -->
+      <div class="card lg:col-span-2">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Usuarios del Tenant</h3>
 
-        <div v-if="tenantsStore.currentTenant.manager" class="space-y-2">
-          <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Nombre</label>
-            <p class="font-medium text-gray-900 dark:text-white">{{ tenantsStore.currentTenant.manager.name }}</p>
-          </div>
-          <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Email</label>
-            <p class="font-medium text-gray-900 dark:text-white">{{ tenantsStore.currentTenant.manager.email }}</p>
-          </div>
+        <div v-if="tenantsStore.tenantUsers.length > 0" class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Rol</th>
+                <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              <tr v-for="user in tenantsStore.tenantUsers" :key="user._id">
+                <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">{{ user.name }}</td>
+                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">{{ user.email }}</td>
+                <td class="px-4 py-3">
+                  <span
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    :class="getRoleBadgeClass(user.role)"
+                  >
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-right">
+                  <button
+                    @click="openEditUserModal(user)"
+                    class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800"
+                  >
+                    Editar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p v-else class="text-gray-500 dark:text-gray-400">Sin manager asignado</p>
+        <p v-else class="text-gray-500 dark:text-gray-400">No hay usuarios</p>
       </div>
 
       <!-- Config -->
@@ -205,6 +281,42 @@ const handleRegenerateApiKey = async () => {
 
     <div v-else class="text-center py-12 text-gray-500 dark:text-gray-400">
       Tenant no encontrado
+    </div>
+
+    <!-- Modal editar usuario -->
+    <div v-if="showEditUserModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Editar Usuario</h2>
+
+        <div class="space-y-4">
+          <div>
+            <label class="label text-sm">Nombre</label>
+            <input v-model="editUserForm.name" type="text" class="input" placeholder="Nombre completo" />
+          </div>
+          <div>
+            <label class="label text-sm">Email</label>
+            <input v-model="editUserForm.email" type="email" class="input" placeholder="email@ejemplo.com" />
+          </div>
+          <div>
+            <label class="label text-sm">Nueva Contraseña</label>
+            <input v-model="editUserForm.password" type="password" class="input" placeholder="Dejar vacío para mantener" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Solo completar si deseas cambiar la contraseña</p>
+          </div>
+        </div>
+
+        <div class="flex gap-3 mt-6">
+          <button @click="showEditUserModal = false" class="btn btn-secondary flex-1">
+            Cancelar
+          </button>
+          <button
+            @click="handleSaveUser"
+            class="btn btn-primary flex-1"
+            :disabled="!editUserForm.name || !editUserForm.email"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>

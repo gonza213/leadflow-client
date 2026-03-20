@@ -21,8 +21,8 @@ const filteredMenuItems = computed(() => {
   }
 
   const menuItems = [
-    { name: 'Dashboard', path: '/', icon: 'chart-bar', roles: ['manager', 'viewer'] },
-    { name: 'Leads', path: '/leads', icon: 'clipboard-list', roles: ['manager', 'viewer'] },
+    { name: 'Dashboard', path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
+    { name: 'Leads', path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
     { name: 'Vendedores', path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
     { name: 'Usuarios', path: '/users', icon: 'user-group', roles: ['manager'] },
     { name: 'Configuracion', path: '/config', icon: 'cog', roles: ['manager'] }

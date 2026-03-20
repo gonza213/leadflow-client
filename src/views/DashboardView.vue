@@ -2,6 +2,7 @@
 import { onMounted, watch } from 'vue'
 import { useLeadsStore } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
+import { useAuthStore } from '../stores/auth'
 import KPICard from '../components/dashboard/KPICard.vue'
 import SellersTable from '../components/dashboard/SellersTable.vue'
 import SellersChart from '../components/dashboard/SellersChart.vue'
@@ -11,6 +12,7 @@ import StatesChart from '../components/dashboard/StatesChart.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
+const authStore = useAuthStore()
 
 onMounted(async () => {
   await configStore.fetchConfig()
@@ -129,8 +131,8 @@ const handleResetFilters = () => {
         />
       </div>
 
-      <!-- Próximo Equipo y Vendedor -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Próximo Equipo y Vendedor (solo para managers) -->
+      <div v-if="!authStore.isSeller" class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="card bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border border-blue-200 dark:border-blue-800">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center">

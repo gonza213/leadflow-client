@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userRole = computed(() => user.value?.role || null)
   const isSuperAdmin = computed(() => user.value?.role === 'superadmin')
   const isManager = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
+  const isSeller = computed(() => user.value?.role === 'seller')
   const isViewer = computed(() => ['superadmin', 'manager', 'viewer'].includes(user.value?.role))
   // Permisos especificos
   const canCreate = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
@@ -71,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole,
     isSuperAdmin,
     isManager,
+    isSeller,
     isViewer,
     canCreate,
     canDelete,

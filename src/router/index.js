@@ -18,7 +18,7 @@ const routes = [
     path: '/sellers',
     name: 'Sellers',
     component: () => import('../views/SellersView.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, denyRoles: ['seller'] }
   },
   {
     path: '/config',
@@ -81,6 +81,8 @@ router.beforeEach((to, from, next) => {
   } else if (to.meta.requiresSuperAdmin && !authStore.isSuperAdmin) {
     next('/')
   } else if (to.meta.requiresManager && !authStore.isManager) {
+    next('/')
+  } else if (to.meta.denyRoles && to.meta.denyRoles.includes(authStore.userRole)) {
     next('/')
   } else {
     next()

@@ -5,6 +5,7 @@ import { adminApi } from '../services/api'
 export const useTenantsStore = defineStore('tenants', () => {
   const tenants = ref([])
   const currentTenant = ref(null)
+  const tenantUsers = ref([])
   const loading = ref(false)
   const error = ref(null)
 
@@ -109,9 +110,43 @@ export const useTenantsStore = defineStore('tenants', () => {
     }
   }
 
+  async function fetchTenantUsers(tenantId) {
+    try {
+      const response = await adminApi.getTenantUsers(tenantId)
+      tenantUsers.value = response.data.users
+      return { success: true, users: response.data.users }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al cargar usuarios'
+      return { success: false, error: error.value }
+    }
+  }
+
+  async function updateTenantUser(tenantId, userId, data) {
+    try {
+      const response = await adminApi.updateTenantUser(tenantId, userId, data)
+      const index = tenantUsers.value.findIndex(u => u._id === userId)
+      if (index !== -1) {
+        tenantUsers.value[index] = response.data.user
+      }
+      // Update manager in currentTenant if it's the same user
+      if (currentTenant.value?.manager?.id === userId) {
+        currentTenant.value.manager = {
+          id: response.data.user._id,
+          name: response.data.user.name,
+          email: response.data.user.email
+        }
+      }
+      return { success: true, user: response.data.user }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al actualizar usuario'
+      return { success: false, error: error.value }
+    }
+  }
+
   return {
     tenants,
     currentTenant,
+    tenantUsers,
     loading,
     error,
     fetchTenants,
@@ -120,6 +155,8 @@ export const useTenantsStore = defineStore('tenants', () => {
     updateTenant,
     toggleActive,
     regenerateApiKey,
-    deleteTenant
+    deleteTenant,
+    fetchTenantUsers,
+    updateTenantUser
   }
 })
