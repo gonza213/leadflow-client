@@ -1,18 +1,54 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useUiStore } from '../../stores/ui'
 
 const props = defineProps({
   states: {
     type: Array,
     default: () => []
+  },
+  leads: {
+    type: Array,
+    default: () => []
+  },
+  stages: {
+    type: Array,
+    default: () => []
   }
 })
 
 const uiStore = useUiStore()
+const selectedStage = ref('')
 
 // Colors for top states
 const colors = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+
+// Filter states by selected stage
+const filteredStates = computed(() => {
+  if (!selectedStage.value) {
+    return props.states
+  }
+
+  // Calculate states from leads filtered by stage
+  const stateStats = {}
+  const filteredLeads = props.leads.filter(lead => lead.opportunity_stage === selectedStage.value)
+
+  filteredLeads.forEach(lead => {
+    const state = lead.state || 'Sin Estado'
+    if (!stateStats[state]) {
+      stateStats[state] = { state, leads: 0 }
+    }
+    stateStats[state].leads++
+  })
+
+  const totalLeads = filteredLeads.length
+  return Object.values(stateStats)
+    .map(stat => ({
+      ...stat,
+      porcentaje: totalLeads > 0 ? ((stat.leads / totalLeads) * 100).toFixed(2) : 0
+    }))
+    .sort((a, b) => b.leads - a.leads)
+})
 
 const chartOptions = computed(() => ({
   chart: {
@@ -32,11 +68,11 @@ const chartOptions = computed(() => ({
       distributed: true
     }
   },
-  colors: props.states.slice(0, 10).map((_, i) => colors[i % colors.length]),
+  colors: filteredStates.value.slice(0, 10).map((_, i) => colors[i % colors.length]),
   dataLabels: {
     enabled: true,
     formatter: (val, opt) => {
-      const state = props.states[opt.dataPointIndex]
+      const state = filteredStates.value[opt.dataPointIndex]
       return state ? `${val} (${state.porcentaje}%)` : ''
     },
     style: {
@@ -71,7 +107,7 @@ const chartOptions = computed(() => ({
     theme: uiStore.darkMode ? 'dark' : 'light',
     y: {
       formatter: (val, opt) => {
-        const state = props.states[opt.dataPointIndex]
+        const state = filteredStates.value[opt.dataPointIndex]
         return `${val} leads (${state?.porcentaje}%)`
       }
     }
@@ -79,7 +115,7 @@ const chartOptions = computed(() => ({
 }))
 
 // Only show top 10 states
-const topStates = computed(() => props.states.slice(0, 10))
+const topStates = computed(() => filteredStates.value.slice(0, 10))
 
 const chartSeries = computed(() => [{
   name: 'Leads',
@@ -87,22 +123,40 @@ const chartSeries = computed(() => [{
 }])
 
 const categories = computed(() => topStates.value.map(s => s.state))
+
+// Get unique stages from available stages prop
+const availableStages = computed(() => {
+  return props.stages.map(s => s.stage).filter(s => s && s !== 'Sin Etapa')
+})
 </script>
 
 <template>
-  <div v-if="states.length > 0">
-    <apexchart
-      type="bar"
-      :height="Math.max(200, topStates.length * 35)"
-      :options="{ ...chartOptions, xaxis: { ...chartOptions.xaxis, categories } }"
-      :series="chartSeries"
-      :key="uiStore.darkMode"
-    />
-    <p v-if="states.length > 10" class="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-      Mostrando top 10 de {{ states.length }} estados
-    </p>
-  </div>
-  <div v-else class="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-    No hay datos disponibles
+  <div>
+    <!-- Stage Filter -->
+    <div class="mb-4">
+      <label class="label text-sm">Filtrar por Etapa</label>
+      <select v-model="selectedStage" class="input text-sm">
+        <option value="">Todas las etapas</option>
+        <option v-for="stage in availableStages" :key="stage" :value="stage">
+          {{ stage }}
+        </option>
+      </select>
+    </div>
+
+    <div v-if="filteredStates.length > 0">
+      <apexchart
+        type="bar"
+        :height="Math.max(200, topStates.length * 35)"
+        :options="{ ...chartOptions, xaxis: { ...chartOptions.xaxis, categories } }"
+        :series="chartSeries"
+        :key="`${uiStore.darkMode}-${selectedStage}`"
+      />
+      <p v-if="filteredStates.length > 10" class="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+        Mostrando top 10 de {{ filteredStates.length }} estados
+      </p>
+    </div>
+    <div v-else class="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
+      No hay datos disponibles
+    </div>
   </div>
 </template>

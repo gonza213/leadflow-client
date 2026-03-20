@@ -195,7 +195,11 @@ const handleResetFilters = () => {
       <!-- Leads por Estado Geográfico -->
       <div class="card">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Estado</h2>
-        <StatesChart :states="leadsStore.states" />
+        <StatesChart
+          :states="leadsStore.states"
+          :leads="leadsStore.leads"
+          :stages="leadsStore.stages"
+        />
       </div>
     </template>
   </div>
