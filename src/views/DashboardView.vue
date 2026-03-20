@@ -65,7 +65,7 @@ const handleResetFilters = () => {
             class="input"
           />
         </div>
-        <div>
+        <div v-if="!authStore.isSeller">
           <label class="label">Equipo</label>
           <select v-model="leadsStore.filters.equipo" class="input">
             <option value="Todos">Todos</option>
@@ -118,6 +118,7 @@ const handleResetFilters = () => {
           color="primary"
         />
         <KPICard
+          v-if="!authStore.isSeller"
           title="Vendedores"
           :value="leadsStore.sellers.length"
           icon="users"
@@ -170,7 +171,7 @@ const handleResetFilters = () => {
       </div>
 
       <!-- Gráficos y Tablas -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div v-if="!authStore.isSeller" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card">
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Vendedor</h2>
           <SellersChart :sellers="leadsStore.sellers" />
