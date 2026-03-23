@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, watch } from 'vue'
+import { onMounted, watch, computed } from 'vue'
 import { useLeadsStore } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
+import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
 import KPICard from '../components/dashboard/KPICard.vue'
 import SellersTable from '../components/dashboard/SellersTable.vue'
@@ -12,15 +13,30 @@ import StatesChart from '../components/dashboard/StatesChart.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
+const sellersStore = useSellersStore()
 const authStore = useAuthStore()
 
 onMounted(async () => {
   await configStore.fetchConfig()
   await Promise.all([
     leadsStore.fetchReport(),
-    leadsStore.fetchNextAssignment()
+    leadsStore.fetchNextAssignment(),
+    sellersStore.fetchSellers()
   ])
 })
+
+// Sellers filtrados según el equipo seleccionado
+const filteredSellers = computed(() => {
+  const equipo = leadsStore.filters.equipo
+  if (!equipo || equipo === 'Todos') return sellersStore.sellers
+  return sellersStore.sellers.filter(s => s.team === equipo)
+})
+
+// Al cambiar equipo, resetear el vendedor seleccionado
+watch(
+  () => leadsStore.filters.equipo,
+  () => { leadsStore.filters.usuario = '' }
+)
 
 watch(
   () => leadsStore.filters,
@@ -48,26 +64,26 @@ const handleResetFilters = () => {
     <!-- Filtros -->
     <div class="card">
       <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Filtros</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div>
-          <label class="label">Fecha inicio</label>
+          <label class="label text-xs">Fecha inicio</label>
           <input
             v-model="leadsStore.filters.fecha_inicio"
             type="date"
-            class="input"
+            class="input text-sm"
           />
         </div>
         <div>
-          <label class="label">Fecha fin</label>
+          <label class="label text-xs">Fecha fin</label>
           <input
             v-model="leadsStore.filters.fecha_fin"
             type="date"
-            class="input"
+            class="input text-sm"
           />
         </div>
         <div v-if="!authStore.isSeller">
-          <label class="label">Equipo</label>
-          <select v-model="leadsStore.filters.equipo" class="input">
+          <label class="label text-xs">Equipo</label>
+          <select v-model="leadsStore.filters.equipo" class="input text-sm">
             <option value="Todos">Todos</option>
             <option
               v-for="equipo in configStore.config?.equipos || []"
@@ -78,9 +94,22 @@ const handleResetFilters = () => {
             </option>
           </select>
         </div>
+        <div v-if="!authStore.isSeller">
+          <label class="label text-xs">Vendedor</label>
+          <select v-model="leadsStore.filters.usuario" class="input text-sm">
+            <option value="">Todos</option>
+            <option
+              v-for="seller in filteredSellers"
+              :key="seller._id"
+              :value="seller._id"
+            >
+              {{ seller.seller_name }}
+            </option>
+          </select>
+        </div>
         <div>
-          <label class="label">Etapa</label>
-          <select v-model="leadsStore.filters.opportunity_stage" class="input">
+          <label class="label text-xs">Etapa</label>
+          <select v-model="leadsStore.filters.opportunity_stage" class="input text-sm">
             <option value="">Todas</option>
             <option
               v-for="stage in configStore.config?.opportunity_stages || []"
@@ -91,14 +120,14 @@ const handleResetFilters = () => {
             </option>
           </select>
         </div>
-        <div class="flex items-end gap-2">
-          <button @click="handleApplyFilters" class="btn btn-primary flex-1">
-            Aplicar
-          </button>
-          <button @click="handleResetFilters" class="btn btn-secondary">
-            Limpiar
-          </button>
-        </div>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button @click="handleApplyFilters" class="btn btn-primary btn-sm flex-1 lg:flex-none">
+          Aplicar
+        </button>
+        <button @click="handleResetFilters" class="btn btn-secondary btn-sm">
+          Limpiar
+        </button>
       </div>
     </div>
 
