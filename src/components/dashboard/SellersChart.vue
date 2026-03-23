@@ -11,6 +11,8 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 
+const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+
 const chartOptions = computed(() => ({
   chart: {
     type: 'bar',
@@ -25,10 +27,12 @@ const chartOptions = computed(() => ({
     bar: {
       horizontal: true,
       borderRadius: 4,
-      barHeight: '60%'
+      barHeight: '60%',
+      distributed: true
     }
   },
-  colors: ['#3b82f6'],
+  legend: { show: false },
+  colors: props.sellers.map((_, i) => COLORS[i % COLORS.length]),
   dataLabels: {
     enabled: true,
     formatter: (val) => val,
