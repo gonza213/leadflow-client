@@ -146,6 +146,25 @@ const getStateClass = (state) => {
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Leads</h1>
       <div class="flex items-center gap-2">
         <span class="text-sm text-gray-500 dark:text-gray-400">{{ leadsStore.pagination.total }} leads</span>
+
+        <!-- Exportar CSV -->
+        <button
+          @click="leadsStore.exportLeadsToCsv()"
+          :disabled="leadsStore.exportLoading || leadsStore.leadsLoading"
+          class="btn btn-secondary btn-sm flex items-center gap-1.5"
+          title="Exportar leads filtrados a CSV"
+        >
+          <svg v-if="!leadsStore.exportLoading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <svg v-else class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+          </svg>
+          <span class="hidden sm:inline">{{ leadsStore.exportLoading ? 'Exportando...' : 'Exportar CSV' }}</span>
+        </button>
+
+        <!-- Filtros mobile -->
         <button
           @click="showFilters = !showFilters"
           class="lg:hidden btn btn-secondary btn-sm"

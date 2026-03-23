@@ -1,6 +1,27 @@
 import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
 import { leadsApi } from '../services/api'
+
+// Helpers CSV
+const escapeCsvCell = (value) => {
+  if (value === null || value === undefined) return ''
+  const str = String(value)
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}`
+  }
+  return str
+}
+
+const downloadCsv = (filename, rows) => {
+  const csv = rows.map(row => row.map(escapeCsvCell).join(',')).join('\n')
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
 import { useAuthStore } from './auth'
 
 export const useLeadsStore = defineStore('leads', () => {
@@ -170,6 +191,47 @@ export const useLeadsStore = defineStore('leads', () => {
     }
   }
 
+  const exportLoading = ref(false)
+
+  async function exportLeadsToCsv() {
+    if (!authStore.tenantSlug) return
+    exportLoading.value = true
+
+    try {
+      // Mismos filtros que la lista, pero sin paginación (limit muy alto)
+      const params = { page: 1, limit: 100000 }
+      if (leadsFilters.fecha_inicio) params.fecha_inicio = leadsFilters.fecha_inicio
+      if (leadsFilters.fecha_fin) params.fecha_fin = leadsFilters.fecha_fin
+      if (leadsFilters.equipo) params.equipo = leadsFilters.equipo
+      if (leadsFilters.seller_id) params.seller_id = leadsFilters.seller_id
+      if (leadsFilters.opportunity_stage) params.opportunity_stage = leadsFilters.opportunity_stage
+
+      const response = await leadsApi.getLeads(authStore.tenantSlug, params)
+      const leads = response.data.data.leads
+
+      const headers = ['Fecha', 'Nombre', 'Email', 'Teléfono', 'Estado', 'Equipo', 'Vendedor', 'Etapa', 'Source', 'Contact ID']
+      const rows = leads.map(lead => [
+        lead.date ? new Date(lead.date).toLocaleDateString('es-ES') : '',
+        lead.name || '',
+        lead.email || '',
+        lead.phone || '',
+        lead.state || '',
+        lead.team || '',
+        lead.seller_name || '',
+        lead.opportunity_stage || '',
+        lead.source || '',
+        lead.contact_id || ''
+      ])
+
+      const date = new Date().toISOString().slice(0, 10)
+      downloadCsv(`leads_${date}.csv`, [headers, ...rows])
+    } catch (err) {
+      console.error('Error exportando leads:', err)
+    } finally {
+      exportLoading.value = false
+    }
+  }
+
   return {
     // Report
     reportData,
@@ -199,6 +261,9 @@ export const useLeadsStore = defineStore('leads', () => {
     setLeadsFilter,
     resetLeadsFilters,
     editLead,
-    deleteLead
+    deleteLead,
+    // Export
+    exportLoading,
+    exportLeadsToCsv
   }
 })
