@@ -65,6 +65,10 @@ export const useConfigStore = defineStore('config', () => {
     return updateConfig({ ghl_webhook_url, timezone })
   }
 
+  async function updateFallback(fallback_seller_id) {
+    return updateConfig({ fallback_seller_id: fallback_seller_id || null })
+  }
+
   return {
     config,
     loading,
@@ -76,6 +80,7 @@ export const useConfigStore = defineStore('config', () => {
     updatePeriod,
     updateStages,
     updateGhlWebhook,
-    updateGhlConfig
+    updateGhlConfig,
+    updateFallback
   }
 })

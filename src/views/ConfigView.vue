@@ -6,6 +6,7 @@ import TeamsConfig from '../components/config/TeamsConfig.vue'
 import PeriodConfig from '../components/config/PeriodConfig.vue'
 import StagesConfig from '../components/config/StagesConfig.vue'
 import GhlConfig from '../components/config/GhlConfig.vue'
+import FallbackConfig from '../components/config/FallbackConfig.vue'
 
 const configStore = useConfigStore()
 const authStore = useAuthStore()
@@ -16,7 +17,8 @@ const tabs = [
   { id: 'teams', name: 'Equipos', icon: 'users' },
   { id: 'period', name: 'Período', icon: 'calendar' },
   { id: 'stages', name: 'Etapas', icon: 'layers' },
-  { id: 'ghl', name: 'GHL', icon: 'link' }
+  { id: 'ghl', name: 'GHL', icon: 'link' },
+  { id: 'fallback', name: 'Respaldo', icon: 'shield' }
 ]
 
 // Use VITE_API_URL for production, fallback to localhost for development
@@ -204,6 +206,11 @@ onMounted(async () => {
         :ghl-webhook-url="configStore.config.ghl_webhook_url"
         :timezone="configStore.config.timezone"
         @update="configStore.updateGhlConfig"
+      />
+      <FallbackConfig
+        v-else-if="activeTab === 'fallback'"
+        :fallback-seller-id="configStore.config.fallback_seller_id"
+        :on-save="configStore.updateFallback"
       />
     </div>
   </div>
