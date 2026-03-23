@@ -6,18 +6,9 @@ defineProps({
   }
 })
 
-const stageColors = {
-  'Sin Etapa': 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300',
-  'Contactado': 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300',
-  'En Negociación': 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300',
-  'Propuesta Enviada': 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300',
-  'Cerrado Ganado': 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300',
-  'Cerrado Perdido': 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
-}
+const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
 
-const getStageColor = (stage) => {
-  return stageColors[stage] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-}
+const getColor = (index) => COLORS[index % COLORS.length]
 </script>
 
 <template>
@@ -32,14 +23,14 @@ const getStageColor = (stage) => {
       </thead>
       <tbody>
         <tr
-          v-for="stage in stages"
+          v-for="(stage, i) in stages"
           :key="stage.stage"
           class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50"
         >
           <td class="py-3 px-2">
             <span
-              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-              :class="getStageColor(stage.stage)"
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white"
+              :style="{ backgroundColor: getColor(i) }"
             >
               {{ stage.stage }}
             </span>
