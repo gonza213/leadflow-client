@@ -11,14 +11,7 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 
-const stageColorMap = {
-  'Sin Etapa': '#9ca3af',
-  'Contactado': '#3b82f6',
-  'En Negociación': '#eab308',
-  'Propuesta Enviada': '#a855f7',
-  'Cerrado Ganado': '#22c55e',
-  'Cerrado Perdido': '#ef4444'
-}
+const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
 
 const chartOptions = computed(() => ({
   chart: {
@@ -38,7 +31,7 @@ const chartOptions = computed(() => ({
       distributed: true
     }
   },
-  colors: props.stages.map(s => stageColorMap[s.stage] || '#6b7280'),
+  colors: props.stages.map((_, i) => COLORS[i % COLORS.length]),
   dataLabels: {
     enabled: true,
     formatter: (val, opt) => {
