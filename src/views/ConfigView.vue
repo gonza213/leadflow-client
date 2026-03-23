@@ -209,7 +209,7 @@ onMounted(async () => {
       />
       <FallbackConfig
         v-else-if="activeTab === 'fallback'"
-        :fallback-seller-id="configStore.config.fallback_seller_id"
+        :fallback-seller-ids="configStore.config.fallback_seller_ids || []"
         :on-save="configStore.updateFallback"
       />
     </div>

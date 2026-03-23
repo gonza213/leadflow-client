@@ -65,8 +65,11 @@ export const useConfigStore = defineStore('config', () => {
     return updateConfig({ ghl_webhook_url, timezone })
   }
 
-  async function updateFallback(fallback_seller_id) {
-    return updateConfig({ fallback_seller_id: fallback_seller_id || null })
+  async function updateFallback(fallback_seller_ids) {
+    const ids = Array.isArray(fallback_seller_ids)
+      ? fallback_seller_ids.filter(id => id && id !== '')
+      : []
+    return updateConfig({ fallback_seller_ids: ids })
   }
 
   return {
