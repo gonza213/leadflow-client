@@ -86,9 +86,9 @@ const handleSave = async () => {
     <div v-if="localFechaInicio && localFechaFin" class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-6">
       <p class="text-sm text-blue-700 dark:text-blue-400">
         <strong>Período activo:</strong>
-        {{ new Date(localFechaInicio).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+        {{ new Date(localFechaInicio + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
         -
-        {{ new Date(localFechaFin).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+        {{ new Date(localFechaFin + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
       </p>
     </div>
 
