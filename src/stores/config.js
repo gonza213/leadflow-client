@@ -49,8 +49,8 @@ export const useConfigStore = defineStore('config', () => {
     return updateConfig({ equipos })
   }
 
-  async function updatePeriod(fecha_inicio, fecha_fin) {
-    return updateConfig({ fecha_inicio, fecha_fin })
+  async function updatePeriod(data) {
+    return updateConfig(data)
   }
 
   async function updateStages(opportunity_stages) {

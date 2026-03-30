@@ -153,6 +153,38 @@ export const useLeadsStore = defineStore('leads', () => {
     leadsFilters[key] = value
   }
 
+  /**
+   * Inicializa los filtros del dashboard con el período configurado.
+   * Llamar después de fetchConfig() al montar el Dashboard.
+   */
+  function initPeriodFilters(config) {
+    if (!config) return
+
+    let start, end
+
+    if (config.week_start_day !== null && config.week_start_day !== undefined) {
+      // Modo automático: calcular semana actual por día configurado
+      const now = new Date()
+      const todayDow = now.getDay()
+      const daysDiff = (todayDow - config.week_start_day + 7) % 7
+      const startDate = new Date(now)
+      startDate.setDate(now.getDate() - daysDiff)
+      const endDate = new Date(startDate)
+      endDate.setDate(startDate.getDate() + 6)
+      start = startDate.toISOString().split('T')[0]
+      end = endDate.toISOString().split('T')[0]
+    } else if (config.fecha_inicio && config.fecha_fin) {
+      // Modo manual: usar las fechas configuradas
+      start = new Date(config.fecha_inicio).toISOString().split('T')[0]
+      end = new Date(config.fecha_fin).toISOString().split('T')[0]
+    } else {
+      return
+    }
+
+    filters.value.fecha_inicio = start
+    filters.value.fecha_fin = end
+  }
+
   function resetLeadsFilters() {
     leadsFilters.fecha_inicio = ''
     leadsFilters.fecha_fin = ''
@@ -260,6 +292,7 @@ export const useLeadsStore = defineStore('leads', () => {
     fetchLeads,
     setLeadsFilter,
     resetLeadsFilters,
+    initPeriodFilters,
     editLead,
     deleteLead,
     // Export

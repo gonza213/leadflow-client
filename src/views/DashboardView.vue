@@ -18,6 +18,8 @@ const authStore = useAuthStore()
 
 onMounted(async () => {
   await configStore.fetchConfig()
+  // Pre-cargar filtros con el período configurado (automático o manual)
+  leadsStore.initPeriodFilters(configStore.config)
   await Promise.all([
     leadsStore.fetchReport(),
     leadsStore.fetchNextAssignment(),
@@ -51,6 +53,8 @@ const handleApplyFilters = () => {
 
 const handleResetFilters = () => {
   leadsStore.resetFilters()
+  // Reiniciar al período configurado (no a vacío)
+  leadsStore.initPeriodFilters(configStore.config)
   leadsStore.fetchNextAssignment()
 }
 </script>
