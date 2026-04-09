@@ -10,6 +10,7 @@ import SellersChart from '../components/dashboard/SellersChart.vue'
 import StagesTable from '../components/dashboard/StagesTable.vue'
 import StagesChart from '../components/dashboard/StagesChart.vue'
 import StatesChart from '../components/dashboard/StatesChart.vue'
+import TeamsChart from '../components/dashboard/TeamsChart.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -201,6 +202,12 @@ const handleResetFilters = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Distribución por equipo (solo si hay más de 1 equipo configurado) -->
+      <div v-if="!authStore.isSeller && (configStore.config?.equipos?.length ?? 0) > 1" class="card">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Distribución por Equipo</h2>
+        <TeamsChart :teams="leadsStore.teams" :configured-teams="configStore.config?.equipos || []" />
       </div>
 
       <!-- Gráficos y Tablas -->

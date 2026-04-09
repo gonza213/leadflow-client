@@ -44,6 +44,7 @@ export const useLeadsStore = defineStore('leads', () => {
   const sellers = computed(() => reportData.value?.sellers || [])
   const stages = computed(() => reportData.value?.stages || [])
   const states = computed(() => reportData.value?.states || [])
+  const teams = computed(() => reportData.value?.teams || [])
   const leads = computed(() => reportData.value?.leads || [])
 
   // Next assignment preview
@@ -283,6 +284,7 @@ export const useLeadsStore = defineStore('leads', () => {
     sellers,
     stages,
     states,
+    teams,
     leads,
     fetchReport,
     setFilter,
