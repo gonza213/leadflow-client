@@ -282,7 +282,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <div class="footer-inner">
           <div class="footer-brand">
             <a href="#" class="logo">
-              <div class="logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <img src="/favicon.svg" alt="LeadFlow Logo" class="w-8 h-8" />
               LeadFlow
             </a>
             <p>Distribución inteligente de leads para equipos de ventas modernos.</p>
