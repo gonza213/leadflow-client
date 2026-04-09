@@ -42,3 +42,37 @@ body {
     @apply dark:text-gray-300;
   }
 }
+
+/* ===== Driver.js Tour Custom Styles ===== */
+.leadflow-tour .driver-popover-title {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+}
+.leadflow-tour .driver-popover-description {
+  font-size: 0.875rem !important;
+  color: #64748b !important;
+  line-height: 1.6 !important;
+  margin-top: 6px !important;
+}
+.leadflow-tour .driver-popover-footer button {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  padding: 7px 14px !important;
+  border-radius: 8px !important;
+}
+.leadflow-tour .driver-popover-next-btn {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.3) !important;
+}
+.leadflow-tour .driver-popover-prev-btn {
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+.leadflow-tour .driver-popover-progress-text {
+  font-size: 0.75rem !important;
+  color: #94a3b8 !important;
+}
+

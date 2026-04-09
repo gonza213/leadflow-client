@@ -42,6 +42,7 @@ const filteredMenuItems = computed(() => {
 
   <!-- Sidebar -->
   <aside
+    id="tour-sidebar"
     class="fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto z-40 transform transition-all duration-300 ease-in-out"
     :class="[
       uiStore.sidebarOpen ? 'translate-x-0' : '-translate-x-full',
@@ -52,6 +53,7 @@ const filteredMenuItems = computed(() => {
       <ul class="space-y-2">
         <li v-for="item in filteredMenuItems" :key="item.path">
           <router-link
+            :id="'tour-' + item.name.toLowerCase() + '-link'"
             :to="item.path"
             class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors"
             :class="[

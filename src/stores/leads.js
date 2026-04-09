@@ -160,21 +160,30 @@ export const useLeadsStore = defineStore('leads', () => {
   function initPeriodFilters(config) {
     if (!config) return
 
+    // Helper: format a Date to YYYY-MM-DD using LOCAL components (not UTC)
+    const toLocalDateStr = (d) => {
+      const y = d.getFullYear()
+      const m = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${y}-${m}-${day}`
+    }
+
     let start, end
 
     if (config.week_start_day !== null && config.week_start_day !== undefined) {
-      // Modo automático: calcular semana actual por día configurado
+      // Modo automático: calcular semana actual usando día local (no UTC)
       const now = new Date()
-      const todayDow = now.getDay()
+      const todayDow = now.getDay()  // 0=Dom, 1=Lun, ... 6=Sab — en hora local
       const daysDiff = (todayDow - config.week_start_day + 7) % 7
       const startDate = new Date(now)
       startDate.setDate(now.getDate() - daysDiff)
       const endDate = new Date(startDate)
       endDate.setDate(startDate.getDate() + 6)
-      start = startDate.toISOString().split('T')[0]
-      end = endDate.toISOString().split('T')[0]
+      // Usar componentes locales para evitar desfase UTC
+      start = toLocalDateStr(startDate)
+      end = toLocalDateStr(endDate)
     } else if (config.fecha_inicio && config.fecha_fin) {
-      // Modo manual: usar las fechas configuradas
+      // Modo manual: usar las fechas configuradas — NO se toca este bloque
       start = new Date(config.fecha_inicio).toISOString().split('T')[0]
       end = new Date(config.fecha_fin).toISOString().split('T')[0]
     } else {
