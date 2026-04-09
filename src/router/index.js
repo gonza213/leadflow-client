@@ -3,6 +3,12 @@ import { useAuthStore } from '../stores/auth'
 
 const routes = [
   {
+    path: '/landing',
+    name: 'Landing',
+    component: () => import('../views/LandingView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/LoginView.vue'),
@@ -58,7 +64,7 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/'
+    redirect: '/landing'
   }
 ]
 
@@ -70,8 +76,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/login')
+  if (to.meta.public) {
+    next()
+  } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next('/landing')
   } else if (to.meta.guest && authStore.isAuthenticated) {
     if (authStore.isSuperAdmin) {
       next('/admin/tenants')

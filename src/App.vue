@@ -9,7 +9,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const showLayout = computed(() => {
-  return authStore.isAuthenticated && route.name !== 'Login'
+  return authStore.isAuthenticated && route.name !== 'Login' && route.name !== 'Landing'
 })
 </script>
 
