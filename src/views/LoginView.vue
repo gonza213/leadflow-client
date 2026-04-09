@@ -51,8 +51,11 @@ const handleSubmit = async () => {
 
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-primary-600 dark:text-primary-400">LeadFlow</h1>
-        <p class="mt-2 text-gray-600 dark:text-gray-400">Distribucion inteligente de leads</p>
+        <router-link to="/" class="inline-flex items-center justify-center gap-3 transition-transform hover:scale-105">
+          <img src="/favicon.svg" alt="LeadFlow Logo" class="w-10 h-10 shadow-lg shadow-blue-500/30 rounded-xl" />
+          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">LeadFlow</h1>
+        </router-link>
+        <p class="mt-3 text-gray-600 dark:text-gray-400">Distribucion inteligente de leads</p>
       </div>
 
       <div class="card">

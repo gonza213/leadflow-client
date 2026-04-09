@@ -21,11 +21,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
     <nav :class="['landing-nav', { 'nav-scrolled': scrolled }]">
       <div class="nav-inner">
         <a href="#" class="logo">
-          <div class="logo-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
-          </div>
+          <img src="/favicon.svg" alt="LeadFlow Logo" class="w-9 h-9" />
           LeadFlow
         </a>
         <ul class="nav-links">
