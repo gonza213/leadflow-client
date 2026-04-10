@@ -46,8 +46,7 @@ onUnmounted(() => {
     <nav :class="['landing-nav', { 'nav-scrolled': scrolled }]">
       <div class="nav-inner">
         <a href="#" class="logo">
-          <img src="/favicon.svg" alt="LeadFlow Logo" class="w-9 h-9" />
-          LeadFlow
+          <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-14 dark:brightness-0 dark:invert" />
         </a>
         <ul class="nav-links">
           <li><a href="#features">Funciones</a></li>
@@ -89,10 +88,10 @@ onUnmounted(() => {
           <span class="gradient-text">inteligente y automática</span>
         </h1>
         <p class="hero-subtitle">
-          LeadFlow asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.
+          LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.
         </p>
         <div class="hero-actions">
-          <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary">
+          <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary">
             Solicitar acceso
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -114,7 +113,7 @@ onUnmounted(() => {
             <div class="card-dots">
               <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
             </div>
-            <span class="card-title">Dashboard LeadFlow</span>
+            <span class="card-title">Dashboard LeadDistro</span>
           </div>
           <div class="card-body">
             <div class="mini-kpis">
@@ -182,7 +181,7 @@ onUnmounted(() => {
       <div class="container">
         <div class="section-header">
           <div class="section-tag">Flujo de trabajo</div>
-          <h2 class="section-title">Cómo funciona LeadFlow</h2>
+          <h2 class="section-title">Cómo funciona LeadDistro</h2>
           <p class="section-sub">Desde que entra un lead en tu CRM hasta que está en manos de tu vendedor — todo automático.</p>
         </div>
         <div class="steps-flow">
@@ -237,7 +236,7 @@ onUnmounted(() => {
           <div class="int-text">
             <div class="section-tag">Integración</div>
             <h2 class="section-title text-left">Integración directa con tu CRM</h2>
-            <p class="section-sub text-left" style="margin: 0 0 32px">LeadFlow se conecta con tu CRM a través de webhooks automáticos. Compatible con GHL, HubSpot, Make, Zapier y más. La configuración toma menos de 5 minutos.</p>
+            <p class="section-sub text-left" style="margin: 0 0 32px">LeadDistro se conecta con tu CRM a través de webhooks automáticos. Compatible con GHL, HubSpot, Make, Zapier y más. La configuración toma menos de 5 minutos.</p>
             <div class="int-steps">
               <div v-for="(s, i) in intSteps" :key="i" class="int-step">
                 <div class="int-num">{{ i + 1 }}</div>
@@ -252,7 +251,7 @@ onUnmounted(() => {
             <div class="wh-card">
               <div class="wh-header">
                 <span class="wh-dot green"></span>
-                <span>CRM → LeadFlow</span>
+                <span>CRM → LeadDistro</span>
                 <span class="wh-badge post">POST</span>
               </div>
               <pre class="wh-json"><span class="j-key">{"contact_id"</span><span class="j-c">:</span> <span class="j-s">"ABC123"</span><span class="j-key">,
@@ -262,12 +261,12 @@ onUnmounted(() => {
             </div>
             <div class="wh-arrow">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-              <span>LeadFlow asigna el vendedor</span>
+              <span>LeadDistro asigna el vendedor</span>
             </div>
             <div class="wh-card">
               <div class="wh-header">
                 <span class="wh-dot blue"></span>
-                <span>LeadFlow → CRM</span>
+                <span>LeadDistro → CRM</span>
                 <span class="wh-badge webhook">WEBHOOK</span>
               </div>
               <pre class="wh-json"><span class="j-key">{"contact_id"</span><span class="j-c">:</span> <span class="j-s">"ABC123"</span><span class="j-key">,
@@ -309,7 +308,7 @@ onUnmounted(() => {
               <li>✓ Exportación de leads a CSV</li>
               <li>✓ Soporte incluido</li>
             </ul>
-            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary btn-full">
+            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary btn-full">
               Empezar ahora
             </a>
           </div>
@@ -331,7 +330,7 @@ onUnmounted(() => {
               <li>✓ Configuración de webhooks</li>
               <li>✓ Capacitación del equipo</li>
             </ul>
-            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadFlow%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
+            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
               Consultar setup
             </a>
           </div>
@@ -353,7 +352,7 @@ onUnmounted(() => {
           <h2 class="cta-title">¿Listo para empezar?</h2>
           <p class="cta-sub">Escribinos por WhatsApp y te damos acceso al instante. Sin formularios, sin demoras. Desde $25 USD/mes.</p>
           <div class="cta-actions">
-            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-whatsapp btn-lg">
+            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-whatsapp btn-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               Escribir por WhatsApp
             </a>
@@ -374,8 +373,7 @@ onUnmounted(() => {
         <div class="footer-inner">
           <div class="footer-brand">
             <a href="#" class="logo">
-              <img src="/favicon.svg" alt="LeadFlow Logo" class="w-8 h-8" />
-              LeadFlow
+              <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 dark:brightness-0 dark:invert" />
             </a>
             <p>Distribución inteligente de leads para equipos de ventas modernos.</p>
           </div>
@@ -393,14 +391,14 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div class="footer-bottom">© 2026 LeadFlow. Todos los derechos reservados.</div>
+        <div class="footer-bottom">© 2026 LeadDistro. Todos los derechos reservados.</div>
       </div>
     </footer>
   </div>
 
   <!-- WhatsApp floating button -->
   <a
-    href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas"
+    href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas"
     target="_blank"
     class="wa-float"
     title="Contactar por WhatsApp"
@@ -469,7 +467,7 @@ export default {
         },
         {
           title: 'Lead registrado',
-          desc: 'El lead queda en LeadFlow con vendedor, equipo, etapa y fecha. Disponible en el dashboard con todos los filtros.',
+          desc: 'El lead queda en LeadDistro con vendedor, equipo, etapa y fecha. Disponible en el dashboard con todos los filtros.',
           icon: '<polyline points="20 6 9 17 4 12"/>'
         }
       ],
@@ -506,9 +504,9 @@ export default {
         }
       ],
       intSteps: [
-        { title: 'Copiás la URL del webhook', desc: 'Desde configuración de LeadFlow, copiás la URL única de tu tenant.' },
+        { title: 'Copiás la URL del webhook', desc: 'Desde configuración de LeadDistro, copiás la URL única de tu tenant.' },
         { title: 'Pegala en tu workflow del CRM', desc: 'En el workflow de "nuevo contacto" de tu CRM, agregás la acción webhook apuntando a esa URL.' },
-        { title: 'Configurás el webhook de respuesta', desc: 'LeadFlow te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM.' }
+        { title: 'Configurás el webhook de respuesta', desc: 'LeadDistro te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM.' }
       ]
     }
   }

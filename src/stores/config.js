@@ -72,6 +72,10 @@ export const useConfigStore = defineStore('config', () => {
     return updateConfig({ fallback_seller_ids: ids })
   }
 
+  async function updateSummaryConfig(data) {
+    return updateConfig(data)
+  }
+
   return {
     config,
     loading,
@@ -84,6 +88,7 @@ export const useConfigStore = defineStore('config', () => {
     updateStages,
     updateGhlWebhook,
     updateGhlConfig,
-    updateFallback
+    updateFallback,
+    updateSummaryConfig
   }
 })

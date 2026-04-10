@@ -34,8 +34,7 @@ const handleToggleDarkMode = () => {
       </button>
 
       <a href="/" class="flex items-center gap-2 transition-opacity hover:opacity-90">
-        <img src="/favicon.svg" alt="LeadFlow Logo" class="w-8 h-8 shadow shadow-blue-500/30 rounded-lg" />
-        <h1 class="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">LeadFlow</h1>
+        <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 dark:brightness-0 dark:invert" />
       </a>
       <span v-if="authStore.user?.tenant"
         class="hidden sm:inline-flex px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium">

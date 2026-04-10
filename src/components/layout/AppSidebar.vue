@@ -24,8 +24,9 @@ const filteredMenuItems = computed(() => {
     { name: 'Dashboard', path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
     { name: 'Leads', path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
     { name: 'Vendedores', path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
-    { name: 'Usuarios', path: '/users', icon: 'user-group', roles: ['manager'] },
-    { name: 'Configuracion', path: '/config', icon: 'cog', roles: ['manager'] }
+    { name: 'Usuarios', path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
+    { name: 'Resúmenes IA', path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
+    { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] }
   ]
 
   return menuItems.filter(item => item.roles.includes(authStore.user?.role))
@@ -53,7 +54,7 @@ const filteredMenuItems = computed(() => {
       <ul class="space-y-2">
         <li v-for="item in filteredMenuItems" :key="item.path">
           <router-link
-            :id="'tour-' + item.name.toLowerCase() + '-link'"
+            :id="'tour-' + (item.tourId || item.name.toLowerCase()) + '-link'"
             :to="item.path"
             class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors"
             :class="[
@@ -77,6 +78,9 @@ const filteredMenuItems = computed(() => {
             <svg v-else-if="item.icon === 'cog'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <svg v-else-if="item.icon === 'sparkles'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
             </svg>
             <svg v-else-if="item.icon === 'building'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />

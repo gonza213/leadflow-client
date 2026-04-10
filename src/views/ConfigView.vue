@@ -7,6 +7,7 @@ import PeriodConfig from '../components/config/PeriodConfig.vue'
 import StagesConfig from '../components/config/StagesConfig.vue'
 import GhlConfig from '../components/config/GhlConfig.vue'
 import FallbackConfig from '../components/config/FallbackConfig.vue'
+import SummaryConfig from '../components/config/SummaryConfig.vue'
 
 const configStore = useConfigStore()
 const authStore = useAuthStore()
@@ -18,7 +19,8 @@ const tabs = [
   { id: 'period', name: 'Período', icon: 'calendar' },
   { id: 'stages', name: 'Etapas', icon: 'layers' },
   { id: 'ghl', name: 'Integracion', icon: 'link' },
-  { id: 'fallback', name: 'Respaldo', icon: 'shield' }
+  { id: 'fallback', name: 'Respaldo', icon: 'shield' },
+  { id: 'summary', name: 'Resumen IA', icon: 'sparkles' }
 ]
 
 // Use VITE_API_URL for production, fallback to localhost for development
@@ -212,6 +214,15 @@ onMounted(async () => {
         v-else-if="activeTab === 'fallback'"
         :fallback-seller-ids="configStore.config.fallback_seller_ids || []"
         :on-save="configStore.updateFallback"
+      />
+      <SummaryConfig
+        v-else-if="activeTab === 'summary'"
+        :summary-enabled="configStore.config.summary_enabled ?? false"
+        :summary-frequency="configStore.config.summary_frequency || 'daily'"
+        :summary-time="configStore.config.summary_time || '08:00'"
+        :summary-day="configStore.config.summary_day ?? 1"
+        :summary-webhook-url="configStore.config.summary_webhook_url || ''"
+        :on-save="configStore.updateSummaryConfig"
       />
     </div>
   </div>

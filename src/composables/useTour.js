@@ -10,7 +10,8 @@ const icons = {
   users:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`,
   group:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
   cog:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`,
-  moon:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`,
+  moon:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`,
+  sparkles: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>`,
   help:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="2.5"/></svg>`,
 }
 
@@ -28,12 +29,12 @@ export function useTour() {
       doneBtnText: '¡Entendido!',
       animate: true,
       overlayOpacity: 0.7,
-      popoverClass: 'leadflow-tour',
+      popoverClass: 'leaddistro-tour',
       steps: [
         {
           element: '#tour-header',
           popover: {
-            title: `${ic(icons.wave, '#3b82f6', 'rgba(59,130,246,0.12)')} Bienvenido a LeadFlow`,
+            title: `${ic(icons.wave, '#3b82f6', 'rgba(59,130,246,0.12)')} Bienvenido a LeadDistro`,
             description: 'Este tour te va a guiar por las funciones principales del sistema. Podés saltearlo cuando quieras.',
             side: 'bottom', align: 'start'
           }
@@ -79,10 +80,18 @@ export function useTour() {
           }
         },
         {
+          element: '#tour-resumenes-link',
+          popover: {
+            title: `${ic(icons.sparkles, '#6366f1', 'rgba(99,102,241,0.12)')} Resúmenes IA`,
+            description: 'Historial de resúmenes generados automáticamente con OpenAI. Cada resumen incluye métricas del período y se puede descargar como PDF.',
+            side: 'right', align: 'start'
+          }
+        },
+        {
           element: '#tour-configuracion-link',
           popover: {
             title: `${ic(icons.cog, '#64748b', 'rgba(100,116,139,0.12)')} Configuración`,
-            description: 'Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM y zona horaria.',
+            description: 'Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM, zona horaria y el resumen automático con IA.',
             side: 'right', align: 'start'
           }
         },

@@ -52,8 +52,7 @@ const handleSubmit = async () => {
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
         <router-link to="/" class="inline-flex items-center justify-center gap-3 transition-transform hover:scale-105">
-          <img src="/favicon.svg" alt="LeadFlow Logo" class="w-10 h-10 shadow-lg shadow-blue-500/30 rounded-xl" />
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">LeadFlow</h1>
+          <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-20 dark:brightness-0 dark:invert" />
         </router-link>
         <p class="mt-3 text-gray-600 dark:text-gray-400">Distribucion inteligente de leads</p>
       </div>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // In development, VITE_API_URL is empty and Vite proxy handles /api
-// In production, VITE_API_URL should be the full backend URL (e.g., https://api.leadflow.com)
+// In production, VITE_API_URL should be the full backend URL (e.g., https://api.leaddistro.app)
 const apiUrl = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
@@ -79,6 +79,12 @@ export const usersApi = {
   create: (tenantSlug, data) => api.post(`/${tenantSlug}/users`, data),
   update: (tenantSlug, id, data) => api.put(`/${tenantSlug}/users/${id}`, data),
   delete: (tenantSlug, id) => api.delete(`/${tenantSlug}/users/${id}`)
+}
+
+export const summaryApi = {
+  getAll: (tenantSlug, params) => api.get(`/${tenantSlug}/summary`, { params }),
+  getOne: (tenantSlug, id) => api.get(`/${tenantSlug}/summary/${id}`),
+  trigger: (tenantSlug) => api.post(`/${tenantSlug}/summary/trigger`)
 }
 
 export default api
