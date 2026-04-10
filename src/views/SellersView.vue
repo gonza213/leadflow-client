@@ -250,9 +250,9 @@ const handleEditSeller = async () => {
             </div>
           </div>
           <div>
-            <label class="label">GHL User ID <span class="text-red-500">*</span></label>
-            <input v-model="newSeller.ghl_user_id" type="text" class="input" placeholder="ID del usuario en GoHighLevel" required />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Requerido para asignar el lead al vendedor en GHL</p>
+            <label class="label">CRM User ID</label>
+            <input v-model="newSeller.ghl_user_id" type="text" class="input" placeholder="ID del usuario en el CRM (GHL, HubSpot, etc.)" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Se usa para notificar al CRM la asignación del lead. Opcional si no usás integración.</p>
           </div>
         </div>
 
@@ -263,7 +263,7 @@ const handleEditSeller = async () => {
           <button
             @click="handleAddSeller"
             class="btn btn-primary"
-            :disabled="!newSeller.seller_name || !newSeller.team || !newSeller.ghl_user_id"
+            :disabled="!newSeller.seller_name || !newSeller.team"
           >
             Guardar
           </button>
@@ -305,9 +305,9 @@ const handleEditSeller = async () => {
             </div>
           </div>
           <div>
-            <label class="label">GHL User ID <span class="text-red-500">*</span></label>
-            <input v-model="editForm.ghl_user_id" type="text" class="input" placeholder="ID del usuario en GoHighLevel" required />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Requerido para asignar el lead al vendedor en GHL</p>
+            <label class="label">CRM User ID</label>
+            <input v-model="editForm.ghl_user_id" type="text" class="input" placeholder="ID del usuario en el CRM (GHL, HubSpot, etc.)" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Se usa para notificar al CRM la asignación del lead. Opcional si no usás integración.</p>
           </div>
         </div>
 
@@ -318,7 +318,7 @@ const handleEditSeller = async () => {
           <button
             @click="handleEditSeller"
             class="btn btn-primary"
-            :disabled="!editForm.seller_name || !editForm.team || !editForm.ghl_user_id"
+            :disabled="!editForm.seller_name || !editForm.team"
           >
             Guardar Cambios
           </button>

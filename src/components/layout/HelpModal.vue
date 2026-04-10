@@ -42,7 +42,7 @@ const sections = [
     items: [
       '**Equipos**: Definí los equipos de ventas y el porcentaje de leads que recibe cada uno (deben sumar 100%).',
       '**Etapas**: Configurá las etapas del pipeline (Nuevo, Contactado, Calificado, Cerrado).',
-      '**Webhook GHL**: Copiá la URL única de tu tenant y pegala en tu workflow de GoHighLevel.',
+      '**Webhook CRM**: Copiá la URL única de tu tenant y pegala en tu workflow del CRM (GHL, HubSpot, Make, etc.).',
       '**Zona horaria**: Configurá la zona horaria de tu organización para que los límites y reportes sean correctos.'
     ]
   },
@@ -50,12 +50,12 @@ const sections = [
     icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`,
     iconColor: '#06b6d4',
     iconBg: 'rgba(6,182,212,0.12)',
-    title: 'Integración con GoHighLevel',
+    title: 'Integración con CRM',
     steps: [
-      'Copiá la URL del webhook desde Configuración → Webhook GHL.',
-      'En GHL, creá un workflow para "Nuevo contacto" y agregá la acción Webhook apuntando a esa URL.',
+      'Copiá la URL del webhook desde Configuración → Integración.',
+      'En tu CRM, creá un workflow para "Nuevo contacto" y agregá la acción Webhook apuntando a esa URL.',
       'LeadFlow responderá con el nombre y ID del vendedor asignado.',
-      'Usá esos datos en tu workflow de GHL para notificar al vendedor (email, SMS, push).'
+      'Usá esos datos en tu workflow para notificar al vendedor (email, SMS, push).'
     ]
   },
   {

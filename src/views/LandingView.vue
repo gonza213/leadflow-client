@@ -5,13 +5,38 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const scrolled = ref(false)
 const menuOpen = ref(false)
+const arsRate = ref(null)
+const currency = ref('USD')
 
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 }
 
-onMounted(() => window.addEventListener('scroll', handleScroll))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+const currencyLabel = () => currency.value === 'ARS' ? 'ARS' : 'USD'
+
+const formatAmount = (usd) => {
+  if (currency.value === 'ARS') {
+    if (!arsRate.value) return '...'
+    const ars = Math.round((usd * arsRate.value) / 1000) * 1000
+    return new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 }).format(ars)
+  }
+  return usd.toString()
+}
+
+const pricePeriodLabel = (period) => period === 'monthly' ? '/ mes' : 'única vez'
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  document.documentElement.style.scrollBehavior = 'smooth'
+  fetch('https://dolarapi.com/v1/dolares/oficial')
+    .then(r => r.json())
+    .then(data => { arsRate.value = data.venta })
+    .catch(() => {})
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  document.documentElement.style.scrollBehavior = ''
+})
 </script>
 
 <template>
@@ -29,7 +54,12 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           <li><a href="#how">Cómo funciona</a></li>
           <li><a href="#roles">Roles</a></li>
           <li><a href="#integration">Integración</a></li>
+          <li><a href="#pricing">Precios</a></li>
         </ul>
+        <div class="currency-toggle">
+          <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]" title="Precios en USD">🇺🇸</button>
+          <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
+        </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
         <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
           <span></span><span></span><span></span>
@@ -40,6 +70,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <a href="#how">Cómo funciona</a>
         <a href="#roles">Roles</a>
         <a href="#integration">Integración</a>
+        <a href="#pricing">Precios</a>
         <button @click="router.push('/login')" class="btn-nav mobile-cta">Iniciar sesión</button>
       </div>
     </nav>
@@ -51,7 +82,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
       <div class="hero-content">
         <div class="badge-pill">
           <span class="badge-dot"></span>
-          Integración nativa con GoHighLevel
+          Para agencias en LATAM y Estados Unidos
         </div>
         <h1 class="hero-title">
           Distribución de leads<br/>
@@ -61,18 +92,18 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           LeadFlow asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.
         </p>
         <div class="hero-actions">
-          <button @click="router.push('/login')" class="btn-primary">
-            Acceder al sistema
+          <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary">
+            Solicitar acceso
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-          <a href="#how" class="btn-ghost">Ver cómo funciona</a>
+          </a>
+          <button @click="router.push('/login')" class="btn-ghost">Ya tengo cuenta →</button>
         </div>
         <div class="hero-stats">
           <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Leads asignados</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">Multi-equipo</span><span class="stat-label">Con % configurables</span></div>
+          <div class="stat"><span class="stat-num">{{ currencyLabel() }} {{ formatAmount(25) }}</span><span class="stat-label">Por mes, sin contratos</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">Real-time</span><span class="stat-label">Dashboard de métricas</span></div>
+          <div class="stat"><span class="stat-num">Multi-CRM</span><span class="stat-label">GHL, HubSpot, Zapier...</span></div>
         </div>
       </div>
 
@@ -152,7 +183,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <div class="section-header">
           <div class="section-tag">Flujo de trabajo</div>
           <h2 class="section-title">Cómo funciona LeadFlow</h2>
-          <p class="section-sub">Desde que entra un lead en GoHighLevel hasta que está en manos de tu vendedor — todo automático.</p>
+          <p class="section-sub">Desde que entra un lead en tu CRM hasta que está en manos de tu vendedor — todo automático.</p>
         </div>
         <div class="steps-flow">
           <template v-for="(step, i) in steps" :key="step.title">
@@ -205,8 +236,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
         <div class="integration-layout">
           <div class="int-text">
             <div class="section-tag">Integración</div>
-            <h2 class="section-title text-left">Integración directa con GoHighLevel</h2>
-            <p class="section-sub text-left" style="margin: 0 0 32px">LeadFlow se conecta con tu cuenta de GHL a través de webhooks automáticos. La configuración toma menos de 5 minutos.</p>
+            <h2 class="section-title text-left">Integración directa con tu CRM</h2>
+            <p class="section-sub text-left" style="margin: 0 0 32px">LeadFlow se conecta con tu CRM a través de webhooks automáticos. Compatible con GHL, HubSpot, Make, Zapier y más. La configuración toma menos de 5 minutos.</p>
             <div class="int-steps">
               <div v-for="(s, i) in intSteps" :key="i" class="int-step">
                 <div class="int-num">{{ i + 1 }}</div>
@@ -221,7 +252,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             <div class="wh-card">
               <div class="wh-header">
                 <span class="wh-dot green"></span>
-                <span>GHL → LeadFlow</span>
+                <span>CRM → LeadFlow</span>
                 <span class="wh-badge post">POST</span>
               </div>
               <pre class="wh-json"><span class="j-key">{"contact_id"</span><span class="j-c">:</span> <span class="j-s">"ABC123"</span><span class="j-key">,
@@ -236,16 +267,77 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             <div class="wh-card">
               <div class="wh-header">
                 <span class="wh-dot blue"></span>
-                <span>LeadFlow → GHL</span>
+                <span>LeadFlow → CRM</span>
                 <span class="wh-badge webhook">WEBHOOK</span>
               </div>
               <pre class="wh-json"><span class="j-key">{"contact_id"</span><span class="j-c">:</span> <span class="j-s">"ABC123"</span><span class="j-key">,
 "seller_name"</span><span class="j-c">:</span> <span class="j-s">"Karla Perez"</span><span class="j-key">,
-"seller_user_id"</span><span class="j-c">:</span> <span class="j-s">"ghl_xyz"</span><span class="j-key">,
+"seller_user_id"</span><span class="j-c">:</span> <span class="j-s">"crm_xyz"</span><span class="j-key">,
 "team"</span><span class="j-c">:</span> <span class="j-s">"CH"</span>}</pre>
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Precios</div>
+          <h2 class="section-title">Simple y transparente</h2>
+          <p class="section-sub">Un solo plan, sin contratos anuales. Pagás mes a mes y cancelás cuando quieras.</p>
+        </div>
+        <div class="pricing-grid">
+
+          <!-- Plan mensual -->
+          <div class="pricing-card pricing-main">
+            <div class="pricing-popular">Más popular</div>
+            <h3 class="pricing-name">Plan Mensual</h3>
+            <div class="pricing-price">
+              <span class="price-currency">{{ currencyLabel() }}</span>
+              <span class="price-amount">{{ formatAmount(25) }}</span>
+              <span class="price-period">{{ pricePeriodLabel('monthly') }}</span>
+            </div>
+            <p class="pricing-desc">Todo lo que necesita tu agencia para no perder ni un lead.</p>
+            <ul class="pricing-features">
+              <li>✓ Vendedores ilimitados</li>
+              <li>✓ Leads ilimitados</li>
+              <li>✓ Multi-equipo con % configurables</li>
+              <li>✓ Dashboard en tiempo real</li>
+              <li>✓ Integración con cualquier CRM</li>
+              <li>✓ Exportación de leads a CSV</li>
+              <li>✓ Soporte incluido</li>
+            </ul>
+            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-primary btn-full">
+              Empezar ahora
+            </a>
+          </div>
+
+          <!-- Setup opcional -->
+          <div class="pricing-card pricing-addon">
+            <div class="pricing-optional">Opcional</div>
+            <h3 class="pricing-name">Setup & Configuración</h3>
+            <div class="pricing-price">
+              <span class="price-currency">{{ currencyLabel() }}</span>
+              <span class="price-amount">{{ formatAmount(100) }}</span>
+              <span class="price-period">{{ pricePeriodLabel('once') }}</span>
+            </div>
+            <p class="pricing-desc">Nosotros configuramos todo por vos. Listo en menos de 24 horas.</p>
+            <ul class="pricing-features">
+              <li>✓ Configuración completa del sistema</li>
+              <li>✓ Integración con tu CRM</li>
+              <li>✓ Alta de equipos y vendedores</li>
+              <li>✓ Configuración de webhooks</li>
+              <li>✓ Capacitación del equipo</li>
+            </ul>
+            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadFlow%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
+              Consultar setup
+            </a>
+          </div>
+
+        </div>
+        <p class="pricing-note">¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante.</p>
       </div>
     </section>
 
@@ -258,8 +350,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
             <span class="badge-dot"></span>
             Multi-tenant · Multi-equipo · Tiempo real
           </div>
-          <h2 class="cta-title">¿Querés empezar?</h2>
-          <p class="cta-sub">Escribinos por WhatsApp y te configuramos el sistema en menos de 5 minutos. Sin formularios, sin demoras.</p>
+          <h2 class="cta-title">¿Listo para empezar?</h2>
+          <p class="cta-sub">Escribinos por WhatsApp y te damos acceso al instante. Sin formularios, sin demoras. Desde $25 USD/mes.</p>
           <div class="cta-actions">
             <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadFlow%20para%20mi%20equipo%20de%20ventas" target="_blank" class="btn-whatsapp btn-lg">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -269,7 +361,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
           </div>
           <div class="cta-feats">
             <span>✓ Setup en 5 minutos</span>
-            <span>✓ Integración GHL</span>
+            <span>✓ Integración CRM</span>
             <span>✓ Sin leads perdidos</span>
           </div>
         </div>
@@ -292,7 +384,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
               <span class="fcol-title">Producto</span>
               <a href="#features">Funciones</a>
               <a href="#how">Cómo funciona</a>
-              <a href="#integration">Integración GHL</a>
+              <a href="#integration">Integración CRM</a>
+              <a href="#pricing">Precios</a>
             </div>
             <div class="footer-col">
               <span class="fcol-title">Acceso</span>
@@ -327,7 +420,7 @@ export default {
         { name: 'Adrian Anez', initials: 'AA', color: '#eab308', pct: 67, count: 40, limit: 60 }
       ],
       algoSteps: [
-        { n: '1', text: 'Lead entra por webhook desde GHL', success: false },
+        { n: '1', text: 'Lead entra por webhook desde el CRM', success: false },
         { n: '2', text: 'Se determina el equipo target por porcentaje', success: false },
         { n: '3', text: 'Se selecciona el vendedor con menor ratio', success: false },
         { n: '✓', text: 'Lead asignado y notificado automáticamente', success: true }
@@ -360,8 +453,8 @@ export default {
       ],
       steps: [
         {
-          title: 'Webhook desde GHL',
-          desc: 'GHL envía automáticamente el lead a la URL única de tu tenant. Solo pegás la URL en tu workflow.',
+          title: 'Webhook desde el CRM',
+          desc: 'Tu CRM envía automáticamente el lead a la URL única de tu tenant. Solo pegás la URL en tu workflow.',
           icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'
         },
         {
@@ -371,7 +464,7 @@ export default {
         },
         {
           title: 'Notificación al vendedor',
-          desc: 'GHL recibe el webhook de respuesta con los datos del vendedor asignado y ejecuta tu workflow de notificación.',
+          desc: 'Tu CRM recibe el webhook de respuesta con los datos del vendedor asignado y ejecuta tu workflow de notificación.',
           icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 15.1"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>'
         },
         {
@@ -387,9 +480,9 @@ export default {
           badgeClass: 'badge-blue',
           iconClass: 'ricon-blue',
           title: 'Manager del equipo',
-          desc: 'Acceso completo a su tenant. Configura equipos, vendedores, períodos, etapas e integración con GHL.',
+          desc: 'Acceso completo a su tenant. Configura equipos, vendedores, períodos, etapas e integración con el CRM.',
           icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-          perms: ['✓ Dashboard completo con filtros', '✓ Crear/editar/eliminar vendedores', '✓ Configurar equipos y % distribución', '✓ Configurar integración GHL', '✓ Exportar leads a CSV', '✓ Gestionar usuarios del tenant']
+          perms: ['✓ Dashboard completo con filtros', '✓ Crear/editar/eliminar vendedores', '✓ Configurar equipos y % distribución', '✓ Configurar integración CRM', '✓ Exportar leads a CSV', '✓ Gestionar usuarios del tenant']
         },
         {
           name: 'Viewer',
@@ -414,8 +507,8 @@ export default {
       ],
       intSteps: [
         { title: 'Copiás la URL del webhook', desc: 'Desde configuración de LeadFlow, copiás la URL única de tu tenant.' },
-        { title: 'Pegala en tu workflow de GHL', desc: 'En el workflow de "nuevo contacto" de GHL, agregás la acción webhook apuntando a esa URL.' },
-        { title: 'Configurás el webhook de respuesta', desc: 'LeadFlow te envía el nombre del vendedor asignado para que puedas notificarlo desde GHL.' }
+        { title: 'Pegala en tu workflow del CRM', desc: 'En el workflow de "nuevo contacto" de tu CRM, agregás la acción webhook apuntando a esa URL.' },
+        { title: 'Configurás el webhook de respuesta', desc: 'LeadFlow te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM.' }
       ]
     }
   }
@@ -726,6 +819,41 @@ export default {
 .j-c { color: #64748b; }
 .j-s { color: #4ade80; }
 .wh-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #3b82f6; font-size: 0.76rem; font-weight: 600; }
+
+/* ===== PRICING ===== */
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 820px; margin: 0 auto; }
+.pricing-card { background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px; padding: 36px 32px; position: relative; display: flex; flex-direction: column; gap: 16px; }
+.dark .pricing-card { background: #1e293b; border-color: #334155; }
+.pricing-main { border-color: #6366f1; box-shadow: 0 8px 32px rgba(99,102,241,0.13); }
+.dark .pricing-main { border-color: #6366f1; }
+.pricing-popular { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg,#6366f1,#8b5cf6); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 16px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.04em; }
+.pricing-optional { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #64748b; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 16px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.04em; }
+.pricing-name { font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-top: 8px; }
+.dark .pricing-name { color: #f1f5f9; }
+.pricing-price { display: flex; align-items: baseline; gap: 4px; }
+.price-currency { font-size: 1.1rem; font-weight: 700; color: #6366f1; }
+.price-amount { font-size: 2.4rem; font-weight: 800; color: #0f172a; line-height: 1; word-break: break-all; }
+.dark .price-amount { color: #f1f5f9; }
+.price-period { font-size: 0.95rem; color: #64748b; font-weight: 500; }
+.pricing-desc { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
+.pricing-features { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.pricing-features li { font-size: 0.88rem; color: #475569; display: flex; align-items: center; gap: 8px; }
+.dark .pricing-features li { color: #94a3b8; }
+.pricing-features li::before { content: none; }
+.btn-full { width: 100%; justify-content: center; text-align: center; display: flex; align-items: center; padding: 13px 20px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.2s; }
+.pricing-main .btn-full { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; box-shadow: 0 4px 14px rgba(99,102,241,0.35); }
+.pricing-main .btn-full:hover { box-shadow: 0 6px 20px rgba(99,102,241,0.45); transform: translateY(-1px); }
+.pricing-addon .btn-full { background: transparent; color: #6366f1; border: 1.5px solid #6366f1; }
+.pricing-addon .btn-full:hover { background: rgba(99,102,241,0.07); }
+.currency-toggle { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.05); border-radius: 8px; padding: 3px; }
+.dark .currency-toggle { background: rgba(255,255,255,0.07); }
+.flag-btn { background: transparent; border: none; cursor: pointer; font-size: 1.25rem; width: 34px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; opacity: 0.45; }
+.flag-btn.active { background: #fff; opacity: 1; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+.dark .flag-btn.active { background: #334155; }
+.pricing-note { text-align: center; color: #94a3b8; font-size: 0.85rem; margin-top: 28px; }
+@media (max-width: 640px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
 
 /* ===== CTA ===== */
 .cta-section { padding: 96px 0; position: relative; overflow: hidden; }

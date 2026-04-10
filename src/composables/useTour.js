@@ -82,7 +82,7 @@ export function useTour() {
           element: '#tour-configuracion-link',
           popover: {
             title: `${ic(icons.cog, '#64748b', 'rgba(100,116,139,0.12)')} Configuración`,
-            description: 'Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook de GHL y zona horaria.',
+            description: 'Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM y zona horaria.',
             side: 'right', align: 'start'
           }
         },

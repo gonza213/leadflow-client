@@ -49,17 +49,17 @@ const handleSave = async () => {
     ghl_webhook_url: localWebhookUrl.value || null,
     timezone: localTimezone.value
   })
-  success.value = 'Configuracion GHL actualizada correctamente'
+  success.value = 'Configuracion actualizada correctamente'
   setTimeout(() => success.value = '', 3000)
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Integracion GoHighLevel</h3>
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Integracion con CRM</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-      Configura la URL del webhook de GHL para que el sistema notifique automaticamente
-      cuando se asigna un vendedor a un lead.
+      Configura la URL del webhook de notificacion para que el sistema avise automaticamente
+      a tu CRM (GoHighLevel, HubSpot, etc.) cuando se asigna un vendedor a un lead.
     </p>
 
     <!-- Timezone -->
@@ -76,15 +76,16 @@ const handleSave = async () => {
     </div>
 
     <div class="mb-6">
-      <label class="label">URL Webhook GHL (respuesta)</label>
+      <label class="label">URL Webhook de notificacion (opcional)</label>
       <input
         v-model="localWebhookUrl"
         type="url"
         class="input"
-        placeholder="https://services.leadconnectorhq.com/hooks/..."
+        placeholder="https://tu-crm.com/webhook/..."
       />
       <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        Esta URL recibira un POST con los datos del vendedor asignado cada vez que entre un nuevo lead.
+        El sistema hara un POST a esta URL cada vez que asigne un vendedor a un lead.
+        Compatible con GHL, HubSpot, Make, Zapier, o cualquier servicio que acepte webhooks.
       </p>
     </div>
 
@@ -92,7 +93,7 @@ const handleSave = async () => {
       <h4 class="font-medium text-blue-900 dark:text-blue-300 mb-2">Datos enviados al webhook:</h4>
       <pre v-pre class="text-xs text-blue-800 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30 p-2 rounded overflow-x-auto">{
   "contact_id": "abc123",
-  "seller_user_id": "ghl_user_id_del_vendedor",
+  "seller_user_id": "crm_user_id_del_vendedor",
   "seller_name": "Nombre del Vendedor",
   "team": "Equipo A"
 }</pre>

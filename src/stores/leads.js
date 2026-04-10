@@ -161,30 +161,33 @@ export const useLeadsStore = defineStore('leads', () => {
   function initPeriodFilters(config) {
     if (!config) return
 
-    // Helper: format a Date to YYYY-MM-DD using LOCAL components (not UTC)
-    const toLocalDateStr = (d) => {
-      const y = d.getFullYear()
-      const m = String(d.getMonth() + 1).padStart(2, '0')
-      const day = String(d.getDate()).padStart(2, '0')
-      return `${y}-${m}-${day}`
-    }
-
     let start, end
+    const timezone = config.timezone || 'America/Chicago'
 
     if (config.week_start_day !== null && config.week_start_day !== undefined) {
-      // Modo automático: calcular semana actual usando día local (no UTC)
+      // Modo automático: calcular semana actual en la timezone del tenant (no del browser)
       const now = new Date()
-      const todayDow = now.getDay()  // 0=Dom, 1=Lun, ... 6=Sab — en hora local
+
+      // Obtener la fecha actual en la timezone configurada del tenant
+      const todayStr = new Intl.DateTimeFormat('en-CA', {
+        timeZone: timezone,
+        year: 'numeric', month: '2-digit', day: '2-digit'
+      }).format(now) // "2026-04-06"
+
+      // Día de semana en timezone del tenant (noon UTC = mismo día en cualquier timezone US)
+      const todayDow = new Date(todayStr + 'T12:00:00Z').getDay()
       const daysDiff = (todayDow - config.week_start_day + 7) % 7
-      const startDate = new Date(now)
-      startDate.setDate(now.getDate() - daysDiff)
-      const endDate = new Date(startDate)
-      endDate.setDate(startDate.getDate() + 6)
-      // Usar componentes locales para evitar desfase UTC
-      start = toLocalDateStr(startDate)
-      end = toLocalDateStr(endDate)
+
+      // Calcular inicio y fin usando UTC para evitar desfase
+      const startUtc = new Date(todayStr + 'T12:00:00Z')
+      startUtc.setUTCDate(startUtc.getUTCDate() - daysDiff)
+      const endUtc = new Date(startUtc)
+      endUtc.setUTCDate(startUtc.getUTCDate() + 6)
+
+      start = startUtc.toISOString().split('T')[0]
+      end = endUtc.toISOString().split('T')[0]
     } else if (config.fecha_inicio && config.fecha_fin) {
-      // Modo manual: usar las fechas configuradas — NO se toca este bloque
+      // Modo manual: extraer la fecha en UTC tal como fue guardada
       start = new Date(config.fecha_inicio).toISOString().split('T')[0]
       end = new Date(config.fecha_fin).toISOString().split('T')[0]
     } else {
