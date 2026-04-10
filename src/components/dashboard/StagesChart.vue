@@ -11,11 +11,11 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 
-const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6', '#84cc16', '#f43f5e']
 
 const chartOptions = computed(() => ({
   chart: {
-    type: 'bar',
+    type: 'donut',
     toolbar: { show: false },
     fontFamily: 'Inter, system-ui, sans-serif',
     background: 'transparent'
@@ -23,73 +23,73 @@ const chartOptions = computed(() => ({
   theme: {
     mode: uiStore.darkMode ? 'dark' : 'light'
   },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      borderRadius: 4,
-      columnWidth: '60%',
-      distributed: true
-    }
-  },
   colors: props.stages.map((_, i) => COLORS[i % COLORS.length]),
+  labels: props.stages.map(s => s.stage),
   dataLabels: {
     enabled: true,
-    formatter: (val, opt) => {
-      const stage = props.stages[opt.dataPointIndex]
-      return stage ? `${stage.porcentaje}%` : ''
-    },
+    formatter: (val) => `${val.toFixed(1)}%`,
     style: {
       fontSize: '11px',
-      fontWeight: 500,
-      colors: ['#fff']
-    }
+      fontWeight: 600,
+    },
+    dropShadow: { enabled: false }
   },
-  legend: { show: false },
-  xaxis: {
-    categories: props.stages.map(s => s.stage),
-    labels: {
-      style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
-        fontSize: '11px'
-      },
-      rotate: -45,
-      rotateAlways: true
-    }
-  },
-  yaxis: {
-    labels: {
-      style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
-        fontSize: '12px'
+  plotOptions: {
+    pie: {
+      donut: {
+        size: '65%',
+        labels: {
+          show: true,
+          total: {
+            show: true,
+            label: 'Total leads',
+            fontSize: '13px',
+            fontWeight: 600,
+            color: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+            formatter: () => props.stages.reduce((acc, s) => acc + s.leads, 0)
+          },
+          value: {
+            fontSize: '22px',
+            fontWeight: 800,
+            color: uiStore.darkMode ? '#f1f5f9' : '#0f172a',
+          }
+        }
       }
     }
   },
-  grid: {
-    borderColor: uiStore.darkMode ? '#374151' : '#e5e7eb',
-    strokeDashArray: 4
+  legend: {
+    position: 'bottom',
+    fontSize: '12px',
+    fontWeight: 500,
+    labels: {
+      colors: uiStore.darkMode ? '#9ca3af' : '#6b7280'
+    },
+    markers: { width: 10, height: 10, radius: 3 },
+    itemMargin: { horizontal: 6, vertical: 4 }
   },
   tooltip: {
     theme: uiStore.darkMode ? 'dark' : 'light',
     y: {
-      formatter: (val, opt) => {
-        const stage = props.stages[opt.dataPointIndex]
+      formatter: (val, { seriesIndex }) => {
+        const stage = props.stages[seriesIndex]
         return `${val} leads (${stage?.porcentaje}%)`
       }
     }
+  },
+  stroke: {
+    width: 2,
+    colors: [uiStore.darkMode ? '#1f2937' : '#ffffff']
   }
 }))
 
-const chartSeries = computed(() => [{
-  name: 'Leads',
-  data: props.stages.map(s => s.leads)
-}])
+const chartSeries = computed(() => props.stages.map(s => s.leads))
 </script>
 
 <template>
   <div v-if="stages.length > 0">
     <apexchart
-      type="bar"
-      height="300"
+      type="donut"
+      height="480"
       :options="chartOptions"
       :series="chartSeries"
       :key="uiStore.darkMode"
