@@ -44,20 +44,20 @@ const sections = [
     items: [
       '**Equipos**: Definí los equipos de ventas y el porcentaje de leads que recibe cada uno (deben sumar 100%).',
       '**Etapas**: Configurá las etapas del pipeline (Nuevo, Contactado, Calificado, Cerrado).',
-      '**Webhook CRM**: Copiá la URL única de tu tenant y pegala en tu workflow del CRM (GHL, HubSpot, Make, etc.).',
+      '**Respaldo (Fallback)**: Configurá hasta 2 vendedores de respaldo para cuando todos alcancen su límite.',
       '**Zona horaria**: Configurá la zona horaria de tu organización para que los límites y reportes sean correctos.'
     ]
   },
   {
-    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`,
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
     iconColor: '#06b6d4',
     iconBg: 'rgba(6,182,212,0.12)',
-    title: 'Integración con CRM',
-    steps: [
-      'Copiá la URL del webhook desde Configuración → Integración.',
-      'En tu CRM, creá un workflow para "Nuevo contacto" y agregá la acción Webhook apuntando a esa URL.',
-      'LeadFlow responderá con el nombre y ID del vendedor asignado.',
-      'Usá esos datos en tu workflow para notificar al vendedor (email, SMS, push).'
+    title: 'Integraciones',
+    items: [
+      '**Plataformas**: Compatible con GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n y cualquier herramienta que soporte webhooks.',
+      '**Webhook de entrada**: Copiá la URL única de tu tenant desde la sección Integraciones y pegala en tu workflow del CRM.',
+      '**Webhook de salida**: LeadDistro notifica a tu CRM con el nombre e ID del vendedor asignado.',
+      '**Cambio de etapa**: Usá el segundo webhook para sincronizar los cambios de etapa desde tu CRM al sistema.'
     ]
   },
   {
@@ -100,7 +100,7 @@ const handleStartTour = () => {
           <div class="hm-title-wrap">
             <div class="hm-icon">❓</div>
             <div>
-              <h2 class="hm-title">Guía de uso — LeadFlow</h2>
+              <h2 class="hm-title">Guía de uso — LeadDistro</h2>
               <p class="hm-subtitle">Paso {{ currentStep + 1 }} de {{ sections.length }}</p>
             </div>
           </div>

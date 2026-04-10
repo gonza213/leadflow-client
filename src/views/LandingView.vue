@@ -52,7 +52,7 @@ onUnmounted(() => {
           <li><a href="#features">Funciones</a></li>
           <li><a href="#how">Cómo funciona</a></li>
           <li><a href="#roles">Roles</a></li>
-          <li><a href="#integration">Integración</a></li>
+          <li><a href="#integraciones">Integraciones</a></li>
           <li><a href="#pricing">Precios</a></li>
         </ul>
         <div class="currency-toggle">
@@ -68,7 +68,7 @@ onUnmounted(() => {
         <a href="#features">Funciones</a>
         <a href="#how">Cómo funciona</a>
         <a href="#roles">Roles</a>
-        <a href="#integration">Integración</a>
+        <a href="#integraciones">Integraciones</a>
         <a href="#pricing">Precios</a>
         <button @click="router.push('/login')" class="btn-nav mobile-cta">Iniciar sesión</button>
       </div>
@@ -229,14 +229,37 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- INTEGRATION -->
-    <section class="section section-dark" id="integration">
+    <!-- INTEGRACIONES -->
+    <section class="section section-dark" id="integraciones">
       <div class="container">
-        <div class="integration-layout">
+        <div class="section-header">
+          <div class="section-tag">Integraciones</div>
+          <h2 class="section-title">Conectá con las herramientas que ya usás</h2>
+          <p class="section-sub">LeadDistro se integra con tu CRM y herramientas de automatización a través de webhooks. Si tu plataforma soporta webhooks, funciona con LeadDistro.</p>
+        </div>
+
+        <!-- Grid de plataformas -->
+        <div class="integrations-grid">
+          <div v-for="platform in integrations" :key="platform.name" class="integration-card">
+            <div class="int-card-icon" :style="{ background: platform.bg }">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" :stroke="platform.color" stroke-width="2" v-html="platform.icon"></svg>
+            </div>
+            <div class="int-card-info">
+              <strong>{{ platform.name }}</strong>
+              <span>{{ platform.desc }}</span>
+            </div>
+            <div class="int-card-badge" :class="platform.status === 'native' ? 'badge-native' : 'badge-webhook'">
+              {{ platform.status === 'native' ? 'Nativo' : 'Webhook' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Flujo técnico -->
+        <div class="integration-layout" style="margin-top: 64px">
           <div class="int-text">
-            <div class="section-tag">Integración</div>
-            <h2 class="section-title text-left">Integración directa con tu CRM</h2>
-            <p class="section-sub text-left" style="margin: 0 0 32px">LeadDistro se conecta con tu CRM a través de webhooks automáticos. Compatible con GHL, HubSpot, Make, Zapier y más. La configuración toma menos de 5 minutos.</p>
+            <div class="section-tag">Cómo conectar</div>
+            <h2 class="section-title text-left">Configuración en menos de 5 minutos</h2>
+            <p class="section-sub text-left" style="margin: 0 0 32px">Solo necesitás copiar la URL de tu tenant y pegarla en el workflow de tu herramienta. Sin código, sin APIs complejas.</p>
             <div class="int-steps">
               <div v-for="(s, i) in intSteps" :key="i" class="int-step">
                 <div class="int-num">{{ i + 1 }}</div>
@@ -382,7 +405,7 @@ onUnmounted(() => {
               <span class="fcol-title">Producto</span>
               <a href="#features">Funciones</a>
               <a href="#how">Cómo funciona</a>
-              <a href="#integration">Integración CRM</a>
+              <a href="#integraciones">Integraciones</a>
               <a href="#pricing">Precios</a>
             </div>
             <div class="footer-col">
@@ -501,6 +524,80 @@ export default {
           desc: 'Accede solo a sus propios leads asignados. Ve sus métricas individuales de capacidad y puede gestionar el estado de sus leads.',
           icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
           perms: ['✓ Ver sus propios leads asignados', '✓ Editar etapa de sus leads', '✓ Exportar leads a CSV', '✓ Ver sus métricas individuales', '✗ No ve leads de otros vendedores', '✗ Sin acceso a configuración']
+        }
+      ],
+      integrations: [
+        {
+          name: 'GoHighLevel',
+          desc: 'CRM líder en agencias digitales',
+          status: 'native',
+          bg: 'rgba(34,197,94,0.12)',
+          color: '#22c55e',
+          icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
+        },
+        {
+          name: 'HubSpot',
+          desc: 'CRM y marketing automation',
+          status: 'webhook',
+          bg: 'rgba(249,115,22,0.12)',
+          color: '#f97316',
+          icon: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>'
+        },
+        {
+          name: 'Make (Integromat)',
+          desc: 'Automatización sin código',
+          status: 'webhook',
+          bg: 'rgba(139,92,246,0.12)',
+          color: '#8b5cf6',
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>'
+        },
+        {
+          name: 'Zapier',
+          desc: 'Conectá miles de apps',
+          status: 'webhook',
+          bg: 'rgba(251,146,60,0.12)',
+          color: '#fb923c',
+          icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'
+        },
+        {
+          name: 'ActiveCampaign',
+          desc: 'Email marketing y CRM',
+          status: 'webhook',
+          bg: 'rgba(59,130,246,0.12)',
+          color: '#3b82f6',
+          icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'
+        },
+        {
+          name: 'Salesforce',
+          desc: 'CRM enterprise',
+          status: 'webhook',
+          bg: 'rgba(14,165,233,0.12)',
+          color: '#0ea5e9',
+          icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
+        },
+        {
+          name: 'Pipedrive',
+          desc: 'CRM orientado a ventas',
+          status: 'webhook',
+          bg: 'rgba(20,184,166,0.12)',
+          color: '#14b8a6',
+          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>'
+        },
+        {
+          name: 'n8n',
+          desc: 'Automatización self-hosted',
+          status: 'webhook',
+          bg: 'rgba(234,179,8,0.12)',
+          color: '#eab308',
+          icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>'
+        },
+        {
+          name: 'Cualquier CRM',
+          desc: 'Si soporta webhooks, funciona',
+          status: 'webhook',
+          bg: 'rgba(99,102,241,0.12)',
+          color: '#6366f1',
+          icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'
         }
       ],
       intSteps: [
@@ -788,7 +885,45 @@ export default {
 .role-perms li { font-size: 0.82rem; color: #94a3b8; }
 .role-perms li.perm-no { color: #475569; }
 
-/* ===== INTEGRATION ===== */
+/* ===== INTEGRACIONES ===== */
+.integrations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.integration-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.integration-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+}
+.int-card-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.int-card-info {
+  display: flex; flex-direction: column; flex: 1; min-width: 0;
+}
+.int-card-info strong { font-size: 0.9rem; color: #f1f5f9; font-weight: 600; }
+.int-card-info span { font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+.int-card-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 3px 8px;
+  border-radius: 99px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.badge-native { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.badge-webhook { background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+
 .integration-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
 .int-steps { display: flex; flex-direction: column; gap: 18px; }
 .int-step { display: flex; gap: 14px; align-items: flex-start; }
@@ -913,6 +1048,7 @@ export default {
   .hero-actions { justify-content: center; }
   .hero-stats { justify-content: center; }
   .hero-visual { justify-content: center; }
+  .integrations-grid { grid-template-columns: 1fr 1fr; }
   .integration-layout { grid-template-columns: 1fr; }
   .section-title.text-left,.section-sub.text-left { text-align: center; }
 }
@@ -925,5 +1061,6 @@ export default {
   .steps-flow { flex-direction: column; align-items: center; gap: 24px; }
   .step-connector { display: none; }
   .dashboard-card { width: min(360px, 100%); }
+  .integrations-grid { grid-template-columns: 1fr; }
 }
 </style>

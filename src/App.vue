@@ -17,9 +17,9 @@ const showLayout = computed(() => {
   <div class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
     <template v-if="showLayout">
       <AppHeader />
-      <div class="flex">
+      <div class="flex min-w-0">
         <AppSidebar />
-        <main class="flex-1 p-4 lg:p-6 lg:ml-64 mt-16">
+        <main class="flex-1 w-0 min-w-0 p-4 lg:p-6 lg:ml-64 mt-16 overflow-x-hidden">
           <router-view />
         </main>
       </div>

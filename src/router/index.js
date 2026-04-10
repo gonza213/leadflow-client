@@ -39,6 +39,12 @@ const routes = [
     meta: { requiresAuth: true, requiresManager: true }
   },
   {
+    path: '/integrations',
+    name: 'Integrations',
+    component: () => import('../views/IntegrationsView.vue'),
+    meta: { requiresAuth: true, requiresManager: true }
+  },
+  {
     path: '/leads',
     name: 'Leads',
     component: () => import('../views/LeadsView.vue'),
