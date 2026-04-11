@@ -60,18 +60,23 @@ onUnmounted(() => {
           <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
         </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
-        <button @click="router.push('/login')" class="btn-nav-mobile">Iniciar sesión</button>
-        <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
-          <span></span><span></span><span></span>
-        </button>
+        <div class="nav-mobile-right">
+          <button @click="router.push('/login')" class="btn-nav-mobile">Iniciar sesión</button>
+          <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </div>
-      <div :class="['mobile-menu', { 'open': menuOpen }]" @click="menuOpen = false">
-        <a href="#features">Funciones</a>
-        <a href="#how">Cómo funciona</a>
-        <a href="#roles">Roles</a>
-        <a href="#integraciones">Integraciones</a>
-        <a href="#pricing">Precios</a>
-        <button @click="router.push('/login')" class="btn-nav mobile-cta">Iniciar sesión</button>
+      <div :class="['mobile-menu', { 'open': menuOpen }]">
+        <a href="#features" @click="menuOpen = false">Funciones</a>
+        <a href="#how" @click="menuOpen = false">Cómo funciona</a>
+        <a href="#roles" @click="menuOpen = false">Roles</a>
+        <a href="#integraciones" @click="menuOpen = false">Integraciones</a>
+        <a href="#pricing" @click="menuOpen = false">Precios</a>
+        <div class="mobile-currency">
+          <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]">🇺🇸 USD</button>
+          <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]">🇦🇷 ARS</button>
+        </div>
       </div>
     </nav>
 
@@ -665,11 +670,16 @@ export default {
 .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
 .btn-nav-mobile {
   display: none;
-  font-size: 0.8rem; font-weight: 600;
+  font-size: 0.82rem; font-weight: 600;
   background: linear-gradient(135deg, #3b82f6, #6366f1);
-  color: #fff; padding: 7px 14px; border-radius: 8px;
+  color: #fff; padding: 8px 16px; border-radius: 8px;
   border: none; cursor: pointer; white-space: nowrap;
-  margin-left: auto;
+}
+.nav-mobile-right {
+  display: none; align-items: center; gap: 8px; margin-left: auto;
+}
+.mobile-currency {
+  display: flex; gap: 8px; padding: 8px 12px; margin-top: 4px;
 }
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
@@ -1062,7 +1072,8 @@ export default {
   .section-title.text-left,.section-sub.text-left { text-align: center; }
 }
 @media (max-width: 768px) {
-  .nav-links,.btn-nav { display: none; }
+  .nav-links, .btn-nav, .currency-toggle { display: none; }
+  .nav-mobile-right { display: flex; }
   .btn-nav-mobile { display: block; }
   .hamburger { display: flex; }
   .features-grid { grid-template-columns: 1fr; }
