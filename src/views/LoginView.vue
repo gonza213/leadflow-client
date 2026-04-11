@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
+import api from '../services/api'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -12,6 +13,13 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const showPassword = ref(false)
+
+// Forgot password
+const showForgot = ref(false)
+const forgotEmail = ref('')
+const forgotLoading = ref(false)
+const forgotSent = ref(false)
+const forgotError = ref('')
 
 const handleSubmit = async () => {
   error.value = ''
@@ -31,6 +39,30 @@ const handleSubmit = async () => {
     }
   } else {
     error.value = result.error
+  }
+}
+
+const openForgot = () => {
+  forgotEmail.value = email.value
+  forgotError.value = ''
+  forgotSent.value = false
+  showForgot.value = true
+}
+
+const handleForgot = async () => {
+  forgotError.value = ''
+  if (!forgotEmail.value) {
+    forgotError.value = 'Ingresá tu email'
+    return
+  }
+  forgotLoading.value = true
+  try {
+    await api.post('/auth/forgot-password', { email: forgotEmail.value })
+    forgotSent.value = true
+  } catch {
+    forgotError.value = 'Ocurrió un error. Intentá de nuevo.'
+  } finally {
+    forgotLoading.value = false
   }
 }
 </script>
@@ -110,7 +142,54 @@ const handleSubmit = async () => {
           >
             {{ authStore.loading ? 'Ingresando...' : 'Ingresar' }}
           </button>
+
+          <div class="text-center">
+            <button
+              type="button"
+              @click="openForgot"
+              class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Modal recuperar contraseña -->
+    <div v-if="showForgot" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-sm p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Recuperar contraseña</h3>
+
+        <div v-if="forgotSent" class="text-center py-4">
+          <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300 text-sm">Si el email está registrado, recibirás un enlace para restablecer tu contraseña.</p>
+          <button @click="showForgot = false" class="mt-4 btn btn-primary w-full">Cerrar</button>
+        </div>
+
+        <template v-else>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Ingresá tu email y te enviaremos un enlace para restablecer tu contraseña.</p>
+          <div class="space-y-3">
+            <input
+              v-model="forgotEmail"
+              type="email"
+              class="input"
+              placeholder="tu@email.com"
+              @keyup.enter="handleForgot"
+            />
+            <div v-if="forgotError" class="text-sm text-red-600 dark:text-red-400">{{ forgotError }}</div>
+            <div class="flex gap-2">
+              <button type="button" @click="showForgot = false" class="btn btn-secondary flex-1">Cancelar</button>
+              <button type="button" @click="handleForgot" :disabled="forgotLoading" class="btn btn-primary flex-1">
+                {{ forgotLoading ? 'Enviando...' : 'Enviar enlace' }}
+              </button>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>

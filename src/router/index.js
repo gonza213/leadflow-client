@@ -14,6 +14,12 @@ export const routes = [
     meta: { guest: true }
   },
   {
+    path: '/reset-password/:token',
+    name: 'ResetPassword',
+    component: () => import('../views/ResetPasswordView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/',
     name: 'Dashboard',
     component: () => import('../views/DashboardView.vue'),
