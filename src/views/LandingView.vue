@@ -61,6 +61,10 @@ onUnmounted(() => {
         </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
         <div class="nav-mobile-right">
+          <div class="currency-toggle-mobile">
+            <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]" title="Precios en USD">🇺🇸</button>
+            <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
+          </div>
           <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
             <span></span><span></span><span></span>
           </button>
@@ -72,10 +76,6 @@ onUnmounted(() => {
         <a href="#roles" @click="menuOpen = false">Roles</a>
         <a href="#integraciones" @click="menuOpen = false">Integraciones</a>
         <a href="#pricing" @click="menuOpen = false">Precios</a>
-        <div class="mobile-currency">
-          <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]">🇺🇸 USD</button>
-          <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]">🇦🇷 ARS</button>
-        </div>
         <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">Iniciar sesión →</button>
       </div>
     </nav>
@@ -671,8 +671,8 @@ export default {
 .nav-mobile-right {
   display: none; align-items: center; gap: 8px; margin-left: auto;
 }
-.mobile-currency {
-  display: flex; gap: 8px; padding: 8px 12px; margin-top: 4px;
+.currency-toggle-mobile {
+  display: flex; gap: 4px;
 }
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
@@ -680,8 +680,10 @@ export default {
 }
 .hamburger span { display: block; width: 22px; height: 2px; background: #94a3b8; border-radius: 2px; }
 .mobile-menu {
-  display: none; flex-direction: column; padding: 12px 0 16px; gap: 4px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  display: none; flex-direction: column; padding: 12px 16px 16px; gap: 4px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: rgba(6,11,20,0.97);
+  backdrop-filter: blur(20px);
 }
 .mobile-menu.open { display: flex; }
 .mobile-menu a, .mobile-menu button {
