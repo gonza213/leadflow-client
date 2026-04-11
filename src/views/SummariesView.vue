@@ -11,6 +11,26 @@ const error = ref('')
 const selectedSummary = ref(null)
 const pagination = ref({ page: 1, pages: 1, total: 0 })
 const currentPage = ref(1)
+const triggering = ref(false)
+const triggerError = ref('')
+const triggerSuccess = ref('')
+
+const handleTrigger = async () => {
+  triggering.value = true
+  triggerError.value = ''
+  triggerSuccess.value = ''
+  try {
+    await summaryApi.trigger(authStore.tenantSlug)
+    triggerSuccess.value = 'Resumen generado correctamente'
+    setTimeout(() => triggerSuccess.value = '', 4000)
+    await fetchSummaries(1)
+  } catch (e) {
+    triggerError.value = e.response?.data?.message || 'Error al generar el resumen'
+    setTimeout(() => triggerError.value = '', 4000)
+  } finally {
+    triggering.value = false
+  }
+}
 
 const fetchSummaries = async (page = 1) => {
   loading.value = true
@@ -149,9 +169,29 @@ const downloadPdf = (summary) => {
 
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gap-3">
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Resúmenes IA</h1>
-      <span class="text-sm text-gray-500 dark:text-gray-400">{{ pagination.total }} resúmenes generados</span>
+      <button
+        @click="handleTrigger"
+        :disabled="triggering"
+        class="btn btn-primary flex items-center gap-2 text-sm"
+      >
+        <svg v-if="!triggering" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+        </svg>
+        <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        {{ triggering ? 'Generando...' : 'Generar ahora' }}
+      </button>
+    </div>
+
+    <!-- Feedback trigger -->
+    <div v-if="triggerSuccess" class="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg text-sm">
+      ✓ {{ triggerSuccess }}
+    </div>
+    <div v-if="triggerError" class="p-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg text-sm">
+      {{ triggerError }}
     </div>
 
     <!-- Loading -->

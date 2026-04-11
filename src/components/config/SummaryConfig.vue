@@ -65,10 +65,6 @@ const handleSave = async () => {
 }
 
 const handleTest = async () => {
-  if (!webhookUrl.value) {
-    error.value = 'Configurá un webhook URL antes de probar'
-    return
-  }
   testing.value = true
   testResult.value = ''
   error.value = ''
