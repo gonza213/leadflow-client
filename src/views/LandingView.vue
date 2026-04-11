@@ -60,6 +60,7 @@ onUnmounted(() => {
           <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
         </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
+        <button @click="router.push('/login')" class="btn-nav-mobile">Iniciar sesión</button>
         <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
           <span></span><span></span><span></span>
         </button>
@@ -662,6 +663,14 @@ export default {
   transition: opacity 0.2s, transform 0.2s;
 }
 .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-nav-mobile {
+  display: none;
+  font-size: 0.8rem; font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff; padding: 7px 14px; border-radius: 8px;
+  border: none; cursor: pointer; white-space: nowrap;
+  margin-left: auto;
+}
 .hamburger {
   display: none; flex-direction: column; gap: 5px;
   background: none; border: none; cursor: pointer; padding: 8px; margin-left: auto;
@@ -1054,6 +1063,7 @@ export default {
 }
 @media (max-width: 768px) {
   .nav-links,.btn-nav { display: none; }
+  .btn-nav-mobile { display: block; }
   .hamburger { display: flex; }
   .features-grid { grid-template-columns: 1fr; }
   .feat-large { grid-column: span 1; }
