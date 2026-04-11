@@ -1068,6 +1068,7 @@ export default {
 }
 @media (max-width: 768px) {
   .nav-links, .btn-nav, .currency-toggle { display: none; }
+  .mobile-menu .btn-nav { display: block; }
   .nav-mobile-right { display: flex; }
   .hamburger { display: flex; }
   .features-grid { grid-template-columns: 1fr; }
