@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
 
-const routes = [
+export const routes = [
   {
     path: '/landing',
     name: 'Landing',
@@ -80,33 +79,9 @@ const routes = [
   }
 ]
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
   routes
-})
-
-router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-
-  if (to.meta.public) {
-    next()
-  } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next('/landing')
-  } else if (to.meta.guest && authStore.isAuthenticated) {
-    if (authStore.isSuperAdmin) {
-      next('/admin/tenants')
-    } else {
-      next('/')
-    }
-  } else if (to.meta.requiresSuperAdmin && !authStore.isSuperAdmin) {
-    next('/')
-  } else if (to.meta.requiresManager && !authStore.isManager) {
-    next('/')
-  } else if (to.meta.denyRoles && to.meta.denyRoles.includes(authStore.userRole)) {
-    next('/')
-  } else {
-    next()
-  }
 })
 
 export default router

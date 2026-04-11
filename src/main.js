@@ -1,14 +1,37 @@
-import { createApp } from 'vue'
+import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
 import VueApexCharts from 'vue3-apexcharts'
 import App from './App.vue'
-import router from './router'
+import { routes } from './router'
+import { useAuthStore } from './stores/auth'
 import './style.css'
 
-const app = createApp(App)
+export const createApp = ViteSSG(
+  App,
+  { routes, base: '/' },
+  ({ app, router }) => {
+    const pinia = createPinia()
+    app.use(pinia)
+    app.use(VueApexCharts)
 
-app.use(createPinia())
-app.use(router)
-app.use(VueApexCharts)
+    router.beforeEach((to, _from, next) => {
+      const authStore = useAuthStore()
 
-app.mount('#app')
+      if (to.meta.public) {
+        next()
+      } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        next('/landing')
+      } else if (to.meta.guest && authStore.isAuthenticated) {
+        next(authStore.isSuperAdmin ? '/admin/tenants' : '/')
+      } else if (to.meta.requiresSuperAdmin && !authStore.isSuperAdmin) {
+        next('/')
+      } else if (to.meta.requiresManager && !authStore.isManager) {
+        next('/')
+      } else if (to.meta.denyRoles && to.meta.denyRoles.includes(authStore.userRole)) {
+        next('/')
+      } else {
+        next()
+      }
+    })
+  }
+)

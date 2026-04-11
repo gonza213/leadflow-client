@@ -11,5 +11,13 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  ssgOptions: {
+    script: 'async',
+    formatting: 'minify',
+    includedRoutes(paths) {
+      // Solo pre-renderizar la landing page
+      return paths.filter(p => p === '/landing')
+    }
   }
 })
