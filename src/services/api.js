@@ -84,7 +84,8 @@ export const usersApi = {
 export const summaryApi = {
   getAll: (tenantSlug, params) => api.get(`/${tenantSlug}/summary`, { params }),
   getOne: (tenantSlug, id) => api.get(`/${tenantSlug}/summary/${id}`),
-  trigger: (tenantSlug) => api.post(`/${tenantSlug}/summary/trigger`)
+  trigger: (tenantSlug) => api.post(`/${tenantSlug}/summary/trigger`),
+  delete: (tenantSlug, id) => api.delete(`/${tenantSlug}/summary/${id}`)
 }
 
 export default api
