@@ -14,6 +14,11 @@ export const createApp = ViteSSG(
     app.use(pinia)
     app.use(VueApexCharts)
 
+    if (import.meta.env.SSR) {
+      router.beforeEach((_to, _from, next) => next())
+      return
+    }
+
     router.beforeEach((to, _from, next) => {
       const authStore = useAuthStore()
 

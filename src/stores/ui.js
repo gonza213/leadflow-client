@@ -5,12 +5,14 @@ export const useUiStore = defineStore('ui', () => {
   const sidebarOpen = ref(false)
 
   // Dark mode - check localStorage or system preference
-  const savedDarkMode = localStorage.getItem('darkMode')
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const isBrowser = typeof window !== 'undefined'
+  const savedDarkMode = isBrowser ? localStorage.getItem('darkMode') : null
+  const systemPrefersDark = isBrowser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false
   const darkMode = ref(savedDarkMode ? savedDarkMode === 'true' : systemPrefersDark)
 
   // Apply dark mode class to document
   function applyDarkMode() {
+    if (typeof document === 'undefined') return
     const html = document.documentElement
     if (darkMode.value) {
       html.classList.add('dark')
