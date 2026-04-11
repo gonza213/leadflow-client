@@ -71,7 +71,12 @@ export const adminApi = {
   deleteTenant: (id) => api.delete(`/admin/tenants/${id}`),
   regenerateApiKey: (id) => api.post(`/admin/tenants/${id}/regenerate-api-key`),
   getTenantUsers: (id) => api.get(`/admin/tenants/${id}/users`),
-  updateTenantUser: (id, userId, data) => api.patch(`/admin/tenants/${id}/users/${userId}`, data)
+  updateTenantUser: (id, userId, data) => api.patch(`/admin/tenants/${id}/users/${userId}`, data),
+  updateSubscription: (id, subscriptionStatus) => api.patch(`/admin/tenants/${id}/subscription`, { subscriptionStatus })
+}
+
+export const subscriptionApi = {
+  verify: () => api.post('/subscription/verify')
 }
 
 export const usersApi = {

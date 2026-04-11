@@ -14,6 +14,13 @@ export const useAuthStore = defineStore('auth', () => {
   const userRole = computed(() => user.value?.role || null)
   const isSuperAdmin = computed(() => user.value?.role === 'superadmin')
   const isManager = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
+  const subscriptionStatus = computed(() => user.value?.tenant?.subscriptionStatus || null)
+  const trialDaysLeft = computed(() => {
+    const endsAt = user.value?.tenant?.trialEndsAt
+    if (!endsAt) return null
+    const diff = new Date(endsAt) - new Date()
+    return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)))
+  })
   const isSeller = computed(() => user.value?.role === 'seller')
   const isViewer = computed(() => ['superadmin', 'manager', 'viewer'].includes(user.value?.role))
   // Permisos especificos
@@ -75,6 +82,8 @@ export const useAuthStore = defineStore('auth', () => {
     isManager,
     isSeller,
     isViewer,
+    subscriptionStatus,
+    trialDaysLeft,
     canCreate,
     canDelete,
     canEdit,

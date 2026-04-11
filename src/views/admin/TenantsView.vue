@@ -88,6 +88,7 @@ const handleDelete = async (tenantId, tenantName) => {
         :tenant="tenant"
         @toggle-active="handleToggleActive"
         @delete="handleDelete"
+        @subscription-updated="tenantsStore.fetchTenants()"
       />
     </div>
 

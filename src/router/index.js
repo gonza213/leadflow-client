@@ -12,9 +12,21 @@ export const routes = [
     meta: { guest: true }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/RegisterView.vue'),
+    meta: { guest: true }
+  },
+  {
     path: '/reset-password/:token',
     name: 'ResetPassword',
     component: () => import('../views/ResetPasswordView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/payment-success',
+    name: 'PaymentSuccess',
+    component: () => import('../views/PaymentSuccessView.vue'),
     meta: { public: true }
   },
   {
