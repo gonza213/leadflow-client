@@ -61,7 +61,6 @@ onUnmounted(() => {
         </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
         <div class="nav-mobile-right">
-          <button @click="router.push('/login')" class="btn-nav-mobile">Iniciar sesión</button>
           <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
             <span></span><span></span><span></span>
           </button>
@@ -77,6 +76,7 @@ onUnmounted(() => {
           <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]">🇺🇸 USD</button>
           <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]">🇦🇷 ARS</button>
         </div>
+        <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">Iniciar sesión →</button>
       </div>
     </nav>
 
@@ -668,13 +668,6 @@ export default {
   transition: opacity 0.2s, transform 0.2s;
 }
 .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-nav-mobile {
-  display: none;
-  font-size: 0.82rem; font-weight: 600;
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  color: #fff; padding: 8px 16px; border-radius: 8px;
-  border: none; cursor: pointer; white-space: nowrap;
-}
 .nav-mobile-right {
   display: none; align-items: center; gap: 8px; margin-left: auto;
 }
@@ -1074,7 +1067,6 @@ export default {
 @media (max-width: 768px) {
   .nav-links, .btn-nav, .currency-toggle { display: none; }
   .nav-mobile-right { display: flex; }
-  .btn-nav-mobile { display: block; }
   .hamburger { display: flex; }
   .features-grid { grid-template-columns: 1fr; }
   .feat-large { grid-column: span 1; }
