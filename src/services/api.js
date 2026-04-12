@@ -72,7 +72,10 @@ export const adminApi = {
   regenerateApiKey: (id) => api.post(`/admin/tenants/${id}/regenerate-api-key`),
   getTenantUsers: (id) => api.get(`/admin/tenants/${id}/users`),
   updateTenantUser: (id, userId, data) => api.patch(`/admin/tenants/${id}/users/${userId}`, data),
-  updateSubscription: (id, subscriptionStatus) => api.patch(`/admin/tenants/${id}/subscription`, { subscriptionStatus })
+  updateSubscription: (id, subscriptionStatus) => api.patch(`/admin/tenants/${id}/subscription`, { subscriptionStatus }),
+  getSubscriptions: (params) => api.get('/admin/subscriptions', { params }),
+  getAdminTickets: (params) => api.get('/admin/tickets', { params }),
+  updateAdminTicket: (id, data) => api.patch(`/admin/tickets/${id}`, data)
 }
 
 export const subscriptionApi = {
@@ -92,6 +95,11 @@ export const summaryApi = {
   getOne: (tenantSlug, id) => api.get(`/${tenantSlug}/summary/${id}`),
   trigger: (tenantSlug) => api.post(`/${tenantSlug}/summary/trigger`),
   delete: (tenantSlug, id) => api.delete(`/${tenantSlug}/summary/${id}`)
+}
+
+export const supportApi = {
+  getTickets: (tenantSlug) => api.get(`/${tenantSlug}/support/tickets`),
+  createTicket: (tenantSlug, data) => api.post(`/${tenantSlug}/support/tickets`, data)
 }
 
 export default api

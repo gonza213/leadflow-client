@@ -66,6 +66,12 @@ export const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/support',
+    name: 'Support',
+    component: () => import('../views/SupportView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/users',
     name: 'Users',
     component: () => import('../views/UsersView.vue'),
@@ -81,6 +87,18 @@ export const routes = [
     path: '/admin/tenants',
     name: 'AdminTenants',
     component: () => import('../views/admin/TenantsView.vue'),
+    meta: { requiresAuth: true, requiresSuperAdmin: true }
+  },
+  {
+    path: '/admin/subscriptions',
+    name: 'AdminSubscriptions',
+    component: () => import('../views/admin/AdminSubscriptionsView.vue'),
+    meta: { requiresAuth: true, requiresSuperAdmin: true }
+  },
+  {
+    path: '/admin/tickets',
+    name: 'AdminTickets',
+    component: () => import('../views/admin/AdminTicketsView.vue'),
     meta: { requiresAuth: true, requiresSuperAdmin: true }
   },
   {

@@ -16,7 +16,9 @@ watch(() => route.path, () => {
 const filteredMenuItems = computed(() => {
   if (authStore.isSuperAdmin) {
     return [
-      { name: 'Tenants', path: '/admin/tenants', icon: 'building' }
+      { name: 'Tenants', path: '/admin/tenants', icon: 'building' },
+      { name: 'Suscripciones', path: '/admin/subscriptions', icon: 'credit-card' },
+      { name: 'Tickets', path: '/admin/tickets', icon: 'support' }
     ]
   }
 
@@ -27,7 +29,8 @@ const filteredMenuItems = computed(() => {
     { name: 'Usuarios', path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
     { name: 'Integraciones', path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
     { name: 'Resúmenes IA', path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
-    { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] }
+    { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
+    { name: 'Soporte', path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
   ]
 
   return menuItems.filter(item => item.roles.includes(authStore.user?.role))
@@ -88,6 +91,12 @@ const filteredMenuItems = computed(() => {
             </svg>
             <svg v-else-if="item.icon === 'building'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <svg v-else-if="item.icon === 'credit-card'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+            <svg v-else-if="item.icon === 'support'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M5.636 18.364l3.536-3.536m0-5.656L5.636 5.636M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             {{ item.name }}
           </router-link>
