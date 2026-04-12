@@ -28,15 +28,12 @@ const copyStageWebhook = () => {
 }
 
 const integrations = [
-  { name: 'GoHighLevel', desc: 'CRM líder en agencias digitales', status: 'native', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30', textColor: 'text-green-700 dark:text-green-300' },
-  { name: 'HubSpot', desc: 'CRM y marketing automation', status: 'webhook', color: '#f97316', bg: 'bg-orange-100 dark:bg-orange-900/30', textColor: 'text-orange-700 dark:text-orange-300' },
-  { name: 'Make (Integromat)', desc: 'Automatización sin código', status: 'webhook', color: '#8b5cf6', bg: 'bg-purple-100 dark:bg-purple-900/30', textColor: 'text-purple-700 dark:text-purple-300' },
-  { name: 'Zapier', desc: 'Conectá miles de apps', status: 'webhook', color: '#f97316', bg: 'bg-orange-100 dark:bg-orange-900/30', textColor: 'text-orange-700 dark:text-orange-300' },
-  { name: 'ActiveCampaign', desc: 'Email marketing y CRM', status: 'webhook', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30', textColor: 'text-blue-700 dark:text-blue-300' },
-  { name: 'Salesforce', desc: 'CRM enterprise', status: 'webhook', color: '#0ea5e9', bg: 'bg-sky-100 dark:bg-sky-900/30', textColor: 'text-sky-700 dark:text-sky-300' },
-  { name: 'Pipedrive', desc: 'CRM orientado a ventas', status: 'webhook', color: '#14b8a6', bg: 'bg-teal-100 dark:bg-teal-900/30', textColor: 'text-teal-700 dark:text-teal-300' },
-  { name: 'n8n', desc: 'Automatización self-hosted', status: 'webhook', color: '#eab308', bg: 'bg-yellow-100 dark:bg-yellow-900/30', textColor: 'text-yellow-700 dark:text-yellow-300' },
-  { name: 'Cualquier CRM', desc: 'Si soporta webhooks, funciona', status: 'webhook', color: '#6366f1', bg: 'bg-indigo-100 dark:bg-indigo-900/30', textColor: 'text-indigo-700 dark:text-indigo-300' },
+  { name: 'GoHighLevel', desc: 'El aliado #1 para agencias GHL', status: 'optimized', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30', textColor: 'text-green-700 dark:text-green-300' },
+  { name: 'Kommo (amoCRM)', desc: 'Potenciá tus ventas por WhatsApp', status: 'webhook', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30', textColor: 'text-blue-700 dark:text-blue-300' },
+  { name: 'monday.com', desc: 'El cerebro de asignación para monday', status: 'webhook', color: '#00ca72', bg: 'bg-emerald-100 dark:bg-emerald-900/30', textColor: 'text-emerald-700 dark:text-emerald-300' },
+  { name: 'HubSpot', desc: 'Distribución inteligente para tu CRM', status: 'webhook', color: '#f97316', bg: 'bg-orange-100 dark:bg-orange-900/30', textColor: 'text-orange-700 dark:text-orange-300' },
+  { name: 'Clientify', desc: 'Impulsá tu CRM de marketing', status: 'webhook', color: '#e11d48', bg: 'bg-rose-100 dark:bg-rose-900/30', textColor: 'text-rose-700 dark:text-rose-300' },
+  { name: 'Make / Zapier', desc: 'Conectá con más de 3000 apps', status: 'webhook', color: '#8b5cf6', bg: 'bg-purple-100 dark:bg-purple-900/30', textColor: 'text-purple-700 dark:text-purple-300' },
 ]
 
 onMounted(async () => {
@@ -71,11 +68,11 @@ onMounted(async () => {
           </div>
           <span :class="[
             'text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0',
-            platform.status === 'native'
+            platform.status === 'optimized'
               ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
               : 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
           ]">
-            {{ platform.status === 'native' ? 'Nativo' : 'Webhook' }}
+            {{ platform.status === 'optimized' ? 'Optimizado' : 'Webhook' }}
           </span>
         </div>
       </div>

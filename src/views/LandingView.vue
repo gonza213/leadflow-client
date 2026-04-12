@@ -224,8 +224,8 @@ onUnmounted(() => {
       <div class="container">
         <div class="section-header">
           <div class="section-tag">Integraciones</div>
-          <h2 class="section-title">Conectá con las herramientas que ya usás</h2>
-          <p class="section-sub">LeadDistro se integra con tu CRM y herramientas de automatización a través de webhooks. Si tu plataforma soporta webhooks, funciona con LeadDistro.</p>
+          <h2 class="section-title">Integraciones con HubSpot, GoHighLevel y monday.com</h2>
+          <p class="section-sub">LeadDistro se integra perfectamente con tu CRM y herramientas de automatización. Somos la solución especializada en distribución de leads para equipos que usan HubSpot, GHL, monday y más.</p>
         </div>
 
         <!-- Grid de plataformas -->
@@ -238,8 +238,8 @@ onUnmounted(() => {
               <strong>{{ platform.name }}</strong>
               <span>{{ platform.desc }}</span>
             </div>
-            <div class="int-card-badge" :class="platform.status === 'native' ? 'badge-native' : 'badge-webhook'">
-              {{ platform.status === 'native' ? 'Nativo' : 'Webhook' }}
+            <div class="int-card-badge" :class="platform.status === 'optimized' ? 'badge-native' : 'badge-webhook'">
+              {{ platform.status === 'optimized' ? 'Optimizado' : 'Webhook' }}
             </div>
           </div>
         </div>
@@ -591,75 +591,51 @@ export default {
       integrations: [
         {
           name: 'GoHighLevel',
-          desc: 'CRM líder en agencias digitales',
-          status: 'native',
+          desc: 'El aliado #1 para agencias GHL',
+          status: 'optimized',
           bg: 'rgba(34,197,94,0.12)',
           color: '#22c55e',
           icon: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
         },
         {
-          name: 'HubSpot',
-          desc: 'CRM y marketing automation',
-          status: 'webhook',
-          bg: 'rgba(249,115,22,0.12)',
-          color: '#f97316',
-          icon: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>'
-        },
-        {
-          name: 'Make (Integromat)',
-          desc: 'Automatización sin código',
-          status: 'webhook',
-          bg: 'rgba(139,92,246,0.12)',
-          color: '#8b5cf6',
-          icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>'
-        },
-        {
-          name: 'Zapier',
-          desc: 'Conectá miles de apps',
-          status: 'webhook',
-          bg: 'rgba(251,146,60,0.12)',
-          color: '#fb923c',
-          icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'
-        },
-        {
-          name: 'ActiveCampaign',
-          desc: 'Email marketing y CRM',
+          name: 'Kommo (amoCRM)',
+          desc: 'Potenciá tus ventas por WhatsApp',
           status: 'webhook',
           bg: 'rgba(59,130,246,0.12)',
           color: '#3b82f6',
-          icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'
+          icon: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7l.9.1"/><path d="M7 11V7l5-2 5 2v4"/><path d="M7 11l5 2 5-2M12 13v8"/>'
         },
         {
-          name: 'Salesforce',
-          desc: 'CRM enterprise',
+          name: 'monday.com',
+          desc: 'El cerebro de asignación para monday',
           status: 'webhook',
-          bg: 'rgba(14,165,233,0.12)',
-          color: '#0ea5e9',
-          icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
-        },
-        {
-          name: 'Pipedrive',
-          desc: 'CRM orientado a ventas',
-          status: 'webhook',
-          bg: 'rgba(20,184,166,0.12)',
-          color: '#14b8a6',
-          icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>'
-        },
-        {
-          name: 'n8n',
-          desc: 'Automatización self-hosted',
-          status: 'webhook',
-          bg: 'rgba(234,179,8,0.12)',
-          color: '#eab308',
+          bg: 'rgba(0,202,114,0.12)',
+          color: '#00ca72',
           icon: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>'
         },
         {
-          name: 'Cualquier CRM',
-          desc: 'Si soporta webhooks, funciona',
+          name: 'HubSpot',
+          desc: 'Distribución inteligente para tu CRM',
           status: 'webhook',
-          bg: 'rgba(99,102,241,0.12)',
-          color: '#6366f1',
-          icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'
+          bg: 'rgba(249,115,22,0.12)',
+          color: '#f97316',
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>'
+        },
+        {
+          name: 'Clientify',
+          desc: 'Impulsá tu CRM de marketing',
+          status: 'webhook',
+          bg: 'rgba(225,29,72,0.12)',
+          color: '#e11d48',
+          icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
+        },
+        {
+          name: 'Make / Zapier',
+          desc: 'Conectá con más de 3000 apps',
+          status: 'webhook',
+          bg: 'rgba(139,92,246,0.12)',
+          color: '#8b5cf6',
+          icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'
         }
       ],
       intSteps: [
