@@ -37,7 +37,7 @@ const getAvailabilityColor = (available, limit) => {
           {{ seller.team }}
         </span>
         <p v-if="seller.ghl_user_id" class="text-xs text-gray-400 mt-1 font-mono truncate" :title="seller.ghl_user_id">
-          GHL: {{ seller.ghl_user_id }}
+          CRM ID: {{ seller.ghl_user_id }}
         </p>
       </div>
       <div class="flex items-center gap-2">
