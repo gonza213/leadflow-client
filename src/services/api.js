@@ -76,7 +76,8 @@ export const adminApi = {
 }
 
 export const subscriptionApi = {
-  verify: () => api.post('/subscription/verify')
+  verify: () => api.post('/subscription/verify'),
+  cancel: () => api.post('/subscription/cancel')
 }
 
 export const usersApi = {

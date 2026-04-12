@@ -14,6 +14,7 @@ const name = ref('')
 const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
+const acceptedTerms = ref(false)
 const loading = ref(false)
 const error = ref('')
 
@@ -25,6 +26,10 @@ const handleSubmit = async () => {
   }
   if (password.value.length < 6) {
     error.value = 'La contraseña debe tener al menos 6 caracteres'
+    return
+  }
+  if (!acceptedTerms.value) {
+    error.value = 'Debés aceptar los Términos de Servicio y la Política de Privacidad para continuar'
     return
   }
   loading.value = true
@@ -115,11 +120,27 @@ const handleSubmit = async () => {
             </div>
           </div>
 
+          <!-- Términos y condiciones -->
+          <div class="flex items-start gap-3">
+            <input
+              id="terms"
+              v-model="acceptedTerms"
+              type="checkbox"
+              class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
+            />
+            <label for="terms" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer leading-relaxed">
+              Acepto los
+              <router-link to="/terms" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Términos de Servicio</router-link>
+              y la
+              <router-link to="/privacy" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Política de Privacidad</router-link>
+            </label>
+          </div>
+
           <div v-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
             {{ error }}
           </div>
 
-          <button type="submit" class="btn btn-primary w-full" :disabled="loading">
+          <button type="submit" class="btn btn-primary w-full" :disabled="loading || !acceptedTerms">
             {{ loading ? 'Creando cuenta...' : 'Crear cuenta gratis' }}
           </button>
 

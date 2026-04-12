@@ -12,6 +12,7 @@ const uiStore = useUiStore()
 const email = ref('')
 const password = ref('')
 const error = ref('')
+const subscriptionLink = ref('')
 const showPassword = ref(false)
 
 // Forgot password
@@ -23,9 +24,10 @@ const forgotError = ref('')
 
 const handleSubmit = async () => {
   error.value = ''
+  subscriptionLink.value = ''
 
   if (!email.value || !password.value) {
-    error.value = 'Por favor ingresa email y contrasena'
+    error.value = 'Por favor ingresa email y contraseña'
     return
   }
 
@@ -39,6 +41,7 @@ const handleSubmit = async () => {
     }
   } else {
     error.value = result.error
+    subscriptionLink.value = result.subscriptionLink || ''
   }
 }
 
@@ -131,7 +134,20 @@ const handleForgot = async () => {
             </div>
           </div>
 
-          <div v-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
+          <div v-if="error && error === 'subscription_inactive'" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-2">
+            <p class="font-semibold text-yellow-800 dark:text-yellow-300">Tu suscripción está inactiva</p>
+            <p class="text-yellow-700 dark:text-yellow-400">Para volver a acceder, activá tu suscripción por $25 USD/mes.</p>
+            <a
+              v-if="subscriptionLink"
+              :href="subscriptionLink"
+              target="_blank"
+              class="inline-block mt-1 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold rounded-lg transition-colors"
+            >
+              Activar suscripción →
+            </a>
+            <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">Una vez que pagaste, intentá ingresar de nuevo — se activa automáticamente.</p>
+          </div>
+          <div v-else-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
             {{ error }}
           </div>
 

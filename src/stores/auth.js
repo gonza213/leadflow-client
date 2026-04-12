@@ -45,7 +45,11 @@ export const useAuthStore = defineStore('auth', () => {
       return { success: true }
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al iniciar sesión'
-      return { success: false, error: error.value }
+      return {
+        success: false,
+        error: error.value,
+        subscriptionLink: err.response?.data?.subscriptionLink || null
+      }
     } finally {
       loading.value = false
     }

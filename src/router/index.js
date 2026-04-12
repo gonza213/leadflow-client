@@ -90,6 +90,18 @@ export const routes = [
     meta: { requiresAuth: true, requiresSuperAdmin: true }
   },
   {
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import('../views/PrivacyView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('../views/TermsView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/landing'
   }

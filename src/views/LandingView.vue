@@ -5,33 +5,14 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const scrolled = ref(false)
 const menuOpen = ref(false)
-const arsRate = ref(null)
-const currency = ref('USD')
 
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 }
 
-const currencyLabel = () => currency.value === 'ARS' ? 'ARS' : 'USD'
-
-const formatAmount = (usd) => {
-  if (currency.value === 'ARS') {
-    if (!arsRate.value) return '...'
-    const ars = Math.round((usd * arsRate.value) / 1000) * 1000
-    return new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 }).format(ars)
-  }
-  return usd.toString()
-}
-
-const pricePeriodLabel = (period) => period === 'monthly' ? '/ mes' : 'única vez'
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   document.documentElement.style.scrollBehavior = 'smooth'
-  fetch('https://dolarapi.com/v1/dolares/oficial')
-    .then(r => r.json())
-    .then(data => { arsRate.value = data.venta })
-    .catch(() => {})
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
@@ -54,17 +35,10 @@ onUnmounted(() => {
           <li><a href="#roles">Roles</a></li>
           <li><a href="#integraciones">Integraciones</a></li>
           <li><a href="#pricing">Precios</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
-        <div class="currency-toggle">
-          <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]" title="Precios en USD">🇺🇸</button>
-          <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
-        </div>
         <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
         <div class="nav-mobile-right">
-          <div class="currency-toggle-mobile">
-            <button @click="currency = 'USD'" :class="['flag-btn', { active: currency === 'USD' }]" title="Precios en USD">🇺🇸</button>
-            <button @click="currency = 'ARS'" :class="['flag-btn', { active: currency === 'ARS' }]" title="Precios en ARS">🇦🇷</button>
-          </div>
           <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
             <span></span><span></span><span></span>
           </button>
@@ -76,6 +50,7 @@ onUnmounted(() => {
         <a href="#roles" @click="menuOpen = false">Roles</a>
         <a href="#integraciones" @click="menuOpen = false">Integraciones</a>
         <a href="#pricing" @click="menuOpen = false">Precios</a>
+        <a href="#faq" @click="menuOpen = false">FAQ</a>
         <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">Iniciar sesión →</button>
       </div>
     </nav>
@@ -103,12 +78,21 @@ onUnmounted(() => {
           </button>
           <button @click="router.push('/login')" class="btn-ghost">Ya tengo cuenta →</button>
         </div>
+        <div class="hero-trust">
+          <span>✓ 7 días gratis</span>
+          <span class="trust-sep">·</span>
+          <span>✓ Sin tarjeta de crédito</span>
+          <span class="trust-sep">·</span>
+          <span>✓ Setup en 5 minutos</span>
+          <span class="trust-sep">·</span>
+          <span>✓ Cancelás cuando querés</span>
+        </div>
         <div class="hero-stats">
           <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Leads asignados</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">{{ currencyLabel() }} {{ formatAmount(25) }}</span><span class="stat-label">Por mes, sin contratos</span></div>
+          <div class="stat"><span class="stat-num">USD 25</span><span class="stat-label">Por mes, sin contratos</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">Multi-CRM</span><span class="stat-label">GHL, HubSpot, Zapier...</span></div>
+          <div class="stat"><span class="stat-num">9+</span><span class="stat-label">CRMs compatibles</span></div>
         </div>
       </div>
 
@@ -323,9 +307,9 @@ onUnmounted(() => {
             <div class="pricing-popular">Más popular</div>
             <h3 class="pricing-name">Plan Mensual</h3>
             <div class="pricing-price">
-              <span class="price-currency">{{ currencyLabel() }}</span>
-              <span class="price-amount">{{ formatAmount(25) }}</span>
-              <span class="price-period">{{ pricePeriodLabel('monthly') }}</span>
+              <span class="price-currency">USD</span>
+              <span class="price-amount">25</span>
+              <span class="price-period">/ mes</span>
             </div>
             <p class="pricing-desc">Todo lo que necesita tu agencia para no perder ni un lead.</p>
             <ul class="pricing-features">
@@ -347,9 +331,9 @@ onUnmounted(() => {
             <div class="pricing-optional">Opcional</div>
             <h3 class="pricing-name">Setup & Configuración</h3>
             <div class="pricing-price">
-              <span class="price-currency">{{ currencyLabel() }}</span>
-              <span class="price-amount">{{ formatAmount(100) }}</span>
-              <span class="price-period">{{ pricePeriodLabel('once') }}</span>
+              <span class="price-currency">USD</span>
+              <span class="price-amount">100</span>
+              <span class="price-period">única vez</span>
             </div>
             <p class="pricing-desc">Nosotros configuramos todo por vos. Listo en menos de 24 horas.</p>
             <ul class="pricing-features">
@@ -366,6 +350,34 @@ onUnmounted(() => {
 
         </div>
         <p class="pricing-note">¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Preguntas frecuentes</div>
+          <h2 class="section-title">Todo lo que necesitás saber</h2>
+          <p class="section-sub">Si tenés más dudas, escribinos por WhatsApp y te respondemos al instante.</p>
+        </div>
+        <div class="faq-list">
+          <div
+            v-for="(item, i) in faqs"
+            :key="i"
+            class="faq-item"
+            :class="{ 'faq-open': openFaq === i }"
+            @click="openFaq = openFaq === i ? null : i"
+          >
+            <div class="faq-question">
+              <span>{{ item.q }}</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="faq-answer">
+              <p>{{ item.a }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -416,10 +428,20 @@ onUnmounted(() => {
             <div class="footer-col">
               <span class="fcol-title">Acceso</span>
               <button @click="router.push('/login')" class="footer-link-btn">Iniciar sesión</button>
+              <button @click="router.push('/register')" class="footer-link-btn">Crear cuenta</button>
+            </div>
+            <div class="footer-col">
+              <span class="fcol-title">Legal</span>
+              <button @click="router.push('/privacy')" class="footer-link-btn">Política de privacidad</button>
+              <button @click="router.push('/terms')" class="footer-link-btn">Términos de servicio</button>
             </div>
           </div>
         </div>
-        <div class="footer-bottom">© 2026 LeadDistro. Todos los derechos reservados.</div>
+        <div class="footer-bottom">
+          © 2026 LeadDistro. Todos los derechos reservados. ·
+          <button @click="router.push('/privacy')" class="footer-inline-link">Privacidad</button> ·
+          <button @click="router.push('/terms')" class="footer-inline-link">Términos</button>
+        </div>
       </div>
     </footer>
   </div>
@@ -440,6 +462,41 @@ onUnmounted(() => {
 export default {
   data() {
     return {
+      openFaq: null,
+      faqs: [
+        {
+          q: '¿Cómo funciona la distribución automática de leads?',
+          a: 'Cuando tu CRM envía un lead al webhook de LeadDistro, el sistema identifica el equipo destino según los porcentajes configurados, y dentro de ese equipo selecciona al vendedor con mayor capacidad disponible (menor ratio carga/límite). Todo ocurre en milisegundos y el resultado vuelve al CRM automáticamente.'
+        },
+        {
+          q: '¿Con qué CRMs se integra LeadDistro?',
+          a: 'LeadDistro se integra con cualquier plataforma que soporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n y muchos más. Si tu CRM puede enviar un HTTP POST, funciona con LeadDistro.'
+        },
+        {
+          q: '¿Qué pasa si todos los vendedores alcanzan su límite?',
+          a: 'Podés configurar hasta 2 vendedores de respaldo (fallback). Cuando todos los vendedores activos alcanzan su límite diario o semanal, los leads se redirigen automáticamente a esos vendedores de respaldo. Así nunca queda un lead sin asignar.'
+        },
+        {
+          q: '¿Puedo tener múltiples equipos con distribuciones distintas?',
+          a: 'Sí. Podés crear tantos equipos como necesitás y asignarle a cada uno un porcentaje del total de leads. Por ejemplo: Equipo A recibe 60% y Equipo B el 40%. Cada equipo tiene sus propios vendedores, límites y configuraciones.'
+        },
+        {
+          q: '¿Qué sucede cuando vence el período de prueba?',
+          a: 'Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $25 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta.'
+        },
+        {
+          q: '¿Puedo cancelar en cualquier momento?',
+          a: 'Sí, sin permanencia ni penalidades. Al cancelar tu suscripción no se renueva el siguiente mes. Tus datos permanecen disponibles hasta el final del período pagado.'
+        },
+        {
+          q: '¿Los datos de mis leads están seguros?',
+          a: 'Sí. Cada empresa tiene su propio tenant aislado — ningún dato es accesible desde otra cuenta. Las comunicaciones van cifradas por HTTPS y las contraseñas se guardan con hash bcrypt. No compartimos ni vendemos datos de ningún tipo.'
+        },
+        {
+          q: '¿Qué incluye el servicio de setup?',
+          a: 'El servicio de setup ($100 USD, pago único) incluye: configuración completa del sistema, integración con tu CRM, alta de equipos y vendedores, configuración de webhooks y una sesión de capacitación para tu equipo. Todo listo en menos de 24 horas.'
+        }
+      ],
       mockSellers: [
         { name: 'Karla Perez', initials: 'KP', color: '#3b82f6', pct: 43, count: 43, limit: 60 },
         { name: 'Christopher Valles', initials: 'CV', color: '#22c55e', pct: 35, count: 32, limit: 90 },
@@ -1053,6 +1110,51 @@ export default {
 .footer-link-btn { font-size: 0.84rem; color: #475569; background: none; border: none; cursor: pointer; padding: 0; transition: color 0.2s; }
 .footer-link-btn:hover { color: #94a3b8; }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 0.78rem; color: #334155; text-align: center; }
+.footer-inline-link { background: none; border: none; cursor: pointer; color: #475569; font-size: 0.78rem; padding: 0; transition: color 0.2s; }
+.footer-inline-link:hover { color: #94a3b8; }
+
+/* ===== HERO TRUST BAR ===== */
+.hero-trust {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px;
+  margin-top: 20px; margin-bottom: 8px;
+}
+.hero-trust span {
+  font-size: 0.8rem; color: #64748b; font-weight: 500; white-space: nowrap;
+}
+.trust-sep { color: #334155; font-size: 0.75rem; }
+
+/* ===== FAQ ===== */
+.faq-list { max-width: 740px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: #fff; border: 1.5px solid #e2e8f0; border-radius: 14px;
+  overflow: hidden; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dark .faq-item { background: #1e293b; border-color: #334155; }
+.faq-item:hover { border-color: #6366f1; box-shadow: 0 4px 16px rgba(99,102,241,0.08); }
+.faq-open { border-color: #6366f1 !important; box-shadow: 0 4px 16px rgba(99,102,241,0.12) !important; }
+.faq-question {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px; gap: 16px;
+  font-size: 0.95rem; font-weight: 600; color: #0f172a;
+  user-select: none;
+}
+.dark .faq-question { color: #f1f5f9; }
+.faq-chevron {
+  flex-shrink: 0; color: #6366f1;
+  transition: transform 0.3s ease;
+}
+.faq-open .faq-chevron { transform: rotate(180deg); }
+.faq-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.3s ease;
+  padding: 0 24px;
+}
+.faq-open .faq-answer { max-height: 200px; padding: 0 24px 20px; }
+.faq-answer p {
+  margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.7;
+  border-top: 1px solid #f0f4f8; padding-top: 16px;
+}
+.dark .faq-answer p { color: #94a3b8; border-top-color: #334155; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {

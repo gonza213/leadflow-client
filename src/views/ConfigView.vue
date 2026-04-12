@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
+import { subscriptionApi } from '../services/api'
 import TeamsConfig from '../components/config/TeamsConfig.vue'
 import PeriodConfig from '../components/config/PeriodConfig.vue'
 import StagesConfig from '../components/config/StagesConfig.vue'
@@ -17,8 +18,44 @@ const tabs = [
   { id: 'period', name: 'Período', icon: 'calendar' },
   { id: 'stages', name: 'Etapas', icon: 'layers' },
   { id: 'fallback', name: 'Respaldo', icon: 'shield' },
-  { id: 'summary', name: 'Resumen IA', icon: 'sparkles' }
+  { id: 'summary', name: 'Resumen IA', icon: 'sparkles' },
+  { id: 'subscription', name: 'Suscripción', icon: 'credit-card' }
 ]
+
+// Cancelación
+const cancelling = ref(false)
+const cancelError = ref('')
+const cancelSuccess = ref(false)
+const showCancelConfirm = ref(false)
+
+const subStatus = computed(() => authStore.user?.tenant?.subscriptionStatus)
+const subExpiresAt = computed(() => authStore.user?.tenant?.subscriptionExpiresAt)
+const trialEndsAt = computed(() => authStore.user?.tenant?.trialEndsAt)
+
+const statusLabel = computed(() => {
+  const map = { trial: 'Prueba gratuita', active: 'Activa', inactive: 'Inactiva', lifetime: 'Lifetime' }
+  return map[subStatus.value] || subStatus.value
+})
+
+const statusClass = computed(() => {
+  const map = { trial: 'badge-trial', active: 'badge-active', inactive: 'badge-inactive', lifetime: 'badge-lifetime' }
+  return map[subStatus.value] || ''
+})
+
+const handleCancel = async () => {
+  cancelling.value = true
+  cancelError.value = ''
+  try {
+    await subscriptionApi.cancel()
+    cancelSuccess.value = true
+    showCancelConfirm.value = false
+    await authStore.fetchUser()
+  } catch (e) {
+    cancelError.value = e.response?.data?.message || 'Error al cancelar. Intentá de nuevo.'
+  } finally {
+    cancelling.value = false
+  }
+}
 
 onMounted(async () => {
   await configStore.fetchConfig()
@@ -116,6 +153,98 @@ onMounted(async () => {
         :summary-webhook-url="configStore.config.summary_webhook_url || ''"
         :on-save="configStore.updateSummaryConfig"
       />
+
+      <!-- Suscripción -->
+      <div v-else-if="activeTab === 'subscription'" class="space-y-6">
+        <div>
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">Estado de la suscripción</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Gestioná tu plan desde acá.</p>
+        </div>
+
+        <!-- Estado actual -->
+        <div class="rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Estado</span>
+            <span
+              class="text-xs font-semibold px-3 py-1 rounded-full"
+              :class="{
+                'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400': subStatus === 'trial',
+                'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400': subStatus === 'active',
+                'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400': subStatus === 'inactive',
+                'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400': subStatus === 'lifetime'
+              }"
+            >{{ statusLabel }}</span>
+          </div>
+
+          <div v-if="subStatus === 'trial' && trialEndsAt" class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Prueba vence</span>
+            <span class="text-sm text-gray-900 dark:text-white">{{ new Date(trialEndsAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}</span>
+          </div>
+
+          <div v-if="subStatus === 'active' && subExpiresAt" class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Próxima renovación</span>
+            <span class="text-sm text-gray-900 dark:text-white">{{ new Date(subExpiresAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}</span>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Plan</span>
+            <span class="text-sm text-gray-900 dark:text-white">{{ subStatus === 'lifetime' ? 'Lifetime (sin costo)' : '$25 USD / mes' }}</span>
+          </div>
+        </div>
+
+        <!-- Suscribirse (trial o inactivo) -->
+        <div v-if="subStatus === 'trial' || subStatus === 'inactive'" class="rounded-xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-5 space-y-3">
+          <p class="text-sm text-blue-800 dark:text-blue-300">
+            {{ subStatus === 'trial' ? 'Suscribite para continuar usando LeadDistro cuando venza tu período de prueba.' : 'Tu suscripción está inactiva. Activala para volver a usar la plataforma.' }}
+          </p>
+          <a
+            :href="'https://checkout.dlocalgo.com/validate/subscription/jlZVHZj9raWC65A7dr64sH9V7m4Yn2fS'"
+            target="_blank"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors"
+          >
+            Suscribirme por $25 USD/mes →
+          </a>
+        </div>
+
+        <!-- Cancelar (solo activo) -->
+        <div v-if="subStatus === 'active'">
+          <div v-if="cancelSuccess" class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-sm text-green-800 dark:text-green-300">
+            ✓ Suscripción cancelada. Podés seguir usando LeadDistro hasta que venza el período actual.
+          </div>
+
+          <template v-else>
+            <div v-if="!showCancelConfirm">
+              <button
+                @click="showCancelConfirm = true"
+                class="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 underline transition-colors"
+              >
+                Cancelar suscripción
+              </button>
+            </div>
+
+            <div v-else class="rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 p-5 space-y-3">
+              <p class="text-sm font-semibold text-red-800 dark:text-red-300">¿Estás seguro que querés cancelar?</p>
+              <p class="text-sm text-red-700 dark:text-red-400">Tu cuenta quedará inactiva al vencer el período actual. No se realizarán más cobros.</p>
+              <div v-if="cancelError" class="text-sm text-red-600 dark:text-red-400">{{ cancelError }}</div>
+              <div class="flex gap-3">
+                <button
+                  @click="showCancelConfirm = false"
+                  class="px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                >
+                  Volver
+                </button>
+                <button
+                  @click="handleCancel"
+                  :disabled="cancelling"
+                  class="px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 hover:bg-red-700 text-white transition-colors disabled:opacity-50"
+                >
+                  {{ cancelling ? 'Cancelando...' : 'Sí, cancelar suscripción' }}
+                </button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
     </div>
   </div>
 </template>
