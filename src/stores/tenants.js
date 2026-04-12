@@ -143,6 +143,20 @@ export const useTenantsStore = defineStore('tenants', () => {
     }
   }
 
+  async function updateSubscription(id, status) {
+    try {
+      const response = await adminApi.updateSubscription(id, status)
+      if (currentTenant.value?._id === id) {
+        currentTenant.value.subscriptionStatus = response.data.tenant.subscriptionStatus
+        currentTenant.value.subscriptionExpiresAt = response.data.tenant.subscriptionExpiresAt
+      }
+      return { success: true }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al actualizar suscripción'
+      return { success: false, error: error.value }
+    }
+  }
+
   return {
     tenants,
     currentTenant,
@@ -157,6 +171,7 @@ export const useTenantsStore = defineStore('tenants', () => {
     regenerateApiKey,
     deleteTenant,
     fetchTenantUsers,
-    updateTenantUser
+    updateTenantUser,
+    updateSubscription
   }
 })

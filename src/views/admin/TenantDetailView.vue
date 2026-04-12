@@ -96,6 +96,18 @@ const handleRegenerateApiKey = async () => {
     alert('API key regenerada: ' + result.apiKey)
   }
 }
+
+const handleUpdateSubscription = async (newStatus) => {
+  try {
+    const result = await tenantsStore.updateSubscription(route.params.id, newStatus)
+    if (result.success) {
+      // Recargar datos para ver la fecha de vencimiento actualizada
+      await tenantsStore.fetchTenant(route.params.id)
+    }
+  } catch (e) {
+    console.error('Error updating subscription status:', e)
+  }
+}
 </script>
 
 <template>
@@ -163,6 +175,40 @@ const handleRegenerateApiKey = async () => {
           <div class="flex gap-2">
             <button @click="handleSave" class="btn btn-primary">Guardar</button>
             <button @click="editing = false" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado de Suscripción -->
+      <div class="card">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Plan y Suscripción</h3>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="text-xs text-gray-500 dark:text-gray-400">Estado de Suscripción</label>
+            <select 
+              :value="tenantsStore.currentTenant.subscriptionStatus"
+              @change="(e) => handleUpdateSubscription(e.target.value)"
+              class="input mt-1 bg-white dark:bg-gray-800"
+            >
+              <option value="trial">Prueba (Trial)</option>
+              <option value="active">Activo (Pago manual)</option>
+              <option value="inactive">Inactivo / Cancelado</option>
+              <option value="lifetime">Lifetime (Sin expirar)</option>
+            </select>
+          </div>
+          
+          <div v-if="tenantsStore.currentTenant.subscriptionExpiresAt">
+            <label class="text-xs text-gray-500 dark:text-gray-400">Vence el</label>
+            <p class="font-medium text-gray-900 dark:text-white">
+              {{ new Date(tenantsStore.currentTenant.subscriptionExpiresAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }) }}
+            </p>
+          </div>
+
+          <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-800">
+            <p class="text-xs text-blue-700 dark:text-blue-300">
+              <span class="font-bold">Info:</span> Al cambiar el estado a "Activo", se generará automáticamente un comprobante de pago en Google Drive.
+            </p>
           </div>
         </div>
       </div>

@@ -10,32 +10,11 @@ const stats = ref({
   monthly: 0,
   yearly: 0
 })
-const driveLinked = ref(false)
 const pagination = ref({
   page: 1,
   pages: 1,
   total: 0
 })
-
-const fetchDriveStatus = async () => {
-  try {
-    const res = await adminApi.getGoogleDriveStatus()
-    driveLinked.ref = res.data.linked
-  } catch (e) {
-    console.error('Error fetching drive status:', e)
-  }
-}
-
-const handleConnectDrive = async () => {
-  try {
-    const res = await adminApi.getGoogleAuthUrl()
-    if (res.data.url) {
-      window.location.href = res.data.url
-    }
-  } catch (e) {
-    console.error('Error getting auth url:', e)
-  }
-}
 
 const fetchStats = async () => {
   try {
@@ -69,14 +48,43 @@ const handlePageChange = (newPage) => {
   }
 }
 
+const driveLinked = ref(false)
+const showSuccess = ref(false)
+
+const fetchDriveStatus = async () => {
+  try {
+    const res = await adminApi.getGoogleDriveStatus()
+    driveLinked.value = res.data.linked
+  } catch (e) {
+    console.error('Error fetching drive status:', e)
+  }
+}
+
+const handleLinkDrive = async () => {
+  try {
+    const res = await adminApi.getGoogleAuthUrl()
+    if (res.data.url) {
+      window.location.href = res.data.url
+    }
+  } catch (e) {
+    console.error('Error getting auth url:', e)
+    alert('Error al conectar con Google Drive')
+  }
+}
+
 onMounted(() => {
   fetchSubscriptions()
   fetchStats()
   fetchDriveStatus()
+  
+  const urlParams = new URLSearchParams(window.location.search)
+  if (urlParams.get('google') === 'linked') {
+    showSuccess.value = true
+    driveLinked.value = true
+  }
 })
 
 const filteredSubscriptions = computed(() => {
-  // Since we have backend filtration partially, we can filter here or just fetch on filter change
   return subscriptions.value
 })
 
@@ -124,35 +132,33 @@ const formatDate = (date) => {
       </div>
     </div>
 
-    <!-- Banner de Google Drive (Solo Superadmin) -->
-    <div 
-      v-if="!driveLinked"
-      class="card bg-gray-50 dark:bg-gray-800/50 border-dashed border-2 border-gray-200 dark:border-gray-700 p-6"
-    >
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Google Drive Linking Banner -->
+    <div v-if="showSuccess" class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center gap-3 mb-6">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <span class="font-medium text-sm">¡Google Drive vinculado correctamente! Los recibos se subirán automáticamente.</span>
+    </div>
+
+    <div v-else-if="!driveLinked" class="card bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800 mb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div class="flex items-center gap-4">
-          <div class="p-3 bg-white dark:bg-gray-800 rounded-full shadow-sm text-gray-400">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12.508 1.685c-.171-.303-.497-.485-.845-.485-.348 0-.674.182-.845.485L6.642 9.047h10.732l-4.866-7.362zM2.347 16.147l4.866 7.362c.171.303.497.485.845.485s.674-.182.845-.485l4.866-7.362H2.347zm13.33-7.1h6.059c.404 0 .732.328.732.732 0 .079-.013.158-.04.232l-4.866 7.362c-.171.303-.497.485-.845.485-.348 0-.674-.182-.845-.485l-4.866-7.362h6.059z" />
+          <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-xl">
+            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
             </svg>
           </div>
           <div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Vincular Google Drive</h3>
-            <p class="text-sm text-gray-500 max-w-md">
-              Para generar y subir recibos automáticamente a tu carpeta de Drive, necesitamos que vincules tu cuenta una sola vez.
-            </p>
+            <h3 class="font-bold text-blue-900 dark:text-blue-100">Automatización de Recibos (Gmail Personal)</h3>
+            <p class="text-sm text-blue-700 dark:text-blue-300">Vinculá tu cuenta una sola vez para guardar los PDF de pago automáticamente en tu Drive personal.</p>
           </div>
         </div>
-        <button 
-          @click="handleConnectDrive"
-          class="btn bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 flex items-center gap-2"
-        >
-          <img src="https://www.gstatic.com/images/branding/product/1x/drive_2020q4_48dp.png" class="w-5 h-5" />
-          Conectar ahora
+        <button @click="handleLinkDrive" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-6 shadow-md">
+          Vincular Google Drive
         </button>
       </div>
     </div>
-
+    
     <!-- Cards de Ingresos -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="card bg-gradient-to-br from-blue-600 to-blue-700 text-white border-none shadow-lg">

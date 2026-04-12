@@ -29,12 +29,16 @@ const filteredMenuItems = computed(() => {
     { name: 'Usuarios', path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
     { name: 'Integraciones', path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
     { name: 'Resúmenes IA', path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
-    { name: 'Facturación', path: '/billing', icon: 'credit-card', roles: ['manager'] },
+    { name: 'Facturación', path: '/billing', icon: 'credit-card', roles: ['manager'], hiddenIfLifetime: true },
     { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
     { name: 'Soporte', path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
   ]
 
-  return menuItems.filter(item => item.roles.includes(authStore.user?.role))
+  return menuItems.filter(item => {
+    const hasRole = item.roles.includes(authStore.user?.role)
+    const isHiddenForLifetime = item.hiddenIfLifetime && authStore.subscriptionStatus === 'lifetime'
+    return hasRole && !isHiddenForLifetime
+  })
 })
 </script>
 
