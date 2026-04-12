@@ -292,6 +292,57 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- COMPARISON SECTION -->
+    <section class="section section-dark" id="comparativa">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Análisis Comparativo</div>
+          <h2 class="section-title">Por qué necesitás LeadDistro<br/>si ya tenés un CRM</h2>
+          <p class="section-sub">Los CRMs son excelentes para gestionar datos, pero LeadDistro es el cerebro que optimiza la carga de trabajo de tu equipo.</p>
+        </div>
+
+        <div class="comparison-table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th class="feat-col">Funcionalidad</th>
+                <th class="crm-col">CRM Nativo</th>
+                <th class="ld-col">LeadDistro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="f in comparisonFeatures" :key="f.name">
+                <td class="feat-name">{{ f.name }}</td>
+                <td class="crm-val">
+                  <template v-if="f.native === true">
+                    <span class="icon-check">✓</span>
+                  </template>
+                  <template v-else-if="f.native === false">
+                    <span class="icon-cross">✗</span>
+                  </template>
+                  <template v-else>
+                    <span class="val-text">{{ f.native }}</span>
+                  </template>
+                </td>
+                <td class="ld-val">
+                  <template v-if="f.leaddistro === true">
+                    <span class="icon-check">✓</span>
+                  </template>
+                  <template v-else>
+                    <span class="val-text">{{ f.leaddistro }}</span>
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="comparison-footer">
+          <p>LeadDistro no reemplaza tu CRM, lo potencia para que ningún lead se pierda y tu equipo trabaje a su máxima capacidad.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- PRICING -->
     <section class="section" id="pricing">
       <div class="container">
@@ -642,6 +693,14 @@ export default {
         { title: 'Copiás la URL del webhook', desc: 'Desde configuración de LeadDistro, copiás la URL única de tu tenant.' },
         { title: 'Pegala en tu workflow del CRM', desc: 'En el workflow de "nuevo contacto" de tu CRM, agregás la acción webhook apuntando a esa URL.' },
         { title: 'Configurás el webhook de respuesta', desc: 'LeadDistro te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM.' }
+      ],
+      comparisonFeatures: [
+        { name: 'Distribución Round Robin Simple', native: 'Básico', leaddistro: 'Avanzado' },
+        { name: 'Límites diarios por vendedor', native: false, leaddistro: true },
+        { name: 'Límites semanales por vendedor', native: false, leaddistro: true },
+        { name: 'Distribución por % exactos', native: false, leaddistro: true },
+        { name: 'Vendedores de respaldo (Fallback)', native: false, leaddistro: true },
+        { name: 'Métricas de capacidad en tiempo real', native: false, leaddistro: true }
       ]
     }
   }
@@ -998,6 +1057,51 @@ export default {
 .j-c { color: #64748b; }
 .j-s { color: #4ade80; }
 .wh-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #3b82f6; font-size: 0.76rem; font-weight: 600; }
+
+/* ===== COMPARISON ===== */
+.comparison-table-wrapper {
+  background: rgba(15,23,42,0.8);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  max-width: 900px;
+  margin: 0 auto;
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.comparison-table th {
+  padding: 24px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.feat-col { color: #64748b; }
+.crm-col { text-align: center; background: rgba(255,255,255,0.02); color: #94a3b8; }
+.ld-col { text-align: center; background: rgba(59,130,246,0.05); color: #60a5fa; }
+
+.comparison-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.95rem;
+}
+.feat-name { font-weight: 500; color: #e2e8f0; }
+.crm-val, .ld-val { text-align: center; }
+.crm-val { background: rgba(255,255,255,0.02); }
+.ld-val { background: rgba(59,130,246,0.05); font-weight: 700; }
+
+.icon-check { color: #22c55e; font-size: 1.2rem; }
+.icon-cross { color: #ef4444; font-size: 1.2rem; opacity: 0.5; }
+.val-text { font-size: 0.85rem; }
+
+.comparison-footer { text-align: center; margin-top: 32px; }
+.comparison-footer p { font-size: 0.9rem; color: #64748b; font-weight: 500; }
+
 
 /* ===== PRICING ===== */
 .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 820px; margin: 0 auto; }
