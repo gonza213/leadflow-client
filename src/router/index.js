@@ -72,6 +72,12 @@ export const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/billing',
+    name: 'Billing',
+    component: () => import('../views/BillingView.vue'),
+    meta: { requiresAuth: true, requiresManager: true }
+  },
+  {
     path: '/users',
     name: 'Users',
     component: () => import('../views/UsersView.vue'),

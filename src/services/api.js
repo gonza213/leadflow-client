@@ -75,12 +75,16 @@ export const adminApi = {
   updateSubscription: (id, subscriptionStatus) => api.patch(`/admin/tenants/${id}/subscription`, { subscriptionStatus }),
   getSubscriptions: (params) => api.get('/admin/subscriptions', { params }),
   getAdminTickets: (params) => api.get('/admin/tickets', { params }),
-  updateAdminTicket: (id, data) => api.patch(`/admin/tickets/${id}`, data)
+  updateAdminTicket: (id, data) => api.patch(`/admin/tickets/${id}`, data),
+  getRevenueStats: () => api.get('/admin/revenue-stats'),
+  getGoogleDriveStatus: () => api.get('/admin/auth/google/status'),
+  getGoogleAuthUrl: () => api.get('/admin/auth/google')
 }
 
 export const subscriptionApi = {
-  verify: () => api.post('/subscription/verify'),
-  cancel: () => api.post('/subscription/cancel')
+  verify: (tenantId) => api.post('/subscription/verify', { tenantId }),
+  cancel: () => api.post('/subscription/cancel'),
+  getMyInvoices: () => api.get('/subscription/invoices')
 }
 
 export const usersApi = {

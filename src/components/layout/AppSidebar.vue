@@ -29,6 +29,7 @@ const filteredMenuItems = computed(() => {
     { name: 'Usuarios', path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
     { name: 'Integraciones', path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
     { name: 'Resúmenes IA', path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
+    { name: 'Facturación', path: '/billing', icon: 'credit-card', roles: ['manager'] },
     { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
     { name: 'Soporte', path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
   ]
