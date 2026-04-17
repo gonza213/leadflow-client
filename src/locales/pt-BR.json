@@ -256,12 +256,12 @@
         "cta": "Consultar setup"
       },
       "cta": "Começar grátis",
-      "note": "Tem dúvidas? Fale conosco pelo WhatsApp e responderemos instantaneamente."
+      "note": "Tem dúvidas? Entre em contacto com o nosso suporte para receber ajuda imediata."
     },
     "faq": {
       "tag": "Perguntas frequentes",
       "title": "Tudo o que você precisa saber",
-      "subtitle": "Se tiver mais dúvidas, fale conosco pelo WhatsApp e responderemos na hora.",
+      "subtitle": "Se tiver mais dúvidas, entre em contato com o nosso suporte para receber ajuda imediata.",
       "items": [
         { "q": "Como funciona a distribuição automática de leads?", "a": "Quando seu CRM envia um lead para o webhook do LeadDistro, o sistema identifica a equipe de destino de acordo com as porcentagens configuradas e, dentro dessa equipe, seleciona o vendedor com maior capacidade disponível (menor ratio carga/limite). Tudo acontece em milissegundos e o resultado volta para o CRM automaticamente." },
         { "q": "Com quais CRMs o LeadDistro se integra?", "a": "O LeadDistro integra-se com qualquer plataforma que suporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n e muitos outros. Se o seu CRM pode enviar um HTTP POST, ele funciona com o LeadDistro." },
@@ -397,7 +397,7 @@
     },
     "s6": {
       "title": "6. Retenção e exclusão de dados",
-      "desc": "Seus dados são retidos enquanto sua conta estiver ativa. Se você cancelar sua conta, poderá solicitar a exclusão completa de seus dados escrevendo-nos via WhatsApp. Os dados de faturamento podem ser retidos devido a obrigações legais, de acordo com a legislação aplicável."
+      "desc": "Seus dados são retidos enquanto sua conta estiver ativa. Se você cancelar sua conta, poderá solicitar a exclusão completa de seus dados através do suporte. Os dados de faturamento podem ser retidos devido a obrigações legais, de acordo com a legislação aplicável."
     },
     "s7": {
       "title": "7. Seus direitos",
@@ -406,7 +406,7 @@
       "l2": "Corrigir informações incorretas.",
       "l3": "Solicitar a exclusão de sua conta e dados.",
       "l4": "Exportar seus leads em formato CSV a partir do dashboard.",
-      "footer": "Para exercer qualquer um destes direitos, contacte-nos através do WhatsApp."
+      "footer": "Para exercer qualquer um destes direitos, contacte-nos através do suporte."
     },
     "s8": {
       "title": "8. Alterações nesta política",
@@ -414,7 +414,7 @@
     },
     "s9": {
       "title": "9. Contato",
-      "desc": "Para dúvidas sobre esta política de privacidade, contacte-nos através do WhatsApp +54 221 220 4194 ou visite www.leaddistro.site."
+      "desc": "Para dúvidas sobre esta política de privacidade, contacte-nos através do suporte ou visite www.leaddistro.site."
     }
   },
   "terms": {

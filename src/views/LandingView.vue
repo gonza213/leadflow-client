@@ -469,9 +469,16 @@ onUnmounted(() => {
             <ul class="pricing-features">
               <li v-for="f in $tm('landing.pricing.setup.features')" :key="f">✓ {{ $rt(f) }}</li>
             </ul>
-            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
-              {{ t('landing.pricing.setup.cta') }}
-            </a>
+            <template v-if="locale === 'es'">
+              <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
+                {{ t('landing.pricing.setup.cta') }}
+              </a>
+            </template>
+            <template v-else>
+              <button @click="alert('Serviço disponível em breve para o seu mercado')" class="btn-secondary btn-full opacity-60 cursor-not-allowed">
+                {{ t('landing.pricing.setup.cta') }}
+              </button>
+            </template>
           </div>
 
         </div>
@@ -572,6 +579,7 @@ onUnmounted(() => {
 
   <!-- WhatsApp floating button -->
   <a
+    v-if="locale === 'es'"
     href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas"
     target="_blank"
     class="wa-float"
