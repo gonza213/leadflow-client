@@ -626,7 +626,7 @@
       "linkedSeller": "Vendedor vinculado",
       "newPassword": "Nueva contraseña",
       "namePlaceholder": "Nombre completo",
-      "emailPlaceholder": "email@ejemplo.com",
+      "emailPlaceholder": "email{'@'}ejemplo.com",
       "passPlaceholder": "Mínimo 6 caracteres",
       "passPlaceholderEdit": "Dejar vacío para mantener"
     }
