@@ -33,7 +33,7 @@ onMounted(async () => {
 // Sellers filtrados según el equipo seleccionado
 const filteredSellers = computed(() => {
   const equipo = leadsStore.filters.equipo
-  if (!equipo || equipo === t('dashboard.filters.all')) return sellersStore.sellers
+  if (!equipo) return sellersStore.sellers
   return sellersStore.sellers.filter(s => s.team === equipo)
 })
 
@@ -91,7 +91,7 @@ const handleResetFilters = () => {
         <div v-if="!authStore.isSeller">
           <label class="label text-xs">{{ t('dashboard.filters.team') }}</label>
           <select v-model="leadsStore.filters.equipo" class="input text-sm">
-            <option :value="t('dashboard.filters.all')">{{ t('dashboard.filters.all') }}</option>
+            <option value="">{{ t('dashboard.filters.all') }}</option>
             <option
               v-for="equipo in configStore.config?.equipos || []"
               :key="equipo.nombre"

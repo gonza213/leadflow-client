@@ -35,7 +35,7 @@ export const useLeadsStore = defineStore('leads', () => {
   const filters = ref({
     fecha_inicio: '',
     fecha_fin: '',
-    equipo: 'Todos',
+    equipo: '',
     usuario: '',
     opportunity_stage: ''
   })
@@ -81,7 +81,7 @@ export const useLeadsStore = defineStore('leads', () => {
       const params = {}
       if (filters.value.fecha_inicio) params.fecha_inicio = filters.value.fecha_inicio
       if (filters.value.fecha_fin) params.fecha_fin = filters.value.fecha_fin
-      if (filters.value.equipo && filters.value.equipo !== 'Todos') params.equipo = filters.value.equipo
+      if (filters.value.equipo) params.equipo = filters.value.equipo
       if (filters.value.usuario) params.usuario = filters.value.usuario
       if (filters.value.opportunity_stage) params.opportunity_stage = filters.value.opportunity_stage
 
@@ -102,7 +102,7 @@ export const useLeadsStore = defineStore('leads', () => {
     filters.value = {
       fecha_inicio: '',
       fecha_fin: '',
-      equipo: 'Todos',
+      equipo: '',
       usuario: '',
       opportunity_stage: ''
     }
