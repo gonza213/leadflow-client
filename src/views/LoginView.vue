@@ -3,7 +3,10 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -27,7 +30,7 @@ const handleSubmit = async () => {
   subscriptionLink.value = ''
 
   if (!email.value || !password.value) {
-    error.value = 'Por favor ingresa email y contraseña'
+    error.value = t('auth.errorEmpty')
     return
   }
 
@@ -55,7 +58,7 @@ const openForgot = () => {
 const handleForgot = async () => {
   forgotError.value = ''
   if (!forgotEmail.value) {
-    forgotError.value = 'Ingresá tu email'
+    forgotError.value = t('auth.email')
     return
   }
   forgotLoading.value = true
@@ -63,7 +66,7 @@ const handleForgot = async () => {
     await api.post('/auth/forgot-password', { email: forgotEmail.value })
     forgotSent.value = true
   } catch {
-    forgotError.value = 'Ocurrió un error. Intentá de nuevo.'
+    forgotError.value = t('common.error')
   } finally {
     forgotLoading.value = false
   }
@@ -90,15 +93,15 @@ const handleForgot = async () => {
         <router-link to="/" class="inline-flex items-center justify-center gap-3 transition-transform hover:scale-105">
           <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-20 dark:brightness-0 dark:invert" />
         </router-link>
-        <p class="mt-3 text-gray-600 dark:text-gray-400">Distribucion inteligente de leads</p>
+        <p class="mt-3 text-gray-600 dark:text-gray-400">LeadDistro — {{ t('hero.title') }}</p>
       </div>
 
       <div class="card">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Iniciar sesion</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">{{ t('auth.loginTitle') }}</h2>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="label">Email</label>
+            <label class="label">{{ t('auth.email') }}</label>
             <input
               v-model="email"
               type="email"
@@ -109,7 +112,7 @@ const handleForgot = async () => {
           </div>
 
           <div>
-            <label class="label">Contrasena</label>
+            <label class="label">{{ t('auth.password') }}</label>
             <div class="relative">
               <input
                 v-model="password"
@@ -135,15 +138,15 @@ const handleForgot = async () => {
           </div>
 
           <div v-if="error && error === 'subscription_inactive'" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-2">
-            <p class="font-semibold text-yellow-800 dark:text-yellow-300">Tu suscripción está inactiva</p>
-            <p class="text-yellow-700 dark:text-yellow-400">Para volver a acceder, activá tu suscripción por $25 USD/mes.</p>
+            <p class="font-semibold text-yellow-800 dark:text-yellow-300">{{ t('auth.subscriptionInactive') }}</p>
+            <p class="text-yellow-700 dark:text-yellow-400">{{ t('hero.stats.price') }}.</p>
             <a
               v-if="subscriptionLink"
               :href="subscriptionLink"
               target="_blank"
               class="inline-block mt-1 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold rounded-lg transition-colors"
             >
-              Activar suscripción →
+              {{ t('auth.activateSubscription') }} →
             </a>
             <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">Una vez que pagaste, intentá ingresar de nuevo — se activa automáticamente.</p>
           </div>
@@ -156,7 +159,7 @@ const handleForgot = async () => {
             class="btn btn-primary w-full"
             :disabled="authStore.loading"
           >
-            {{ authStore.loading ? 'Ingresando...' : 'Ingresar' }}
+            {{ authStore.loading ? t('auth.entering') : t('auth.login') }}
           </button>
 
           <div class="text-center">
@@ -165,7 +168,7 @@ const handleForgot = async () => {
               @click="openForgot"
               class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
             >
-              ¿Olvidaste tu contraseña?
+              {{ t('auth.forgotPassword') }}
             </button>
           </div>
         </form>
@@ -175,7 +178,7 @@ const handleForgot = async () => {
     <!-- Modal recuperar contraseña -->
     <div v-if="showForgot" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
       <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-sm p-6">
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Recuperar contraseña</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ t('auth.recoverPassword') }}</h3>
 
         <div v-if="forgotSent" class="text-center py-4">
           <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -183,12 +186,12 @@ const handleForgot = async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <p class="text-gray-700 dark:text-gray-300 text-sm">Si el email está registrado, recibirás un enlace para restablecer tu contraseña.</p>
-          <button @click="showForgot = false" class="mt-4 btn btn-primary w-full">Cerrar</button>
+          <p class="text-gray-700 dark:text-gray-300 text-sm">{{ t('auth.sentLink') }}</p>
+          <button @click="showForgot = false" class="mt-4 btn btn-primary w-full">{{ t('common.cancel') }}</button>
         </div>
 
         <template v-else>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Ingresá tu email y te enviaremos un enlace para restablecer tu contraseña.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('auth.sentLink') }}</p>
           <div class="space-y-3">
             <input
               v-model="forgotEmail"
@@ -199,9 +202,9 @@ const handleForgot = async () => {
             />
             <div v-if="forgotError" class="text-sm text-red-600 dark:text-red-400">{{ forgotError }}</div>
             <div class="flex gap-2">
-              <button type="button" @click="showForgot = false" class="btn btn-secondary flex-1">Cancelar</button>
+              <button type="button" @click="showForgot = false" class="btn btn-secondary flex-1">{{ t('common.cancel') }}</button>
               <button type="button" @click="handleForgot" :disabled="forgotLoading" class="btn btn-primary flex-1">
-                {{ forgotLoading ? 'Enviando...' : 'Enviar enlace' }}
+                {{ forgotLoading ? t('common.loading') : t('auth.sendLink') }}
               </button>
             </div>
           </div>

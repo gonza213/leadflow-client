@@ -3,7 +3,9 @@ import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
@@ -16,22 +18,22 @@ watch(() => route.path, () => {
 const filteredMenuItems = computed(() => {
   if (authStore.isSuperAdmin) {
     return [
-      { name: 'Tenants', path: '/admin/tenants', icon: 'building' },
-      { name: 'Suscripciones', path: '/admin/subscriptions', icon: 'credit-card' },
-      { name: 'Tickets', path: '/admin/tickets', icon: 'support' }
+      { name: t('menu.tenants'), path: '/admin/tenants', icon: 'building' },
+      { name: t('menu.subscriptions'), path: '/admin/subscriptions', icon: 'credit-card' },
+      { name: t('menu.tickets'), path: '/admin/tickets', icon: 'support' }
     ]
   }
 
   const menuItems = [
-    { name: 'Dashboard', path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
-    { name: 'Leads', path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
-    { name: 'Vendedores', path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
-    { name: 'Usuarios', path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
-    { name: 'Integraciones', path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
-    { name: 'Resúmenes IA', path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
-    { name: 'Facturación', path: '/billing', icon: 'credit-card', roles: ['manager'], hiddenIfLifetime: true },
-    { name: 'Configuracion', path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
-    { name: 'Soporte', path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
+    { name: t('menu.dashboard'), path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.leads'), path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.sellers'), path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
+    { name: t('menu.users'), path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
+    { name: t('menu.integrations'), path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
+    { name: t('menu.summaries'), path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
+    { name: t('menu.billing'), path: '/billing', icon: 'credit-card', roles: ['manager'], hiddenIfLifetime: true },
+    { name: t('menu.config'), path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
+    { name: t('menu.support'), path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
   ]
 
   return menuItems.filter(item => {

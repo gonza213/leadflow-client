@@ -3,7 +3,10 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
+import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -21,15 +24,15 @@ const error = ref('')
 const handleSubmit = async () => {
   error.value = ''
   if (!companyName.value || !name.value || !email.value || !password.value) {
-    error.value = 'Todos los campos son requeridos'
+    error.value = t('auth.requiredFields')
     return
   }
   if (password.value.length < 6) {
-    error.value = 'La contraseña debe tener al menos 6 caracteres'
+    error.value = t('auth.passwordTooShort')
     return
   }
   if (!acceptedTerms.value) {
-    error.value = 'Debés aceptar los Términos de Servicio y la Política de Privacidad para continuar'
+    error.value = t('auth.acceptTermsError')
     return
   }
   loading.value = true
@@ -74,37 +77,37 @@ const handleSubmit = async () => {
         <router-link to="/landing" class="inline-flex items-center justify-center transition-transform hover:scale-105">
           <img src="/logo_leaddistro.png" alt="LeadDistro" class="h-20 dark:brightness-0 dark:invert" />
         </router-link>
-        <p class="mt-3 text-gray-600 dark:text-gray-400">Distribución inteligente de leads</p>
+        <p class="mt-3 text-gray-600 dark:text-gray-400">LeadDistro — {{ t('hero.title') }}</p>
       </div>
 
       <div class="card">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">Crear cuenta</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">7 días gratis, sin tarjeta de crédito</p>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ t('auth.register') }}</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ t('hero.trust.trial') }}, {{ t('hero.trust.noCard') }}</p>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="label">Nombre de la empresa</label>
-            <input v-model="companyName" type="text" class="input" placeholder="Ej: Mi Agencia" autocomplete="organization" />
+            <label class="label">{{ t('auth.companyName') }}</label>
+            <input v-model="companyName" type="text" class="input" :placeholder="t('auth.companyPlaceholder')" autocomplete="organization" />
           </div>
 
           <div>
-            <label class="label">Tu nombre</label>
-            <input v-model="name" type="text" class="input" placeholder="Juan García" autocomplete="name" />
+            <label class="label">{{ t('auth.yourName') }}</label>
+            <input v-model="name" type="text" class="input" :placeholder="t('auth.namePlaceholder')" autocomplete="name" />
           </div>
 
           <div>
-            <label class="label">Email</label>
+            <label class="label">{{ t('auth.email') }}</label>
             <input v-model="email" type="email" class="input" placeholder="tu@email.com" autocomplete="email" />
           </div>
 
           <div>
-            <label class="label">Contraseña</label>
+            <label class="label">{{ t('auth.password') }}</label>
             <div class="relative">
               <input
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
                 class="input pr-10"
-                placeholder="Mínimo 6 caracteres"
+                :placeholder="t('auth.passwordMin')"
                 autocomplete="new-password"
               />
               <button type="button" @click="showPassword = !showPassword"
@@ -129,10 +132,10 @@ const handleSubmit = async () => {
               class="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
             />
             <label for="terms" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer leading-relaxed">
-              Acepto los
-              <router-link to="/terms" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Términos de Servicio</router-link>
-              y la
-              <router-link to="/privacy" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">Política de Privacidad</router-link>
+              {{ t('auth.acceptTerms') }}
+              <router-link to="/terms" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('auth.termsOfService') }}</router-link>
+              {{ t('auth.andThe') }}
+              <router-link to="/privacy" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('auth.privacyPolicy') }}</router-link>
             </label>
           </div>
 
@@ -141,12 +144,12 @@ const handleSubmit = async () => {
           </div>
 
           <button type="submit" class="btn btn-primary w-full" :disabled="loading || !acceptedTerms">
-            {{ loading ? 'Creando cuenta...' : 'Crear cuenta gratis' }}
+            {{ loading ? t('auth.creating') : t('auth.createFreeAccount') }}
           </button>
 
           <p class="text-center text-sm text-gray-500 dark:text-gray-400">
-            ¿Ya tenés cuenta?
-            <router-link to="/login" class="text-blue-600 dark:text-blue-400 hover:underline">Iniciá sesión</router-link>
+            {{ t('auth.hasAccount') }}
+            <router-link to="/login" class="text-blue-600 dark:text-blue-400 hover:underline">{{ t('auth.login') }}</router-link>
           </p>
         </form>
       </div>

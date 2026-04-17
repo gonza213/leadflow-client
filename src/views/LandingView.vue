@@ -2,21 +2,24 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 useHead({
-  title: 'LeadDistro | Distribución Automática de Leads para Agencias',
+  title: () => t('meta.title'),
   meta: [
-    { name: 'description', content: 'Optimiza tu equipo de ventas con LeadDistro. Asignación inteligente de leads, límites por vendedor y dashboard en tiempo real para HubSpot, GHL y monday.com.' },
-    { property: 'og:title', content: 'LeadDistro | Distribución Inteligente de Leads' },
-    { property: 'og:description', content: 'Asigna cada lead al vendedor correcto automáticamente según capacidad y límites. Integración con cualquier CRM.' },
+    { name: 'description', content: () => t('meta.description') },
+    { property: 'og:title', content: () => t('meta.ogTitle') },
+    { property: 'og:description', content: () => t('meta.ogDescription') },
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'keywords', content: 'lead distribution, automatización ventas, round robin, hubspot integration, gohighlevel leads, monday.com leads' }
+    { name: 'keywords', content: () => t('meta.keywords') }
   ],
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      children: () => JSON.stringify({
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "LeadDistro",
@@ -32,7 +35,7 @@ useHead({
           "price": "25.00",
           "priceCurrency": "USD"
         },
-        "description": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos."
+        "description": t('meta.schemaDescription')
       })
     }
   ]
@@ -44,6 +47,13 @@ const menuOpen = ref(false)
 
 const handleScroll = () => {
   scrolled.value = window.scrollY > 20
+}
+
+const toggleLanguage = () => {
+  const newLocale = locale.value === 'pt-BR' ? 'es' : 'pt-BR'
+  locale.value = newLocale
+  localStorage.setItem('user-locale', newLocale)
+  document.documentElement.lang = newLocale
 }
 
 onMounted(() => {
@@ -66,14 +76,20 @@ onUnmounted(() => {
           <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-14 dark:brightness-0 dark:invert" />
         </a>
         <ul class="nav-links">
-          <li><a href="#features">Funciones</a></li>
-          <li><a href="#how">Cómo funciona</a></li>
-          <li><a href="#roles">Roles</a></li>
-          <li><a href="#integraciones">Integraciones</a></li>
-          <li><a href="#pricing">Precios</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#features">{{ t('nav.features') }}</a></li>
+          <li><a href="#how">{{ t('nav.howItWorks') }}</a></li>
+          <li><a href="#roles">{{ t('nav.roles') }}</a></li>
+          <li><a href="#integraciones">{{ t('nav.integrations') }}</a></li>
+          <li><a href="#pricing">{{ t('nav.pricing') }}</a></li>
+          <li><a href="#faq">{{ t('nav.faq') }}</a></li>
         </ul>
-        <button @click="router.push('/login')" class="btn-nav">Iniciar sesión →</button>
+        <button @click="router.push('/login')" class="btn-nav">{{ t('nav.login') }} →</button>
+
+        <button @click="toggleLanguage" class="lang-toggle-nav" :title="locale === 'pt-BR' ? 'Mudar para Espanhol' : 'Mudar para Português'">
+          <span v-if="locale === 'pt-BR'">🇧🇷 PT</span>
+          <span v-else>🇦🇷 ES</span>
+        </button>
+
         <div class="nav-mobile-right">
           <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
             <span></span><span></span><span></span>
@@ -81,13 +97,18 @@ onUnmounted(() => {
         </div>
       </div>
       <div :class="['mobile-menu', { 'open': menuOpen }]">
-        <a href="#features" @click="menuOpen = false">Funciones</a>
-        <a href="#how" @click="menuOpen = false">Cómo funciona</a>
-        <a href="#roles" @click="menuOpen = false">Roles</a>
-        <a href="#integraciones" @click="menuOpen = false">Integraciones</a>
-        <a href="#pricing" @click="menuOpen = false">Precios</a>
-        <a href="#faq" @click="menuOpen = false">FAQ</a>
-        <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">Iniciar sesión →</button>
+        <div class="mobile-lang-row">
+          <button @click="toggleLanguage" class="mobile-lang-btn">
+            {{ locale === 'pt-BR' ? '🇧🇷 Português' : '🇦🇷 Español' }}
+          </button>
+        </div>
+        <a href="#features" @click="menuOpen = false">{{ t('nav.features') }}</a>
+        <a href="#how" @click="menuOpen = false">{{ t('nav.howItWorks') }}</a>
+        <a href="#roles" @click="menuOpen = false">{{ t('nav.roles') }}</a>
+        <a href="#integraciones" @click="menuOpen = false">{{ t('nav.integrations') }}</a>
+        <a href="#pricing" @click="menuOpen = false">{{ t('nav.pricing') }}</a>
+        <a href="#faq" @click="menuOpen = false">{{ t('nav.faq') }}</a>
+        <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">{{ t('nav.login') }} →</button>
       </div>
     </nav>
 
@@ -98,37 +119,37 @@ onUnmounted(() => {
       <div class="hero-content">
         <div class="badge-pill">
           <span class="badge-dot"></span>
-          Para agencias en LATAM y Estados Unidos
+          {{ t('hero.badge') }}
         </div>
         <h1 class="hero-title">
-          Distribución de leads<br/>
-          <span class="gradient-text">inteligente y automática</span>
+          {{ t('hero.title') }}<br/>
+          <span class="gradient-text">{{ t('hero.titleGradient') }}</span>
         </h1>
         <p class="hero-subtitle">
-          LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.
+          {{ t('hero.subtitle') }}
         </p>
         <div class="hero-actions">
           <button @click="router.push('/register')" class="btn-primary">
-            Empezar gratis
+            {{ t('hero.ctaPrimary') }}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-          <button @click="router.push('/login')" class="btn-ghost">Ya tengo cuenta →</button>
+          <button @click="router.push('/login')" class="btn-ghost">{{ t('hero.ctaSecondary') }} →</button>
         </div>
         <div class="hero-trust">
-          <span>✓ 7 días gratis</span>
+          <span>✓ {{ t('hero.trust.trial') }}</span>
           <span class="trust-sep">·</span>
-          <span>✓ Sin tarjeta de crédito</span>
+          <span>✓ {{ t('hero.trust.noCard') }}</span>
           <span class="trust-sep">·</span>
-          <span>✓ Setup en 5 minutos</span>
+          <span>✓ {{ t('hero.trust.setup') }}</span>
           <span class="trust-sep">·</span>
-          <span>✓ Cancelás cuando querés</span>
+          <span>✓ {{ t('hero.trust.cancel') }}</span>
         </div>
         <div class="hero-stats">
-          <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Leads asignados</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-label">{{ t('hero.stats.assigned') }}</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">USD 25</span><span class="stat-label">Por mes, sin contratos</span></div>
+          <div class="stat"><span class="stat-num">USD 25</span><span class="stat-label">{{ t('hero.stats.price') }}</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">9+</span><span class="stat-label">CRMs compatibles</span></div>
+          <div class="stat"><span class="stat-num">9+</span><span class="stat-label">{{ t('hero.stats.crms') }}</span></div>
         </div>
       </div>
 
@@ -143,9 +164,9 @@ onUnmounted(() => {
           </div>
           <div class="card-body">
             <div class="mini-kpis">
-              <div class="mini-kpi blue"><span class="kpi-val">247</span><span class="kpi-lbl">Leads totales</span></div>
-              <div class="mini-kpi emerald"><span class="kpi-val">12</span><span class="kpi-lbl">Vendedores activos</span></div>
-              <div class="mini-kpi purple"><span class="kpi-val">96%</span><span class="kpi-lbl">Asignados</span></div>
+              <div class="mini-kpi blue"><span class="kpi-val">247</span><span class="kpi-lbl">{{ t('leads.total') }}</span></div>
+              <div class="mini-kpi emerald"><span class="kpi-val">12</span><span class="kpi-lbl">{{ t('sellers.title') }}</span></div>
+              <div class="mini-kpi purple"><span class="kpi-val">96%</span><span class="kpi-lbl">{{ t('leads.status.assigned') }}</span></div>
             </div>
             <div class="mini-sellers">
               <div class="mini-seller" v-for="s in mockSellers" :key="s.name">
@@ -158,7 +179,7 @@ onUnmounted(() => {
               </div>
             </div>
             <div class="mini-next">
-              <span class="next-lbl">Próxima asignación →</span>
+              <span class="next-lbl">{{ t('main.nextAssignment') }} →</span>
               <span class="next-val">Equipo CH · Karla Perez</span>
             </div>
           </div>
@@ -170,9 +191,9 @@ onUnmounted(() => {
     <section class="section" id="features">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Funcionalidades</div>
-          <h2 class="section-title">Todo lo que necesita tu equipo de ventas</h2>
-          <p class="section-sub">Un sistema diseñado para que ningún lead quede sin atender y cada vendedor trabaje a su máxima capacidad.</p>
+          <div class="section-tag">{{ t('landing.features.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.features.title') }}</h2>
+          <p class="section-sub">{{ t('landing.features.subtitle') }}</p>
         </div>
 
         <div class="features-grid">
@@ -181,8 +202,8 @@ onUnmounted(() => {
             <div class="feat-icon icon-blue">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </div>
-            <h3>Distribución automática con algoritmo inteligente</h3>
-            <p>Cada lead entrante se asigna al vendedor más disponible del equipo proporcional. El algoritmo considera capacidad semanal, carga diaria y ratio del vendedor.</p>
+            <h3>{{ t('landing.features.algoTitle') }}</h3>
+            <p>{{ t('landing.features.algoDesc') }}</p>
             <div class="algo-steps">
               <div class="algo-step" v-for="step in algoSteps" :key="step.text" :class="{ 'step-success': step.success }">
                 <span class="step-n">{{ step.n }}</span>
@@ -206,9 +227,9 @@ onUnmounted(() => {
     <section class="section section-dark" id="how">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Flujo de trabajo</div>
-          <h2 class="section-title">Cómo funciona LeadDistro</h2>
-          <p class="section-sub">Desde que entra un lead en tu CRM hasta que está en manos de tu vendedor — todo automático.</p>
+          <div class="section-tag">{{ t('landing.howItWorks.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.howItWorks.title') }}</h2>
+          <p class="section-sub">{{ t('landing.howItWorks.subtitle') }}</p>
         </div>
         <div class="steps-flow">
           <template v-for="(step, i) in steps" :key="step.title">
@@ -235,9 +256,9 @@ onUnmounted(() => {
     <section class="section" id="roles">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Control de acceso</div>
-          <h2 class="section-title">Roles diseñados para tu equipo</h2>
-          <p class="section-sub">Cada persona ve y puede hacer exactamente lo que necesita. Tu cuenta incluye Manager y Vendedores.</p>
+          <div class="section-tag">{{ t('landing.roles.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.roles.title') }}</h2>
+          <p class="section-sub">{{ t('landing.roles.subtitle') }}</p>
         </div>
         <div class="roles-grid">
           <div v-for="role in roles" :key="role.name" class="role-card" :class="role.class">
@@ -259,9 +280,9 @@ onUnmounted(() => {
     <section class="section section-dark" id="integraciones">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Integraciones</div>
-          <h2 class="section-title">Integraciones con HubSpot, GoHighLevel y monday.com</h2>
-          <p class="section-sub">LeadDistro se integra perfectamente con tu CRM y herramientas de automatización. Somos la solución especializada en distribución de leads para equipos que usan HubSpot, GHL, monday y más.</p>
+          <div class="section-tag">{{ t('landing.integrations.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.integrations.title') }}</h2>
+          <p class="section-sub">{{ t('landing.integrations.subtitle') }}</p>
         </div>
 
         <!-- Grid de plataformas -->
@@ -275,7 +296,7 @@ onUnmounted(() => {
               <span>{{ platform.desc }}</span>
             </div>
             <div class="int-card-badge" :class="platform.status === 'optimized' ? 'badge-native' : 'badge-webhook'">
-              {{ platform.status === 'optimized' ? 'Optimizado' : 'Webhook' }}
+              {{ platform.status === 'optimized' ? t('landing.integrations.badges.optimized') : t('landing.integrations.badges.webhook') }}
             </div>
           </div>
         </div>
@@ -283,9 +304,9 @@ onUnmounted(() => {
         <!-- Flujo técnico -->
         <div class="integration-layout" style="margin-top: 64px">
           <div class="int-text">
-            <div class="section-tag">Cómo conectar</div>
-            <h2 class="section-title text-left">Configuración en menos de 5 minutos</h2>
-            <p class="section-sub text-left" style="margin: 0 0 32px">Solo necesitás copiar la URL de tu tenant y pegarla en el workflow de tu herramienta. Sin código, sin APIs complejas.</p>
+            <div class="section-tag">{{ t('landing.integrations.config.tag') }}</div>
+            <h2 class="section-title text-left">{{ t('landing.integrations.config.title') }}</h2>
+            <p class="section-sub text-left" style="margin: 0 0 32px">{{ t('landing.integrations.config.subtitle') }}</p>
             <div class="int-steps">
               <div v-for="(s, i) in intSteps" :key="i" class="int-step">
                 <div class="int-num">{{ i + 1 }}</div>
@@ -310,7 +331,7 @@ onUnmounted(() => {
             </div>
             <div class="wh-arrow">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
-              <span>LeadDistro asigna el vendedor</span>
+              <span>{{ t('landing.integrations.assignMsg') }}</span>
             </div>
             <div class="wh-card">
               <div class="wh-header">
@@ -332,18 +353,18 @@ onUnmounted(() => {
     <section class="section section-dark" id="comparativa">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Análisis Comparativo</div>
-          <h2 class="section-title">Por qué necesitás LeadDistro<br/>si ya tenés un CRM</h2>
-          <p class="section-sub">Los CRMs son excelentes para gestionar datos, pero LeadDistro es el cerebro que optimiza la carga de trabajo de tu equipo.</p>
+          <div class="section-tag">{{ t('landing.comparison.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.comparison.title') }}</h2>
+          <p class="section-sub">{{ t('landing.comparison.subtitle') }}</p>
         </div>
 
         <div class="comparison-table-wrapper">
           <table class="comparison-table">
             <thead>
               <tr>
-                <th class="feat-col">Funcionalidad</th>
-                <th class="crm-col">CRM Nativo</th>
-                <th class="ld-col">LeadDistro</th>
+                <th class="feat-col">{{ t('landing.comparison.headers.feat') }}</th>
+                <th class="crm-col">{{ t('landing.comparison.headers.crm') }}</th>
+                <th class="ld-col">{{ t('landing.comparison.headers.ld') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -374,7 +395,35 @@ onUnmounted(() => {
         </div>
 
         <div class="comparison-footer">
-          <p>LeadDistro no reemplaza tu CRM, lo potencia para que ningún lead se pierda y tu equipo trabaje a su máxima capacidad.</p>
+          <p>{{ t('landing.comparison.footer') }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVAILABILITY -->
+    <section class="section section-dark" id="availability">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">{{ t('landing.availability.tag') }}</div>
+          <h2 class="section-title text-white">{{ t('landing.availability.title') }}</h2>
+          <p class="section-sub">{{ t('landing.availability.subtitle') }}</p>
+        </div>
+
+        <div class="availability-table-wrapper">
+          <table class="availability-table">
+            <thead>
+              <tr>
+                <th class="region-col">{{ t('landing.availability.headers.region') }}</th>
+                <th class="countries-col">{{ t('landing.availability.headers.countries') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in availabilityItems" :key="item.region">
+                <td class="region-name"><strong>{{ item.region }}</strong></td>
+                <td class="countries-list">{{ item.countries }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
@@ -383,60 +432,50 @@ onUnmounted(() => {
     <section class="section" id="pricing">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Precios</div>
-          <h2 class="section-title">Simple y transparente</h2>
-          <p class="section-sub">Un solo plan, sin contratos anuales. Pagás mes a mes y cancelás cuando quieras.</p>
+          <div class="section-tag">{{ t('landing.pricing.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.pricing.title') }}</h2>
+          <p class="section-sub">{{ t('landing.pricing.subtitle') }}</p>
         </div>
         <div class="pricing-grid">
 
           <!-- Plan mensual -->
           <div class="pricing-card pricing-main">
-            <div class="pricing-popular">Más popular</div>
-            <h3 class="pricing-name">Plan Mensual</h3>
+            <div class="pricing-popular">{{ t('landing.pricing.mostPopular') }}</div>
+            <h3 class="pricing-name">{{ t('landing.pricing.monthly.title') }}</h3>
             <div class="pricing-price">
               <span class="price-currency">USD</span>
               <span class="price-amount">25</span>
-              <span class="price-period">/ mes</span>
+              <span class="price-period">{{ t('landing.pricing.monthly.period') }}</span>
             </div>
-            <p class="pricing-desc">Todo lo que necesita tu agencia para no perder ni un lead.</p>
+            <p class="pricing-desc">{{ t('landing.pricing.monthly.desc') }}</p>
             <ul class="pricing-features">
-              <li>✓ Vendedores ilimitados</li>
-              <li>✓ Leads ilimitados</li>
-              <li>✓ Multi-equipo con % configurables</li>
-              <li>✓ Dashboard en tiempo real</li>
-              <li>✓ Integración con cualquier CRM</li>
-              <li>✓ Exportación de leads a CSV</li>
-              <li>✓ Soporte incluido</li>
+              <li v-for="f in $tm('landing.pricing.monthly.features')" :key="f">✓ {{ $rt(f) }}</li>
             </ul>
             <button @click="router.push('/register')" class="btn-primary btn-full">
-              Empezar gratis
+              {{ t('landing.pricing.cta') }}
             </button>
           </div>
 
           <!-- Setup opcional -->
           <div class="pricing-card pricing-addon">
-            <div class="pricing-optional">Opcional</div>
-            <h3 class="pricing-name">Setup & Configuración</h3>
+            <div class="pricing-optional">{{ t('landing.pricing.optional') }}</div>
+            <h3 class="pricing-name">{{ t('landing.pricing.setup.title') }}</h3>
             <div class="pricing-price">
               <span class="price-currency">USD</span>
-              <span class="price-amount">100</span>
-              <span class="price-period">única vez</span>
+              <span class="price-amount">{{ t('landing.pricing.setup.amount') }}</span>
+              <span class="price-period">{{ t('landing.pricing.setup.period') }}</span>
             </div>
-            <p class="pricing-desc">Nosotros configuramos todo por vos. Listo en menos de 24 horas.</p>
+            <p class="pricing-desc">{{ t('landing.pricing.setup.desc') }}</p>
             <ul class="pricing-features">
-              <li>✓ Configuración completa del sistema</li>
-              <li>✓ Integración con tu CRM</li>
-              <li>✓ Alta de equipos y vendedores</li>
-              <li>✓ Configuración de webhooks</li>
-              <li>✓ Capacitación del equipo</li>
+              <li v-for="f in $tm('landing.pricing.setup.features')" :key="f">✓ {{ $rt(f) }}</li>
             </ul>
             <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
-              Consultar setup
+              {{ t('landing.pricing.setup.cta') }}
             </a>
           </div>
 
         </div>
-        <p class="pricing-note">¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante.</p>
+        <p class="pricing-note">{{ t('landing.pricing.note') }}</p>
       </div>
     </section>
 
@@ -444,9 +483,9 @@ onUnmounted(() => {
     <section class="section" id="faq">
       <div class="container">
         <div class="section-header">
-          <div class="section-tag">Preguntas frecuentes</div>
-          <h2 class="section-title">Todo lo que necesitás saber</h2>
-          <p class="section-sub">Si tenés más dudas, escribinos por WhatsApp y te respondemos al instante.</p>
+          <div class="section-tag">{{ t('landing.faq.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.faq.title') }}</h2>
+          <p class="section-sub">{{ t('landing.faq.subtitle') }}</p>
         </div>
         <div class="faq-list">
           <div
@@ -475,20 +514,18 @@ onUnmounted(() => {
         <div class="cta-box">
           <div class="badge-pill">
             <span class="badge-dot"></span>
-            Multi-tenant · Multi-equipo · Tiempo real
+            {{ t('landing.cta.badge') }}
           </div>
-          <h2 class="cta-title">¿Listo para empezar?</h2>
-          <p class="cta-sub">Registrate en segundos y empezá a distribuir leads hoy. 7 días gratis, sin tarjeta de crédito. Desde $25 USD/mes.</p>
+          <h2 class="cta-title">{{ t('landing.cta.title') }}</h2>
+          <p class="cta-sub">{{ t('landing.cta.subtitle') }}</p>
           <div class="cta-actions">
             <button @click="router.push('/register')" class="btn-primary btn-lg">
-              Empezar gratis →
+              {{ t('landing.cta.cta') }}
             </button>
-            <button @click="router.push('/login')" class="btn-ghost btn-lg">Ya tengo cuenta</button>
+            <button @click="router.push('/login')" class="btn-ghost btn-lg">{{ t('landing.cta.hasAccount') }}</button>
           </div>
           <div class="cta-feats">
-            <span>✓ Setup en 5 minutos</span>
-            <span>✓ Integración CRM</span>
-            <span>✓ Sin leads perdidos</span>
+            <span v-for="f in $tm('landing.cta.feats')" :key="f">✓ {{ $rt(f) }}</span>
           </div>
         </div>
       </div>
@@ -502,32 +539,32 @@ onUnmounted(() => {
             <a href="#" class="logo">
               <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 dark:brightness-0 dark:invert" />
             </a>
-            <p>Distribución inteligente de leads para equipos de ventas modernos.</p>
+            <p>{{ t('landing.footer.desc') }}</p>
           </div>
           <div class="footer-links">
             <div class="footer-col">
-              <span class="fcol-title">Producto</span>
-              <a href="#features">Funciones</a>
-              <a href="#how">Cómo funciona</a>
-              <a href="#integraciones">Integraciones</a>
-              <a href="#pricing">Precios</a>
+              <span class="fcol-title">{{ t('landing.footer.product') }}</span>
+              <a href="#features">{{ t('nav.features') }}</a>
+              <a href="#how">{{ t('nav.howItWorks') }}</a>
+              <a href="#integraciones">{{ t('nav.integrations') }}</a>
+              <a href="#pricing">{{ t('nav.pricing') }}</a>
             </div>
             <div class="footer-col">
-              <span class="fcol-title">Acceso</span>
-              <button @click="router.push('/login')" class="footer-link-btn">Iniciar sesión</button>
-              <button @click="router.push('/register')" class="footer-link-btn">Crear cuenta</button>
+              <span class="fcol-title">{{ t('landing.footer.access') }}</span>
+              <button @click="router.push('/login')" class="footer-link-btn">{{ t('auth.login') }}</button>
+              <button @click="router.push('/register')" class="footer-link-btn">{{ t('auth.register') }}</button>
             </div>
             <div class="footer-col">
-              <span class="fcol-title">Legal</span>
-              <button @click="router.push('/privacy')" class="footer-link-btn">Política de privacidad</button>
-              <button @click="router.push('/terms')" class="footer-link-btn">Términos de servicio</button>
+              <span class="fcol-title">{{ t('landing.footer.legal') }}</span>
+              <button @click="router.push('/privacy')" class="footer-link-btn">{{ t('auth.privacyPolicy') }}</button>
+              <button @click="router.push('/terms')" class="footer-link-btn">{{ t('auth.termsOfService') }}</button>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
-          © 2026 LeadDistro. Todos los derechos reservados. ·
-          <button @click="router.push('/privacy')" class="footer-inline-link">Privacidad</button> ·
-          <button @click="router.push('/terms')" class="footer-inline-link">Términos</button>
+          {{ t('landing.footer.rights') }} ·
+          <button @click="router.push('/privacy')" class="footer-inline-link">{{ t('nav.privacy') }}</button> ·
+          <button @click="router.push('/terms')" class="footer-inline-link">{{ t('nav.terms') }}</button>
         </div>
       </div>
     </footer>
@@ -538,147 +575,132 @@ onUnmounted(() => {
     href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20LeadDistro%20para%20mi%20equipo%20de%20ventas"
     target="_blank"
     class="wa-float"
-    title="Contactar por WhatsApp"
+    :title="t('landing.footer.waTitle')"
   >
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-label">¿Consultas?</span>
+    <span class="wa-label">{{ t('landing.footer.waTitle') }}</span>
   </a>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      openFaq: null,
-      faqs: [
-        {
-          q: '¿Cómo funciona la distribución automática de leads?',
-          a: 'Cuando tu CRM envía un lead al webhook de LeadDistro, el sistema identifica el equipo destino según los porcentajes configurados, y dentro de ese equipo selecciona al vendedor con mayor capacidad disponible (menor ratio carga/límite). Todo ocurre en milisegundos y el resultado vuelve al CRM automáticamente.'
-        },
-        {
-          q: '¿Con qué CRMs se integra LeadDistro?',
-          a: 'LeadDistro se integra con cualquier plataforma que soporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n y muchos más. Si tu CRM puede enviar un HTTP POST, funciona con LeadDistro.'
-        },
-        {
-          q: '¿Qué pasa si todos los vendedores alcanzan su límite?',
-          a: 'Podés configurar hasta 2 vendedores de respaldo (fallback). Cuando todos los vendedores activos alcanzan su límite diario o semanal, los leads se redirigen automáticamente a esos vendedores de respaldo. Así nunca queda un lead sin asignar.'
-        },
-        {
-          q: '¿Puedo tener múltiples equipos con distribuciones distintas?',
-          a: 'Sí. Podés crear tantos equipos como necesitás y asignarle a cada uno un porcentaje del total de leads. Por ejemplo: Equipo A recibe 60% y Equipo B el 40%. Cada equipo tiene sus propios vendedores, límites y configuraciones.'
-        },
-        {
-          q: '¿Qué sucede cuando vence el período de prueba?',
-          a: 'Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $25 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta.'
-        },
-        {
-          q: '¿Puedo cancelar en cualquier momento?',
-          a: 'Sí, sin permanencia ni penalidades. Al cancelar tu suscripción no se renueva el siguiente mes. Tus datos permanecen disponibles hasta el final del período pagado.'
-        },
-        {
-          q: '¿Los datos de mis leads están seguros?',
-          a: 'Sí. Cada empresa tiene su propio tenant aislado — ningún dato es accesible desde otra cuenta. Las comunicaciones van cifradas por HTTPS y las contraseñas se guardan con hash bcrypt. No compartimos ni vendemos datos de ningún tipo.'
-        },
-        {
-          q: '¿Qué incluye el servicio de setup?',
-          a: 'El servicio de setup ($100 USD, pago único) incluye: configuración completa del sistema, integración con tu CRM, alta de equipos y vendedores, configuración de webhooks y una sesión de capacitación para tu equipo. Todo listo en menos de 24 horas.'
-        }
-      ],
-      mockSellers: [
+  computed: {
+    faqs() {
+      return this.$tm('landing.faq.items').map(item => ({
+        q: this.$rt(item.q),
+        a: this.$rt(item.a)
+      }))
+    },
+    mockSellers() {
+      return [
         { name: 'Karla Perez', initials: 'KP', color: '#3b82f6', pct: 43, count: 43, limit: 60 },
         { name: 'Christopher Valles', initials: 'CV', color: '#22c55e', pct: 35, count: 32, limit: 90 },
         { name: 'Adrian Anez', initials: 'AA', color: '#eab308', pct: 67, count: 40, limit: 60 }
-      ],
-      algoSteps: [
-        { n: '1', text: 'Lead entra por webhook desde el CRM', success: false },
-        { n: '2', text: 'Se determina el equipo target por porcentaje', success: false },
-        { n: '3', text: 'Se selecciona el vendedor con menor ratio', success: false },
-        { n: '✓', text: 'Lead asignado y notificado automáticamente', success: true }
-      ],
-      features: [
+      ]
+    },
+    algoSteps() {
+      return [
+        { n: '1', text: this.$t('landing.features.algoSteps.1'), success: false },
+        { n: '2', text: this.$t('landing.features.algoSteps.2'), success: false },
+        { n: '3', text: this.$t('landing.features.algoSteps.3'), success: false },
+        { n: '✓', text: this.$t('landing.features.algoSteps.4'), success: true }
+      ]
+    },
+    features() {
+      const items = this.$tm('landing.features.items')
+      return [
         {
-          title: 'Equipos con porcentajes configurables',
-          desc: 'Dividí tu fuerza de ventas en equipos y definí qué porcentaje de los leads recibe cada uno. CH 60% — MH 40%, o cualquier combinación que sume 100%.',
+          title: this.$rt(items.teams.title),
+          desc: this.$rt(items.teams.desc),
           iconClass: 'icon-green',
           icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'
         },
         {
-          title: 'Límites diarios y semanales por vendedor',
-          desc: 'Configurá cuántos leads puede manejar cada vendedor por día y por semana. Cuando llega al límite, el sistema lo salta automáticamente.',
+          title: this.$rt(items.limits.title),
+          desc: this.$rt(items.limits.desc),
           iconClass: 'icon-purple',
           icon: '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'
         },
         {
-          title: 'Vendedores de respaldo (Fallback)',
-          desc: 'Configurá hasta 2 vendedores de respaldo. Cuando todos alcanzan su límite, los nuevos leads se redirigen a ellos para que nunca quede uno sin asignar.',
+          title: this.$rt(items.fallback.title),
+          desc: this.$rt(items.fallback.desc),
           iconClass: 'icon-orange',
           icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>'
         },
         {
-          title: 'Dashboard de métricas en tiempo real',
-          desc: 'Visualizá leads por vendedor, etapas del funnel, estados y distribución por equipos. Filtrá por período, vendedor, equipo o etapa.',
+          title: this.$rt(items.metrics.title),
+          desc: this.$rt(items.metrics.desc),
           iconClass: 'icon-cyan',
           icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'
         }
-      ],
-      steps: [
+      ]
+    },
+    steps() {
+      const steps = this.$tm('landing.howItWorks.steps')
+      return [
         {
-          title: 'Webhook desde el CRM',
-          desc: 'Tu CRM envía automáticamente el lead a la URL única de tu tenant. Solo pegás la URL en tu workflow.',
+          title: this.$rt(steps['1'].title),
+          desc: this.$rt(steps['1'].desc),
           icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>'
         },
         {
-          title: 'Algoritmo de asignación',
-          desc: 'El sistema determina el equipo por porcentaje y selecciona al vendedor con más capacidad disponible (menor ratio carga/límite).',
+          title: this.$rt(steps['2'].title),
+          desc: this.$rt(steps['2'].desc),
           icon: '<circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>'
         },
         {
-          title: 'Notificación al vendedor',
-          desc: 'Tu CRM recibe el webhook de respuesta con los datos del vendedor asignado y ejecuta tu workflow de notificación.',
+          title: this.$rt(steps['3'].title),
+          desc: this.$rt(steps['3'].desc),
           icon: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 15.1"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>'
         },
         {
-          title: 'Lead registrado',
-          desc: 'El lead queda en LeadDistro con vendedor, equipo, etapa y fecha. Disponible en el dashboard con todos los filtros.',
+          title: this.$rt(steps['4'].title),
+          desc: this.$rt(steps['4'].desc),
           icon: '<polyline points="20 6 9 17 4 12"/>'
         }
-      ],
-      roles: [
+      ]
+    },
+    roles() {
+      const items = this.$tm('landing.roles.items')
+      return [
         {
           name: 'Manager',
           class: 'role-manager',
           badgeClass: 'badge-blue',
           iconClass: 'ricon-blue',
-          title: 'Manager del equipo',
-          desc: 'Acceso completo a su tenant. Configura equipos, vendedores, períodos, etapas e integración con el CRM.',
+          title: this.$rt(items.manager.title),
+          desc: this.$rt(items.manager.desc),
           icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-          perms: ['✓ Dashboard completo con filtros', '✓ Crear/editar/eliminar vendedores', '✓ Configurar equipos y % distribución', '✓ Configurar integración CRM', '✓ Exportar leads a CSV', '✓ Gestionar usuarios del tenant']
+          perms: items.manager.perms.map(p => this.$rt(p))
         },
         {
           name: 'Viewer',
           class: 'role-viewer',
           badgeClass: 'badge-yellow',
           iconClass: 'ricon-yellow',
-          title: 'Visor / Supervisor',
-          desc: 'Puede ver todos los leads y editar su información, pero no puede crear ni eliminar registros ni acceder a configuración.',
+          title: this.$rt(items.viewer.title),
+          desc: this.$rt(items.viewer.desc),
           icon: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
-          perms: ['✓ Ver todos los leads del tenant', '✓ Editar etapa y datos del lead', '✓ Dashboard con métricas generales', '✗ No puede crear ni eliminar', '✗ Sin acceso a configuración']
+          perms: items.viewer.perms.map(p => this.$rt(p))
         },
         {
           name: 'Seller',
           class: 'role-seller',
           badgeClass: 'badge-green',
           iconClass: 'ricon-green',
-          title: 'Vendedor',
-          desc: 'Accede solo a sus propios leads asignados. Ve sus métricas individuales de capacidad y puede gestionar el estado de sus leads.',
+          title: this.$rt(items.seller.title),
+          desc: this.$rt(items.seller.desc),
           icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
-          perms: ['✓ Ver sus propios leads asignados', '✓ Editar etapa de sus leads', '✓ Exportar leads a CSV', '✓ Ver sus métricas individuales', '✗ No ve leads de otros vendedores', '✗ Sin acceso a configuración']
+          perms: items.seller.perms.map(p => this.$rt(p))
         }
-      ],
-      integrations: [
+      ]
+    },
+    integrations() {
+      const items = this.$tm('landing.integrations.items')
+      return [
         {
           name: 'GoHighLevel',
-          desc: 'El aliado #1 para agencias GHL',
+          desc: this.$rt(items.ghl.desc),
           status: 'optimized',
           bg: 'rgba(34,197,94,0.12)',
           color: '#22c55e',
@@ -686,7 +708,7 @@ export default {
         },
         {
           name: 'Kommo (amoCRM)',
-          desc: 'Potenciá tus ventas por WhatsApp',
+          desc: this.$rt(items.kommo.desc),
           status: 'webhook',
           bg: 'rgba(59,130,246,0.12)',
           color: '#3b82f6',
@@ -694,7 +716,7 @@ export default {
         },
         {
           name: 'monday.com',
-          desc: 'El cerebro de asignación para monday',
+          desc: this.$rt(items.monday.desc),
           status: 'webhook',
           bg: 'rgba(0,202,114,0.12)',
           color: '#00ca72',
@@ -702,7 +724,7 @@ export default {
         },
         {
           name: 'HubSpot',
-          desc: 'Distribución inteligente para tu CRM',
+          desc: this.$rt(items.hubspot.desc),
           status: 'webhook',
           bg: 'rgba(249,115,22,0.12)',
           color: '#f97316',
@@ -710,7 +732,7 @@ export default {
         },
         {
           name: 'Clientify',
-          desc: 'Impulsá tu CRM de marketing',
+          desc: this.$rt(items.clientify.desc),
           status: 'webhook',
           bg: 'rgba(225,29,72,0.12)',
           color: '#e11d48',
@@ -718,26 +740,44 @@ export default {
         },
         {
           name: 'Make / Zapier',
-          desc: 'Conectá con más de 3000 apps',
+          desc: this.$rt(items.make.desc),
           status: 'webhook',
           bg: 'rgba(139,92,246,0.12)',
           color: '#8b5cf6',
           icon: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'
         }
-      ],
-      intSteps: [
-        { title: 'Copiás la URL del webhook', desc: 'Desde configuración de LeadDistro, copiás la URL única de tu tenant.' },
-        { title: 'Pegala en tu workflow del CRM', desc: 'En el workflow de "nuevo contacto" de tu CRM, agregás la acción webhook apuntando a esa URL.' },
-        { title: 'Configurás el webhook de respuesta', desc: 'LeadDistro te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM.' }
-      ],
-      comparisonFeatures: [
-        { name: 'Distribución Round Robin Simple', native: 'Básico', leaddistro: 'Avanzado' },
-        { name: 'Límites diarios por vendedor', native: false, leaddistro: true },
-        { name: 'Límites semanales por vendedor', native: false, leaddistro: true },
-        { name: 'Distribución por % exactos', native: false, leaddistro: true },
-        { name: 'Vendedores de respaldo (Fallback)', native: false, leaddistro: true },
-        { name: 'Métricas de capacidad en tiempo real', native: false, leaddistro: true }
       ]
+    },
+    intSteps() {
+      const steps = this.$tm('landing.integrations.config.steps')
+      return [
+        { title: this.$rt(steps['1'].title), desc: this.$rt(steps['1'].desc) },
+        { title: this.$rt(steps['2'].title), desc: this.$rt(steps['2'].desc) },
+        { title: this.$rt(steps['3'].title), desc: this.$rt(steps['3'].desc) }
+      ]
+    },
+    comparisonFeatures() {
+      const items = this.$tm('landing.comparison.items')
+      const vals = this.$tm('landing.comparison.values')
+      return [
+        { name: this.$rt(items.roundRobin), native: this.$rt(vals.basic), leaddistro: this.$rt(vals.advanced) },
+        { name: this.$rt(items.dailyLimits), native: false, leaddistro: true },
+        { name: this.$rt(items.weeklyLimits), native: false, leaddistro: true },
+        { name: this.$rt(items.percent), native: false, leaddistro: true },
+        { name: this.$rt(items.fallback), native: false, leaddistro: true },
+        { name: this.$rt(items.metrics), native: false, leaddistro: true }
+      ]
+    },
+    availabilityItems() {
+      return this.$tm('landing.availability.items').map(item => ({
+        region: this.$rt(item.region),
+        countries: this.$rt(item.countries)
+      }))
+    }
+  },
+  data() {
+    return {
+      openFaq: null
     }
   }
 }
@@ -795,6 +835,25 @@ export default {
   transition: opacity 0.2s, transform 0.2s;
 }
 .btn-nav:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.lang-toggle-nav {
+  font-size: 0.8rem; font-weight: 700; color: #94a3b8;
+  padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03); cursor: pointer;
+  transition: all 0.2s; margin-left: 8px;
+}
+.lang-toggle-nav:hover { color: #fff; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+
+.mobile-lang-row {
+  padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 8px;
+}
+.mobile-lang-btn {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: #fff; padding: 8px 16px; border-radius: 8px; font-weight: 600;
+  width: 100%; text-align: center; cursor: pointer;
+}
+
 .nav-mobile-right {
   display: none; align-items: center; gap: 8px; margin-left: auto;
 }
@@ -1295,5 +1354,50 @@ export default {
   .step-connector { display: none; }
   .dashboard-card { width: min(360px, 100%); }
   .integrations-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== AVAILABILITY TABLE ===== */
+.availability-table-wrapper {
+  margin-top: 40px;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+.availability-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.availability-table th, .availability-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.availability-table th {
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.availability-table tr:last-child td { border-bottom: none; }
+.region-name { 
+  width: 200px; 
+  color: #f1f5f9; 
+  font-size: 1rem;
+  white-space: nowrap;
+}
+.countries-list {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .availability-table th, .availability-table td { padding: 16px; }
+  .region-name { width: auto; font-size: 0.9rem; }
+  .countries-list { font-size: 0.85rem; }
 }
 </style>

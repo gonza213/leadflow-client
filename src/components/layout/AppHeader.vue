@@ -3,7 +3,10 @@ import { ref } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import HelpModal from './HelpModal.vue'
+
+const { locale } = useI18n()
 
 const authStore = useAuthStore()
 const uiStore = useUiStore()
@@ -13,6 +16,13 @@ const showHelp = ref(false)
 const handleLogout = () => {
   authStore.logout()
   router.push('/login')
+}
+
+const toggleLanguage = () => {
+  const newLocale = locale.value === 'pt-BR' ? 'es' : 'pt-BR'
+  locale.value = newLocale
+  localStorage.setItem('user-locale', newLocale)
+  document.documentElement.lang = newLocale
 }
 
 const handleToggleDarkMode = () => {
@@ -43,6 +53,14 @@ const handleToggleDarkMode = () => {
     </div>
 
     <div class="flex items-center gap-2 lg:gap-3">
+      <!-- Language switch -->
+      <button @click="toggleLanguage"
+        class="flex items-center gap-1.5 px-2 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        :title="locale === 'pt-BR' ? 'Mudar para Espanhol' : 'Mudar para Português'">
+        <span v-if="locale === 'pt-BR'">🇧🇷 PT</span>
+        <span v-else>🇦🇷 ES</span>
+      </button>
+
       <!-- Dark mode toggle -->
       <button id="tour-darkmode" @click="handleToggleDarkMode"
         class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"

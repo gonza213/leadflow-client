@@ -1,0 +1,304 @@
+{
+  "nav": {
+    "features": "Funciones",
+    "howItWorks": "Cómo funciona",
+    "roles": "Roles",
+    "integrations": "Integraciones",
+    "pricing": "Precios",
+    "faq": "FAQ",
+    "login": "Iniciar sesión",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio"
+  },
+  "hero": {
+    "badge": "Para agencias en LATAM, Asia y África",
+    "title": "Distribución de leads",
+    "titleGradient": "inteligente y automática",
+    "subtitle": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.",
+    "ctaPrimary": "Empezar gratis",
+    "ctaSecondary": "Ya tengo cuenta",
+    "trust": {
+      "trial": "7 días gratis",
+      "noCard": "Sin tarjeta de crédito",
+      "setup": "Setup en 5 minutos",
+      "cancel": "Cancelás cuando querés"
+    },
+    "stats": {
+      "assigned": "Leads asignados",
+      "price": "Por mes, sin contratos",
+      "crms": "CRMs compatibles"
+    }
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "leads": "Leads",
+    "sellers": "Vendedores",
+    "users": "Usuarios",
+    "integrations": "Integraciones",
+    "summaries": "Resúmenes IA",
+    "billing": "Facturación",
+    "config": "Configuración",
+    "support": "Soporte",
+    "tenants": "Tenants",
+    "subscriptions": "Suscripciones",
+    "tickets": "Tickets"
+  },
+  "auth": {
+    "login": "Ingresar",
+    "loginTitle": "Iniciar sesión",
+    "register": "Crear cuenta",
+    "email": "Email",
+    "password": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tenés cuenta?",
+    "hasAccount": "¿Ya tenés cuenta?",
+    "entering": "Ingresando...",
+    "creating": "Creando cuenta...",
+    "errorEmpty": "Por favor ingresa email y contraseña",
+    "subscriptionInactive": "Tu suscripción está inactiva",
+    "activateSubscription": "Activar suscripción",
+    "recoverPassword": "Recuperar contraseña",
+    "sendLink": "Enviar enlace",
+    "sentLink": "Si el email está registrado, recibirás un enlace para restablecer tu contraseña.",
+    "companyName": "Nombre de la empresa",
+    "companyPlaceholder": "Ej: Mi Agencia",
+    "yourName": "Tu nombre",
+    "namePlaceholder": "Juan García",
+    "passwordMin": "Mínimo 6 caracteres",
+    "acceptTerms": "Acepto los",
+    "termsOfService": "Términos de Servicio",
+    "andThe": "y la",
+    "privacyPolicy": "Política de Privacidad",
+    "createFreeAccount": "Crear cuenta gratis",
+    "requiredFields": "Todos los campos son requeridos",
+    "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+    "acceptTermsError": "Debés aceptar los Términos de Servicio y la Política de Privacidade para continuar"
+  },
+  "meta": {
+    "title": "LeadDistro | Distribución Automática de Leads para Agencias",
+    "description": "Optimiza tu equipo de ventas con LeadDistro. Asignación inteligente de leads, límites por vendedor y dashboard en tiempo real para HubSpot, GHL y monday.com.",
+    "ogTitle": "LeadDistro | Distribución Inteligente de Leads",
+    "ogDescription": "Asigna cada lead al vendedor correcto automáticamente según capacidad y límites. Integración con cualquier CRM.",
+    "keywords": "lead distribution, automatización ventas, round robin, hubspot integration, gohighlevel leads, monday.com leads",
+    "schemaDescription": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos."
+  },
+  "landing": {
+    "features": {
+      "tag": "Funcionalidades",
+      "title": "Todo lo que necesita tu equipo de ventas",
+      "subtitle": "Un sistema diseñado para que ningún lead quede sin atender y cada vendedor trabaje a su máxima capacidad.",
+      "algoTitle": "Distribución automática con algoritmo inteligente",
+      "algoDesc": "Cada lead entrante se asigna al vendedor más disponible del equipo proporcional. El algoritmo considera capacidad semanal, carga diaria y ratio del vendedor.",
+      "algoSteps": {
+        "1": "Lead entra por webhook desde el CRM",
+        "2": "Se determina el equipo target por porcentaje",
+        "3": "Se selecciona el vendedor con menor ratio",
+        "4": "Lead asignado y notificado automáticamente"
+      },
+      "items": {
+        "teams": {
+          "title": "Equipos con porcentajes configurables",
+          "desc": "Dividí tu fuerza de ventas en equipos y definí qué porcentaje de los leads recibe cada uno. CH 60% — MH 40%, o cualquier combinación que sume 100%."
+        },
+        "limits": {
+          "title": "Límites diarios y semanales por vendedor",
+          "desc": "Configurá cuántos leads puede manejar cada vendedor por día y por semana. Cuando llega al límite, el sistema lo salta automáticamente."
+        },
+        "fallback": {
+          "title": "Vendedores de respaldo (Fallback)",
+          "desc": "Configurá hasta 2 vendedores de respaldo. Cuando todos alcanzan su límite, los nuevos leads se redirigen a ellos para que nunca quede uno sin asignar."
+        },
+        "metrics": {
+          "title": "Dashboard de métricas en tiempo real",
+          "desc": "Visualizá leads por vendedor, etapas del funnel, estados y distribución por equipos. Filtrá por período, vendedor, equipo o etapa."
+        }
+      }
+    },
+    "howItWorks": {
+      "tag": "Flujo de trabajo",
+      "title": "Cómo funciona LeadDistro",
+      "subtitle": "Desde que entra un lead en tu CRM hasta que está en manos de tu vendedor — todo automático.",
+      "steps": {
+        "1": { "title": "Webhook desde el CRM", "desc": "Tu CRM envía automáticamente el lead a la URL única de tu tenant. Solo pegás la URL en tu workflow." },
+        "2": { "title": "Algoritmo de asignación", "desc": "El sistema determina el equipo por porcentaje y selecciona al vendedor con más capacidad disponible (menor ratio carga/límite)." },
+        "3": { "title": "Notificación al vendedor", "desc": "Tu CRM recibe el webhook de respuesta con los datos del vendedor asignado y ejecuta tu workflow de notificación." },
+        "4": { "title": "Lead registrado", "desc": "El lead queda en LeadDistro con vendedor, equipo, etapa y fecha. Disponible en el dashboard con todos los filtros." }
+      }
+    },
+    "roles": {
+      "tag": "Control de acceso",
+      "title": "Roles diseñados para tu equipo",
+      "subtitle": "Cada persona ve y puede hacer exactamente lo que necesita. Tu cuenta incluye Manager y Vendedores.",
+      "items": {
+        "manager": {
+          "title": "Manager del equipo",
+          "desc": "Acceso completo a su tenant. Configura equipos, vendedores, períodos, etapas e integración con el CRM.",
+          "perms": [
+            "✓ Dashboard completo con filtros",
+            "✓ Crear/editar/eliminar vendedores",
+            "✓ Configurar equipos y % distribución",
+            "✓ Configurar integración CRM",
+            "✓ Exportar leads a CSV",
+            "✓ Gestionar usuarios del tenant"
+          ]
+        },
+        "viewer": {
+          "title": "Visor / Supervisor",
+          "desc": "Puede ver todos los leads y editar su información, pero no puede crear ni eliminar registros ni acceder a configuración.",
+          "perms": [
+            "✓ Ver todos los leads del tenant",
+            "✓ Editar etapa y datos del lead",
+            "✓ Dashboard con métricas generales",
+            "✗ No puede crear ni eliminar",
+            "✗ Sin acceso a configuración"
+          ]
+        },
+        "seller": {
+          "title": "Vendedor",
+          "desc": "Accede solo a sus propios leads asignados. Ve sus métricas individuales de capacidad y puede gestionar el estado de sus leads.",
+          "perms": [
+            "✓ Ver sus propios leads asignados",
+            "✓ Editar etapa de sus leads",
+            "✓ Exportar leads a CSV",
+            "✓ Ver sus métricas individuales",
+            "✗ No ve leads de otros vendedores",
+            "✗ Sin acceso a configuración"
+          ]
+        }
+      }
+    },
+    "integrations": {
+      "tag": "Integraciones",
+      "title": "Integraciones con HubSpot, GoHighLevel y monday.com",
+      "subtitle": "LeadDistro se integra perfectamente con tu CRM y herramientas de automatización.",
+      "badges": { "optimized": "Optimizado", "webhook": "Webhook" },
+      "items": {
+        "ghl": { "desc": "El aliado #1 para agencias GHL" },
+        "kommo": { "desc": "Potenciá tus ventas por WhatsApp" },
+        "monday": { "desc": "El cerebro de asignación para monday" },
+        "hubspot": { "desc": "Distribución inteligente para tu CRM" },
+        "clientify": { "desc": "Impulsá tu CRM de marketing" },
+        "make": { "desc": "Conectá con más de 3000 apps" }
+      },
+      "config": {
+        "tag": "Cómo conectar",
+        "title": "Configuración en menos de 5 minutos",
+        "subtitle": "Solo necesitás copiar la URL de tu tenant y pegarla en el workflow de tu herramienta. Sin código, sin APIs complejas.",
+        "steps": {
+          "1": { "title": "Copiás la URL del webhook", "desc": "Desde configuración de LeadDistro, copiás la URL única de tu tenant." },
+          "2": { "title": "Pegala en tu workflow del CRM", "desc": "En el workflow de \"nuevo contacto\" de tu CRM, agregás la acción webhook apuntando a esa URL." },
+          "3": { "title": "Configurás el webhook de respuesta", "desc": "LeadDistro te envía el nombre del vendedor asignado para que puedas notificarlo desde tu CRM." }
+        }
+      }
+    },
+    "comparison": {
+      "tag": "Análisis Comparativo",
+      "title": "Por qué necesitás LeadDistro si ya tenés un CRM",
+      "subtitle": "Los CRMs son excelentes para gestionar datos, pero LeadDistro es el cerebro que optimiza la carga de trabajo de tu equipo.",
+      "headers": { "feat": "Funcionalidad", "crm": "CRM Nativo", "ld": "LeadDistro" },
+      "items": {
+        "roundRobin": "Distribución Round Robin Simple",
+        "dailyLimits": "Límites diarios por vendedor",
+        "weeklyLimits": "Límites semanales por vendedor",
+        "percent": "Distribución por % exactos",
+        "fallback": "Vendedores de respaldo (Fallback)",
+        "metrics": "Métricas de capacidad en tiempo real"
+      },
+      "values": { "basic": "Básico", "advanced": "Avanzado" },
+      "footer": "LeadDistro no reemplaza tu CRM, lo potencia para que ningún lead se pierda."
+    },
+    "availability": {
+      "tag": "Disponibilidad",
+      "title": "Países Disponibles",
+      "subtitle": "LeadDistro está operando para agencias en los mercados con mayor crecimiento.",
+      "headers": {
+        "region": "Región",
+        "countries": "Países"
+      },
+      "items": [
+        { "region": "Latinoamérica", "countries": "Argentina, Bolivia, Brasil, Chile, Colombia, Costa Rica, Ecuador, Guatemala, México, Paraguay, Panamá, Perú y Uruguay." },
+        { "region": "Asia", "countries": "Indonesia y Malasia." },
+        { "region": "África", "countries": "Kenia y Nigeria." }
+      ]
+    },
+    "pricing": {
+      "tag": "Precios",
+      "title": "Simple y transparente",
+      "subtitle": "Un solo plan, sin contratos anuales. Pagás mes a mes y cancelás cuando quieras.",
+      "mostPopular": "Más popular",
+      "optional": "Opcional",
+      "monthly": {
+        "title": "Plan Mensual",
+        "desc": "Todo lo que necesita tu agencia para no perder ni un lead.",
+        "period": "/ mes",
+        "features": [
+          "Vendedores ilimitados",
+          "Leads ilimitados",
+          "Multi-equipo con % configurables",
+          "Dashboard en tiempo real",
+          "Integración con cualquier CRM",
+          "Exportación de leads a CSV",
+          "Soporte incluido"
+        ]
+      },
+      "setup": {
+        "title": "Setup & Configuración",
+        "amount": "100",
+        "period": "única vez",
+        "desc": "Nosotros configuramos todo por vos. Listo en menos de 24 horas.",
+        "features": [
+          "Configuración completa del sistema",
+          "Integración con tu CRM",
+          "Alta de equipos y vendedores",
+          "Configuración de webhooks",
+          "Capacitación del equipo"
+        ],
+        "cta": "Consultar setup"
+      },
+      "cta": "Empezar gratis",
+      "note": "¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante."
+    },
+    "faq": {
+      "tag": "Preguntas frecuentes",
+      "title": "Todo lo que necesitás saber",
+      "subtitle": "Si tenés más dudas, escribinos por WhatsApp y te respondemos al instante.",
+      "items": [
+        { "q": "¿Cómo funciona la distribución automática de leads?", "a": "Cuando tu CRM envía un lead al webhook de LeadDistro, el sistema identifica el equipo destino según los porcentajes configurados, y dentro de ese equipo selecciona al vendedor con mayor capacidad disponible (menor ratio carga/límite). Todo ocurre en milisegundos y el resultado vuelve al CRM automáticamente." },
+        { "q": "¿Con qué CRMs se integra LeadDistro?", "a": "LeadDistro se integra con cualquier plataforma que soporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n y muchos más. Si tu CRM puede enviar un HTTP POST, funciona con LeadDistro." },
+        { "q": "¿Qué pasa si todos los vendedores alcanzan su límite?", "a": "Podés configurar hasta 2 vendedores de respaldo (fallback). Cuando todos los vendedores activos alcanzan su límite diario o semanal, los leads se redirigen automáticamente a esos vendedores de respaldo. Así nunca queda un lead sin asignar." },
+        { "q": "¿Puedo tener múltiples equipos con distribuciones distintas?", "a": "Sí. Podés crear tantos equipos como necesitás y asignarle a cada uno un porcentaje del total de leads. Por ejemplo: Equipo A recibe 60% y Equipo B el 40%. Cada equipo tiene sus propios vendedores, límites y configuraciones." },
+        { "q": "¿Qué sucede cuando vence el período de prueba?", "a": "Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $25 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta." },
+        { "q": "¿Puedo cancelar en cualquier momento?", "a": "Sí, sin permanencia ni penalidades. Al cancelar tu suscripción no se renueva el siguiente mes. Tus datos permanecen disponibles hasta el final del período pagado." },
+        { "q": "¿Los datos de mis leads están seguros?", "a": "Sí. Cada empresa tiene su propio tenant aislado — ningún dato es accesible desde otra cuenta. Las comunicaciones van cifradas por HTTPS y las contraseñas se guardan con hash bcrypt. No compartimos ni vendemos datos de ningún tipo." },
+        { "q": "¿Qué incluye el servicio de setup?", "a": "El servicio de setup ($100 USD, pago único) incluye: configuración completa del sistema, integración con tu CRM, alta de equipos y vendedores, configuración de webhooks y una sesión de capacitación para tu equipo. Todo listo en menos de 24 horas." }
+      ]
+    },
+    "cta": {
+      "badge": "Multi-tenant · Multi-equipo · Tiempo real",
+      "title": "¿Listo para empezar?",
+      "subtitle": "Registrate en segundos y empezá a distribuir leads hoy. 7 días gratis, sin tarjeta de crédito. Desde $25 USD/mes.",
+      "cta": "Empezar gratis →",
+      "hasAccount": "Ya tengo cuenta",
+      "feats": ["Setup en 5 minutos", "Integración CRM", "Sin leads perdidos"]
+    },
+    "footer": {
+      "desc": "Distribución inteligente de leads para equipos de ventas modernos.",
+      "product": "Producto",
+      "access": "Acceso",
+      "legal": "Legal",
+      "rights": "© 2026 LeadDistro. Todos los derechos reservados.",
+      "waTitle": "¿Consultas?"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "back": "Volver",
+    "logout": "Cerrar sesión",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar"
+  }
+}

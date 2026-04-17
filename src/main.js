@@ -1,6 +1,7 @@
 import { ViteSSG } from 'vite-ssg'
-import { createHead } from '@unhead/vue'
 import { createPinia } from 'pinia'
+import { createHead } from '@unhead/vue'
+import i18n from './i18n'
 import VueApexCharts from 'vue3-apexcharts'
 import App from './App.vue'
 import { routes } from './router'
@@ -15,7 +16,13 @@ export const createApp = ViteSSG(
     const head = createHead()
     app.use(pinia)
     app.use(head)
+    app.use(i18n)
     app.use(VueApexCharts)
+
+    // Actualizar atributo lang en <html>
+    if (!import.meta.env.SSR) {
+      document.documentElement.lang = i18n.global.locale.value
+    }
 
     if (import.meta.env.SSR) {
       router.beforeEach((_to, _from, next) => next())
