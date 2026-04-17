@@ -125,7 +125,16 @@ const handleSubmit = async () => {
                 </button>
               </div>
             </div>
+            <div v-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
+              {{ error }}
+            </div>
 
+            <button
+              type="submit"
+              class="btn btn-primary w-full"
+              :disabled="loading"
+            >
+              {{ loading ? t('common.loading') : t('auth.reset.title') }}
             </button>
           </form>
         </template>
