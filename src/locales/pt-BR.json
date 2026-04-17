@@ -72,7 +72,8 @@
     "createFreeAccount": "Criar conta grátis",
     "requiredFields": "Todos os campos são obrigatórios",
     "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
-    "acceptTermsError": "Você deve aceitar os Termos de Serviço e a Política de Privacidade para continuar"
+    "acceptTermsError": "Você deve aceitar os Termos de Serviço e a Política de Privacidade para continuar",
+    "logout": "Sair"
   },
   "meta": {
     "title": "LeadDistro | Distribuição Automática de Leads para Agências",
@@ -503,6 +504,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "loading": "Carregando métricas...",
     "summary": {
       "title": "Resumo Inteligente com IA",
       "info": "O sistema gera automaticamente um resumo de métricas com OpenAI e o envia para o webhook configurado (Make, Zapier, etc.).",
@@ -592,8 +594,8 @@
     },
     "edit": {
       "title": "Editar Lead",
-      "loading": "Salvando...",
-      "noChanges": "Sem alteração"
+      "loading": "Salvando alterações...",
+      "noChanges": "Sem alterações"
     },
     "delete": {
       "title": "Excluir Lead",

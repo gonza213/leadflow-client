@@ -1,0 +1,975 @@
+{
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How it works",
+    "roles": "Roles",
+    "integrations": "Integrations",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "login": "Login",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "hero": {
+    "badge": "For agencies in LATAM, Asia and Africa",
+    "title": "Lead distribution",
+    "titleGradient": "smart and automatic",
+    "subtitle": "LeadDistro assigns each lead to the right seller based on capacity, team, and limits — no manual intervention, no lost leads.",
+    "ctaPrimary": "Start for free",
+    "ctaSecondary": "I already have an account",
+    "trust": {
+      "trial": "7-day free trial",
+      "noCard": "No credit card required",
+      "setup": "5-minute setup",
+      "cancel": "Cancel anytime"
+    },
+    "stats": {
+      "assigned": "Leads assigned",
+      "price": "Per month, no contracts",
+      "crms": "Compatible CRMs"
+    }
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "leads": "Leads",
+    "sellers": "Sellers",
+    "users": "Users",
+    "integrations": "Integrations",
+    "summaries": "AI Summaries",
+    "billing": "Billing",
+    "config": "Settings",
+    "support": "Support",
+    "tenants": "Tenants",
+    "subscriptions": "Subscriptions",
+    "tickets": "Tickets"
+  },
+  "auth": {
+    "login": "Login",
+    "loginTitle": "Sign In",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "entering": "Signing in...",
+    "recoverPassword": "Recover Password",
+    "sentLink": "We've sent a link to your email to recover your password.",
+    "sendLink": "Send Link",
+    "errorEmpty": "Please complete all fields",
+    "subscriptionInactive": "Your subscription is inactive",
+    "yourName": "Your name",
+    "namePlaceholder": "John Doe",
+    "passwordMin": "Minimum 6 characters",
+    "acceptTerms": "I accept the",
+    "termsOfService": "Terms of Service",
+    "andThe": "and the",
+    "privacyPolicy": "Privacy Policy",
+    "createFreeAccount": "Create free account",
+    "requiredFields": "All fields are required",
+    "passwordTooShort": "Password must be at least 6 characters long",
+    "acceptTermsError": "You must accept the terms and conditions",
+    "registerError": "Registration error",
+    "reset": {
+      "title": "New password",
+      "confirmPassword": "Confirm password",
+      "repeat": "Repeat password",
+      "passwordUpdated": "Password updated",
+      "canLogin": "You can now log in with your new password.",
+      "goToLogin": "Go to login",
+      "passwordsNoMatch": "Passwords do not match",
+      "invalidLink": "The link is invalid or has expired"
+    },
+    "logout": "Logout"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: April 11, 2026",
+    "metaDescription": "Learn how LeadDistro protects your data and the privacy of your information and your leads' information.",
+    "s1": {
+      "title": "1. Information we collect",
+      "desc": "LeadDistro collects the following information when you use our service:",
+      "l1": "Account data: name, email, and password (stored with bcrypt hash) upon registration.",
+      "l2": "Company data: organization name and sales team configuration.",
+      "l3": "Lead data: the prospect information your CRM sends through the LeadDistro API (name, email, phone, or other fields you configure).",
+      "l4": "Usage data: activity logs, access IP, and service usage metrics."
+    },
+    "s2": {
+      "title": "2. How we use your information",
+      "desc": "We use the collected information to:",
+      "l1": "Provide, maintain, and improve the lead distribution service.",
+      "l2": "Process and manage your subscription.",
+      "l3": "Send you transactional notifications (account confirmation, limit alerts, password recovery).",
+      "l4": "Detect and prevent fraud or unauthorized use.",
+      "footer": "We do not sell, rent, or share your personal information with third parties for commercial purposes."
+    },
+    "s3": {
+      "title": "3. Data isolation between tenants",
+      "desc": "Each company (tenant) operates in a completely isolated environment. Your leads, sellers, and configuration data are never accessible from another account. Isolation is implemented at the database level through unique tenant identifiers on each record."
+    },
+    "s4": {
+      "title": "4. Data security",
+      "desc": "We implement the following security measures:",
+      "l1": "All communications are encrypted via HTTPS/TLS.",
+      "l2": "Passwords are stored with bcrypt hash (never in plain text).",
+      "l3": "API access requires authentication via JWT with expiration.",
+      "l4": "Data is stored in MongoDB Atlas with automatic backups."
+    },
+    "s5": {
+      "title": "5. Third-party services",
+      "desc": "LeadDistro uses the following service providers:",
+      "l1": "MongoDB Atlas — data storage.",
+      "l2": "Resend — transactional email delivery.",
+      "l3": "dLocalGo — payment processing and subscriptions.",
+      "l4": "Vercel — frontend hosting.",
+      "l5": "Koyeb — backend hosting.",
+      "footer": "These providers have their own privacy policies and only receive the information necessary to provide their service."
+    },
+    "s6": {
+      "title": "6. Data retention and deletion",
+      "desc": "Your data is kept as long as your account is active. If you cancel your account, you can request the complete deletion of your data through support. Billing data may be kept for legal obligations according to applicable law."
+    },
+    "s7": {
+      "title": "7. Your rights",
+      "desc": "You have the right to:",
+      "l1": "Access the personal data we have about you.",
+      "l2": "Correct incorrect information.",
+      "l3": "Request the deletion of your account and data.",
+      "l4": "Export your leads in CSV format from the dashboard.",
+      "footer": "To exercise any of these rights, contact us through support."
+    },
+    "s8": {
+      "title": "8. Changes to this policy",
+      "desc": "We may update this policy occasionally. We will notify you of significant changes via email. Continued use of the service after the changes implies your acceptance of the new policy."
+    },
+    "s9": {
+      "title": "9. Contact",
+      "desc": "For inquiries about this privacy policy, contact us through support or visit www.leaddistro.site."
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "updated": "Last updated: April 11, 2026",
+    "metaDescription": "Read the terms and conditions of use for the LeadDistro platform.",
+    "s1": {
+      "title": "1. Acceptance of terms",
+      "desc": "By creating an account and using LeadDistro, you accept these Terms of Service in their entirety. If you do not agree with any of these terms, you may not use the service."
+    },
+    "s2": {
+      "title": "2. Description of service",
+      "desc": "LeadDistro is a SaaS platform for automatic lead distribution for sales teams. The service includes:",
+      "l1": "Automatic lead distribution via webhook and assignment algorithm by teams and sellers.",
+      "l2": "Dashboard of metrics and lead tracking.",
+      "l3": "User management with roles (Manager, Viewer, Seller).",
+      "l4": "Integration with CRMs and automation tools via webhook."
+    },
+    "s3": {
+      "title": "3. Accounts and registration",
+      "desc": "To use LeadDistro, you must create an account with true and up-to-date information. You are responsible for maintaining the confidentiality of your password and for all activities that occur under your account.",
+      "footer": "You can invite users to your organization (tenant). You are responsible for how those users use the service."
+    },
+    "s4": {
+      "title": "4. Subscription and payments",
+      "p1": "Test period: By registering, you get a 7-day free trial without requiring a credit card. When the test period expires, the account remains inactive until a subscription is activated.",
+      "p2": "Monthly subscription: The subscription plan costs $25 USD per month. Payments are processed through dLocalGo.",
+      "p3": "Renewal: The subscription is automatically renewed each month through dLocalGo. You don't need to do anything to keep it active.",
+      "p4": "Refunds: We do not offer refunds for periods already used. If you cancel before expiration, you can use the service until the paid period expires."
+    },
+    "s5": {
+      "title": "5. Acceptable use",
+      "desc": "By using LeadDistro, you agree to:",
+      "l1": "Not use the service for illegal or unauthorized activities.",
+      "l2": "Not attempt to access data of other tenants or users.",
+      "l3": "Not reverse engineer, decompile, or modify the service.",
+      "l4": "Not intentionally overload the service infrastructure.",
+      "l5": "Comply with the privacy and data protection laws applicable in your country regarding the leads you process."
+    },
+    "s6": {
+      "title": "6. Data ownership",
+      "p1": "The data you upload to LeadDistro (leads, sellers, settings) is your property. LeadDistro does not claim any rights over them.",
+      "p2": "By using the service, you grant us a limited license to process that data solely for the purpose of providing the service to you."
+    },
+    "s7": {
+      "title": "7. Service availability",
+      "p1": "We strive to keep LeadDistro available 24 hours a day, but we do not guarantee uninterrupted availability. We may perform scheduled maintenance with reasonable notice.",
+      "p2": "We are not responsible for losses resulting from service interruptions, failure of third parties (MongoDB, Vercel, Koyeb), or force majeure."
+    },
+    "s8": {
+      "title": "8. Limitation of liability",
+      "p1": "LeadDistro is provided 'as is' and 'as available'. In no case shall we be liable for any indirect, incidental, special, or consequential damages resulting from the use or inability to use the service.",
+      "p2": "Our maximum liability in any circumstance will be limited to the amount paid for the service in the last 3 months."
+    },
+    "s9": {
+      "title": "9. Cancellation and termination",
+      "p1": "By you: You can cancel your account at any time. Your account will remain active until the end of the paid period.",
+      "p2": "By us: We reserve the right to suspend or cancel accounts that violate these terms, with or without prior notice depending on the severity of the violation.",
+      "footer": "Upon cancellation, you can export your data from the dashboard before the account closing."
+    },
+    "s10": {
+      "title": "10. Modifications",
+      "p1": "We may modify these terms at any time. We will notify you of significant changes via email at least 7 days in advance. Continued use of the service implies acceptance of the updated terms."
+    },
+    "s11": {
+      "title": "11. Applicable law",
+      "desc": "These terms are governed by the laws of the Argentine Republic. Any dispute will be resolved in the ordinary courts of the city of Buenos Aires."
+    },
+    "s12": {
+      "title": "12. Contact",
+      "desc": "For inquiries about these terms, contact us through support or visit www.leaddistro.site."
+    }
+  },
+  "paymentSuccess": {
+    "verifying": "Verifying your payment...",
+    "success": {
+      "title": "Subscription activated!",
+      "desc": "Your account is active. You can now access the system.",
+      "btn": "Go to dashboard"
+    },
+    "error": {
+      "title": "We couldn't verify the payment",
+      "desc": "If you made the payment, contact support to activate your account manually.",
+      "btn": "Back to login"
+    }
+  },
+  "meta": {
+    "title": "LeadDistro | Automatic Lead Distribution for Agencies",
+    "description": "Optimize your sales team with LeadDistro. Smart lead assignment, limits per seller, and real-time dashboard for HubSpot, GHL, and monday.com.",
+    "ogTitle": "LeadDistro | Smart Lead Distribution",
+    "ogDescription": "Assign each lead to the right seller automatically based on capacity and limits. Integration with any CRM.",
+    "keywords": "lead distribution, sales automation, round robin, hubspot integration, gohighlevel leads, monday.com leads",
+    "schemaDescription": "LeadDistro assigns each lead to the right seller based on capacity, team, and limits — no manual intervention, no lost leads."
+  },
+  "landing": {
+    "features": {
+      "tag": "Features",
+      "title": "Everything your sales team needs",
+      "subtitle": "A system designed so that no lead is left unattended and each seller works at their maximum capacity.",
+      "algoTitle": "Automatic distribution with smart algorithm",
+      "algoDesc": "Each incoming lead is assigned to the most available seller on the proportional team. The algorithm considers weekly capacity, daily load, and seller ratio.",
+      "algoSteps": {
+        "1": "Lead enters via webhook from the CRM",
+        "2": "Target team is determined by percentage",
+        "3": "Seller with the lowest ratio is selected",
+        "4": "Lead assigned and notified automatically"
+      },
+      "items": {
+        "teams": {
+          "title": "Teams with configurable percentages",
+          "desc": "Divide your sales force into teams and define what percentage of leads each one receives. CH 60% — MH 40%, or any combination that adds up to 100%."
+        },
+        "limits": {
+          "title": "Daily and weekly limits per seller",
+          "desc": "Configure how many leads each seller can handle per day and per week. When they reach the limit, the system automatically skips them."
+        },
+        "fallback": {
+          "title": "Backup sellers (Fallback)",
+          "desc": "Configure up to 2 backup sellers. When everyone reaches their limit, new leads are automatically redirected to them so no lead is left unassigned."
+        },
+        "metrics": {
+          "title": "Real-time metrics dashboard",
+          "desc": "Visualize leads by seller, funnel stages, statuses, and team distribution. Filter by period, seller, team, or stage."
+        }
+      }
+    },
+    "howItWorks": {
+      "tag": "Workflow",
+      "title": "How LeadDistro works",
+      "subtitle": "From when a lead enters your CRM until it's in your seller's hands — all automatic.",
+      "steps": {
+        "1": { "title": "Webhook from the CRM", "desc": "Your CRM automatically sends the lead to your tenant's unique URL. Just paste the URL into your workflow." },
+        "2": { "title": "Assignment algorithm", "desc": "The system determines the team by percentage and selects the seller with the most available capacity (lowest load/limit ratio)." },
+        "3": { "title": "Seller notification", "desc": "Your CRM receives the response webhook with the assigned seller's data and executes your notification workflow." },
+        "4": { "title": "Lead registered", "desc": "The lead remains in LeadDistro with seller, team, stage, and date. Available in the dashboard with all filters." }
+      }
+    },
+    "roles": {
+      "tag": "Access control",
+      "title": "Roles designed for your team",
+      "subtitle": "Each person sees and can do exactly what they need. Your account includes Manager and Sellers.",
+      "items": {
+        "manager": {
+          "title": "Team Manager",
+          "desc": "Full access to their tenant. Configures teams, sellers, periods, stages, and CRM integration.",
+          "perms": [
+            "✓ Full dashboard with filters",
+            "✓ Create/edit/delete sellers",
+            "✓ Configure teams and % distribution",
+            "✓ Configure CRM integration",
+            "✓ Export leads to CSV",
+            "✓ Manage tenant users"
+          ]
+        },
+        "viewer": {
+          "title": "Viewer / Supervisor",
+          "desc": "Can see all leads and edit their information, but cannot create or delete records or access settings.",
+          "perms": [
+            "✓ See all tenant leads",
+            "✓ Edit lead stage and data",
+            "✓ Dashboard with general metrics",
+            "✗ Cannot create or delete",
+            "✗ No access to settings"
+          ]
+        },
+        "seller": {
+          "title": "Seller",
+          "desc": "Access only their own assigned leads. Sees their individual capacity metrics and can manage lead status.",
+          "perms": [
+            "✓ See their own assigned leads",
+            "✓ Edit stage of their leads",
+            "✓ Export leads to CSV",
+            "✓ See their individual metrics",
+            "✗ No leads of other sellers",
+            "✗ No access to settings"
+          ]
+        }
+      }
+    },
+    "integrations": {
+      "tag": "Integrations",
+      "title": "Integrations with HubSpot, GoHighLevel and monday.com",
+      "subtitle": "LeadDistro integrates perfectly with your CRM and automation tools.",
+      "badges": { "optimized": "Optimized", "webhook": "Webhook" },
+      "items": {
+        "ghl": { "desc": "The #1 ally for GHL agencies" },
+        "kommo": { "desc": "Power your WhatsApp sales" },
+        "monday": { "desc": "The assignment brain for monday" },
+        "hubspot": { "desc": "Smart distribution for your CRM" },
+        "clientify": { "desc": "Boost your marketing CRM" },
+        "make": { "desc": "Connect with over 3000 apps" }
+      },
+      "config": {
+        "tag": "How to connect",
+        "title": "Setup in less than 5 minutes",
+        "subtitle": "You only need to copy your tenant's URL and paste it into your tool's workflow. No code, no complex APIs.",
+        "steps": {
+          "1": { "title": "Copy the webhook URL", "desc": "From LeadDistro settings, copy your tenant's unique URL." },
+          "2": { "title": "Paste it in your CRM workflow", "desc": "In your CRM's 'new contact' workflow, add the webhook action pointing to that URL." },
+          "3": { "title": "Configure the response webhook", "desc": "LeadDistro sends you the assigned seller's name so you can notify them from your CRM." }
+        }
+      }
+    },
+    "comparison": {
+      "tag": "Comparative Analysis",
+      "title": "Why you need LeadDistro if you already have a CRM",
+      "subtitle": "CRMs are great for managing data, but LeadDistro is the brain that optimizes your team's workload.",
+      "headers": { "feat": "Feature", "crm": "Native CRM", "ld": "LeadDistro" },
+      "items": {
+        "roundRobin": "Simple Round Robin Distribution",
+        "dailyLimits": "Daily limits per seller",
+        "weeklyLimits": "Weekly limits per seller",
+        "percent": "Distribution by exact %",
+        "fallback": "Backup sellers (Fallback)",
+        "metrics": "Real-time capacity metrics"
+      },
+      "values": { "basic": "Basic", "advanced": "Advanced" },
+      "footer": "LeadDistro doesn't replace your CRM, it powers it so no lead is lost."
+    },
+    "availability": {
+      "tag": "Availability",
+      "title": "Available Countries",
+      "subtitle": "LeadDistro is operating for agencies in the fastest growing markets.",
+      "headers": {
+        "region": "Region",
+        "countries": "Countries"
+      },
+      "items": [
+        { "region": "Latin America", "countries": "Argentina, Bolivia, Brazil, Chile, Colombia, Costa Rica, Ecuador, Guatemala, Mexico, Paraguay, Panama, Peru, and Uruguay." },
+        { "region": "Asia", "countries": "Indonesia and Malaysia." },
+        { "region": "Africa", "countries": "Kenya and Nigeria." }
+      ]
+    },
+    "pricing": {
+      "tag": "Pricing",
+      "title": "Simple and transparent",
+      "subtitle": "A single plan, no annual contracts. Pay month to month and cancel whenever you want.",
+      "mostPopular": "Most popular",
+      "optional": "Optional",
+      "monthly": {
+        "title": "Monthly Plan",
+        "desc": "Everything your agency needs to not lose a single lead.",
+        "period": "/ month",
+        "features": [
+          "Unlimited sellers",
+          "Unlimited leads",
+          "Multi-team with configurable %",
+          "Real-time dashboard",
+          "Integration with any CRM",
+          "Lead export to CSV",
+          "Support included"
+        ]
+      },
+      "setup": {
+        "title": "Setup & Configuration",
+        "amount": "100",
+        "period": "one-time",
+        "desc": "We configure everything for you. Ready in less than 24 hours.",
+        "features": [
+          "Full system configuration",
+          "Integration with your CRM",
+          "Sellers and teams setup",
+          "Webhooks configuration",
+          "Team training"
+        ],
+        "cta": "Request setup"
+      },
+      "cta": "Start for free",
+      "note": "Have questions? Chat with us on WhatsApp and we will respond instantly."
+    },
+    "faq": {
+      "tag": "Frequently asked questions",
+      "title": "Everything you need to know",
+      "subtitle": "If you have more questions, chat with us on WhatsApp and we will respond instantly.",
+      "items": [
+        { "q": "How does automatic lead distribution work?", "a": "When your CRM sends a lead to the LeadDistro webhook, the system identifies the target team based on the configured percentages, and within that team selects the seller with the most available capacity (lowest load/limit ratio). Everything happens in milliseconds and the result is automatically returned to the CRM." },
+        { "q": "What CRMs does LeadDistro integrate with?", "a": "LeadDistro integrates with any platform that supports webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n, and many more. If your CRM can send an HTTP POST, it works with LeadDistro." },
+        { "q": "What happens if all sellers reach their limit?", "a": "You can configure up to 2 backup sellers (fallback). When all active sellers reach their daily or weekly limit, leads are automatically redirected to those backup sellers. This way, no lead is left unassigned." },
+        { "q": "Can I have multiple teams with different distributions?", "a": "Yes. You can create as many teams as you need and assign a percentage of the total leads to each one. For example: Team A receives 60% and Team B receives 40%. Each team has its own sellers, limits, and settings." },
+        { "q": "What happens when the trial period expires?", "a": "When the 7-day trial period expires, your account is in an inactive state. You don't lose any data — by subscribing for $25 USD/month you regain access immediately with all your settings intact." },
+        { "q": "Can I cancel at any time?", "a": "Yes, without any mandatory stay or penalties. When you cancel your subscription, it does not renew the next month. Your data remains available until the end of the paid period." },
+        { "q": "Are my leads' data safe?", "a": "Yes. Each company has its own isolated tenant — no data is accessible from another account. Communications are encrypted via HTTPS and passwords are saved with bcrypt hash. We do not share or sell data of any kind." },
+        { "q": "What does the setup service include?", "a": "The setup service ($100 USD, one-time payment) includes: complete system configuration, integration with your CRM, seller and team setup, webhooks configuration, and a training session for your team. Ready in less than 24 hours." }
+      ]
+    },
+    "cta": {
+      "badge": "Multi-tenant · Multi-team · Real-time",
+      "title": "Ready to start?",
+      "subtitle": "Sign up in seconds and start distributing leads today. 7 days free, no credit card required. From $25 USD/month.",
+      "cta": "Start for free →",
+      "hasAccount": "I already have an account",
+      "feats": ["5-minute setup", "CRM integration", "No lost leads"]
+    },
+    "footer": {
+      "desc": "Smart lead distribution for modern sales teams.",
+      "product": "Product",
+      "access": "Access",
+      "legal": "Legal",
+      "rights": "© 2026 LeadDistro. All rights reserved.",
+      "waTitle": "Questions?"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "apply": "Apply",
+    "clean": "Clear",
+    "copy": "Copy",
+    "copied": "Copied",
+    "all": "All",
+    "all_f": "All",
+    "actions": "Actions",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "success": "Success",
+    "error": "Error",
+    "noData": "No data available",
+    "date": "Date",
+    "team": "Team",
+    "seller": "Seller"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "loading": "Loading metrics...",
+    "filters": {
+      "title": "Filters",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "team": "Team",
+      "seller": "Seller",
+      "stage": "Stage",
+      "all": "All",
+      "allStages": "All",
+      "apply": "Apply",
+      "reset": "Clear"
+    },
+    "kpis": {
+      "totalLeads": "Total Leads",
+      "sellers": "Sellers",
+      "stages": "Stages"
+    },
+    "assignment": {
+      "nextTeam": "Next Team",
+      "nextSeller": "Next Seller",
+      "notDefined": "Not defined",
+      "notAvailable": "None available",
+      "availableWeekly": "Available: {n} weekly",
+      "availableToday": "{n} today"
+    },
+    "charts": {
+      "teamDist": "Team Distribution",
+      "leadsBySeller": "Leads by Seller",
+      "sellerTable": "Sellers Table",
+      "leadsByStage": "Leads by Stage",
+      "stageTable": "Stages Table",
+      "leadsByState": "Leads by State",
+      "noState": "No State",
+      "noData": "No data available",
+      "showingTop": "Showing top {n} of {total} states"
+    }
+  },
+  "leads": {
+    "title": "Leads",
+    "search": "Search...",
+    "export": "Export CSV",
+    "exporting": "Exporting...",
+    "total": "{n} leads",
+    "table": {
+      "date": "Date",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "status": "State",
+      "team": "Team",
+      "seller": "Seller",
+      "stage": "Stage",
+      "source": "Source",
+      "actions": "Actions",
+      "noLeads": "No leads found"
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "edit": {
+      "title": "Edit Lead",
+      "loading": "Saving changes...",
+      "noChanges": "No changes"
+    },
+    "delete": {
+      "title": "Delete Lead",
+      "confirm": "Are you sure you want to delete lead {name}? This action cannot be undone.",
+      "deleting": "Deleting..."
+    }
+  },
+  "sellers": {
+    "title": "Sellers",
+    "add": "+ Add Seller",
+    "filterTeam": "Filter by team",
+    "allTeams": "All teams",
+    "count": "{n} sellers",
+    "pagination": "Showing {start}-{end} of {total} sellers",
+    "deleteConfirm": "Are you sure you want to delete this seller?",
+    "addModal": {
+      "title": "Add Seller",
+      "name": "Name",
+      "team": "Team",
+      "selectTeam": "Select team",
+      "weeklyLimit": "Weekly limit",
+      "dailyLimit": "Daily limit",
+      "crmId": "CRM User ID",
+      "crmIdInfo": "Used to notify the CRM about the lead assignment. Optional if not using integration.",
+      "leadsToday": "Leads today",
+      "leadsWeek": "Leads week",
+      "availableToday": "Available today",
+      "availableWeek": "Available week",
+      "capacity": "Capacity used"
+    },
+    "editModal": {
+      "title": "Edit Seller"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "add": "+ Add User",
+    "edit": "Edit User",
+    "count": "{n} users",
+    "linkedTo": "Linked to: {name}",
+    "createdAt": "Created: {date}",
+    "principal": "(Principal)",
+    "noUsers": "No users registered",
+    "deleteConfirm": "Are you sure you want to delete this user?",
+    "roles": {
+      "manager": "Manager",
+      "seller": "Seller",
+      "viewer": "Viewer",
+      "labels": {
+        "manager": "Manager - Full access",
+        "seller": "Seller - Only their data",
+        "viewer": "Viewer - View and edit only"
+      },
+      "descriptions": {
+        "manager": "The Manager has full access to the tenant.",
+        "seller": "The Seller only sees their own leads and statistics.",
+        "viewer": "The Viewer can view and edit, but cannot create or delete."
+      }
+    },
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "linkedSeller": "Linked seller",
+      "newPassword": "New password",
+      "namePlaceholder": "Full name",
+      "emailPlaceholder": "email@example.com",
+      "passPlaceholder": "Minimum 6 characters",
+      "passPlaceholderEdit": "Leave empty to keep current"
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "platforms": {
+      "title": "Compatible Platforms",
+      "info": "LeadDistro works with any tool that supports webhooks.",
+      "optimized": "Optimized",
+      "webhook": "Webhook",
+      "ghl": "The #1 ally for GHL agencies",
+      "kommo": "Power your WhatsApp sales",
+      "monday": "The assignment brain for monday",
+      "hubspot": "Smart distribution for your CRM",
+      "clientify": "Boost your marketing CRM",
+      "make": "Connect with over 3000 apps"
+    },
+    "webhooks": {
+      "title": "Your Account Webhooks",
+      "info": "Configure these webhooks in your CRM to sync leads automatically.",
+      "input": {
+        "title": "CRM sends new lead to the system",
+        "desc": "When a contact is created in your CRM, send data to this URL. The system automatically assigns a seller.",
+        "viewJson": "View required JSON"
+      },
+      "output": {
+        "title": "System notifies assignment to CRM",
+        "desc": "When the system assigns a seller, it sends data to your CRM. Configure the target URL below.",
+        "viewJson": "View system JSON output"
+      },
+      "stage": {
+        "title": "CRM notifies stage change",
+        "desc": "When an opportunity's stage changes in your CRM, send data to this URL to sync the lead's status.",
+        "viewJson": "View required JSON"
+      }
+    },
+    "crm": {
+      "title": "CRM Integration",
+      "info": "Configure the notification webhook URL so the system automatically notifies your CRM (GoHighLevel, HubSpot, etc.) when a seller is assigned to a lead.",
+      "timezoneLabel": "Timezone",
+      "timezoneInfo": "The timezone is used to correctly calculate 'today' and 'this week' leads.",
+      "webhookLabel": "Notification Webhook URL (optional)",
+      "webhookPlaceholder": "https://your-crm.com/webhook/...",
+      "webhookInfo": "The system will POST to this URL every time it assigns a seller to a lead. Compatible with GHL, HubSpot, Make, Zapier, or any service that accepts webhooks.",
+      "payloadTitle": "Data sent to webhook:",
+      "errors": {
+        "invalidUrl": "The entered URL is not valid",
+        "update": "Error updating settings"
+      },
+      "success": "Configuration updated successfully"
+    }
+  },
+  "summaries": {
+    "title": "AI Summaries",
+    "generate": "Generate now",
+    "generating": "Generating...",
+    "success": "Summary generated successfully",
+    "error": "Error loading summaries",
+    "empty": {
+      "title": "No summaries generated yet",
+      "info": "Configure automatic summaries in Settings → AI Summary"
+    },
+    "card": {
+      "download": "PDF",
+      "delete": "Delete",
+      "deleteConfirm": "Delete this summary?"
+    },
+    "detail": {
+      "aiSummary": "AI Generated Summary",
+      "periodLeads": "Leads of the period",
+      "inactiveLeads": "No activity +48h",
+      "bestSeller": "Best seller",
+      "byTeam": "By team",
+      "byStage": "By stage",
+      "nearLimit": "Sellers near the limit"
+    },
+    "pdf": {
+      "title": "LeadDistro Summary — {date}",
+      "metricsTitle": "AI Generated Summary",
+      "periodLeads": "Leads of the period",
+      "inactiveLeads": "No activity +48h",
+      "bestSeller": "Best seller: {name}",
+      "byTeam": "By team",
+      "byStage": "By stage",
+      "nearLimit": "Sellers near the limit (≥80%)",
+      "none": "None",
+      "footer": "Generated by LeadDistro · {date}"
+    }
+  },
+  "support": {
+    "title": "Support Center",
+    "subtitle": "Have a problem or doubt? We are here to help.",
+    "newTicket": "New Ticket",
+    "yourTickets": "Your Tickets",
+    "noTickets": "You have no tickets created yet.",
+    "success": "Ticket created successfully. We will respond soon.",
+    "error": "Error creating ticket",
+    "modal": {
+      "title": "New Support Ticket",
+      "subject": "Subject",
+      "subjectPlaceholder": "Ex: Problem with GHL integration",
+      "category": "Category",
+      "priority": "Priority",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the problem in detail...",
+      "cancel": "Cancel",
+      "send": "Send Ticket",
+      "sending": "Sending..."
+    },
+    "status": {
+      "abierto": "Open",
+      "en-proceso": "In Progress",
+      "resuelto": "Resolved",
+      "cerrado": "Closed"
+    },
+    "categories": {
+      "bug": "Error / Bug",
+      "pregunta": "Question",
+      "facturacion": "Billing",
+      "otros": "Other"
+    },
+    "priorities": {
+      "baja": "Low",
+      "media": "Medium",
+      "alta": "High"
+    }
+  },
+  "billing": {
+    "title": "My Billing",
+    "lifetime": {
+      "title": "Lifetime Plan Activated!",
+      "desc": "Your account has permanent access to all LeadDistro features. Being a lifetime plan, you have no pending monthly subscriptions or future charges.",
+      "backToDashboard": "Back to Dashboard"
+    },
+    "info": {
+      "title": "About your receipts",
+      "desc": "Here you will find the payment receipts for your monthly subscription. Receipts are generated automatically upon payment confirmation and are stored securely in the cloud."
+    },
+    "table": {
+      "noInvoices": "No receipts available",
+      "emptyInfo": "Your future receipts will appear in this list.",
+      "date": "Date",
+      "concept": "Concept",
+      "amount": "Amount",
+      "action": "Action",
+      "monthlySubscription": "Monthly Subscription",
+      "planStandard": "LeadDistro Standard Plan",
+      "download": "Download Receipt",
+      "generating": "Generating..."
+    }
+  },
+  "config": {
+    "title": "Settings",
+    "tabs": {
+      "teams": "Teams",
+      "period": "Period",
+      "stages": "Stages",
+      "fallback": "Backup",
+      "summary": "AI Summary",
+      "subscription": "Subscription"
+    },
+    "no_tenant": "No tenant associated with this user.",
+    "teams": {
+      "title": "Team Settings",
+      "info": "Define the teams and their allocation percentages. Percentages must add up to 100%.",
+      "namePlaceholder": "Team name",
+      "newTeamPlaceholder": "New team",
+      "add": "Add",
+      "total": "Total: {n}%",
+      "invalidTotal": "Must add up exactly to 100%",
+      "valid": "Valid configuration",
+      "sumError": "Percentages must add up to 100% (current: {n}%)",
+      "nameRequired": "Team name is required",
+      "percentError": "Percentage must be greater than 0"
+    },
+    "period": {
+      "title": "Period Settings",
+      "info": "Define how the active period is counted for lead distribution among teams.",
+      "manual": "Manual period",
+      "auto": "Automatic week",
+      "manualInfo": "Set a fixed date range. Leads within this period will be counted to determine team distribution.",
+      "autoInfo": "The period is automatically calculated each week based on the start day you choose.",
+      "start": "Start date",
+      "end": "End date",
+      "active": "Active period:",
+      "weekStart": "Week start day",
+      "currentWeek": "Current week: {range}",
+      "autoDescription": "Every {day} at 00:00 a new week begins and counters are automatically reset. The last day of the week will be {end}.",
+      "success": "Period updated successfully",
+      "days": {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+      },
+      "errors": {
+        "required": "Both dates are required",
+        "dateOrder": "Start date must be before end date",
+        "update": "Error updating period"
+      }
+    },
+    "stages": {
+      "title": "Opportunity Stages",
+      "info": "Configure sales pipeline stages. You can reorder them using the arrows.",
+      "placeholder": "Stage name",
+      "add": "Add Stage",
+      "newStagePlaceholder": "New stage...",
+      "addButton": "Add",
+      "errors": {
+        "required": "Stage name is required",
+        "exists": "This stage already exists",
+        "minOne": "There must be at least one stage",
+        "update": "Error updating stages"
+      },
+      "success": "Stages updated successfully"
+    },
+    "fallback": {
+      "title": "Backup Sellers",
+      "info": "When all sellers reach their limit (daily or weekly), new leads will be assigned to the backup with the most available capacity.",
+      "orderTitle": "Assignment order",
+      "order1": "Team assigned according to configured %",
+      "order2": "Any available team (general fallback)",
+      "order3": "Backup 1 or 2 → whichever has more quota available",
+      "order4": "If both are at limit → still assigned to the least loaded",
+      "label": "Backup {n}",
+      "optional": "(optional)",
+      "unassigned": "Unassigned",
+      "noFallbackWarning": "No backup configured: leads will be lost when everyone is at the limit",
+      "remove": "Remove backups",
+      "errors": {
+        "save": "Error saving"
+      }
+    },
+    "summary": {
+      "title": "AI Smart Summary",
+      "info": "The system automatically generates a metrics summary with OpenAI and sends it to the configured webhook (Make, Zapier, etc.).",
+      "automatic": "Automatic summary",
+      "active": "Active",
+      "disabled": "Disabled",
+      "everyDay": "Every day",
+      "onceAWeek": "Once a week",
+      "frequency": "Frequency",
+      "daily": "Daily",
+      "dailyInfo": "Every day at the configured time",
+      "weekly": "Weekly",
+      "weeklyInfo": "A fixed day per week",
+      "sendDay": "Send day",
+      "sendTime": "Send time",
+      "timeSuffix": "hs",
+      "timezoneInfo": "The timezone configured in Integration is used.",
+      "webhookLabel": "Webhook URL (Make, Zapier, etc.)",
+      "webhookInfo": "The system will POST the AI summary and metrics for the period.",
+      "viewJson": "View JSON sent to webhook",
+      "testButton": "Send summary now",
+      "testing": "Generating...",
+      "testResult": "Summary generated:",
+      "errors": {
+        "test": "Error generating summary"
+      }
+    }
+  },
+  "subscription": {
+    "title": "Subscription Status",
+    "info": "Manage your plan from here.",
+    "status": {
+      "label": "Status",
+      "trial": "Free trial",
+      "active": "Active",
+      "inactive": "Inactive",
+      "lifetime": "Lifetime"
+    },
+    "trial_ends": "Trial expires",
+    "next_renewal": "Next renewal",
+    "plan": "Plan",
+    "lifetime_plan": "Lifetime (no cost)",
+    "monthly_plan": "$25 USD / month",
+    "trial_message": "Subscribe to continue using LeadDistro after your trial period expires.",
+    "inactive_message": "Your subscription is inactive. Activate it to use the platform again.",
+    "subscribe_button": "Subscribe for $25 USD/month",
+    "cancel_success": "✓ Subscription canceled. You can keep using LeadDistro until the current period expires.",
+    "cancel_action": "Cancel subscription",
+    "confirm_cancel_title": "Are you sure you want to cancel?",
+    "confirm_cancel_text": "Your account will be inactive at the end of the current period. No further charges will be made.",
+    "confirm_cancel_button": "Yes, cancel subscription",
+    "cancel_error": "Error canceling. Try again."
+  },
+  "admin": {
+    "tenants": {
+      "title": "Tenant Management",
+      "add": "+ Create Tenant",
+      "filterStatus": "Filter by status",
+      "count": "{n} tenants",
+      "noTenants": "No tenants to show",
+      "deleteConfirm": "Are you sure you want to delete tenant \"{name}\"? This action will delete ALL associated data (users, leads, sellers, settings) and cannot be undone.",
+      "detail": {
+        "title": "Tenant Detail",
+        "general": "General Information",
+        "name": "Name",
+        "slug": "Slug",
+        "status": "State",
+        "users": "Users",
+        "editName": "Edit Name",
+        "subscriptionTitle": "Plan and Subscription",
+        "subStatus": "Subscription Status",
+        "expiresAt": "Expires on",
+        "subInfo": "Changing the status to 'Active' will automatically generate a payment receipt in Google Drive.",
+        "integration": "Make/GHL Integration",
+        "webhookIn": "Webhook URL (create leads)",
+        "apiKey": "API Key (header X-API-Key)",
+        "regenerateKey": "Regenerate API Key",
+        "regenerateConfirm": "Regenerating the API key will invalidate the previous one. Make scenarios will stop working until updated. Continue?",
+        "apiKeySuccess": "API key regenerated: {key}",
+        "appUrl": "App URL",
+        "tenantUsers": "Tenant Users",
+        "configStatus": "Configuration",
+        "configExists": "Config created",
+        "configNotExists": "Not configured",
+        "notFound": "Tenant not found",
+        "editUser": "Edit User",
+        "newPassword": "New Password",
+        "passwordNote": "Only complete if you want to change the password"
+      }
+    },
+    "subscriptions": {
+      "title": "Subscription Management",
+      "filter": "Filter:",
+      "drive": {
+        "success": "Google Drive linked correctly! Receipts will be uploaded automatically.",
+        "bannerTitle": "Receipt Automation (Personal Gmail)",
+        "bannerDesc": "Link your account once to save payment PDFs automatically in your personal Drive.",
+        "btn": "Link Google Drive"
+      },
+      "stats": {
+        "today": "Today",
+        "todayDesc": "Daily revenue",
+        "thisMonth": "This Month",
+        "thisMonthDesc": "Total collected on {month}",
+        "thisYear": "This Year",
+        "thisYearDesc": "Period {year}"
+      },
+      "table": {
+        "tenant": "Tenant",
+        "status": "State",
+        "expiry": "Expiration",
+        "users": "Users",
+        "totalLeads": "Total Leads",
+        "createdAt": "Date Created",
+        "empty": "No subscriptions found with these criteria.",
+        "showing": "Showing {n} of {total} subscriptions"
+      }
+    },
+    "tickets": {
+      "title": "Ticket Management",
+      "noTickets": "No tickets to show",
+      "table": {
+        "date": "Date",
+        "tenant": "Tenant",
+        "subject": "Subject",
+        "category": "Category",
+        "priority": "Priority",
+        "status": "State",
+        "actions": "Actions"
+      }
+    }
+  }
+}

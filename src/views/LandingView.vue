@@ -49,12 +49,22 @@ const handleScroll = () => {
   scrolled.value = window.scrollY > 20
 }
 
-const toggleLanguage = () => {
-  const newLocale = locale.value === 'pt-BR' ? 'es' : 'pt-BR'
+const showLangMenu = ref(false)
+
+const setLanguage = (newLocale) => {
   locale.value = newLocale
   localStorage.setItem('user-locale', newLocale)
   document.documentElement.lang = newLocale
+  showLangMenu.value = false
 }
+
+const languages = [
+  { code: 'es', label: 'Castellano', flag: 'https://flagcdn.com/w40/ar.png' },
+  { code: 'pt-BR', label: 'Português', flag: 'https://flagcdn.com/w40/br.png' },
+  { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png' }
+]
+
+const getLangData = (code) => languages.find(l => l.code === code) || languages[0]
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -85,10 +95,36 @@ onUnmounted(() => {
         </ul>
         <button @click="router.push('/login')" class="btn-nav">{{ t('nav.login') }} →</button>
 
-        <button @click="toggleLanguage" class="lang-toggle-nav" :title="locale === 'pt-BR' ? 'Mudar para Espanhol' : 'Mudar para Português'">
-          <span v-if="locale === 'pt-BR'">🇧🇷 PT</span>
-          <span v-else>🇦🇷 ES</span>
-        </button>
+        <!-- Language dropdown -->
+        <div class="relative ml-2">
+          <button 
+            @click="showLangMenu = !showLangMenu"
+            class="lang-toggle-nav flex items-center gap-2 px-3 py-1.5"
+            :title="t('ui.changeLang')"
+          >
+            <img :src="getLangData(locale).flag" :alt="getLangData(locale).code" class="w-5 h-auto rounded-sm shadow-sm" />
+            <span class="uppercase">{{ getLangData(locale).code }}</span>
+            <svg class="w-3 h-3 transition-transform" :class="{ 'rotate-180': showLangMenu }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+          </button>
+
+          <!-- Dropdown menu -->
+          <div v-if="showLangMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-[60] py-1 overflow-hidden animate-in fade-in zoom-in duration-200">
+            <button 
+              v-for="lang in languages" 
+              :key="lang.code"
+              @click="setLanguage(lang.code)"
+              class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+              :class="{ 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400': locale === lang.code, 'text-gray-700 dark:text-gray-300': locale !== lang.code }"
+            >
+              <img :src="lang.flag" :alt="lang.code" class="w-5 h-auto rounded-sm shadow-sm" />
+              <span class="font-medium">{{ lang.label }}</span>
+              <svg v-if="locale === lang.code" class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Overlay to close menu -->
+          <div v-if="showLangMenu" @click="showLangMenu = false" class="fixed inset-0 z-[-1]"></div>
+        </div>
 
         <div class="nav-mobile-right">
           <button @click="menuOpen = !menuOpen" class="hamburger" aria-label="Menú">
@@ -97,9 +133,16 @@ onUnmounted(() => {
         </div>
       </div>
       <div :class="['mobile-menu', { 'open': menuOpen }]">
-        <div class="mobile-lang-row">
-          <button @click="toggleLanguage" class="mobile-lang-btn">
-            {{ locale === 'pt-BR' ? '🇧🇷 Português' : '🇦🇷 Español' }}
+        <div class="mobile-lang-row grid grid-cols-3 gap-2 px-4 py-2">
+          <button 
+            v-for="lang in languages" 
+            :key="lang.code"
+            @click="setLanguage(lang.code); menuOpen = false" 
+            class="flex flex-col items-center gap-1 p-2 rounded-lg transition-colors"
+            :class="{ 'bg-primary-50 dark:bg-primary-900/30 text-primary-600': locale === lang.code, 'text-gray-600 dark:text-gray-400': locale !== lang.code }"
+          >
+            <img :src="lang.flag" :alt="lang.code" class="w-6 h-auto rounded-sm" />
+            <span class="text-[10px] font-bold uppercase">{{ lang.code }}</span>
           </button>
         </div>
         <a href="#features" @click="menuOpen = false">{{ t('nav.features') }}</a>
@@ -475,7 +518,7 @@ onUnmounted(() => {
               </a>
             </template>
             <template v-else>
-              <button @click="alert('Serviço disponível em breve para o seu mercado')" class="btn-secondary btn-full opacity-60 cursor-not-allowed">
+              <button @click="alert(t('landing.pricing.setup.alert'))" class="btn-secondary btn-full opacity-60 cursor-not-allowed">
                 {{ t('landing.pricing.setup.cta') }}
               </button>
             </template>

@@ -44,13 +44,15 @@
     "tickets": "Tickets"
   },
   "auth": {
-    "login": "Entrar",
+    "login": "Ingresar",
     "loginTitle": "Iniciar Sesión",
     "register": "Crear Cuenta",
     "email": "Email",
     "password": "Contraseña",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "entering": "Entrando...",
+    "noAccount": "¿No tenés cuenta?",
+    "hasAccount": "¿Ya tenés cuenta?",
+    "entering": "Ingresando...",
     "recoverPassword": "Recuperar Contraseña",
     "sentLink": "Te enviamos un link a tu email para recuperar tu contraseña.",
     "sendLink": "Enviar Link",
@@ -77,7 +79,8 @@
       "goToLogin": "Ir al login",
       "passwordsNoMatch": "Las contraseñas no coinciden",
       "invalidLink": "El enlace es inválido o expiró"
-    }
+    },
+    "logout": "Cerrar sesión"
   },
   "privacy": {
     "title": "Política de Privacidad",
@@ -407,7 +410,8 @@
           "Configuración de webhooks",
           "Capacitación del equipo"
         ],
-        "cta": "Consultar setup"
+        "cta": "Consultar setup",
+        "alert": "Servicio disponible pronto para tu mercado"
       },
       "cta": "Empezar gratis",
       "note": "¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante."
@@ -441,19 +445,22 @@
       "access": "Acceso",
       "legal": "Legal",
       "rights": "© 2026 LeadDistro. Todos los derechos reservados.",
-      "waTitle": "¿Consultas?"
+      "waTitle": "¿Consultas?",
+      "alert": "Servicio disponible pronto para tu mercado"
     }
   },
-  "common": {
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "delete": "Eliminar",
-    "edit": "Editar"
+  "ui": {
+    "help": "Guía de ayuda",
+    "darkMode": "Modo oscuro",
+    "lightMode": "Modo claro",
+    "changeLang": "Cambiar idioma"
   },
   "common": {
     "loading": "Cargando...",
     "apply": "Aplicar",
     "clean": "Limpiar",
+    "copy": "Copiar",
+    "copied": "Copiado",
     "all": "Todos",
     "all_f": "Todas",
     "actions": "Acciones",
@@ -473,6 +480,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "loading": "Cargando métricas...",
     "filters": {
       "title": "Filtros",
       "startDate": "Fecha inicio",
@@ -535,8 +543,8 @@
     },
     "edit": {
       "title": "Editar Lead",
-      "loading": "Guardando...",
-      "noChanges": "Sin cambio"
+      "loading": "Guardando cambios...",
+      "noChanges": "Sin cambios"
     },
     "delete": {
       "title": "Eliminar Lead",
@@ -738,7 +746,7 @@
     "lifetime": {
       "title": "¡Plan Vitalicio Activado!",
       "desc": "Tu cuenta tiene acceso permanente a todas las funcionalidades de LeadDistro. Al ser un plan vitalicio, no tenés suscripciones mensuales pendientes ni cargos futuros.",
-      "backToDashboard": "Voltar al Dashboard"
+      "backToDashboard": "Volver al Dashboard"
     },
     "info": {
       "title": "Sobre tus recibos",

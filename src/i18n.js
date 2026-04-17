@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n'
 import es from './locales/es.json'
 import ptBR from './locales/pt-BR.json'
+import en from './locales/en.json'
 
 const i18n = createI18n({
   legacy: false, 
@@ -8,7 +9,8 @@ const i18n = createI18n({
   fallbackLocale: 'es',
   messages: {
     'es': es,
-    'pt-BR': ptBR
+    'pt-BR': ptBR,
+    'en': en
   }
 })
 
