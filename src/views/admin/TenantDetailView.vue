@@ -2,10 +2,12 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTenantsStore } from '../../stores/tenants'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const router = useRouter()
 const tenantsStore = useTenantsStore()
+const { t } = useI18n()
 
 const editing = ref(false)
 const editForm = ref({ name: '' })
@@ -88,12 +90,12 @@ const copyToClipboard = (text) => {
 }
 
 const handleRegenerateApiKey = async () => {
-  if (!confirm('Regenerar API key invalidara la anterior. Los escenarios de Make dejaran de funcionar hasta actualizarlos. Continuar?')) {
+  if (!confirm(t('admin.tenants.detail.regenerateConfirm'))) {
     return
   }
   const result = await tenantsStore.regenerateApiKey(route.params.id)
   if (result.success) {
-    alert('API key regenerada: ' + result.apiKey)
+    alert(t('admin.tenants.detail.apiKeySuccess', { key: result.apiKey }))
   }
 }
 
@@ -114,10 +116,10 @@ const handleUpdateSubscription = async (newStatus) => {
   <div class="space-y-6">
     <div class="flex items-center gap-4">
       <button @click="router.push('/admin/tenants')" class="btn btn-secondary">
-        &larr; Volver
+        &larr; {{ t('common.back') }}
       </button>
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-        Detalle del Tenant
+        {{ t('admin.tenants.detail.title') }}
       </h1>
     </div>
 
@@ -128,19 +130,19 @@ const handleUpdateSubscription = async (newStatus) => {
     <div v-else-if="tenantsStore.currentTenant" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Info basica -->
       <div class="card">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Informacion General</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.general') }}</h3>
 
         <div v-if="!editing" class="space-y-4">
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Nombre</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.name') }}</label>
             <p class="font-medium text-gray-900 dark:text-white">{{ tenantsStore.currentTenant.name }}</p>
           </div>
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Slug</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.slug') }}</label>
             <p class="font-mono text-gray-900 dark:text-white">/{{ tenantsStore.currentTenant.slug }}</p>
           </div>
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Estado</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.status') }}</label>
             <div class="flex items-center gap-2 mt-1">
               <span
                 :class="[
@@ -148,66 +150,66 @@ const handleUpdateSubscription = async (newStatus) => {
                   tenantsStore.currentTenant.active ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
                 ]"
               >
-                {{ tenantsStore.currentTenant.active ? 'Activo' : 'Inactivo' }}
+                {{ tenantsStore.currentTenant.active ? t('dashboard.summary.active') : t('dashboard.summary.disabled') }}
               </span>
               <button
                 @click="handleToggleActive"
                 class="text-sm text-primary-600 hover:text-primary-700"
               >
-                {{ tenantsStore.currentTenant.active ? 'Desactivar' : 'Activar' }}
+                {{ tenantsStore.currentTenant.active ? t('dashboard.summary.disabled') : t('dashboard.summary.active') }}
               </button>
             </div>
           </div>
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Usuarios</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.users') }}</label>
             <p class="font-medium text-gray-900 dark:text-white">{{ tenantsStore.currentTenant.userCount }}</p>
           </div>
           <button @click="editing = true" class="btn btn-secondary mt-4">
-            Editar Nombre
+            {{ t('admin.tenants.detail.editName') }}
           </button>
         </div>
 
         <div v-else class="space-y-4">
           <div>
-            <label class="label">Nombre</label>
+            <label class="label">{{ t('admin.tenants.detail.name') }}</label>
             <input v-model="editForm.name" type="text" class="input" />
           </div>
           <div class="flex gap-2">
-            <button @click="handleSave" class="btn btn-primary">Guardar</button>
-            <button @click="editing = false" class="btn btn-secondary">Cancelar</button>
+            <button @click="handleSave" class="btn btn-primary">{{ t('common.save') }}</button>
+            <button @click="editing = false" class="btn btn-secondary">{{ t('common.cancel') }}</button>
           </div>
         </div>
       </div>
 
       <!-- Estado de Suscripción -->
       <div class="card">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Plan y Suscripción</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.subscriptionTitle') }}</h3>
         
         <div class="space-y-4">
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Estado de Suscripción</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.subStatus') }}</label>
             <select 
               :value="tenantsStore.currentTenant.subscriptionStatus"
               @change="(e) => handleUpdateSubscription(e.target.value)"
               class="input mt-1 bg-white dark:bg-gray-800"
             >
-              <option value="trial">Prueba (Trial)</option>
-              <option value="active">Activo (Pago manual)</option>
-              <option value="inactive">Inactivo / Cancelado</option>
-              <option value="lifetime">Lifetime (Sin expirar)</option>
+              <option value="trial">{{ t('subscription.status.trial') }}</option>
+              <option value="active">{{ t('subscription.status.active') }}</option>
+              <option value="inactive">{{ t('subscription.status.inactive') }}</option>
+              <option value="lifetime">{{ t('subscription.status.lifetime') }}</option>
             </select>
           </div>
           
           <div v-if="tenantsStore.currentTenant.subscriptionExpiresAt">
-            <label class="text-xs text-gray-500 dark:text-gray-400">Vence el</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.expiresAt') }}</label>
             <p class="font-medium text-gray-900 dark:text-white">
-              {{ new Date(tenantsStore.currentTenant.subscriptionExpiresAt).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' }) }}
+              {{ new Date(tenantsStore.currentTenant.subscriptionExpiresAt).toLocaleDateString() }}
             </p>
           </div>
 
           <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-800">
             <p class="text-xs text-blue-700 dark:text-blue-300">
-              <span class="font-bold">Info:</span> Al cambiar el estado a "Activo", se generará automáticamente un comprobante de pago en Google Drive.
+              <span class="font-bold">Info:</span> {{ t('admin.tenants.detail.subInfo') }}
             </p>
           </div>
         </div>
@@ -215,11 +217,11 @@ const handleUpdateSubscription = async (newStatus) => {
 
       <!-- Integracion Make/GHL -->
       <div class="card">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Integracion Make/GHL</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.integration') }}</h3>
 
         <div class="space-y-4">
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">Webhook URL (crear leads)</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.webhookIn') }}</label>
             <div class="flex items-center gap-2 mt-1">
               <p class="font-mono text-sm break-all bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded flex-1">
                 {{ tenantsStore.currentTenant.webhookUrl }}
@@ -228,13 +230,13 @@ const handleUpdateSubscription = async (newStatus) => {
                 @click="copyToClipboard(tenantsStore.currentTenant.webhookUrl)"
                 class="btn btn-sm btn-secondary"
               >
-                Copiar
+                {{ t('common.copy') }}
               </button>
             </div>
           </div>
 
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">API Key (header X-API-Key)</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.apiKey') }}</label>
             <div class="flex items-center gap-2 mt-1">
               <p class="font-mono text-sm break-all bg-blue-50 dark:bg-blue-900/30 text-blue-900 dark:text-blue-200 p-2 rounded flex-1">
                 {{ tenantsStore.currentTenant.apiKey }}
@@ -243,7 +245,7 @@ const handleUpdateSubscription = async (newStatus) => {
                 @click="copyToClipboard(tenantsStore.currentTenant.apiKey)"
                 class="btn btn-sm btn-secondary"
               >
-                Copiar
+                {{ t('common.copy') }}
               </button>
             </div>
           </div>
@@ -252,11 +254,11 @@ const handleUpdateSubscription = async (newStatus) => {
             @click="handleRegenerateApiKey"
             class="btn btn-sm btn-secondary text-amber-600"
           >
-            Regenerar API Key
+            {{ t('admin.tenants.detail.regenerateKey') }}
           </button>
 
           <div>
-            <label class="text-xs text-gray-500 dark:text-gray-400">URL de la App</label>
+            <label class="text-xs text-gray-500 dark:text-gray-400">{{ t('admin.tenants.detail.appUrl') }}</label>
             <p class="font-mono text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded">
               {{ tenantsStore.currentTenant.appUrl }}
             </p>
@@ -266,16 +268,16 @@ const handleUpdateSubscription = async (newStatus) => {
 
       <!-- Usuarios del Tenant -->
       <div class="card lg:col-span-2">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Usuarios del Tenant</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.tenantUsers') }}</h3>
 
         <div v-if="tenantsStore.tenantUsers.length > 0" class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('users.form.name') }}</th>
                 <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Rol</th>
-                <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
+                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('users.form.role') }}</th>
+                <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('common.actions') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -295,19 +297,19 @@ const handleUpdateSubscription = async (newStatus) => {
                     @click="openEditUserModal(user)"
                     class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800"
                   >
-                    Editar
+                    {{ t('common.edit') }}
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p v-else class="text-gray-500 dark:text-gray-400">No hay usuarios</p>
+        <p v-else class="text-gray-500 dark:text-gray-400">{{ t('users.noUsers') }}</p>
       </div>
 
       <!-- Config -->
       <div class="card">
-        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">Configuracion</h3>
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.configStatus') }}</h3>
 
         <div class="space-y-2">
           <div class="flex items-center gap-2">
@@ -318,7 +320,7 @@ const handleUpdateSubscription = async (newStatus) => {
               ]"
             ></span>
             <span class="text-gray-700 dark:text-gray-300">
-              {{ tenantsStore.currentTenant.hasConfig ? 'Configuracion creada' : 'Sin configurar' }}
+              {{ tenantsStore.currentTenant.hasConfig ? t('admin.tenants.detail.configExists') : t('admin.tenants.detail.configNotExists') }}
             </span>
           </div>
         </div>
@@ -326,40 +328,40 @@ const handleUpdateSubscription = async (newStatus) => {
     </div>
 
     <div v-else class="text-center py-12 text-gray-500 dark:text-gray-400">
-      Tenant no encontrado
+      {{ t('admin.tenants.detail.notFound') }}
     </div>
 
     <!-- Modal editar usuario -->
     <div v-if="showEditUserModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-md">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Editar Usuario</h2>
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('admin.tenants.detail.editUser') }}</h2>
 
         <div class="space-y-4">
           <div>
-            <label class="label text-sm">Nombre</label>
-            <input v-model="editUserForm.name" type="text" class="input" placeholder="Nombre completo" />
+            <label class="label text-sm">{{ t('users.form.name') }}</label>
+            <input v-model="editUserForm.name" type="text" class="input" :placeholder="t('users.form.namePlaceholder')" />
           </div>
           <div>
-            <label class="label text-sm">Email</label>
-            <input v-model="editUserForm.email" type="email" class="input" placeholder="email@ejemplo.com" />
+            <label class="label text-sm">{{ t('users.form.email') }}</label>
+            <input v-model="editUserForm.email" type="email" class="input" :placeholder="t('users.form.emailPlaceholder')" />
           </div>
           <div>
-            <label class="label text-sm">Nueva Contraseña</label>
-            <input v-model="editUserForm.password" type="password" class="input" placeholder="Dejar vacío para mantener" />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Solo completar si deseas cambiar la contraseña</p>
+            <label class="label text-sm">{{ t('admin.tenants.detail.newPassword') }}</label>
+            <input v-model="editUserForm.password" type="password" class="input" :placeholder="t('users.form.passPlaceholderEdit')" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('admin.tenants.detail.passwordNote') }}</p>
           </div>
         </div>
 
         <div class="flex gap-3 mt-6">
           <button @click="showEditUserModal = false" class="btn btn-secondary flex-1">
-            Cancelar
+            {{ t('common.cancel') }}
           </button>
           <button
             @click="handleSaveUser"
             class="btn btn-primary flex-1"
             :disabled="!editUserForm.name || !editUserForm.email"
           >
-            Guardar
+            {{ t('common.save') }}
           </button>
         </div>
       </div>

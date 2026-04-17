@@ -291,14 +291,696 @@
     }
   },
   "common": {
-    "loading": "Carregando...",
-    "error": "Erro",
-    "success": "Sucesso",
-    "back": "Voltar",
-    "logout": "Sair",
     "save": "Salvar",
+    "saving": "Salvando...",
+    "saveChanges": "Salvar Alterações",
     "cancel": "Cancelar",
     "delete": "Excluir",
-    "edit": "Editar"
+    "edit": "Editar",
+    "back": "Voltar",
+    "close": "Fechar",
+    "loading": "Carregando...",
+    "success": "Sucesso!",
+    "error": "Ocorreu um erro",
+    "saveError": "Erro ao salvar",
+    "deleteError": "Erro ao excluir",
+    "retry": "Repetir",
+    "copy": "Copiar",
+    "copied": "Copiado!",
+    "noData": "Sem dados para mostrar",
+    "of": "de"
+  },
+  "auth": {
+    "login": "Entrar",
+    "loginTitle": "Iniciar Sessão",
+    "register": "Criar Conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu sua senha?",
+    "entering": "Entrando...",
+    "recoverPassword": "Recuperar Senha",
+    "sentLink": "Enviamos um link para o seu e-mail para recuperar sua senha.",
+    "sendLink": "Enviar Link",
+    "errorEmpty": "Por favor, preencha todos os campos",
+    "subscriptionInactive": "Sua assinatura está inativa",
+    "activateSubscription": "Ativar Assinatura",
+    "paymentInfo": "Uma vez que você pagou, tente entrar novamente — ele será ativado automaticamente.",
+    "companyName": "Nome da Empresa",
+    "companyPlaceholder": "Minha Agência",
+    "yourName": "Seu Nome",
+    "namePlaceholder": "João Silva",
+    "passwordMin": "Mínimo 6 caracteres",
+    "acceptTerms": "Li e aceito os",
+    "termsOfService": "Termos de Serviço",
+    "andThe": "e a",
+    "privacyPolicy": "Política de Privacidade",
+    "hasAccount": "Já tem uma conta?",
+    "creating": "Criando conta...",
+    "createFreeAccount": "Criar Conta Gratuita",
+    "requiredFields": "Por favor, preencha todos os campos",
+    "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+    "acceptTermsError": "Você deve aceitar os termos e condições",
+    "registerError": "Erro ao se registrar",
+    "reset": {
+      "title": "Nova Senha",
+      "confirmPassword": "Confirmar Senha",
+      "repeat": "Repita a senha",
+      "passwordUpdated": "Senha Atualizada",
+      "canLogin": "Agora você pode entrar com sua nova senha.",
+      "goToLogin": "Ir para o login",
+      "passwordsNoMatch": "As senhas não coincidem",
+      "invalidLink": "O link é inválido ou expirou"
+    }
+  },
+  "privacy": {
+    "title": "Política de Privacidade",
+    "updated": "Última atualização: 11 de abril de 2026",
+    "metaDescription": "Saiba como o LeadDistro protege seus dados e a privacidade de suas informações e as de seus leads.",
+    "s1": {
+      "title": "1. Informações que coletamos",
+      "desc": "O LeadDistro coleta as seguintes informações quando você usa nosso serviço:",
+      "l1": "Dados da conta: nome, e-mail e senha (armazenada com hash bcrypt) ao se registrar.",
+      "l2": "Dados da empresa: nome da organização e configuração da equipe de vendas.",
+      "l3": "Dados de leads: as informações dos prospectos que seu CRM envia através da API do LeadDistro (nome, e-mail, telefone ou outros campos que você configurar).",
+      "l4": "Dados de uso: logs de atividade, IP de acesso e métricas de uso do serviço."
+    },
+    "s2": {
+      "title": "2. Como usamos sua informação",
+      "desc": "Usamos as informações coletadas para:",
+      "l1": "Fornecer, manter e melhorar o serviço de distribuição de leads.",
+      "l2": "Processar e gerenciar sua assinatura.",
+      "l3": "Enviar notificações transacionais (confirmação de conta, alertas de limites, recuperação de senha).",
+      "l4": "Detectar e prevenir fraudes ou usos não autorizados.",
+      "footer": "Não vendemos, alugamos nem compartilhamos suas informações pessoais com terceiros para fins comerciais."
+    },
+    "s3": {
+      "title": "3. Isolamento de dados entre tenants",
+      "desc": "Cada empresa (tenant) opera em um ambiente completamente isolado. Os dados de seus leads, vendedores e configurações nunca são acessíveis de outra conta. O isolamento é implementado no nível do banco de dados usando identificadores de tenant exclusivos em cada registro."
+    },
+    "s4": {
+      "title": "4. Segurança de dados",
+      "desc": "Implementamos as seguintes medidas de segurança:",
+      "l1": "Todas as comunicações são criptografadas via HTTPS/TLS.",
+      "l2": "As senhas são armazenadas com hash bcrypt (nunca em texto simples).",
+      "l3": "O acesso à API requer autenticação JWT com expiração.",
+      "l4": "Os dados são armazenados no MongoDB Atlas com backups automáticos."
+    },
+    "s5": {
+      "title": "5. Serviços de terceiros",
+      "desc": "O LeadDistro utiliza os seguintes prestadores de serviços:",
+      "l1": "MongoDB Atlas — armazenamento de dados.",
+      "l2": "Resend — envio de e-mails transacionais.",
+      "l3": "dLocalGo — processamento de pagamentos e assinaturas.",
+      "l4": "Vercel — hospedagem de frontend.",
+      "l5": "Koyeb — hospedagem de backend.",
+      "footer": "Esses provedores têm suas próprias políticas de privacidade e recebem apenas as informações necessárias para prestar seus serviços."
+    },
+    "s6": {
+      "title": "6. Retenção e exclusão de dados",
+      "desc": "Seus dados são retidos enquanto sua conta estiver ativa. Se você cancelar sua conta, poderá solicitar a exclusão completa de seus dados escrevendo-nos via WhatsApp. Os dados de faturamento podem ser retidos devido a obrigações legais, de acordo com a legislação aplicável."
+    },
+    "s7": {
+      "title": "7. Seus direitos",
+      "desc": "Você tem o direito de:",
+      "l1": "Acessar os dados pessoais que mantemos sobre você.",
+      "l2": "Corrigir informações incorretas.",
+      "l3": "Solicitar a exclusão de sua conta e dados.",
+      "l4": "Exportar seus leads em formato CSV a partir do dashboard.",
+      "footer": "Para exercer qualquer um destes direitos, contacte-nos através do WhatsApp."
+    },
+    "s8": {
+      "title": "8. Alterações nesta política",
+      "desc": "Podemos atualizar esta política ocasionalmente. Iremos notificá-lo sobre mudanças significativas por e-mail. O uso continuado do serviço após as alterações implica na sua aceitação da nova política."
+    },
+    "s9": {
+      "title": "9. Contato",
+      "desc": "Para dúvidas sobre esta política de privacidade, contacte-nos através do WhatsApp +54 221 220 4194 ou visite www.leaddistro.site."
+    }
+  },
+  "terms": {
+    "title": "Termos de Serviço",
+    "updated": "Última atualização: 11 de abril de 2026",
+    "metaDescription": "Leia os termos e condições de uso da plataforma LeadDistro.",
+    "s1": {
+      "title": "1. Aceitação dos termos",
+      "desc": "Ao criar uma conta e utilizar o LeadDistro, você aceita estes Termos de Serviço na íntegra. Se você não concordar com qualquer um destes termos, não poderá usar o serviço."
+    },
+    "s2": {
+      "title": "2. Descrição do serviço",
+      "desc": "O LeadDistro é uma plataforma SaaS de distribuição automática de leads para equipes de vendas. O serviço inclui:",
+      "l1": "Distribuição automática de leads via webhook e algoritmo de atribuição por equipes e vendedores.",
+      "l2": "Dashboard de métricas e acompanhamento de leads.",
+      "l3": "Gestão de usuários com funções (Manager, Viewer, Seller).",
+      "l4": "Integração com CRMs e ferramentas de automação via webhook."
+    },
+    "s3": {
+      "title": "3. Contas e registro",
+      "desc": "Para usar o LeadDistro, você deve criar uma conta com informações verdadeiras e atualizadas. Você é responsável por manter a confidencialidade de sua senha e por todas as atividades que ocorrem em sua conta.",
+      "footer": "Você pode convidar usuários para sua organização (tenant). Você é responsável pelo uso que esses usuários fazem do serviço."
+    },
+    "s4": {
+      "title": "4. Assinatura e pagamentos",
+      "p1": "Período de teste: Ao se registrar, você ganha 7 dias de teste gratuito sem a necessidade de cartão de crédito. Ao final do período de teste, a conta ficará inativa até que uma assinatura seja ativada.",
+      "p2": "Assinatura mensal: O plano de assinatura custa US$ 25 por mês. Os pagamentos são processados através do dLocalGo.",
+      "p3": "Renovação: A assinatura é renovada automaticamente todos os meses através do dLocalGo. Você não precisa fazer nada para mantê-la ativa.",
+      "p4": "Reembolsos: Não oferecemos reembolsos por períodos já utilizados. Se você cancelar antes do vencimento, poderá usar o serviço até que o período pago expire."
+    },
+    "s5": {
+      "title": "5. Uso aceitável",
+      "desc": "Ao utilizar o LeadDistro, você concorda em:",
+      "l1": "Não utilizar o serviço para atividades ilegais ou não autorizadas.",
+      "l2": "Não tentar acessar dados de outros tenants ou usuários.",
+      "l3": "Não fazer engenharia reversa, descompilar ou modificar o serviço.",
+      "l4": "Não sobrecarregar intencionalmente a infraestrutura do serviço.",
+      "l5": "Cumprir as leis de privacidade e proteção de dados aplicáveis em seu país em relação aos leads que você processa."
+    },
+    "s6": {
+      "title": "6. Propriedade dos dados",
+      "p1": "Os dados que você carrega no LeadDistro (leads, vendedores, configurações) são de sua propriedade. O LeadDistro não reivindica quaisquer direitos sobre eles.",
+      "p2": "Ao utilizar o serviço, você nos concede uma licença limitada para processar esses dados apenas com o propósito de lhe fornecer o serviço."
+    },
+    "s7": {
+      "title": "7. Disponibilidade do serviço",
+      "p1": "Esforçamo-nos para manter o LeadDistro disponível 24 horas por dia, mas não garantimos disponibilidade ininterrumpida. Poderemos realizar manutenções programadas mediante notificação com antecedência razoável.",
+      "p2": "Não somos responsáveis por perdas decorrentes de interrupções de serviço, falhas de terceiros (MongoDB, Vercel, Koyeb) ou causas de força maior."
+    },
+    "s8": {
+      "title": "8. Limitação de responsabilidade",
+      "p1": "O LeadDistro é fornecido 'no estado em que se encontra' e 'conforme disponível'. Em nenhum caso seremos responsáveis por quaisquer danos indiretos, incidentais, especiais ou consequenciais resultantes do uso ou da impossibilidade de usar o serviço.",
+      "p2": "Nossa responsabilidade máxima em qualquer circunstância será limitada ao valor pago pelo serviço nos últimos 3 meses."
+    },
+    "s9": {
+      "title": "9. Cancelamento e rescisão",
+      "p1": "Por sua parte: Você pode cancelar sua conta a qualquer momento. Sua conta permanecerá ativa até o final do período pago.",
+      "p2": "Por nossa parte: Reservamo-nos o direito de suspender ou cancelar contas que violem estes termos, com ou sem aviso prévio, dependendo da gravidade da violação.",
+      "footer": "Ao cancelar, você pode exportar seus dados do dashboard antes de fechar a conta."
+    },
+    "s10": {
+      "title": "10. Modificações",
+      "desc": "Podemos modificar estes termos a qualquer momento. Iremos notificá-lo sobre mudanças significativas por e-mail com pelo menos 7 dias de antecedência. O uso continuado do serviço implica na aceitação dos termos atualizados."
+    },
+    "s11": {
+      "title": "11. Lei aplicável",
+      "desc": "Estes termos são regidos pelas leis da República Argentina. Qualquer disputa será resolveroda nos tribunais ordinários da cidade de Buenos Aires."
+    },
+    "s12": {
+      "title": "12. Contato",
+      "desc": "Para dúvidas sobre estes termos, contacte-nos através do WhatsApp +54 221 220 4194 ou visite www.leaddistro.site."
+    }
+  },
+  "paymentSuccess": {
+    "verifying": "Verificando seu pagamento...",
+    "success": {
+      "title": "Assinatura ativada!",
+      "desc": "Sua conta está ativa. Agora você pode acessar o sistema.",
+      "btn": "Ir para o dashboard"
+    },
+    "error": {
+      "title": "Não conseguimos verificar o pagamento",
+      "desc": "Se você efetuou o pagamento, entre em contato com o suporte para ativar sua conta manualmente.",
+      "btn": "Voltar para o login"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "summary": {
+      "title": "Resumo Inteligente com IA",
+      "info": "O sistema gera automaticamente um resumo de métricas com OpenAI e o envia para o webhook configurado (Make, Zapier, etc.).",
+      "automatic": "Resumo automático",
+      "active": "Ativo",
+      "disabled": "Desativado",
+      "everyDay": "Todos os dias",
+      "onceAWeek": "Uma vez por semana",
+      "frequency": "Frequência",
+      "daily": "Diário",
+      "dailyInfo": "Todos os dias na hora configurada",
+      "weekly": "Semanal",
+      "weeklyInfo": "Um dia fixo por semana",
+      "sendDay": "Dia de envio",
+      "sendTime": "Hora de envio",
+      "timeSuffix": "hs",
+      "timezoneInfo": "É usada a zona horária configurada em Integração.",
+      "webhookLabel": "URL do Webhook (Make, Zapier, etc.)",
+      "webhookInfo": "O sistema fará um POST com o resumo gerado por IA e as métricas do período.",
+      "viewJson": "Ver JSON enviado ao webhook",
+      "testButton": "Enviar resumo agora",
+      "testing": "Gerando...",
+      "testResult": "Resumo gerado:",
+      "errors": {
+        "test": "Erro ao gerar o resumo"
+      }
+    },
+    "filters": {
+      "title": "Filtros",
+      "startDate": "Data de início",
+      "endDate": "Data de término",
+      "team": "Equipe",
+      "seller": "Vendedor",
+      "stage": "Etapa",
+      "all": "Todos",
+      "allStages": "Todas",
+      "apply": "Aplicar",
+      "reset": "Limpar"
+    },
+    "kpis": {
+      "totalLeads": "Total de Leads",
+      "sellers": "Vendedores",
+      "stages": "Etapas"
+    },
+    "assignment": {
+      "nextTeam": "Próxima Equipe",
+      "nextSeller": "Próximo Vendedor",
+      "notDefined": "Sem definição",
+      "notAvailable": "Indisponível",
+      "availableWeekly": "Disponível: {n} semanal",
+      "availableToday": "{n} hoje"
+    },
+    "charts": {
+      "teamDist": "Distribuição por Equipe",
+      "leadsBySeller": "Leads por Vendedor",
+      "sellerTable": "Tabela de Vendedores",
+      "leadsByStage": "Leads por Etapa",
+      "stageTable": "Tabela de Etapas",
+      "leadsByState": "Leads por Estado",
+      "noState": "Sem Estado",
+      "noData": "Não há dados disponíveis",
+      "showingTop": "Mostrando top {n} de {total} estados"
+    }
+  },
+  "leads": {
+    "title": "Leads",
+    "search": "Buscar...",
+    "export": "Exportar CSV",
+    "exporting": "Exportando...",
+    "total": "{n} leads",
+    "table": {
+      "date": "Data",
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "status": "Estado",
+      "team": "Equipe",
+      "seller": "Vendedor",
+      "stage": "Etapa",
+      "source": "Origem",
+      "actions": "Ações",
+      "noLeads": "Nenhum lead encontrado"
+    },
+    "pagination": {
+      "prev": "Anterior",
+      "next": "Próximo"
+    },
+    "edit": {
+      "title": "Editar Lead",
+      "loading": "Salvando...",
+      "noChanges": "Sem alteração"
+    },
+    "delete": {
+      "title": "Excluir Lead",
+      "confirm": "Tem certeza que deseja excluir o lead {name}? Esta ação não pode ser desfeita.",
+      "deleting": "Excluindo..."
+    },
+    "fallback": {
+      "title": "Vendedores de Backup",
+      "info": "Quando todos os vendedores atingirem seu limite (diário ou semanal), os novos leads serão atribuídos ao backup com mais capacidade disponível.",
+      "orderTitle": "Ordem de atribuição",
+      "order1": "Equipe atribuída conforme % configurada",
+      "order2": "Qualquer equipe disponível (fallback geral)",
+      "order3": "Backup 1 ou 2 → o que tiver mais cota disponível",
+      "order4": "Se ambos estiverem no limite → mesmo assim é atribuído ao menos carregado",
+      "label": "Backup {n}",
+      "optional": "(opcional)",
+      "unassigned": "Sem atribuir",
+      "noFallbackWarning": "Sem backup configurado: os leads serão perdidos quando todos estiverem no limite",
+      "remove": "Remover backups",
+      "errors": {
+        "save": "Erro ao salvar"
+      }
+    }
+  },
+  "sellers": {
+    "title": "Vendedores",
+    "add": "+ Adicionar Vendedor",
+    "filterTeam": "Filtrar por equipe",
+    "allTeams": "Todas as equipes",
+    "count": "{n} vendedores",
+    "pagination": "Mostrando {start}-{end} de {total} vendedores",
+    "deleteConfirm": "Tem certeza que deseja excluir este vendedor?",
+    "addModal": {
+      "title": "Adicionar Vendedor",
+      "name": "Nome",
+      "team": "Equipe",
+      "selectTeam": "Selecionar equipe",
+      "weeklyLimit": "Limite semanal",
+      "dailyLimit": "Limite diário",
+      "crmId": "CRM User ID",
+      "crmIdInfo": "Usado para notificar o CRM sobre a atribuição do lead. Opcional se não usar integração.",
+      "leadsToday": "Leads hoje",
+      "leadsWeek": "Leads semana",
+      "availableToday": "Disponível hoje",
+      "availableWeek": "Disponível semana",
+      "capacity": "Capacidade usada"
+    },
+    "editModal": {
+      "title": "Editar Vendedor"
+    }
+  },
+  "users": {
+    "title": "Usuários",
+    "add": "+ Adicionar Usuário",
+    "edit": "Editar Usuário",
+    "count": "{n} usuários",
+    "linkedTo": "Vinculado a: {name}",
+    "createdAt": "Criado: {date}",
+    "principal": "(Principal)",
+    "noUsers": "Não há usuários registrados",
+    "deleteConfirm": "Tem certeza que deseja excluir este usuário?",
+    "roles": {
+      "manager": "Manager",
+      "seller": "Vendedor",
+      "viewer": "Visualizador",
+      "labels": {
+        "manager": "Manager - Acesso completo",
+        "seller": "Vendedor - Apenas seus dados",
+        "viewer": "Visualizador - Apenas ver e editar"
+      },
+      "descriptions": {
+        "manager": "O Manager tem acesso completo ao tenant.",
+        "seller": "O Vendedor só vê seus próprios leads e estatísticas.",
+        "viewer": "O Visualizador pode ver e editar, mas não criar ou excluir."
+      }
+    },
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "password": "Senha",
+      "role": "Função",
+      "linkedSeller": "Vendedor vinculado",
+      "newPassword": "Nova senha",
+      "namePlaceholder": "Nome completo",
+      "emailPlaceholder": "email@exemplo.com",
+      "passPlaceholder": "Mínimo 6 caracteres",
+      "passPlaceholderEdit": "Deixar vazio para manter"
+    }
+  },
+  "integrations": {
+    "title": "Integrações",
+    "platforms": {
+      "title": "Plataformas compatíveis",
+      "info": "LeadDistro funciona com qualquer ferramenta que suporte webhooks.",
+      "optimized": "Otimizado",
+      "webhook": "Webhook",
+      "ghl": "O aliado #1 para agências GHL",
+      "kommo": "Potencialize suas vendas por WhatsApp",
+      "monday": "O cérebro de atribuição para monday",
+      "hubspot": "Distribuição inteligente para seu CRM",
+      "clientify": "Impulsione seu CRM de marketing",
+      "make": "Conecte com mais de 3000 apps"
+    },
+    "webhooks": {
+      "title": "Webhooks da sua conta",
+      "info": "Configure estes webhooks no seu CRM para sincronizar leads automaticamente.",
+      "input": {
+        "title": "CRM envia novo lead ao sistema",
+        "desc": "Quando um contato é criado no seu CRM, envie os dados para esta URL. O sistema atribui automaticamente um vendedor.",
+        "viewJson": "Ver JSON necessário"
+      },
+      "output": {
+        "title": "Sistema notifica atribuição ao CRM",
+        "desc": "Quando o sistema atribui um vendedor, ele envia os dados para o seu CRM. Configure a URL de destino na seção abaixo.",
+        "viewJson": "Ver JSON enviado pelo sistema"
+      },
+      "stage": {
+        "title": "CRM notifica mudança de etapa",
+        "desc": "Quando a etapa de uma oportunidade muda no seu CRM, envie os dados para esta URL para sincronizar o estado do lead.",
+        "viewJson": "Ver JSON necessário"
+      }
+    },
+    "crm": {
+      "title": "Integração com CRM",
+      "info": "Configure a URL do webhook de notificação para que o sistema avise automaticamente seu CRM (GoHighLevel, HubSpot, etc.) quando um vendedor for atribuído a um lead.",
+      "timezoneLabel": "Fuso Horário",
+      "timezoneInfo": "O fuso horário é usado para calcular corretamente os leads de 'hoje' e 'esta semana'.",
+      "webhookLabel": "URL Webhook de notificação (opcional)",
+      "webhookPlaceholder": "https://seu-crm.com/webhook/...",
+      "webhookInfo": "O sistema fará um POST nesta URL cada vez que atribuir um vendedor a um lead. Compatível com GHL, HubSpot, Make, Zapier ou qualquer serviço que aceite webhooks.",
+      "payloadTitle": "Dados enviados ao webhook:",
+      "errors": {
+        "invalidUrl": "A URL inserida não é válida",
+        "update": "Erro ao atualizar configuração"
+      },
+      "success": "Configuração atualizada com sucesso"
+    }
+  },
+  "summaries": {
+    "title": "Resumos IA",
+    "generate": "Gerar agora",
+    "generating": "Gerando...",
+    "success": "Resumo gerado com sucesso",
+    "error": "Erro ao carregar os resumos",
+    "empty": {
+      "title": "Ainda não há resumos gerados",
+      "info": "Configure o resumo automático em Configuração → Resumo IA"
+    },
+    "card": {
+      "download": "PDF",
+      "delete": "Excluir",
+      "deleteConfirm": "Deseja excluir este resumo?"
+    },
+    "detail": {
+      "aiSummary": "Resumo gerado por IA",
+      "periodLeads": "Leads do período",
+      "inactiveLeads": "Sem atividade +48hs",
+      "bestSeller": "Melhor vendedor",
+      "byTeam": "Por equipe",
+      "byStage": "Por etapa",
+      "nearLimit": "Vendedores perto do limite"
+    },
+    "pdf": {
+      "title": "Resumo LeadDistro — {date}",
+      "metricsTitle": "Resumo gerado por IA",
+      "periodLeads": "Leads do período",
+      "inactiveLeads": "Sem atividade +48hs",
+      "bestSeller": "Melhor vendedor: {name}",
+      "byTeam": "Por equipe",
+      "byStage": "Por etapa",
+      "nearLimit": "Vendedores perto do limite (≥80%)",
+      "none": "Nenhum",
+      "footer": "Gerado por LeadDistro · {date}"
+    }
+  },
+  "support": {
+    "title": "Centro de Suporte",
+    "subtitle": "Você tem algum problema ou dúvida? Estamos aqui para ajudar.",
+    "newTicket": "Novo Ticket",
+    "yourTickets": "Seus Tickets",
+    "noTickets": "Você ainda não tem tickets criados.",
+    "success": "Ticket criado com sucesso. Responderemos em breve.",
+    "error": "Erro ao criar o ticket",
+    "modal": {
+      "title": "Novo Ticket de Suporte",
+      "subject": "Assunto",
+      "subjectPlaceholder": "Ex: Problema com a integração do GHL",
+      "category": "Categoria",
+      "priority": "Prioridade",
+      "description": "Descrição",
+      "descriptionPlaceholder": "Descreva o problema detalhadamente...",
+      "cancel": "Cancelar",
+      "send": "Enviar Ticket",
+      "sending": "Enviando..."
+    },
+    "status": {
+      "abierto": "Aberto",
+      "en-proceso": "Em processo",
+      "resuelto": "Resolvido",
+      "cerrado": "Fechado"
+    },
+    "categories": {
+      "bug": "Erro / Bug",
+      "pregunta": "Pergunta",
+      "facturacion": "Faturamento",
+      "otros": "Outros"
+    },
+    "priorities": {
+      "baja": "Baixa",
+      "media": "Média",
+      "alta": "Alta"
+    }
+  },
+  "billing": {
+    "title": "Minha Fatura",
+    "lifetime": {
+      "title": "Plano Vitalício Ativado!",
+      "desc": "Sua conta tem acesso permanente a todas as funcionalidades do LeadDistro. Sendo um plano vitalício, você não tem assinaturas mensais pendentes nem cobranças futuras.",
+      "backToDashboard": "Voltar ao Dashboard"
+    },
+    "info": {
+      "title": "Sobre seus recibos",
+      "desc": "Aqui você encontrará os comprovantes de pagamento da sua assinatura mensal. Os recibos são gerados automaticamente ao confirmar o pagamento e são armazenados de forma segura na nuvem."
+    },
+    "table": {
+      "noInvoices": "Não há recibos disponíveis",
+      "emptyInfo": "Seus futuros comprovantes aparecerão nesta lista.",
+      "date": "Data",
+      "concept": "Conceito",
+      "amount": "Valor",
+      "action": "Ação",
+      "monthlySubscription": "Assinatura Mensal",
+      "planStandard": "Plano LeadDistro Padrão",
+      "download": "Baixar Recibo",
+      "generating": "Gerando..."
+    }
+  },
+  "config": {
+    "title": "Configuração",
+    "tabs": {
+      "teams": "Equipes",
+      "period": "Período",
+      "stages": "Etapas",
+      "fallback": "Backup",
+      "summary": "Resumo IA",
+      "subscription": "Assinatura"
+    },
+    "no_tenant": "Não há inquilino associado a este usuário.",
+    "stages": {
+      "title": "Etapas de Oportunidade",
+      "info": "Configura as etapas do pipeline de vendas. Você pode reordená-las usando as setas.",
+      "placeholder": "Nome da etapa",
+      "add": "Adicionar Etapa",
+      "newStagePlaceholder": "Nova etapa...",
+      "addButton": "Adicionar",
+      "errors": {
+        "required": "O nome da etapa é obrigatório",
+        "exists": "Esta etapa já existe",
+        "minOne": "Deve haver pelo menos uma etapa",
+        "update": "Erro ao atualizar etapas"
+      },
+      "success": "Etapas atualizadas com sucesso"
+    },
+    "teams": {
+      "title": "Configuração de Equipes",
+      "info": "Define as equipes e suas porcentagens de atribuição. Os porcentagens devem somar 100%.",
+      "namePlaceholder": "Nome da equipe",
+      "newTeamPlaceholder": "Nova equipe",
+      "add": "Adicionar",
+      "total": "Total: {n}%",
+      "invalidTotal": "Deve somar exatamente 100%",
+      "valid": "Configuração válida",
+      "sumError": "Os porcentagens devem somar 100% (atual: {n}%)",
+      "nameRequired": "O nome da equipe é obrigatório",
+      "percentError": "O porcentagem deve ser maior que 0"
+    },
+    "period": {
+      "title": "Configuração de Período",
+      "info": "Define como o período ativo é contado para a distribuição de leads entre as equipes.",
+      "manual": "Período manual",
+      "auto": "Semana automática",
+      "manualInfo": "Defina um intervalo de datas fixo. Os leads dentro deste período serão contados para determinar a distribuição por equipes.",
+      "autoInfo": "O período é calculado automaticamente a cada semana de acordo com o dia de início que você escolher.",
+      "start": "Data de início",
+      "end": "Data de término",
+      "active": "Período ativo:",
+      "weekStart": "Dia de início da semana",
+      "currentWeek": "Semana atual: {range}",
+      "autoDescription": "A cada {day} às 00:00, uma nova semana começa e os contadores são reiniciados automaticamente. O último dia da semana será o {end}.",
+      "success": "Período atualizado com sucesso",
+      "days": {
+        "0": "Domingo",
+        "1": "Segunda-feira",
+        "2": "Terça-feira",
+        "3": "Quarta-feira",
+        "4": "Quinta-feira",
+        "5": "Sexta-feira",
+        "6": "Sábado"
+      },
+      "errors": {
+        "required": "Ambas as datas são obrigatórias",
+        "dateOrder": "A data de início deve ser anterior à data de término",
+        "update": "Erro ao atualizar o período"
+      }
+    },
+    "stages": {
+      "title": "Etapas de Oportunidade",
+      "success": "Configuração salva com sucesso"
+    }
+  },
+  "admin": {
+    "tenants": {
+      "title": "Gestão de Tenants",
+      "add": "+ Criar Tenant",
+      "filterStatus": "Filtrar por estado",
+      "count": "{n} tenants",
+      "noTenants": "Não há tenants para exibir",
+      "deleteConfirm": "Tem certeza que deseja excluir o tenant \"{name}\"? Esta ação excluirá TODOS os dados associados (usuários, leads, vendedores, configuração) e não pode ser desfeita.",
+      "detail": {
+        "title": "Detalhe do Tenant",
+        "general": "Informação Geral",
+        "name": "Nome",
+        "slug": "Slug",
+        "status": "Estado",
+        "users": "Usuários",
+        "editName": "Editar Nome",
+        "subscriptionTitle": "Plano e Assinatura",
+        "subStatus": "Estado da Assinatura",
+        "expiresAt": "Expira em",
+        "subInfo": "Ao alterar o status para 'Ativo', um comprovante de pagamento será gerado automaticamente no Google Drive.",
+        "integration": "Integração Make/GHL",
+        "webhookIn": "Webhook URL (criar leads)",
+        "apiKey": "API Key (header X-API-Key)",
+        "regenerateKey": "Regenerar API Key",
+        "regenerateConfirm": "Regenerar a chave da API invalidará a anterior. Os cenários do Make deixarão de funcionar até serem atualizados. Continuar?",
+        "apiKeySuccess": "API key regenerada: {key}",
+        "appUrl": "URL do App",
+        "tenantUsers": "Usuários do Tenant",
+        "configStatus": "Configuração",
+        "configExists": "Configuração criada",
+        "configNotExists": "Sem configurar",
+        "notFound": "Tenant não encontrado",
+        "editUser": "Editar Usuário",
+        "newPassword": "Nova Senha",
+        "passwordNote": "Preencha apenas se desejar alterar a senha"
+      }
+    },
+    "subscriptions": {
+      "title": "Gestão de Assinaturas",
+      "filter": "Filtrar:",
+      "drive": {
+        "success": "Google Drive vinculado com sucesso! Os recibos serão enviados automaticamente.",
+        "bannerTitle": "Automação de Recibos (Gmail Pessoal)",
+        "bannerDesc": "Vincule sua conta uma única vez para salvar os PDFs de pagamento automaticamente no seu Drive pessoal.",
+        "btn": "Vincular Google Drive"
+      },
+      "stats": {
+        "today": "Hoje",
+        "todayDesc": "Receita do dia",
+        "thisMonth": "Este Mês",
+        "thisMonthDesc": "Total arrecadado em {month}",
+        "thisYear": "Este Ano",
+        "thisYearDesc": "Período {year}"
+      },
+      "table": {
+        "tenant": "Tenant",
+        "status": "Estado",
+        "expiry": "Vencimento",
+        "users": "Usuários",
+        "totalLeads": "Leads Totais",
+        "createdAt": "Data de Alta",
+        "empty": "Nenhuma assinatura encontrada com este critério.",
+        "showing": "Mostrando {n} de {total} assinaturas"
+      }
+    },
+    "tickets": {
+      "title": "Gestão de Tickets",
+      "noTickets": "Não há tickets para exibir",
+      "table": {
+        "date": "Data",
+        "tenant": "Tenant",
+        "subject": "Assunto",
+        "category": "Categoria",
+        "priority": "Prioridade",
+        "status": "Estado",
+        "actions": "Ações"
+      }
+    }
   }
 }

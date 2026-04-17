@@ -148,7 +148,7 @@ const handleForgot = async () => {
             >
               {{ t('auth.activateSubscription') }} →
             </a>
-            <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">Una vez que pagaste, intentá ingresar de nuevo — se activa automáticamente.</p>
+            <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">{{ t('auth.paymentInfo') }}</p>
           </div>
           <div v-else-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
             {{ error }}

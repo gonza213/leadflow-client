@@ -4,6 +4,7 @@ import { useLeadsStore } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
+import { useI18n } from 'vue-i18n'
 import KPICard from '../components/dashboard/KPICard.vue'
 import SellersTable from '../components/dashboard/SellersTable.vue'
 import SellersChart from '../components/dashboard/SellersChart.vue'
@@ -16,6 +17,7 @@ const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
 const sellersStore = useSellersStore()
 const authStore = useAuthStore()
+const { t } = useI18n()
 
 onMounted(async () => {
   await configStore.fetchConfig()
@@ -31,7 +33,7 @@ onMounted(async () => {
 // Sellers filtrados según el equipo seleccionado
 const filteredSellers = computed(() => {
   const equipo = leadsStore.filters.equipo
-  if (!equipo || equipo === 'Todos') return sellersStore.sellers
+  if (!equipo || equipo === t('dashboard.filters.all')) return sellersStore.sellers
   return sellersStore.sellers.filter(s => s.team === equipo)
 })
 
@@ -63,15 +65,15 @@ const handleResetFilters = () => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('dashboard.title') }}</h1>
     </div>
 
     <!-- Filtros -->
     <div class="card">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Filtros</h2>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.filters.title') }}</h2>
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div>
-          <label class="label text-xs">Fecha inicio</label>
+          <label class="label text-xs">{{ t('dashboard.filters.startDate') }}</label>
           <input
             v-model="leadsStore.filters.fecha_inicio"
             type="date"
@@ -79,7 +81,7 @@ const handleResetFilters = () => {
           />
         </div>
         <div>
-          <label class="label text-xs">Fecha fin</label>
+          <label class="label text-xs">{{ t('dashboard.filters.endDate') }}</label>
           <input
             v-model="leadsStore.filters.fecha_fin"
             type="date"
@@ -87,9 +89,9 @@ const handleResetFilters = () => {
           />
         </div>
         <div v-if="!authStore.isSeller">
-          <label class="label text-xs">Equipo</label>
+          <label class="label text-xs">{{ t('dashboard.filters.team') }}</label>
           <select v-model="leadsStore.filters.equipo" class="input text-sm">
-            <option value="Todos">Todos</option>
+            <option :value="t('dashboard.filters.all')">{{ t('dashboard.filters.all') }}</option>
             <option
               v-for="equipo in configStore.config?.equipos || []"
               :key="equipo.nombre"
@@ -100,9 +102,9 @@ const handleResetFilters = () => {
           </select>
         </div>
         <div v-if="!authStore.isSeller">
-          <label class="label text-xs">Vendedor</label>
+          <label class="label text-xs">{{ t('dashboard.filters.seller') }}</label>
           <select v-model="leadsStore.filters.usuario" class="input text-sm">
-            <option value="">Todos</option>
+            <option value="">{{ t('dashboard.filters.all') }}</option>
             <option
               v-for="seller in filteredSellers"
               :key="seller._id"
@@ -113,9 +115,9 @@ const handleResetFilters = () => {
           </select>
         </div>
         <div>
-          <label class="label text-xs">Etapa</label>
+          <label class="label text-xs">{{ t('dashboard.filters.stage') }}</label>
           <select v-model="leadsStore.filters.opportunity_stage" class="input text-sm">
-            <option value="">Todas</option>
+            <option value="">{{ t('dashboard.filters.allStages') }}</option>
             <option
               v-for="stage in configStore.config?.opportunity_stages || []"
               :key="stage"
@@ -128,10 +130,10 @@ const handleResetFilters = () => {
       </div>
       <div class="flex gap-2 mt-3">
         <button @click="handleApplyFilters" class="btn btn-primary btn-sm flex-1 lg:flex-none">
-          Aplicar
+          {{ t('dashboard.filters.apply') }}
         </button>
         <button @click="handleResetFilters" class="btn btn-secondary btn-sm">
-          Limpiar
+          {{ t('dashboard.filters.reset') }}
         </button>
       </div>
     </div>
@@ -139,27 +141,27 @@ const handleResetFilters = () => {
     <!-- Loading -->
     <div v-if="leadsStore.loading" class="text-center py-12">
       <div class="inline-block w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
-      <p class="mt-2 text-gray-600 dark:text-gray-300">Cargando datos...</p>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">{{ t('dashboard.loading') }}</p>
     </div>
 
     <template v-else>
       <!-- KPIs -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <KPICard
-          title="Total Leads"
+          :title="t('dashboard.kpis.totalLeads')"
           :value="leadsStore.totalLeads"
           icon="chart"
           color="primary"
         />
         <KPICard
           v-if="!authStore.isSeller"
-          title="Vendedores"
+          :title="t('dashboard.kpis.sellers')"
           :value="leadsStore.sellers.length"
           icon="users"
           color="green"
         />
         <KPICard
-          title="Etapas"
+          :title="t('dashboard.kpis.stages')"
           :value="leadsStore.stages.length"
           icon="layers"
           color="purple"
@@ -176,9 +178,9 @@ const handleResetFilters = () => {
               </svg>
             </div>
             <div>
-              <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">Próximo Equipo</p>
+              <p class="text-sm text-blue-600 dark:text-blue-400 font-medium">{{ t('dashboard.assignment.nextTeam') }}</p>
               <p class="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                {{ leadsStore.nextTeam || 'Sin definir' }}
+                {{ leadsStore.nextTeam || t('dashboard.assignment.notDefined') }}
               </p>
             </div>
           </div>
@@ -192,12 +194,12 @@ const handleResetFilters = () => {
               </svg>
             </div>
             <div class="flex-1">
-              <p class="text-sm text-green-600 dark:text-green-400 font-medium">Próximo Vendedor</p>
-              <p class="text-2xl font-bold text-green-900 dark:text-green-100">
-                {{ leadsStore.nextSeller?.seller_name || 'Sin disponibles' }}
+              <p class="text-sm text-green-600 dark:text-green-400 font-medium">{{ t('dashboard.assignment.nextSeller') }}</p>
+              <p class="text-2xl font-bold text-green-900 dark:text-blue-100">
+                {{ leadsStore.nextSeller?.seller_name || t('dashboard.assignment.notAvailable') }}
               </p>
               <p v-if="leadsStore.nextSeller" class="text-xs text-green-600 dark:text-green-400 mt-1">
-                {{ leadsStore.nextSeller.team }} - Disponible: {{ leadsStore.nextSeller.available }} semanal / {{ leadsStore.nextSeller.availableToday }} hoy
+                {{ leadsStore.nextSeller.team }} - {{ t('dashboard.assignment.availableWeekly', { n: leadsStore.nextSeller.available }) }} / {{ t('dashboard.assignment.availableToday', { n: leadsStore.nextSeller.availableToday }) }}
               </p>
             </div>
           </div>
@@ -206,36 +208,36 @@ const handleResetFilters = () => {
 
       <!-- Distribución por equipo (solo si hay más de 1 equipo configurado) -->
       <div v-if="!authStore.isSeller && (configStore.config?.equipos?.length ?? 0) > 1" class="card">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Distribución por Equipo</h2>
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.teamDist') }}</h2>
         <TeamsChart :teams="leadsStore.teams" :configured-teams="configStore.config?.equipos || []" />
       </div>
 
       <!-- Gráficos y Tablas -->
       <div v-if="!authStore.isSeller" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Vendedor</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.leadsBySeller') }}</h2>
           <SellersChart :sellers="leadsStore.sellers" />
         </div>
         <div class="card">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tabla de Vendedores</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.sellerTable') }}</h2>
           <SellersTable :sellers="leadsStore.sellers" />
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Etapa</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.leadsByStage') }}</h2>
           <StagesChart :stages="leadsStore.stages" />
         </div>
         <div class="card">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Tabla de Etapas</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.stageTable') }}</h2>
           <StagesTable :stages="leadsStore.stages" />
         </div>
       </div>
 
       <!-- Leads por Estado Geográfico -->
       <div class="card">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leads por Estado</h2>
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('dashboard.charts.leadsByState') }}</h2>
         <StatesChart
           :states="leadsStore.states"
           :leads="leadsStore.leads"

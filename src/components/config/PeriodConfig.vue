@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t, locale } = useI18n()
 const props = defineProps({
   fechaInicio: String,
   fechaFin: String,
@@ -14,15 +16,15 @@ const props = defineProps({
   }
 })
 
-const DAYS = [
-  { value: 1, label: 'Lunes' },
-  { value: 2, label: 'Martes' },
-  { value: 3, label: 'Miércoles' },
-  { value: 4, label: 'Jueves' },
-  { value: 5, label: 'Viernes' },
-  { value: 6, label: 'Sábado' },
-  { value: 0, label: 'Domingo' }
-]
+const DAYS = computed(() => [
+  { value: 1, label: t('config.period.days.1') },
+  { value: 2, label: t('config.period.days.2') },
+  { value: 3, label: t('config.period.days.3') },
+  { value: 4, label: t('config.period.days.4') },
+  { value: 5, label: t('config.period.days.5') },
+  { value: 6, label: t('config.period.days.6') },
+  { value: 0, label: t('config.period.days.0') }
+])
 
 const formatDate = (date) => {
   if (!date) return ''
@@ -63,13 +65,13 @@ const weekPreview = computed(() => {
   const end = new Date(start)
   end.setDate(start.getDate() + 6)
 
-  const fmt = (d) => d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+  const fmt = (d) => d.toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'short', year: 'numeric' })
   return `${fmt(start)} – ${fmt(end)}`
 })
 
 const endDayLabel = computed(() => {
   const endDow = (selectedDay.value + 6) % 7
-  return DAYS.find(d => d.value === endDow)?.label || ''
+  return DAYS.value.find(d => d.value === endDow)?.label || ''
 })
 
 const handleSave = async () => {
@@ -79,11 +81,11 @@ const handleSave = async () => {
   let data
   if (mode.value === 'manual') {
     if (!localFechaInicio.value || !localFechaFin.value) {
-      error.value = 'Ambas fechas son requeridas'
+      error.value = t('config.period.errors.required')
       return
     }
     if (new Date(localFechaInicio.value) > new Date(localFechaFin.value)) {
-      error.value = 'La fecha de inicio debe ser anterior a la fecha de fin'
+      error.value = t('config.period.errors.dateOrder')
       return
     }
     data = { fecha_inicio: localFechaInicio.value, fecha_fin: localFechaFin.value, week_start_day: null }
@@ -94,22 +96,22 @@ const handleSave = async () => {
   try {
     const result = await props.onSave(data)
     if (result?.success === false) {
-      error.value = result.error || 'Error al actualizar período'
+      error.value = result.error || t('config.period.errors.update')
     } else {
-      success.value = 'Período actualizado correctamente'
+      success.value = t('config.period.success')
       setTimeout(() => success.value = '', 3000)
     }
   } catch {
-    error.value = 'Error al actualizar período'
+    error.value = t('config.period.errors.update')
   }
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Configuración de Período</h3>
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ t('config.period.title') }}</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-      Define cómo se cuenta el período activo para la distribución de leads entre equipos.
+      {{ t('config.period.info') }}
     </p>
 
     <!-- Toggle de modo -->
@@ -123,7 +125,7 @@ const handleSave = async () => {
             : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
         ]"
       >
-        Período manual
+        {{ t('config.period.manual') }}
       </button>
       <button
         @click="mode = 'auto'"
@@ -134,31 +136,31 @@ const handleSave = async () => {
             : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
         ]"
       >
-        Semana automática
+        {{ t('config.period.auto') }}
       </button>
     </div>
 
     <!-- Modo Manual -->
     <div v-if="mode === 'manual'">
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        Definí un rango de fechas fijo. Los leads dentro de este período se contarán para determinar la distribución por equipos.
+        {{ t('config.period.manualInfo') }}
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div>
-          <label class="label">Fecha de inicio</label>
+          <label class="label">{{ t('config.period.start') }}</label>
           <input v-model="localFechaInicio" type="date" class="input" />
         </div>
         <div>
-          <label class="label">Fecha de fin</label>
+          <label class="label">{{ t('config.period.end') }}</label>
           <input v-model="localFechaFin" type="date" class="input" />
         </div>
       </div>
       <div v-if="localFechaInicio && localFechaFin" class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-6">
         <p class="text-sm text-blue-700 dark:text-blue-400">
-          <strong>Período activo:</strong>
-          {{ new Date(localFechaInicio + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+          <strong>{{ t('config.period.active') }}</strong>
+          {{ new Date(localFechaInicio + 'T12:00:00').toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}
           –
-          {{ new Date(localFechaFin + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+          {{ new Date(localFechaFin + 'T12:00:00').toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}
         </p>
       </div>
     </div>
@@ -166,10 +168,10 @@ const handleSave = async () => {
     <!-- Modo Automático -->
     <div v-else>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        El período se calcula automáticamente cada semana según el día de inicio que elijas.
+        {{ t('config.period.autoInfo') }}
       </p>
 
-      <label class="label mb-3">Día de inicio de semana</label>
+      <label class="label mb-3">{{ t('config.period.weekStart') }}</label>
       <div class="flex flex-wrap gap-2 mb-4">
         <button
           v-for="day in DAYS"
@@ -188,11 +190,13 @@ const handleSave = async () => {
 
       <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-6">
         <p class="text-sm text-blue-700 dark:text-blue-400 font-medium mb-1">
-          Semana actual: {{ weekPreview }}
+          {{ t('config.period.currentWeek', { range: weekPreview }) }}
         </p>
         <p class="text-xs text-blue-600 dark:text-blue-500">
-          Cada {{ DAYS.find(d => d.value === selectedDay)?.label }} a las 00:00 comienza una nueva semana y los contadores se reinician automáticamente.
-          El último día de la semana será el {{ endDayLabel }}.
+          {{ t('config.period.autoDescription', {
+            day: DAYS.value.find(d => d.value === selectedDay)?.label,
+            end: endDayLabel
+          }) }}
         </p>
       </div>
     </div>
@@ -206,7 +210,7 @@ const handleSave = async () => {
     </div>
 
     <button @click="handleSave" class="btn btn-primary">
-      Guardar Cambios
+      {{ t('common.saveChanges') }}
     </button>
   </div>
 </template>

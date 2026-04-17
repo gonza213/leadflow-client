@@ -1,6 +1,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useSellersStore } from '../../stores/sellers'
+
+const { t } = useI18n()
 
 const props = defineProps({
   fallbackSellerIds: { type: Array, default: () => [] },
@@ -39,7 +42,7 @@ const handleSave = async () => {
     saved.value = true
     setTimeout(() => { saved.value = false }, 2500)
   } else {
-    error.value = result?.error || 'Error al guardar'
+    error.value = result?.error || t('config.fallback.errors.save')
   }
   saving.value = false
 }
@@ -53,10 +56,9 @@ const handleClear = async () => {
 <template>
   <div class="space-y-6">
     <div>
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Vendedores de Respaldo</h2>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('config.fallback.title') }}</h2>
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        Cuando todos los vendedores alcancen su límite (diario o semanal), los leads nuevos se
-        asignarán al respaldo con más capacidad disponible.
+        {{ t('config.fallback.info') }}
       </p>
     </div>
 
@@ -66,12 +68,12 @@ const handleClear = async () => {
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <div>
-        <p class="font-medium mb-1">Orden de asignación</p>
+        <p class="font-medium mb-1">{{ t('config.fallback.orderTitle') }}</p>
         <ol class="list-decimal list-inside space-y-1 text-amber-700 dark:text-amber-400">
-          <li>Equipo asignado según % configurado</li>
-          <li>Cualquier equipo disponible (fallback general)</li>
-          <li>Respaldo 1 o 2 → el que tenga más cupo disponible</li>
-          <li>Si ambos están al límite → igual se asigna al menos cargado</li>
+          <li>{{ t('config.fallback.order1') }}</li>
+          <li>{{ t('config.fallback.order2') }}</li>
+          <li>{{ t('config.fallback.order3') }}</li>
+          <li>{{ t('config.fallback.order4') }}</li>
         </ol>
       </div>
     </div>
@@ -79,9 +81,9 @@ const handleClear = async () => {
     <!-- Selectores -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div v-for="(_, i) in 2" :key="i" class="space-y-1.5">
-        <label class="label text-sm">Respaldo {{ i + 1 }} <span class="text-gray-400 font-normal">(opcional)</span></label>
+        <label class="label text-sm">{{ t('config.fallback.label', { n: i + 1 }) }} <span class="text-gray-400 font-normal">{{ t('config.fallback.optional') }}</span></label>
         <select v-model="selected[i]" class="input text-sm">
-          <option value="">Sin asignar</option>
+          <option value="">{{ t('config.fallback.unassigned') }}</option>
           <option
             v-for="seller in availableFor(i)"
             :key="seller._id"
@@ -104,7 +106,7 @@ const handleClear = async () => {
       <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
       </svg>
-      Sin respaldo configurado: los leads se perderán cuando todos estén al límite
+      {{ t('config.fallback.noFallbackWarning') }}
     </div>
 
     <!-- Error -->
@@ -115,10 +117,10 @@ const handleClear = async () => {
     <!-- Actions -->
     <div class="flex items-center gap-3">
       <button @click="handleSave" :disabled="saving" class="btn btn-primary">
-        {{ saving ? 'Guardando...' : saved ? '¡Guardado!' : 'Guardar' }}
+        {{ saving ? t('common.loading') : saved ? t('common.success') : t('common.save') }}
       </button>
       <button v-if="hasAny" @click="handleClear" :disabled="saving" class="btn btn-secondary text-sm">
-        Quitar respaldos
+        {{ t('config.fallback.remove') }}
       </button>
     </div>
   </div>

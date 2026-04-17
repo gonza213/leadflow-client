@@ -1,7 +1,10 @@
 <script setup>
 import { onMounted, ref, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { supportApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
+
+const { t, locale } = useI18n()
 
 const authStore = useAuthStore()
 
@@ -41,7 +44,7 @@ const handleSubmit = async () => {
   successMessage.value = ''
   try {
     await supportApi.createTicket(authStore.tenantSlug, form)
-    successMessage.value = 'Ticket creado con éxito. Te responderemos pronto.'
+    successMessage.value = t('support.success')
     form.subject = ''
     form.description = ''
     form.category = 'otros'
@@ -49,7 +52,7 @@ const handleSubmit = async () => {
     showModal.value = false
     await fetchTickets()
   } catch (e) {
-    error.value = e.response?.data?.message || 'Error al crear el ticket'
+    error.value = e.response?.data?.message || t('support.error')
   } finally {
     submitting.value = false
   }
@@ -65,18 +68,22 @@ const getStatusClass = (status) => {
   return classes[status] || 'bg-gray-100 text-gray-700'
 }
 
+const getStatusLabel = (status) => {
+  return t(`support.status.${status}`) || status
+}
+
 const getCategoryLabel = (cat) => {
-  const labels = {
-    bug: 'Error / Bug',
-    pregunta: 'Pregunta',
-    facturacion: 'Facturación',
-    otros: 'Otros'
+  const map = {
+    bug: 'bug',
+    pregunta: 'pregunta',
+    facturacion: 'facturacion',
+    otros: 'otros'
   }
-  return labels[cat] || cat
+  return t(`support.categories.${map[cat] || cat}`) || cat
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('es-ES', {
+  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -91,8 +98,8 @@ const formatDate = (date) => {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Centro de Soporte</h1>
-        <p class="text-gray-500 dark:text-gray-400 text-sm">¿Tenés algún problema o duda? Estamos para ayudarte.</p>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ t('support.title') }}</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">{{ t('support.subtitle') }}</p>
       </div>
       <button 
         @click="showModal = true"
@@ -101,7 +108,7 @@ const formatDate = (date) => {
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        Nuevo Ticket
+        {{ t('support.newTicket') }}
       </button>
     </div>
 
@@ -115,7 +122,7 @@ const formatDate = (date) => {
     <!-- Tickets List -->
     <div class="card p-0 overflow-hidden">
       <div class="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
-        <h2 class="font-semibold text-gray-900 dark:text-white">Tus Tickets</h2>
+        <h2 class="font-semibold text-gray-900 dark:text-white">{{ t('support.yourTickets') }}</h2>
       </div>
 
       <div v-if="loading" class="p-12 text-center">
@@ -128,7 +135,7 @@ const formatDate = (date) => {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
           </svg>
         </div>
-        <p class="text-gray-500 dark:text-gray-400">No tenés tickets creados aún.</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ t('support.noTickets') }}</p>
       </div>
 
       <div v-else class="divide-y divide-gray-100 dark:divide-gray-800">
@@ -142,7 +149,7 @@ const formatDate = (date) => {
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="font-medium text-gray-900 dark:text-white truncate">{{ ticket.subject }}</span>
                 <span :class="['text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full', getStatusClass(ticket.status)]">
-                  {{ ticket.status }}
+                  {{ getStatusLabel(ticket.status) }}
                 </span>
               </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{{ ticket.description }}</p>
@@ -170,7 +177,7 @@ const formatDate = (date) => {
     <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-200 dark:border-gray-800">
         <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/50 dark:bg-gray-800/50">
-          <h3 class="text-lg font-bold text-gray-900 dark:text-white">Nuevo Ticket de Soporte</h3>
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ t('support.modal.title') }}</h3>
           <button @click="showModal = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -184,43 +191,43 @@ const formatDate = (date) => {
           </div>
 
           <div>
-            <label class="label text-sm font-semibold mb-1.5">Asunto</label>
+            <label class="label text-sm font-semibold mb-1.5">{{ t('support.modal.subject') }}</label>
             <input 
               v-model="form.subject" 
               type="text" 
               class="input focus:ring-primary-500" 
-              placeholder="Ej: Problema con la integración de GHL"
+              :placeholder="t('support.modal.subjectPlaceholder')"
               required 
             />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="label text-sm font-semibold mb-1.5">Categoría</label>
+              <label class="label text-sm font-semibold mb-1.5">{{ t('support.modal.category') }}</label>
               <select v-model="form.category" class="input focus:ring-primary-500">
-                <option value="bug">Error / Bug</option>
-                <option value="pregunta">Pregunta</option>
-                <option value="facturacion">Facturación</option>
-                <option value="otros">Otros</option>
+                <option value="bug">{{ t('support.categories.bug') }}</option>
+                <option value="pregunta">{{ t('support.categories.pregunta') }}</option>
+                <option value="facturacion">{{ t('support.categories.facturacion') }}</option>
+                <option value="otros">{{ t('support.categories.otros') }}</option>
               </select>
             </div>
             <div>
-              <label class="label text-sm font-semibold mb-1.5">Prioridad</label>
+              <label class="label text-sm font-semibold mb-1.5">{{ t('support.modal.priority') }}</label>
               <select v-model="form.priority" class="input focus:ring-primary-500">
-                <option value="baja">Baja</option>
-                <option value="media">Media</option>
-                <option value="alta">Alta</option>
+                <option value="baja">{{ t('support.priorities.baja') }}</option>
+                <option value="media">{{ t('support.priorities.media') }}</option>
+                <option value="alta">{{ t('support.priorities.alta') }}</option>
               </select>
             </div>
           </div>
 
           <div>
-            <label class="label text-sm font-semibold mb-1.5">Descripción</label>
+            <label class="label text-sm font-semibold mb-1.5">{{ t('support.modal.description') }}</label>
             <textarea 
               v-model="form.description" 
               rows="4" 
               class="input focus:ring-primary-500 py-3" 
-              placeholder="Describí el problema detalladamente..."
+              :placeholder="t('support.modal.descriptionPlaceholder')"
               required
             ></textarea>
           </div>
@@ -231,7 +238,7 @@ const formatDate = (date) => {
               @click="showModal = false" 
               class="btn btn-secondary flex-1"
             >
-              Cancelar
+              {{ t('support.modal.cancel') }}
             </button>
             <button 
               type="submit" 
@@ -243,9 +250,9 @@ const formatDate = (date) => {
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                 </svg>
-                Enviando...
+                {{ t('support.modal.sending') }}
               </span>
-              <span v-else>Enviar Ticket</span>
+              <span v-else>{{ t('support.modal.send') }}</span>
             </button>
           </div>
         </form>

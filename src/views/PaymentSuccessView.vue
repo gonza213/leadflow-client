@@ -3,7 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { subscriptionApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
@@ -37,7 +39,7 @@ onMounted(async () => {
         <!-- Verificando -->
         <div v-if="status === 'verifying'">
           <div class="w-14 h-14 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p class="text-gray-600 dark:text-gray-400">Verificando tu pago...</p>
+          <p class="text-gray-600 dark:text-gray-400">{{ t('paymentSuccess.verifying') }}</p>
         </div>
 
         <!-- Éxito -->
@@ -47,12 +49,12 @@ onMounted(async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">¡Suscripción activada!</h2>
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ t('paymentSuccess.success.title') }}</h2>
           <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
-            Tu cuenta está activa. Ya podés acceder al sistema.
+            {{ t('paymentSuccess.success.desc') }}
           </p>
           <button @click="router.push('/login')" class="btn btn-primary w-full">
-            Ir al dashboard
+            {{ t('paymentSuccess.success.btn') }}
           </button>
         </div>
 
@@ -63,12 +65,12 @@ onMounted(async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">No pudimos verificar el pago</h2>
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ t('paymentSuccess.error.title') }}</h2>
           <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">
-            Si realizaste el pago, contactá a soporte para activar tu cuenta manualmente.
+            {{ t('paymentSuccess.error.desc') }}
           </p>
           <button @click="router.push('/login')" class="btn btn-secondary w-full">
-            Volver al login
+            {{ t('paymentSuccess.error.btn') }}
           </button>
         </div>
 

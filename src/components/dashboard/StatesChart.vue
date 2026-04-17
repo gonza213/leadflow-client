@@ -1,6 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useUiStore } from '../../stores/ui'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   states: {
@@ -34,7 +37,7 @@ const filteredStates = computed(() => {
   const filteredLeads = props.leads.filter(lead => lead.opportunity_stage === selectedStage.value)
 
   filteredLeads.forEach(lead => {
-    const state = lead.state || 'Sin Estado'
+    const state = lead.state || t('dashboard.charts.noState')
     if (!stateStats[state]) {
       stateStats[state] = { state, leads: 0 }
     }
@@ -118,7 +121,7 @@ const chartOptions = computed(() => ({
 const topStates = computed(() => filteredStates.value.slice(0, 10))
 
 const chartSeries = computed(() => [{
-  name: 'Leads',
+  name: t('leads.title'),
   data: topStates.value.map(s => s.leads)
 }])
 
@@ -126,7 +129,7 @@ const categories = computed(() => topStates.value.map(s => s.state))
 
 // Get unique stages from available stages prop
 const availableStages = computed(() => {
-  return props.stages.map(s => s.stage).filter(s => s && s !== 'Sin Etapa')
+  return props.stages.map(s => s.stage).filter(s => s && s !== t('dashboard.charts.noState'))
 })
 </script>
 
@@ -134,9 +137,9 @@ const availableStages = computed(() => {
   <div>
     <!-- Stage Filter -->
     <div class="mb-4">
-      <label class="label text-sm">Filtrar por Etapa</label>
+      <label class="label text-sm">{{ t('dashboard.filters.stage') }}</label>
       <select v-model="selectedStage" class="input text-sm">
-        <option value="">Todas las etapas</option>
+        <option value="">{{ t('dashboard.filters.allStages') }}</option>
         <option v-for="stage in availableStages" :key="stage" :value="stage">
           {{ stage }}
         </option>
@@ -152,11 +155,11 @@ const availableStages = computed(() => {
         :key="`${uiStore.darkMode}-${selectedStage}`"
       />
       <p v-if="filteredStates.length > 10" class="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
-        Mostrando top 10 de {{ filteredStates.length }} estados
+        {{ t('dashboard.charts.showingTop', { n: 10, total: filteredStates.length }) }}
       </p>
     </div>
     <div v-else class="h-64 flex items-center justify-center text-gray-500 dark:text-gray-400">
-      No hay datos disponibles
+      {{ t('dashboard.charts.noData') }}
     </div>
   </div>
 </template>

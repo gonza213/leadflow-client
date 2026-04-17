@@ -1,6 +1,9 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { adminApi } from '../../services/api'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const tickets = ref([])
 const loading = ref(false)
@@ -40,7 +43,7 @@ const updateStatus = async (ticketId, status) => {
     await adminApi.updateAdminTicket(ticketId, { status })
     await fetchTickets(pagination.value.page)
   } catch (e) {
-    alert('Error al actualizar el ticket')
+    alert(t('common.error'))
   } finally {
     updating.value = null
   }
@@ -66,7 +69,7 @@ const getPriorityClass = (priority) => {
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('es-ES', {
+  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     day: '2-digit',
     month: '2-digit',
     hour: '2-digit',
@@ -78,8 +81,8 @@ const formatDate = (date) => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Tickets de Soporte Global</h1>
-      <button @click="fetchTickets(pagination.page)" class="btn btn-secondary btn-sm p-2" title="Refrescar">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ t('admin.tickets.title') }}</h1>
+      <button @click="fetchTickets(pagination.page)" class="btn btn-secondary btn-sm p-2" :title="t('common.retry')">
         <svg :class="{'animate-spin': loading}" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
@@ -92,7 +95,7 @@ const formatDate = (date) => {
 
     <div v-else class="grid gap-4">
       <div v-if="tickets.length === 0" class="card p-12 text-center text-gray-500">
-        No hay tickets registrados en el sistema.
+        {{ t('admin.tickets.noTickets') }}
       </div>
 
       <div 
@@ -125,19 +128,19 @@ const formatDate = (date) => {
           </div>
 
           <div class="flex flex-col gap-2 min-w-[150px]">
-            <label class="text-[10px] uppercase font-bold text-gray-400">Cambiar Estado</label>
+            <label class="text-[10px] uppercase font-bold text-gray-400">{{ t('support.modal.status') || 'Status' }}</label>
             <select 
               :value="ticket.status"
               @change="updateStatus(ticket._id, $event.target.value)"
               :disabled="updating === ticket._id"
               class="input text-sm p-1.5 focus:ring-primary-500"
             >
-              <option value="abierto">Abierto</option>
-              <option value="en-proceso">En Proceso</option>
-              <option value="resuelto">Resuelto</option>
-              <option value="cerrado">Cerrado</option>
+              <option value="abierto">{{ t('support.status.abierto') }}</option>
+              <option value="en-proceso">{{ t('support.status.en-proceso') }}</option>
+              <option value="resuelto">{{ t('support.status.resuelto') }}</option>
+              <option value="cerrado">{{ t('support.status.cerrado') }}</option>
             </select>
-            <p v-if="updating === ticket._id" class="text-[10px] text-primary-600 animate-pulse text-center font-bold">Actualizando...</p>
+            <p v-if="updating === ticket._id" class="text-[10px] text-primary-600 animate-pulse text-center font-bold">{{ t('common.loading') }}</p>
           </div>
         </div>
       </div>
@@ -146,7 +149,7 @@ const formatDate = (date) => {
     <!-- Paginacion -->
     <div v-if="pagination.total > 0" class="flex items-center justify-between">
       <div class="text-sm text-gray-500 dark:text-gray-400">
-        Mostrando {{ tickets.length }} de {{ pagination.total }} tickets
+        {{ t('admin.subscriptions.table.showing', { n: tickets.length, total: pagination.total }) }}
       </div>
       <div v-if="pagination.pages > 1" class="flex gap-2">
         <button
@@ -155,7 +158,7 @@ const formatDate = (date) => {
           class="btn btn-secondary btn-sm"
           :class="{ 'opacity-50 cursor-not-allowed': pagination.page === 1 }"
         >
-          Anterior
+          {{ t('leads.pagination.prev') }}
         </button>
         <button
           @click="handlePageChange(pagination.page + 1)"
@@ -163,7 +166,7 @@ const formatDate = (date) => {
           class="btn btn-secondary btn-sm"
           :class="{ 'opacity-50 cursor-not-allowed': pagination.page === pagination.pages }"
         >
-          Siguiente
+          {{ t('leads.pagination.next') }}
         </button>
       </div>
     </div>

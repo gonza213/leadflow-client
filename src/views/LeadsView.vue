@@ -4,11 +4,13 @@ import { useLeadsStore } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
+import { useI18n } from 'vue-i18n'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
 const sellersStore = useSellersStore()
 const authStore = useAuthStore()
+const { t, locale } = useI18n()
 
 const showFilters = ref(false)
 
@@ -110,7 +112,7 @@ const handleDelete = async () => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('es-ES', {
+  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -121,7 +123,7 @@ const formatDate = (date) => {
 
 const formatDateShort = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('es-ES', {
+  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     day: '2-digit',
     month: '2-digit',
     year: '2-digit'
@@ -143,16 +145,16 @@ const getStateClass = (state) => {
   <div class="space-y-4">
     <!-- Header -->
     <div class="flex items-center justify-between">
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Leads</h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('leads.title') }}</h1>
       <div class="flex items-center gap-2">
-        <span class="text-sm text-gray-500 dark:text-gray-400">{{ leadsStore.pagination.total }} leads</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">{{ t('leads.total', { n: leadsStore.pagination.total }) }}</span>
 
         <!-- Exportar CSV -->
         <button
           @click="leadsStore.exportLeadsToCsv()"
           :disabled="leadsStore.exportLoading || leadsStore.leadsLoading"
           class="btn btn-secondary btn-sm flex items-center gap-1.5"
-          title="Exportar leads filtrados a CSV"
+          :title="t('leads.export')"
         >
           <svg v-if="!leadsStore.exportLoading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -161,7 +163,7 @@ const getStateClass = (state) => {
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
           </svg>
-          <span class="hidden sm:inline">{{ leadsStore.exportLoading ? 'Exportando...' : 'Exportar CSV' }}</span>
+          <span class="hidden sm:inline">{{ leadsStore.exportLoading ? t('leads.exporting') : t('leads.export') }}</span>
         </button>
 
         <!-- Filtros mobile -->
@@ -183,7 +185,7 @@ const getStateClass = (state) => {
     >
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div>
-          <label class="label text-xs">Fecha inicio</label>
+          <label class="label text-xs">{{ t('dashboard.filters.startDate') }}</label>
           <input
             v-model="leadsStore.leadsFilters.fecha_inicio"
             type="date"
@@ -191,7 +193,7 @@ const getStateClass = (state) => {
           />
         </div>
         <div>
-          <label class="label text-xs">Fecha fin</label>
+          <label class="label text-xs">{{ t('dashboard.filters.endDate') }}</label>
           <input
             v-model="leadsStore.leadsFilters.fecha_fin"
             type="date"
@@ -199,9 +201,9 @@ const getStateClass = (state) => {
           />
         </div>
         <div v-if="authStore.isManager">
-          <label class="label text-xs">Equipo</label>
+          <label class="label text-xs">{{ t('dashboard.filters.team') }}</label>
           <select v-model="leadsStore.leadsFilters.equipo" class="input text-sm">
-            <option value="">Todos</option>
+            <option value="">{{ t('dashboard.filters.all') }}</option>
             <option
               v-for="equipo in configStore.config?.equipos || []"
               :key="equipo.nombre"
@@ -212,9 +214,9 @@ const getStateClass = (state) => {
           </select>
         </div>
         <div v-if="authStore.isManager">
-          <label class="label text-xs">Vendedor</label>
+          <label class="label text-xs">{{ t('dashboard.filters.seller') }}</label>
           <select v-model="leadsStore.leadsFilters.seller_id" class="input text-sm">
-            <option value="">Todos</option>
+            <option value="">{{ t('dashboard.filters.all') }}</option>
             <option
               v-for="seller in sellersStore.sellers"
               :key="seller._id"
@@ -225,9 +227,9 @@ const getStateClass = (state) => {
           </select>
         </div>
         <div>
-          <label class="label text-xs">Etapa</label>
+          <label class="label text-xs">{{ t('dashboard.filters.stage') }}</label>
           <select v-model="leadsStore.leadsFilters.opportunity_stage" class="input text-sm">
-            <option value="">Todas</option>
+            <option value="">{{ t('dashboard.filters.allStages') }}</option>
             <option
               v-for="stage in configStore.config?.opportunity_stages || []"
               :key="stage"
@@ -240,10 +242,10 @@ const getStateClass = (state) => {
       </div>
       <div class="flex gap-2 mt-3">
         <button @click="handleFilter" class="btn btn-primary btn-sm flex-1 lg:flex-none">
-          Filtrar
+          {{ t('dashboard.filters.apply') }}
         </button>
         <button @click="handleResetFilters" class="btn btn-secondary btn-sm">
-          Limpiar
+          {{ t('dashboard.filters.reset') }}
         </button>
       </div>
     </div>
@@ -273,19 +275,19 @@ const getStateClass = (state) => {
 
           <div class="grid grid-cols-2 gap-2 text-sm">
             <div v-if="lead.phone">
-              <p class="text-xs text-gray-400">Telefono</p>
+              <p class="text-xs text-gray-400">{{ t('leads.table.phone') }}</p>
               <p class="text-gray-700 dark:text-gray-200">{{ lead.phone }}</p>
             </div>
             <div v-if="lead.email">
-              <p class="text-xs text-gray-400">Email</p>
+              <p class="text-xs text-gray-400">{{ t('leads.table.email') }}</p>
               <p class="text-gray-700 dark:text-gray-200 truncate">{{ lead.email }}</p>
             </div>
             <div>
-              <p class="text-xs text-gray-400">Vendedor</p>
+              <p class="text-xs text-gray-400">{{ t('leads.table.seller') }}</p>
               <p class="text-gray-700 dark:text-gray-200">{{ lead.seller_name || '-' }}</p>
             </div>
             <div>
-              <p class="text-xs text-gray-400">Equipo</p>
+              <p class="text-xs text-gray-400">{{ t('leads.table.team') }}</p>
               <p class="text-gray-700 dark:text-gray-200">{{ lead.team || '-' }}</p>
             </div>
           </div>
@@ -319,7 +321,7 @@ const getStateClass = (state) => {
         </div>
 
         <div v-if="leadsStore.leadsList.length === 0" class="card text-center py-8 text-gray-500 dark:text-gray-400">
-          No se encontraron leads
+          {{ t('leads.table.noLeads') }}
         </div>
       </div>
 
@@ -329,16 +331,16 @@ const getStateClass = (state) => {
           <table class="w-full">
             <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
               <tr>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Fecha</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Nombre</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Telefono</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Estado</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Equipo</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Vendedor</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Etapa</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Source</th>
-                <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Acciones</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.date') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.name') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.email') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.phone') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.status') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.team') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.seller') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.stage') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.source') }}</th>
+                <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.actions') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -379,7 +381,7 @@ const getStateClass = (state) => {
                     <button
                       @click="openEditModal(lead)"
                       class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                      title="Editar"
+                      :title="t('common.edit')"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -388,7 +390,7 @@ const getStateClass = (state) => {
                     <button
                       @click="openDeleteConfirm(lead)"
                       class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
-                      title="Eliminar"
+                      :title="t('common.delete')"
                     >
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -399,7 +401,7 @@ const getStateClass = (state) => {
               </tr>
               <tr v-if="leadsStore.leadsList.length === 0">
                 <td :colspan="authStore.isManager ? 10 : 9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
-                  No se encontraron leads
+                  {{ t('leads.table.noLeads') }}
                 </td>
               </tr>
             </tbody>
@@ -419,7 +421,7 @@ const getStateClass = (state) => {
             class="btn btn-secondary btn-sm"
             :class="{ 'opacity-50 cursor-not-allowed': leadsStore.pagination.page === 1 }"
           >
-            Anterior
+            {{ t('leads.pagination.prev') }}
           </button>
           <button
             @click="handlePageChange(leadsStore.pagination.page + 1)"
@@ -427,7 +429,7 @@ const getStateClass = (state) => {
             class="btn btn-secondary btn-sm"
             :class="{ 'opacity-50 cursor-not-allowed': leadsStore.pagination.page === leadsStore.pagination.pages }"
           >
-            Siguiente
+            {{ t('leads.pagination.next') }}
           </button>
         </div>
       </div>
@@ -437,7 +439,7 @@ const getStateClass = (state) => {
     <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Editar Lead</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ t('leads.edit.title') }}</h3>
           <button @click="closeEditModal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -450,28 +452,28 @@ const getStateClass = (state) => {
           </div>
 
           <div>
-            <label class="label">Nombre</label>
+            <label class="label">{{ t('leads.table.name') }}</label>
             <input v-model="editForm.name" type="text" class="input" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="label">Email</label>
+              <label class="label">{{ t('leads.table.email') }}</label>
               <input v-model="editForm.email" type="email" class="input" />
             </div>
             <div>
-              <label class="label">Telefono</label>
+              <label class="label">{{ t('leads.table.phone') }}</label>
               <input v-model="editForm.phone" type="text" class="input" />
             </div>
           </div>
 
           <div>
-            <label class="label">Source</label>
+            <label class="label">{{ t('leads.table.source') }}</label>
             <input v-model="editForm.source" type="text" class="input" />
           </div>
 
           <div>
-            <label class="label">Etapa</label>
+            <label class="label">{{ t('leads.table.stage') }}</label>
             <select v-model="editForm.opportunity_stage" class="input">
               <option
                 v-for="stage in configStore.config?.opportunity_stages || []"
@@ -484,9 +486,9 @@ const getStateClass = (state) => {
           </div>
 
           <div>
-            <label class="label">Vendedor</label>
+            <label class="label">{{ t('leads.table.seller') }}</label>
             <select v-model="editForm.seller_user_id" class="input">
-              <option value="">Sin cambiar</option>
+              <option value="">{{ t('leads.edit.noChanges') }}</option>
               <option
                 v-for="seller in sellersStore.sellers"
                 :key="seller._id"
@@ -498,9 +500,9 @@ const getStateClass = (state) => {
           </div>
         </div>
         <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2">
-          <button @click="closeEditModal" class="btn btn-secondary">Cancelar</button>
+          <button @click="closeEditModal" class="btn btn-secondary">{{ t('common.cancel') }}</button>
           <button @click="handleEdit" :disabled="editLoading" class="btn btn-primary">
-            {{ editLoading ? 'Guardando...' : 'Guardar' }}
+            {{ editLoading ? t('leads.edit.loading') : t('common.save') }}
           </button>
         </div>
       </div>
@@ -513,14 +515,14 @@ const getStateClass = (state) => {
           <svg class="w-12 h-12 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Eliminar Lead</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ t('leads.delete.title') }}</h3>
           <p class="text-gray-600 dark:text-gray-400 mb-6">
-            Estas seguro que deseas eliminar el lead <strong>{{ deletingLead?.name }}</strong>? Esta accion no se puede deshacer.
+            {{ t('leads.delete.confirm', { name: deletingLead?.name }) }}
           </p>
           <div class="flex justify-center gap-3">
-            <button @click="closeDeleteConfirm" class="btn btn-secondary">Cancelar</button>
+            <button @click="closeDeleteConfirm" class="btn btn-secondary">{{ t('common.cancel') }}</button>
             <button @click="handleDelete" :disabled="deleteLoading" class="btn bg-red-600 hover:bg-red-700 text-white">
-              {{ deleteLoading ? 'Eliminando...' : 'Eliminar' }}
+              {{ deleteLoading ? t('leads.delete.deleting') : t('common.delete') }}
             </button>
           </div>
         </div>

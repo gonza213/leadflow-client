@@ -1,8 +1,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUiStore } from '../stores/ui'
 import api from '../services/api'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -19,11 +22,11 @@ const success = ref(false)
 const handleSubmit = async () => {
   error.value = ''
   if (!password.value || password.value.length < 6) {
-    error.value = 'La contraseña debe tener al menos 6 caracteres'
+    error.value = t('auth.passwordTooShort')
     return
   }
   if (password.value !== confirm.value) {
-    error.value = 'Las contraseñas no coinciden'
+    error.value = t('auth.reset.passwordsNoMatch')
     return
   }
   loading.value = true
@@ -31,7 +34,7 @@ const handleSubmit = async () => {
     await api.post(`/auth/reset-password/${route.params.token}`, { password: password.value })
     success.value = true
   } catch (e) {
-    error.value = e.response?.data?.message || 'El enlace es inválido o expiró'
+    error.value = e.response?.data?.message || t('auth.reset.invalidLink')
   } finally {
     loading.value = false
   }
@@ -58,7 +61,7 @@ const handleSubmit = async () => {
         <router-link to="/login" class="inline-flex items-center justify-center gap-3 transition-transform hover:scale-105">
           <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-20 dark:brightness-0 dark:invert" />
         </router-link>
-        <p class="mt-3 text-gray-600 dark:text-gray-400">Distribucion inteligente de leads</p>
+        <p class="mt-3 text-gray-600 dark:text-gray-400">{{ t('hero.title') }}</p>
       </div>
 
       <div class="card">
@@ -69,24 +72,24 @@ const handleSubmit = async () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Contraseña actualizada</h2>
-          <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Ya podés ingresar con tu nueva contraseña.</p>
-          <button @click="router.push('/login')" class="btn btn-primary w-full">Ir al login</button>
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ t('auth.reset.passwordUpdated') }}</h2>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">{{ t('auth.reset.canLogin') }}</p>
+          <button @click="router.push('/login')" class="btn btn-primary w-full">{{ t('auth.reset.goToLogin') }}</button>
         </div>
 
         <!-- Form -->
         <template v-else>
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Nueva contraseña</h2>
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">{{ t('auth.reset.title') }}</h2>
 
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <div>
-              <label class="label">Nueva contraseña</label>
+              <label class="label">{{ t('auth.reset.title') }}</label>
               <div class="relative">
                 <input
                   v-model="password"
                   :type="showPassword ? 'text' : 'password'"
                   class="input pr-10"
-                  placeholder="Mínimo 6 caracteres"
+                  :placeholder="t('auth.passwordMin')"
                 />
                 <button type="button" @click="showPassword = !showPassword"
                   class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -102,13 +105,13 @@ const handleSubmit = async () => {
             </div>
 
             <div>
-              <label class="label">Confirmar contraseña</label>
+              <label class="label">{{ t('auth.reset.confirmPassword') }}</label>
               <div class="relative">
                 <input
                   v-model="confirm"
                   :type="showConfirm ? 'text' : 'password'"
                   class="input pr-10"
-                  placeholder="Repetí la contraseña"
+                  :placeholder="t('auth.reset.repeat')"
                 />
                 <button type="button" @click="showConfirm = !showConfirm"
                   class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -123,12 +126,6 @@ const handleSubmit = async () => {
               </div>
             </div>
 
-            <div v-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
-              {{ error }}
-            </div>
-
-            <button type="submit" class="btn btn-primary w-full" :disabled="loading">
-              {{ loading ? 'Guardando...' : 'Guardar contraseña' }}
             </button>
           </form>
         </template>

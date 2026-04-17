@@ -1,5 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   stages: {
@@ -23,12 +26,12 @@ watch(() => props.stages, (val) => {
 
 const addStage = () => {
   if (!newStage.value.trim()) {
-    error.value = 'El nombre de la etapa es requerido'
+    error.value = t('config.stages.errors.required')
     return
   }
 
   if (localStages.value.includes(newStage.value.trim())) {
-    error.value = 'Esta etapa ya existe'
+    error.value = t('config.stages.errors.exists')
     return
   }
 
@@ -61,7 +64,7 @@ const moveDown = (index) => {
 
 const handleSave = async () => {
   if (localStages.value.length === 0) {
-    error.value = 'Debe haber al menos una etapa'
+    error.value = t('config.stages.errors.minOne')
     return
   }
 
@@ -71,22 +74,22 @@ const handleSave = async () => {
   try {
     const result = await props.onSave(localStages.value)
     if (result?.success === false) {
-      error.value = result.error || 'Error al actualizar etapas'
+      error.value = result.error || t('config.stages.errors.update')
     } else {
-      success.value = 'Etapas actualizadas correctamente'
+      success.value = t('config.stages.success')
       setTimeout(() => success.value = '', 3000)
     }
   } catch (err) {
-    error.value = 'Error al actualizar etapas'
+    error.value = t('config.stages.errors.update')
   }
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Etapas de Oportunidad</h3>
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('config.stages.title') }}</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-      Configura las etapas del pipeline de ventas. Puedes reordenarlas arrastrando o usando las flechas.
+      {{ t('config.stages.info') }}
     </p>
 
     <!-- Lista de etapas -->
@@ -141,11 +144,11 @@ const handleSave = async () => {
         v-model="newStage"
         type="text"
         class="input flex-1"
-        placeholder="Nueva etapa..."
+        :placeholder="t('config.stages.newStagePlaceholder')"
         @keyup.enter="addStage"
       />
       <button @click="addStage" class="btn btn-secondary">
-        Agregar
+        {{ t('config.stages.addButton') }}
       </button>
     </div>
 
@@ -158,7 +161,7 @@ const handleSave = async () => {
     </div>
 
     <button @click="handleSave" class="btn btn-primary">
-      Guardar Cambios
+      {{ t('common.saveChanges') }}
     </button>
   </div>
 </template>

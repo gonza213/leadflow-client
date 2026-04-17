@@ -1,13 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 
 useHead({
-  title: 'Política de Privacidad | LeadDistro',
+  title: `${t('privacy.title')} | LeadDistro`,
   meta: [
-    { name: 'description', content: 'Conocé cómo LeadDistro protege tus datos y la privacidad de tu información y la de tus leads.' },
+    { name: 'description', content: t('privacy.metaDescription') },
     { name: 'robots', content: 'noindex, follow' }
   ]
 })
@@ -18,92 +20,92 @@ useHead({
     <div class="legal-header">
       <button @click="router.push('/landing')" class="back-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Volver
+        {{ t('common.back') }}
       </button>
       <img src="/logo_leaddistro.png" alt="LeadDistro" class="legal-logo" />
     </div>
 
     <div class="legal-container">
-      <h1>Política de Privacidad</h1>
-      <p class="legal-updated">Última actualización: 11 de abril de 2026</p>
+      <h1>{{ t('privacy.title') }}</h1>
+      <p class="legal-updated">{{ t('privacy.updated') }}</p>
 
       <section>
-        <h2>1. Información que recopilamos</h2>
-        <p>LeadDistro recopila la siguiente información cuando usás nuestro servicio:</p>
+        <h2>{{ t('privacy.s1.title') }}</h2>
+        <p>{{ t('privacy.s1.desc') }}</p>
         <ul>
-          <li><strong>Datos de cuenta:</strong> nombre, email y contraseña (almacenada con hash bcrypt) al registrarte.</li>
-          <li><strong>Datos de empresa:</strong> nombre de la organización y configuración del equipo de ventas.</li>
-          <li><strong>Datos de leads:</strong> la información de los prospectos que tu CRM envía a través de la API de LeadDistro (nombre, email, teléfono, u otros campos que vos configurés).</li>
-          <li><strong>Datos de uso:</strong> logs de actividad, IP de acceso y métricas de uso del servicio.</li>
+          <li><strong>{{ t('privacy.s1.l1').split(':')[0] }}:</strong>{{ t('privacy.s1.l1').split(':')[1] }}</li>
+          <li><strong>{{ t('privacy.s1.l2').split(':')[0] }}:</strong>{{ t('privacy.s1.l2').split(':')[1] }}</li>
+          <li><strong>{{ t('privacy.s1.l3').split(':')[0] }}:</strong>{{ t('privacy.s1.l3').split(':')[1] }}</li>
+          <li><strong>{{ t('privacy.s1.l4').split(':')[0] }}:</strong>{{ t('privacy.s1.l4').split(':')[1] }}</li>
         </ul>
       </section>
 
       <section>
-        <h2>2. Cómo usamos tu información</h2>
-        <p>Usamos la información recopilada para:</p>
+        <h2>{{ t('privacy.s2.title') }}</h2>
+        <p>{{ t('privacy.s2.desc') }}</p>
         <ul>
-          <li>Proveer, mantener y mejorar el servicio de distribución de leads.</li>
-          <li>Procesar y gestionar tu suscripción.</li>
-          <li>Enviarte notificaciones transaccionales (confirmación de cuenta, alertas de límites, recuperación de contraseña).</li>
-          <li>Detectar y prevenir fraudes o usos no autorizados.</li>
+          <li>{{ t('privacy.s2.l1') }}</li>
+          <li>{{ t('privacy.s2.l2') }}</li>
+          <li>{{ t('privacy.s2.l3') }}</li>
+          <li>{{ t('privacy.s2.l4') }}</li>
         </ul>
-        <p>No vendemos, alquilamos ni compartimos tu información personal con terceros con fines comerciales.</p>
+        <p>{{ t('privacy.s2.footer') }}</p>
       </section>
 
       <section>
-        <h2>3. Aislamiento de datos entre tenants</h2>
-        <p>Cada empresa (tenant) opera en un entorno completamente aislado. Los datos de tus leads, vendedores y configuración nunca son accesibles desde otra cuenta. El aislamiento se implementa a nivel de base de datos mediante identificadores únicos de tenant en cada registro.</p>
+        <h2>{{ t('privacy.s3.title') }}</h2>
+        <p>{{ t('privacy.s3.desc') }}</p>
       </section>
 
       <section>
-        <h2>4. Seguridad de los datos</h2>
-        <p>Implementamos las siguientes medidas de seguridad:</p>
+        <h2>{{ t('privacy.s4.title') }}</h2>
+        <p>{{ t('privacy.s4.desc') }}</p>
         <ul>
-          <li>Todas las comunicaciones van cifradas mediante HTTPS/TLS.</li>
-          <li>Las contraseñas se almacenan con hash bcrypt (nunca en texto plano).</li>
-          <li>El acceso a la API requiere autenticación mediante JWT con expiración.</li>
-          <li>Los datos se almacenan en MongoDB Atlas con backups automáticos.</li>
+          <li>{{ t('privacy.s4.l1') }}</li>
+          <li>{{ t('privacy.s4.l2') }}</li>
+          <li>{{ t('privacy.s4.l3') }}</li>
+          <li>{{ t('privacy.s4.l4') }}</li>
         </ul>
       </section>
 
       <section>
-        <h2>5. Servicios de terceros</h2>
-        <p>LeadDistro utiliza los siguientes proveedores de servicio:</p>
+        <h2>{{ t('privacy.s5.title') }}</h2>
+        <p>{{ t('privacy.s5.desc') }}</p>
         <ul>
-          <li><strong>MongoDB Atlas</strong> — almacenamiento de datos.</li>
-          <li><strong>Resend</strong> — envío de emails transaccionales.</li>
-          <li><strong>dLocalGo</strong> — procesamiento de pagos y suscripciones.</li>
-          <li><strong>Vercel</strong> — hosting del frontend.</li>
-          <li><strong>Koyeb</strong> — hosting del backend.</li>
+          <li><strong>MongoDB Atlas</strong> — {{ t('privacy.s5.l1').split('—')[1] }}</li>
+          <li><strong>Resend</strong> — {{ t('privacy.s5.l2').split('—')[1] }}</li>
+          <li><strong>dLocalGo</strong> — {{ t('privacy.s5.l3').split('—')[1] }}</li>
+          <li><strong>Vercel</strong> — {{ t('privacy.s5.l4').split('—')[1] }}</li>
+          <li><strong>Koyeb</strong> — {{ t('privacy.s5.l5').split('—')[1] }}</li>
         </ul>
-        <p>Estos proveedores tienen sus propias políticas de privacidad y solo reciben la información necesaria para prestar su servicio.</p>
+        <p>{{ t('privacy.s5.footer') }}</p>
       </section>
 
       <section>
-        <h2>6. Retención y eliminación de datos</h2>
-        <p>Tus datos se conservan mientras tu cuenta esté activa. Si cancelás tu cuenta, podés solicitar la eliminación completa de tus datos escribiéndonos a través de WhatsApp. Los datos de facturación pueden conservarse por obligaciones legales según la legislación aplicable.</p>
+        <h2>{{ t('privacy.s6.title') }}</h2>
+        <p>{{ t('privacy.s6.desc') }}</p>
       </section>
 
       <section>
-        <h2>7. Tus derechos</h2>
-        <p>Tenés derecho a:</p>
+        <h2>{{ t('privacy.s7.title') }}</h2>
+        <p>{{ t('privacy.s7.desc') }}</p>
         <ul>
-          <li>Acceder a los datos personales que tenemos sobre vos.</li>
-          <li>Corregir información incorrecta.</li>
-          <li>Solicitar la eliminación de tu cuenta y datos.</li>
-          <li>Exportar tus leads en formato CSV desde el dashboard.</li>
+          <li>{{ t('privacy.s7.l1') }}</li>
+          <li>{{ t('privacy.s7.l2') }}</li>
+          <li>{{ t('privacy.s7.l3') }}</li>
+          <li>{{ t('privacy.s7.l4') }}</li>
         </ul>
-        <p>Para ejercer cualquiera de estos derechos, contactanos por WhatsApp.</p>
+        <p>{{ t('privacy.s7.footer') }}</p>
       </section>
 
       <section>
-        <h2>8. Cambios en esta política</h2>
-        <p>Podemos actualizar esta política ocasionalmente. Te notificaremos de cambios significativos por email. El uso continuado del servicio después de los cambios implica tu aceptación de la nueva política.</p>
+        <h2>{{ t('privacy.s8.title') }}</h2>
+        <p>{{ t('privacy.s8.desc') }}</p>
       </section>
 
       <section>
-        <h2>9. Contacto</h2>
-        <p>Para consultas sobre esta política de privacidad, contactanos por WhatsApp al +54 221 220 4194 o visitá <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
+        <h2>{{ t('privacy.s9.title') }}</h2>
+        <p>{{ t('privacy.s9.desc') }} <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
       </section>
     </div>
   </div>

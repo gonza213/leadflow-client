@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 defineProps({
   sellers: {
     type: Array,
@@ -12,7 +14,7 @@ defineProps({
     <table class="w-full">
       <thead>
         <tr class="border-b border-gray-200 dark:border-gray-700">
-          <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Vendedor</th>
+          <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('common.seller') }}</th>
           <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Leads</th>
           <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">%</th>
         </tr>
@@ -37,7 +39,7 @@ defineProps({
         </tr>
         <tr v-if="sellers.length === 0">
           <td colspan="3" class="py-8 text-center text-gray-500 dark:text-gray-400">
-            No hay datos disponibles
+            {{ t('common.noData') }}
           </td>
         </tr>
       </tbody>

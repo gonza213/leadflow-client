@@ -50,7 +50,7 @@ const handleSubmit = async () => {
     authStore.user = user
     router.push('/')
   } catch (e) {
-    error.value = e.response?.data?.message || 'Error al registrarse'
+    error.value = e.response?.data?.message || t('auth.registerError')
   } finally {
     loading.value = false
   }

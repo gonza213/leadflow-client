@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { summaryApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
+
+const { t, locale } = useI18n()
 
 const authStore = useAuthStore()
 
@@ -21,11 +24,11 @@ const handleTrigger = async () => {
   triggerSuccess.value = ''
   try {
     await summaryApi.trigger(authStore.tenantSlug)
-    triggerSuccess.value = 'Resumen generado correctamente'
+    triggerSuccess.value = t('summaries.success')
     setTimeout(() => triggerSuccess.value = '', 4000)
     await fetchSummaries(1)
   } catch (e) {
-    triggerError.value = e.response?.data?.message || 'Error al generar el resumen'
+    triggerError.value = e.response?.data?.message || t('config.summary.errors.test')
     setTimeout(() => triggerError.value = '', 4000)
   } finally {
     triggering.value = false
@@ -41,7 +44,7 @@ const fetchSummaries = async (page = 1) => {
     pagination.value = res.data.pagination
     currentPage.value = page
   } catch (e) {
-    error.value = 'Error al cargar los resúmenes'
+    error.value = t('summaries.error')
   } finally {
     loading.value = false
   }
@@ -50,30 +53,30 @@ const fetchSummaries = async (page = 1) => {
 onMounted(() => fetchSummaries())
 
 const formatDate = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString('es-ES', {
+  return new Date(dateStr).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     hour: '2-digit', minute: '2-digit'
   })
 }
 
 const formatDateShort = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString('es-ES', {
+  return new Date(dateStr).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     year: 'numeric', month: 'short', day: 'numeric'
   })
 }
 
 const handleDelete = async (id) => {
-  if (!confirm('¿Eliminár este resumen?')) return
+  if (!confirm(t('summaries.card.deleteConfirm'))) return
   try {
     await summaryApi.delete(authStore.tenantSlug, id)
     if (selectedSummary.value?._id === id) selectedSummary.value = null
     await fetchSummaries(currentPage.value)
   } catch (e) {
-    alert('Error al eliminar el resumen')
+    alert(t('common.deleteError'))
   }
 }
 
-const frequencyLabel = (f) => f === 'weekly' ? 'Semanal' : 'Diario'
+const frequencyLabel = (f) => f === 'weekly' ? t('config.summary.weekly') : t('config.summary.daily')
 const frequencyColor = (f) => f === 'weekly'
   ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'
   : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
@@ -93,13 +96,13 @@ const downloadPdf = (summary) => {
 
   const limiteHtml = m.vendedoresCercaLimite?.length
     ? m.vendedoresCercaLimite.map(v => `<span class="tag alert">${v.nombre} (${v.pct}%)</span>`).join('')
-    : '<span class="ok">Ninguno</span>'
+    : `<span class="ok">${t('summaries.pdf.none')}</span>`
 
   printWindow.document.write(`<!DOCTYPE html>
-<html lang="es">
+<html lang="${locale.value === 'pt-BR' ? 'pt' : 'es'}">
 <head>
   <meta charset="UTF-8"/>
-  <title>Resumen LeadDistro — ${formatDateShort(summary.createdAt)}</title>
+  <title>${t('summaries.pdf.title', { date: formatDateShort(summary.createdAt) })}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; padding: 40px; background: #fff; }
@@ -136,40 +139,40 @@ const downloadPdf = (summary) => {
     </div>
   </div>
 
-  <h2>Resumen generado por IA</h2>
+  <h2>${t('summaries.pdf.metricsTitle')}</h2>
   <div class="summary-box">${summary.summary}</div>
 
   <div class="metrics-grid">
     <div class="metric-card">
       <div class="num">${m.totalHoy ?? '—'}</div>
-      <div class="lbl">Leads del período</div>
+      <div class="lbl">${t('summaries.pdf.periodLeads')}</div>
     </div>
     <div class="metric-card">
       <div class="num">${m.leadsInactivos ?? '—'}</div>
-      <div class="lbl">Sin actividad +48hs</div>
+      <div class="lbl">${t('summaries.pdf.inactiveLeads')}</div>
     </div>
     <div class="metric-card">
       <div class="num">${m.mejorVendedor?.cantidad ?? '—'}</div>
-      <div class="lbl">Mejor vendedor: ${m.mejorVendedor?.nombre ?? '—'}</div>
+      <div class="lbl">${t('summaries.pdf.bestSeller', { name: m.mejorVendedor?.nombre ?? '—' })}</div>
     </div>
   </div>
 
   <div class="section">
-    <h2>Por equipo</h2>
+    <h2>${t('summaries.pdf.byTeam')}</h2>
     <div class="tags">${equiposHtml}</div>
   </div>
 
   <div class="section">
-    <h2>Por etapa</h2>
+    <h2>${t('summaries.pdf.byStage')}</h2>
     <div class="tags">${etapasHtml}</div>
   </div>
 
   <div class="section">
-    <h2>Vendedores cerca del límite (≥80%)</h2>
+    <h2>${t('summaries.pdf.nearLimit')}</h2>
     <div class="tags">${limiteHtml}</div>
   </div>
 
-  <div class="footer">Generado por LeadDistro · ${date}</div>
+  <div class="footer">${t('summaries.pdf.footer', { date })}</div>
 
   <script>window.onload = () => { window.print(); }<\/script>
 </body>
@@ -181,7 +184,7 @@ const downloadPdf = (summary) => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between gap-3">
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Resúmenes IA</h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('summaries.title') }}</h1>
       <button
         @click="handleTrigger"
         :disabled="triggering"
@@ -193,7 +196,7 @@ const downloadPdf = (summary) => {
         <svg v-else class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
         </svg>
-        {{ triggering ? 'Generando...' : 'Generar ahora' }}
+        {{ triggering ? t('summaries.generating') : t('summaries.generate') }}
       </button>
     </div>
 
@@ -213,14 +216,14 @@ const downloadPdf = (summary) => {
     <!-- Error -->
     <div v-else-if="error" class="card text-center py-12">
       <p class="text-red-500">{{ error }}</p>
-      <button @click="fetchSummaries()" class="btn btn-primary mt-4">Reintentar</button>
+      <button @click="fetchSummaries()" class="btn btn-primary mt-4">{{ t('common.retry') }}</button>
     </div>
 
     <!-- Empty -->
     <div v-else-if="!summaries.length" class="card text-center py-16">
       <div class="text-5xl mb-4">🤖</div>
-      <p class="text-gray-500 dark:text-gray-400 font-medium mb-1">Todavía no hay resúmenes generados</p>
-      <p class="text-sm text-gray-400 dark:text-gray-500">Configurá el resumen automático en <strong>Configuración → Resumen IA</strong></p>
+      <p class="text-gray-500 dark:text-gray-400 font-medium mb-1">{{ t('summaries.empty.title') }}</p>
+      <p class="text-sm text-gray-400 dark:text-gray-500" v-html="t('summaries.empty.info')"></p>
     </div>
 
     <!-- Lista -->
@@ -251,17 +254,17 @@ const downloadPdf = (summary) => {
             <button
               @click.stop="downloadPdf(s)"
               class="btn btn-secondary text-xs py-1 px-3"
-              title="Descargar PDF"
+              :title="t('summaries.card.download')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              PDF
+              {{ t('summaries.card.download') }}
             </button>
             <button
               @click.stop="handleDelete(s._id)"
               class="p-1.5 text-gray-400 hover:text-red-500 dark:hover:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-              title="Eliminar resumen"
+              :title="t('summaries.card.delete')"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -274,7 +277,7 @@ const downloadPdf = (summary) => {
         <div v-if="selectedSummary?._id === s._id" class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 space-y-4">
           <!-- Resumen IA -->
           <div class="p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg border-l-4 border-primary-500">
-            <p class="text-sm font-semibold text-primary-700 dark:text-primary-300 mb-1">Resumen generado por IA</p>
+            <p class="text-sm font-semibold text-primary-700 dark:text-primary-300 mb-1">{{ t('summaries.detail.aiSummary') }}</p>
             <p class="text-sm text-primary-900 dark:text-primary-200 leading-relaxed">{{ s.summary }}</p>
           </div>
 
@@ -282,22 +285,22 @@ const downloadPdf = (summary) => {
           <div v-if="s.metrics" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
               <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ s.metrics.totalHoy ?? '—' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Leads del período</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ t('summaries.detail.periodLeads') }}</p>
             </div>
             <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
               <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ s.metrics.leadsInactivos ?? '—' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Sin actividad +48hs</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ t('summaries.detail.inactiveLeads') }}</p>
             </div>
             <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 text-center">
               <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ s.metrics.mejorVendedor?.cantidad ?? '—' }}</p>
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ s.metrics.mejorVendedor?.nombre ?? 'Mejor vendedor' }}</p>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ s.metrics.mejorVendedor?.nombre ?? t('summaries.detail.bestSeller') }}</p>
             </div>
           </div>
 
           <!-- Por equipo y etapa -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div v-if="s.metrics?.leadsPorEquipo">
-              <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">Por equipo</p>
+              <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">{{ t('summaries.detail.byTeam') }}</p>
               <div class="flex flex-wrap gap-2">
                 <span
                   v-for="(n, eq) in s.metrics.leadsPorEquipo" :key="eq"
@@ -308,7 +311,7 @@ const downloadPdf = (summary) => {
               </div>
             </div>
             <div v-if="s.metrics?.leadsPorEtapa">
-              <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">Por etapa</p>
+              <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">{{ t('summaries.detail.byStage') }}</p>
               <div class="flex flex-wrap gap-2">
                 <span
                   v-for="(n, et) in s.metrics.leadsPorEtapa" :key="et"
@@ -322,7 +325,7 @@ const downloadPdf = (summary) => {
 
           <!-- Vendedores cerca del límite -->
           <div v-if="s.metrics?.vendedoresCercaLimite?.length">
-            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">Vendedores cerca del límite</p>
+            <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">{{ t('summaries.detail.nearLimit') }}</p>
             <div class="flex flex-wrap gap-2">
               <span
                 v-for="v in s.metrics.vendedoresCercaLimite" :key="v.nombre"

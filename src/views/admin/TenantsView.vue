@@ -1,11 +1,13 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
 import { useTenantsStore } from '../../stores/tenants'
+import { useI18n } from 'vue-i18n'
 import TenantCard from '../../components/admin/TenantCard.vue'
 import CreateTenantModal from '../../components/admin/CreateTenantModal.vue'
 import TenantCredentialsModal from '../../components/admin/TenantCredentialsModal.vue'
 
 const tenantsStore = useTenantsStore()
+const { t } = useI18n()
 
 const showCreateModal = ref(false)
 const showCredentialsModal = ref(false)
@@ -37,7 +39,7 @@ const handleToggleActive = async (tenantId) => {
 }
 
 const handleDelete = async (tenantId, tenantName) => {
-  if (!confirm(`¿Estás seguro de eliminar el tenant "${tenantName}"? Esta acción eliminará TODOS los datos asociados (usuarios, leads, vendedores, configuración) y no se puede deshacer.`)) {
+  if (!confirm(t('admin.tenants.deleteConfirm', { name: tenantName }))) {
     return
   }
   await tenantsStore.deleteTenant(tenantId)
@@ -47,24 +49,24 @@ const handleDelete = async (tenantId, tenantName) => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion de Tenants</h1>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ t('admin.tenants.title') }}</h1>
       <button @click="showCreateModal = true" class="btn btn-primary">
-        + Crear Tenant
+        {{ t('admin.tenants.add') }}
       </button>
     </div>
 
     <div class="card">
       <div class="flex items-center gap-4">
         <div class="flex-1 max-w-xs">
-          <label class="label">Filtrar por estado</label>
+          <label class="label">{{ t('admin.tenants.filterStatus') }}</label>
           <select v-model="filterStatus" class="input">
-            <option value="all">Todos</option>
-            <option value="active">Activos</option>
-            <option value="inactive">Inactivos</option>
+            <option value="all">{{ t('dashboard.filters.all') }}</option>
+            <option value="active">{{ t('dashboard.summary.active') }}</option>
+            <option value="inactive">{{ t('dashboard.summary.disabled') }}</option>
           </select>
         </div>
         <div class="text-sm text-gray-500 dark:text-gray-400 mt-6">
-          {{ filteredTenants.length }} tenants
+          {{ t('admin.tenants.count', { n: filteredTenants.length }) }}
         </div>
       </div>
     </div>
@@ -78,7 +80,7 @@ const handleDelete = async (tenantId, tenantName) => {
     </div>
 
     <div v-else-if="filteredTenants.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
-      No hay tenants para mostrar
+      {{ t('admin.tenants.noTenants') }}
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

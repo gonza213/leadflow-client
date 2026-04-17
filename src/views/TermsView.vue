@@ -1,13 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 
 useHead({
-  title: 'Términos de Servicio | LeadDistro',
+  title: `${t('terms.title')} | LeadDistro`,
   meta: [
-    { name: 'description', content: 'Leé los términos y condiciones de uso de la plataforma LeadDistro.' },
+    { name: 'description', content: t('terms.metaDescription') },
     { name: 'robots', content: 'noindex, follow' }
   ]
 })
@@ -18,95 +20,95 @@ useHead({
     <div class="legal-header">
       <button @click="router.push('/landing')" class="back-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Volver
+        {{ t('common.back') }}
       </button>
       <img src="/logo_leaddistro.png" alt="LeadDistro" class="legal-logo" />
     </div>
 
     <div class="legal-container">
-      <h1>Términos de Servicio</h1>
-      <p class="legal-updated">Última actualización: 11 de abril de 2026</p>
+      <h1>{{ t('terms.title') }}</h1>
+      <p class="legal-updated">{{ t('terms.updated') }}</p>
 
       <section>
-        <h2>1. Aceptación de los términos</h2>
-        <p>Al crear una cuenta y utilizar LeadDistro, aceptás estos Términos de Servicio en su totalidad. Si no estás de acuerdo con alguno de estos términos, no podés usar el servicio.</p>
+        <h2>{{ t('terms.s1.title') }}</h2>
+        <p>{{ t('terms.s1.desc') }}</p>
       </section>
 
       <section>
-        <h2>2. Descripción del servicio</h2>
-        <p>LeadDistro es una plataforma SaaS de distribución automática de leads para equipos de ventas. El servicio incluye:</p>
+        <h2>{{ t('terms.s2.title') }}</h2>
+        <p>{{ t('terms.s2.desc') }}</p>
         <ul>
-          <li>Distribución automática de leads mediante webhook y algoritmo de asignación por equipos y vendedores.</li>
-          <li>Dashboard de métricas y seguimiento de leads.</li>
-          <li>Gestión de usuarios con roles (Manager, Viewer, Seller).</li>
-          <li>Integración con CRMs y herramientas de automatización via webhook.</li>
+          <li>{{ t('terms.s2.l1') }}</li>
+          <li>{{ t('terms.s2.l2') }}</li>
+          <li>{{ t('terms.s2.l3') }}</li>
+          <li>{{ t('terms.s2.l4') }}</li>
         </ul>
       </section>
 
       <section>
-        <h2>3. Cuentas y registro</h2>
-        <p>Para usar LeadDistro debés crear una cuenta con información verdadera y actualizada. Sos responsable de mantener la confidencialidad de tu contraseña y de todas las actividades que ocurran bajo tu cuenta.</p>
-        <p>Podés invitar usuarios a tu organización (tenant). Sos responsable del uso que esos usuarios hagan del servicio.</p>
+        <h2>{{ t('terms.s3.title') }}</h2>
+        <p>{{ t('terms.s3.desc') }}</p>
+        <p>{{ t('terms.s3.footer') }}</p>
       </section>
 
       <section>
-        <h2>4. Suscripción y pagos</h2>
-        <p><strong>Período de prueba:</strong> Al registrarte obtenés 7 días de prueba gratuita sin requerir tarjeta de crédito. Al vencer el período de prueba, la cuenta queda inactiva hasta que se active una suscripción.</p>
-        <p><strong>Suscripción mensual:</strong> El plan de suscripción tiene un costo de $25 USD por mes. Los pagos se procesan a través de dLocalGo.</p>
-        <p><strong>Renovación:</strong> La suscripción se renueva automáticamente cada mes a través de dLocalGo. No necesitás hacer nada para que continúe activa.</p>
-        <p><strong>Reembolsos:</strong> No ofrecemos reembolsos por períodos ya utilizados. Si cancelás antes del vencimiento, podés usar el servicio hasta que expire el período pagado.</p>
+        <h2>{{ t('terms.s4.title') }}</h2>
+        <p><strong>{{ t('terms.s4.p1').split(':')[0] }}:</strong>{{ t('terms.s4.p1').split(':')[1] }}</p>
+        <p><strong>{{ t('terms.s4.p2').split(':')[0] }}:</strong>{{ t('terms.s4.p2').split(':')[1] }}</p>
+        <p><strong>{{ t('terms.s4.p3').split(':')[0] }}:</strong>{{ t('terms.s4.p3').split(':')[1] }}</p>
+        <p><strong>{{ t('terms.s4.p4').split(':')[0] }}:</strong>{{ t('terms.s4.p4').split(':')[1] }}</p>
       </section>
 
       <section>
-        <h2>5. Uso aceptable</h2>
-        <p>Al usar LeadDistro te comprometés a:</p>
+        <h2>{{ t('terms.s5.title') }}</h2>
+        <p>{{ t('terms.s5.desc') }}</p>
         <ul>
-          <li>No usar el servicio para actividades ilegales o no autorizadas.</li>
-          <li>No intentar acceder a datos de otros tenants o usuarios.</li>
-          <li>No realizar ingeniería inversa, descompilar o modificar el servicio.</li>
-          <li>No sobrecargar intencionalmente la infraestructura del servicio.</li>
-          <li>Cumplir con las leyes de privacidad y protección de datos aplicables en tu país respecto a los leads que procesás.</li>
+          <li>{{ t('terms.s5.l1') }}</li>
+          <li>{{ t('terms.s5.l2') }}</li>
+          <li>{{ t('terms.s5.l3') }}</li>
+          <li>{{ t('terms.s5.l4') }}</li>
+          <li>{{ t('terms.s5.l5') }}</li>
         </ul>
       </section>
 
       <section>
-        <h2>6. Propiedad de los datos</h2>
-        <p>Los datos que cargás en LeadDistro (leads, vendedores, configuración) son de tu propiedad. LeadDistro no reclama ningún derecho sobre ellos.</p>
-        <p>Al usar el servicio, nos otorgás una licencia limitada para procesar esos datos únicamente con el fin de proveerte el servicio.</p>
+        <h2>{{ t('terms.s6.title') }}</h2>
+        <p>{{ t('terms.s6.p1') }}</p>
+        <p>{{ t('terms.s6.p2') }}</p>
       </section>
 
       <section>
-        <h2>7. Disponibilidad del servicio</h2>
-        <p>Nos esforzamos por mantener LeadDistro disponible las 24 horas, pero no garantizamos disponibilidad ininterrumpida. Podemos realizar mantenimiento programado notificando con anticipación razonable.</p>
-        <p>No somos responsables por pérdidas derivadas de interrupciones del servicio, fallos de terceros (MongoDB, Vercel, Koyeb) o causas de fuerza mayor.</p>
+        <h2>{{ t('terms.s7.title') }}</h2>
+        <p>{{ t('terms.s7.p1') }}</p>
+        <p>{{ t('terms.s7.p2') }}</p>
       </section>
 
       <section>
-        <h2>8. Limitación de responsabilidad</h2>
-        <p>LeadDistro se provee "tal cual" y "según disponibilidad". En ningún caso seremos responsables por daños indirectos, incidentales, especiales o consecuentes que resulten del uso o imposibilidad de usar el servicio.</p>
-        <p>Nuestra responsabilidad máxima en cualquier circunstancia estará limitada al monto pagado por el servicio en los últimos 3 meses.</p>
+        <h2>{{ t('terms.s8.title') }}</h2>
+        <p>{{ t('terms.s8.p1') }}</p>
+        <p>{{ t('terms.s8.p2') }}</p>
       </section>
 
       <section>
-        <h2>9. Cancelación y terminación</h2>
-        <p><strong>Por tu parte:</strong> Podés cancelar tu cuenta en cualquier momento. Tu cuenta permanecerá activa hasta el final del período pagado.</p>
-        <p><strong>Por nuestra parte:</strong> Nos reservamos el derecho de suspender o cancelar cuentas que violen estos términos, con o sin previo aviso dependiendo de la gravedad de la violación.</p>
-        <p>Al cancelar, podés exportar tus datos desde el dashboard antes del cierre de cuenta.</p>
+        <h2>{{ t('terms.s9.title') }}</h2>
+        <p><strong>{{ t('terms.s9.p1').split(':')[0] }}:</strong>{{ t('terms.s9.p1').split(':')[1] }}</p>
+        <p><strong>{{ t('terms.s9.p2').split(':')[0] }}:</strong>{{ t('terms.s9.p2').split(':')[1] }}</p>
+        <p>{{ t('terms.s9.footer') }}</p>
       </section>
 
       <section>
-        <h2>10. Modificaciones</h2>
-        <p>Podemos modificar estos términos en cualquier momento. Te notificaremos cambios significativos por email con al menos 7 días de anticipación. El uso continuado del servicio implica aceptación de los términos actualizados.</p>
+        <h2>{{ t('terms.s10.title') }}</h2>
+        <p>{{ t('terms.s10.desc') }}</p>
       </section>
 
       <section>
-        <h2>11. Ley aplicable</h2>
-        <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier disputa se resolverá en los tribunales ordinarios de la ciudad de Buenos Aires.</p>
+        <h2>{{ t('terms.s11.title') }}</h2>
+        <p>{{ t('terms.s11.desc') }}</p>
       </section>
 
       <section>
-        <h2>12. Contacto</h2>
-        <p>Para consultas sobre estos términos, contactanos por WhatsApp al +54 221 220 4194 o visitá <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
+        <h2>{{ t('terms.s12.title') }}</h2>
+        <p>{{ t('terms.s12.desc') }} <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
       </section>
     </div>
   </div>

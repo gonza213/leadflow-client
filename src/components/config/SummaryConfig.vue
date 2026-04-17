@@ -1,7 +1,10 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/auth'
 import { summaryApi } from '../../services/api'
+
+const { t } = useI18n()
 
 const props = defineProps({
   summaryEnabled: Boolean,
@@ -25,15 +28,15 @@ const success = ref('')
 const error = ref('')
 const testResult = ref('')
 
-const days = [
-  { value: 0, label: 'Domingo' },
-  { value: 1, label: 'Lunes' },
-  { value: 2, label: 'Martes' },
-  { value: 3, label: 'Miércoles' },
-  { value: 4, label: 'Jueves' },
-  { value: 5, label: 'Viernes' },
-  { value: 6, label: 'Sábado' }
-]
+const days = computed(() => [
+  { value: 0, label: t('config.period.days.0') },
+  { value: 1, label: t('config.period.days.1') },
+  { value: 2, label: t('config.period.days.2') },
+  { value: 3, label: t('config.period.days.3') },
+  { value: 4, label: t('config.period.days.4') },
+  { value: 5, label: t('config.period.days.5') },
+  { value: 6, label: t('config.period.days.6') }
+])
 
 watch(() => props.summaryEnabled, v => { enabled.value = v ?? false })
 watch(() => props.summaryFrequency, v => { frequency.value = v || 'daily' })
@@ -41,7 +44,7 @@ watch(() => props.summaryTime, v => { time.value = v || '08:00' })
 watch(() => props.summaryDay, v => { day.value = v ?? 1 })
 watch(() => props.summaryWebhookUrl, v => { webhookUrl.value = v || '' })
 
-const frequencyLabel = computed(() => frequency.value === 'daily' ? 'Todos los días' : 'Una vez por semana')
+const frequencyLabel = computed(() => frequency.value === 'daily' ? t('config.summary.everyDay') : t('config.summary.onceAWeek'))
 
 const handleSave = async () => {
   saving.value = true
@@ -55,10 +58,10 @@ const handleSave = async () => {
       summary_day: day.value,
       summary_webhook_url: webhookUrl.value || null
     })
-    success.value = 'Configuración guardada correctamente'
+    success.value = t('config.messages.success')
     setTimeout(() => success.value = '', 3000)
   } catch (e) {
-    error.value = 'Error al guardar'
+    error.value = t('common.saveError')
   } finally {
     saving.value = false
   }
@@ -72,7 +75,7 @@ const handleTest = async () => {
     const res = await summaryApi.trigger(authStore.tenantSlug)
     testResult.value = res.data.summary
   } catch (e) {
-    error.value = e.response?.data?.message || 'Error al generar el resumen'
+    error.value = e.response?.data?.message || t('config.summary.errors.test')
   } finally {
     testing.value = false
   }
@@ -81,16 +84,16 @@ const handleTest = async () => {
 
 <template>
   <div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Resumen Inteligente con IA</h3>
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">{{ t('config.summary.title') }}</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-      El sistema genera automáticamente un resumen de métricas con OpenAI y lo envía al webhook configurado (Make, Zapier, etc.).
+      {{ t('config.summary.info') }}
     </p>
 
     <!-- Toggle habilitado -->
     <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg mb-6">
       <div>
-        <p class="font-medium text-gray-900 dark:text-white">Resumen automático</p>
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ enabled ? 'Activo · ' + frequencyLabel : 'Desactivado' }}</p>
+        <p class="font-medium text-gray-900 dark:text-white">{{ t('config.summary.automatic') }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ enabled ? t('config.summary.active') + ' · ' + frequencyLabel : t('config.summary.disabled') }}</p>
       </div>
       <button
         @click="enabled = !enabled"
@@ -103,30 +106,30 @@ const handleTest = async () => {
     <div v-if="enabled" class="space-y-5">
       <!-- Frecuencia -->
       <div>
-        <label class="label">Frecuencia</label>
+        <label class="label">{{ t('config.summary.frequency') }}</label>
         <div class="grid grid-cols-2 gap-3">
           <button
             @click="frequency = 'daily'"
             :class="['p-3 rounded-lg border-2 text-sm font-medium transition-colors text-left', frequency === 'daily' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400' : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300']"
           >
             <span class="block text-base mb-0.5">📅</span>
-            Diario
-            <span class="block text-xs font-normal opacity-70">Todos los días a la hora configurada</span>
+            {{ t('config.summary.daily') }}
+            <span class="block text-xs font-normal opacity-70">{{ t('config.summary.dailyInfo') }}</span>
           </button>
           <button
             @click="frequency = 'weekly'"
             :class="['p-3 rounded-lg border-2 text-sm font-medium transition-colors text-left', frequency === 'weekly' ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400' : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300']"
           >
             <span class="block text-base mb-0.5">📆</span>
-            Semanal
-            <span class="block text-xs font-normal opacity-70">Un día fijo por semana</span>
+            {{ t('config.summary.weekly') }}
+            <span class="block text-xs font-normal opacity-70">{{ t('config.summary.weeklyInfo') }}</span>
           </button>
         </div>
       </div>
 
       <!-- Día (solo si es semanal) -->
       <div v-if="frequency === 'weekly'">
-        <label class="label">Día de envío</label>
+        <label class="label">{{ t('config.summary.sendDay') }}</label>
         <select v-model="day" class="input">
           <option v-for="d in days" :key="d.value" :value="d.value">{{ d.label }}</option>
         </select>
@@ -134,27 +137,27 @@ const handleTest = async () => {
 
       <!-- Hora -->
       <div>
-        <label class="label">Hora de envío</label>
+        <label class="label">{{ t('config.summary.sendTime') }}</label>
         <select v-model="time" class="input">
           <option v-for="h in 24" :key="h - 1" :value="`${String(h - 1).padStart(2, '0')}:00`">
-            {{ String(h - 1).padStart(2, '0') }}:00 hs
+            {{ String(h - 1).padStart(2, '0') }}:00 {{ t('config.summary.timeSuffix') }}
           </option>
         </select>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Se usa la zona horaria configurada en Integración.</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('config.summary.timezoneInfo') }}</p>
       </div>
 
       <!-- Webhook URL -->
       <div>
-        <label class="label">URL del Webhook (Make, Zapier, etc.)</label>
+        <label class="label">{{ t('config.summary.webhookLabel') }}</label>
         <input v-model="webhookUrl" type="url" class="input" placeholder="https://hook.make.com/..." />
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-          El sistema hará un POST con el resumen generado por IA y las métricas del período.
+          {{ t('config.summary.webhookInfo') }}
         </p>
       </div>
 
       <!-- Preview del payload -->
       <details class="text-sm">
-        <summary class="cursor-pointer text-gray-600 dark:text-gray-400 font-medium">Ver JSON enviado al webhook</summary>
+        <summary class="cursor-pointer text-gray-600 dark:text-gray-400 font-medium">{{ t('config.summary.viewJson') }}</summary>
         <pre class="bg-gray-50 dark:bg-gray-800 p-3 rounded text-xs font-mono overflow-x-auto text-gray-700 dark:text-gray-300 mt-2 border border-gray-200 dark:border-gray-700">{
   "type": "daily_summary",
   "date": "9/4/2026",
@@ -179,14 +182,14 @@ const handleTest = async () => {
 
     <!-- Resultado del test -->
     <div v-if="testResult" class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg mt-4">
-      <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1">Resumen generado:</p>
+      <p class="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-1">{{ t('config.summary.testResult') }}</p>
       <p class="text-sm text-blue-900 dark:text-blue-200">{{ testResult }}</p>
     </div>
 
     <!-- Botones -->
     <div class="flex gap-3 mt-6">
       <button @click="handleSave" :disabled="saving" class="btn btn-primary">
-        {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
+        {{ saving ? t('common.loading') : t('common.saveChanges') }}
       </button>
       <button
         v-if="enabled"
@@ -194,7 +197,7 @@ const handleTest = async () => {
         :disabled="testing"
         class="btn btn-secondary"
       >
-        {{ testing ? 'Generando...' : 'Enviar resumen ahora' }}
+        {{ testing ? t('config.summary.testing') : t('config.summary.testButton') }}
       </button>
     </div>
   </div>

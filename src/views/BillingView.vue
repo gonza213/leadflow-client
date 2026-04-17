@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { subscriptionApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
+
+const { t, locale } = useI18n()
 
 const payments = ref([])
 const loading = ref(false)
@@ -20,7 +23,7 @@ const fetchInvoices = async () => {
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('es-ES', {
+  return new Date(dateString).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
     day: 'numeric',
     month: 'long',
     year: 'numeric'
@@ -35,7 +38,7 @@ onMounted(() => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Mi Facturación</h1>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ t('billing.title') }}</h1>
     </div>
 
     <div v-if="authStore.subscriptionStatus === 'lifetime'" class="grid grid-cols-1 gap-6">
@@ -45,14 +48,13 @@ onMounted(() => {
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
           </svg>
         </div>
-        <h2 class="text-3xl font-bold mb-4">¡Plan Vitalicio Activado!</h2>
+        <h2 class="text-3xl font-bold mb-4">{{ t('billing.lifetime.title') }}</h2>
         <p class="text-indigo-100 text-lg max-w-2xl mx-auto leading-relaxed">
-          Tu cuenta tiene acceso permanente a todas las funcionalidades de LeadDistro. 
-          Al ser un plan vitalicio, no tenés suscripciones mensuales pendientes ni cargos futuros.
+          {{ t('billing.lifetime.desc') }}
         </p>
         <div class="mt-8">
           <router-link to="/" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-indigo-600 rounded-full font-bold hover:bg-indigo-50 transition-colors">
-            Volver al Dashboard
+            {{ t('billing.lifetime.backToDashboard') }}
           </router-link>
         </div>
       </div>
@@ -68,9 +70,9 @@ onMounted(() => {
             </svg>
           </div>
           <div>
-            <h3 class="font-bold text-blue-900 dark:text-blue-100">Sobre tus recibos</h3>
+            <h3 class="font-bold text-blue-900 dark:text-blue-100">{{ t('billing.info.title') }}</h3>
             <p class="text-sm text-blue-800 dark:text-blue-200 opacity-80">
-              Aquí encontrarás los comprobantes de pago de tu suscripción mensual. Los recibos se generan automáticamente al confirmar el pago y se almacenan de forma segura en la nube.
+              {{ t('billing.info.desc') }}
             </p>
           </div>
         </div>
@@ -88,18 +90,18 @@ onMounted(() => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">No hay recibos disponibles</h3>
-          <p class="text-gray-500 dark:text-gray-400">Tus futuros comprobantes aparecerán en esta lista.</p>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">{{ t('billing.table.noInvoices') }}</h3>
+          <p class="text-gray-500 dark:text-gray-400">{{ t('billing.table.emptyInfo') }}</p>
         </div>
 
         <div v-else class="overflow-x-auto">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Fecha</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Concepto</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Monto</th>
-                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Acción</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('billing.table.date') }}</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('billing.table.concept') }}</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('billing.table.amount') }}</th>
+                <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">{{ t('billing.table.action') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
@@ -108,8 +110,8 @@ onMounted(() => {
                   {{ formatDate(payment.date) }}
                 </td>
                 <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-gray-900 dark:text-white">Suscripción Mensual</div>
-                  <div class="text-xs text-gray-500">Plan LeadDistro Estándar</div>
+                  <div class="text-sm font-medium text-gray-900 dark:text-white">{{ t('billing.table.monthlySubscription') }}</div>
+                  <div class="text-xs text-gray-500">{{ t('billing.table.planStandard') }}</div>
                 </td>
                 <td class="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">
                   ${{ payment.amount.toFixed(2) }} USD
@@ -124,9 +126,9 @@ onMounted(() => {
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Descargar Recibo
+                    {{ t('billing.table.download') }}
                   </a>
-                  <span v-else class="text-xs text-gray-400 italic">Generando...</span>
+                  <span v-else class="text-xs text-gray-400 italic">{{ t('billing.table.generating') }}</span>
                 </td>
               </tr>
             </tbody>

@@ -1,8 +1,11 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/auth'
 import { useConfigStore } from '../stores/config'
 import GhlConfig from '../components/config/GhlConfig.vue'
+
+const { t } = useI18n()
 
 const authStore = useAuthStore()
 const configStore = useConfigStore()
@@ -27,14 +30,14 @@ const copyStageWebhook = () => {
   setTimeout(() => { copiedStage.value = false }, 2000)
 }
 
-const integrations = [
-  { name: 'GoHighLevel', desc: 'El aliado #1 para agencias GHL', status: 'optimized', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30', textColor: 'text-green-700 dark:text-green-300' },
-  { name: 'Kommo (amoCRM)', desc: 'Potenciá tus ventas por WhatsApp', status: 'webhook', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30', textColor: 'text-blue-700 dark:text-blue-300' },
-  { name: 'monday.com', desc: 'El cerebro de asignación para monday', status: 'webhook', color: '#00ca72', bg: 'bg-emerald-100 dark:bg-emerald-900/30', textColor: 'text-emerald-700 dark:text-emerald-300' },
-  { name: 'HubSpot', desc: 'Distribución inteligente para tu CRM', status: 'webhook', color: '#f97316', bg: 'bg-orange-100 dark:bg-orange-900/30', textColor: 'text-orange-700 dark:text-orange-300' },
-  { name: 'Clientify', desc: 'Impulsá tu CRM de marketing', status: 'webhook', color: '#e11d48', bg: 'bg-rose-100 dark:bg-rose-900/30', textColor: 'text-rose-700 dark:text-rose-300' },
-  { name: 'Make / Zapier', desc: 'Conectá con más de 3000 apps', status: 'webhook', color: '#8b5cf6', bg: 'bg-purple-100 dark:bg-purple-900/30', textColor: 'text-purple-700 dark:text-purple-300' },
-]
+const integrations = computed(() => [
+  { name: 'GoHighLevel', desc: t('integrations.platforms.ghl'), status: 'optimized', color: '#22c55e', bg: 'bg-green-100 dark:bg-green-900/30', textColor: 'text-green-700 dark:text-green-300' },
+  { name: 'Kommo (amoCRM)', desc: t('integrations.platforms.kommo'), status: 'webhook', color: '#3b82f6', bg: 'bg-blue-100 dark:bg-blue-900/30', textColor: 'text-blue-700 dark:text-blue-300' },
+  { name: 'monday.com', desc: t('integrations.platforms.monday'), status: 'webhook', color: '#00ca72', bg: 'bg-emerald-100 dark:bg-emerald-900/30', textColor: 'text-emerald-700 dark:text-emerald-300' },
+  { name: 'HubSpot', desc: t('integrations.platforms.hubspot'), status: 'webhook', color: '#f97316', bg: 'bg-orange-100 dark:bg-orange-900/30', textColor: 'text-orange-700 dark:text-orange-300' },
+  { name: 'Clientify', desc: t('integrations.platforms.clientify'), status: 'webhook', color: '#e11d48', bg: 'bg-rose-100 dark:bg-rose-900/30', textColor: 'text-rose-700 dark:text-rose-300' },
+  { name: 'Make / Zapier', desc: t('integrations.platforms.make'), status: 'webhook', color: '#8b5cf6', bg: 'bg-purple-100 dark:bg-purple-900/30', textColor: 'text-purple-700 dark:text-purple-300' },
+])
 
 onMounted(async () => {
   await configStore.fetchConfig()
@@ -44,14 +47,14 @@ onMounted(async () => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Integraciones</h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('integrations.title') }}</h1>
     </div>
 
     <!-- Plataformas compatibles -->
     <div class="card">
-      <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Plataformas compatibles</h2>
+      <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ t('integrations.platforms.title') }}</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">
-        LeadDistro funciona con cualquier herramienta que soporte webhooks.
+        {{ t('integrations.platforms.info') }}
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         <div
@@ -72,7 +75,7 @@ onMounted(async () => {
               ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
               : 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
           ]">
-            {{ platform.status === 'optimized' ? 'Optimizado' : 'Webhook' }}
+            {{ platform.status === 'optimized' ? t('integrations.platforms.optimized') : t('integrations.platforms.webhook') }}
           </span>
         </div>
       </div>
@@ -80,31 +83,31 @@ onMounted(async () => {
 
     <!-- Webhooks -->
     <div v-if="authStore.tenantSlug" class="card">
-      <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Webhooks de tu cuenta</h2>
+      <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ t('integrations.webhooks.title') }}</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-        Configurá estos webhooks en tu CRM para sincronizar leads automáticamente.
+        {{ t('integrations.webhooks.info') }}
       </p>
 
       <!-- Webhook 1: Entrada -->
       <div class="border rounded-lg p-4 mb-4 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
         <div class="flex items-center gap-2 mb-2">
           <span class="text-green-600 dark:text-green-400 font-bold text-lg">1.</span>
-          <h3 class="font-semibold text-green-800 dark:text-green-300">CRM envía nuevo lead al sistema</h3>
+          <h3 class="font-semibold text-green-800 dark:text-green-300">{{ t('integrations.webhooks.input.title') }}</h3>
           <span class="ml-auto text-xs bg-green-600 text-white px-2 py-0.5 rounded">POST</span>
         </div>
         <p class="text-sm text-green-700 dark:text-green-400 mb-3">
-          Cuando se crea un contacto en tu CRM, enviá los datos a esta URL. El sistema asigna automáticamente un vendedor.
+          {{ t('integrations.webhooks.input.desc') }}
         </p>
         <div class="flex items-center gap-2 mb-3">
           <code class="flex-1 bg-white dark:bg-gray-800 px-3 py-2 rounded text-sm font-mono break-all border border-green-300 dark:border-green-700 dark:text-green-300">
             {{ webhookUrl }}
           </code>
           <button @click="copyWebhook" class="btn btn-secondary whitespace-nowrap text-sm">
-            {{ copied ? '¡Copiado!' : 'Copiar' }}
+            {{ copied ? t('common.copied') : t('common.copy') }}
           </button>
         </div>
         <details class="text-sm">
-          <summary class="cursor-pointer text-green-700 dark:text-green-400 font-medium">Ver JSON requerido</summary>
+          <summary class="cursor-pointer text-green-700 dark:text-green-400 font-medium">{{ t('integrations.webhooks.input.viewJson') }}</summary>
           <pre v-pre class="bg-white dark:bg-gray-800 p-3 rounded text-xs font-mono overflow-x-auto text-gray-700 dark:text-gray-300 mt-2 border border-green-200 dark:border-green-700">{
   "contact_id": "{{contact.id}}",
   "contact_name": "{{contact.name}}",
@@ -122,14 +125,14 @@ onMounted(async () => {
       <div class="border rounded-lg p-4 mb-4 bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
         <div class="flex items-center gap-2 mb-2">
           <span class="text-blue-600 dark:text-blue-400 font-bold text-lg">2.</span>
-          <h3 class="font-semibold text-blue-800 dark:text-blue-300">Sistema notifica asignación al CRM</h3>
+          <h3 class="font-semibold text-blue-800 dark:text-blue-300">{{ t('integrations.webhooks.output.title') }}</h3>
           <span class="ml-auto text-xs bg-blue-600 text-white px-2 py-0.5 rounded">POST</span>
         </div>
         <p class="text-sm text-blue-700 dark:text-blue-400 mb-3">
-          Cuando el sistema asigna un vendedor, envía los datos a tu CRM. Configurá la URL de destino en la sección de abajo.
+          {{ t('integrations.webhooks.output.desc') }}
         </p>
         <details class="text-sm">
-          <summary class="cursor-pointer text-blue-700 dark:text-blue-400 font-medium">Ver JSON enviado por el sistema</summary>
+          <summary class="cursor-pointer text-blue-700 dark:text-blue-400 font-medium">{{ t('integrations.webhooks.output.viewJson') }}</summary>
           <pre v-pre class="bg-white dark:bg-gray-800 p-3 rounded text-xs font-mono overflow-x-auto text-gray-700 dark:text-gray-300 mt-2 border border-blue-200 dark:border-blue-700">{
   "contact_id": "abc123",
   "seller_user_id": "crm_user_id_del_vendedor",
@@ -143,22 +146,22 @@ onMounted(async () => {
       <div class="border rounded-lg p-4 bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800">
         <div class="flex items-center gap-2 mb-2">
           <span class="text-purple-600 dark:text-purple-400 font-bold text-lg">3.</span>
-          <h3 class="font-semibold text-purple-800 dark:text-purple-300">CRM notifica cambio de etapa</h3>
+          <h3 class="font-semibold text-purple-800 dark:text-purple-300">{{ t('integrations.webhooks.stage.title') }}</h3>
           <span class="ml-auto text-xs bg-purple-600 text-white px-2 py-0.5 rounded">POST</span>
         </div>
         <p class="text-sm text-purple-700 dark:text-purple-400 mb-3">
-          Cuando cambia la etapa de una oportunidad en tu CRM, enviá los datos a esta URL para sincronizar el estado del lead.
+          {{ t('integrations.webhooks.stage.desc') }}
         </p>
         <div class="flex items-center gap-2 mb-3">
           <code class="flex-1 bg-white dark:bg-gray-800 px-3 py-2 rounded text-sm font-mono break-all border border-purple-300 dark:border-purple-700 dark:text-purple-300">
             {{ stageWebhookUrl }}
           </code>
           <button @click="copyStageWebhook" class="btn btn-secondary whitespace-nowrap text-sm">
-            {{ copiedStage ? '¡Copiado!' : 'Copiar' }}
+            {{ copiedStage ? t('common.copied') : t('common.copy') }}
           </button>
         </div>
         <details class="text-sm">
-          <summary class="cursor-pointer text-purple-700 dark:text-purple-400 font-medium">Ver JSON requerido</summary>
+          <summary class="cursor-pointer text-purple-700 dark:text-purple-400 font-medium">{{ t('integrations.webhooks.stage.viewJson') }}</summary>
           <pre v-pre class="bg-white dark:bg-gray-800 p-3 rounded text-xs font-mono overflow-x-auto text-gray-700 dark:text-gray-300 mt-2 border border-purple-200 dark:border-purple-700">{
   "contact_id": "{{contact.id}}",
   "opportunity_stage": "{{opportunity.stage}}",

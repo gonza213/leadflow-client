@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   equipos: {
@@ -27,12 +30,12 @@ const isValid = computed(() => totalPorcentaje.value === 100)
 
 const addTeam = () => {
   if (!newTeam.value.nombre.trim()) {
-    error.value = 'El nombre del equipo es requerido'
+    error.value = t('config.teams.nameRequired')
     return
   }
 
   if (newTeam.value.porcentaje <= 0) {
-    error.value = 'El porcentaje debe ser mayor a 0'
+    error.value = t('config.teams.percentError')
     return
   }
 
@@ -49,22 +52,22 @@ const removeTeam = (index) => {
 
 const handleSave = async () => {
   if (!isValid.value) {
-    error.value = `Los porcentajes deben sumar 100% (actual: ${totalPorcentaje.value}%)`
+    error.value = t('config.teams.sumError', { n: totalPorcentaje.value })
     return
   }
 
   error.value = ''
   const result = await emit('update', localEquipos.value)
-  success.value = 'Configuración guardada correctamente'
+  success.value = t('config.messages.success')
   setTimeout(() => success.value = '', 3000)
 }
 </script>
 
 <template>
   <div>
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Configuración de Equipos</h3>
+    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('config.teams.title') }}</h3>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-      Define los equipos y sus porcentajes de asignación. Los porcentajes deben sumar 100%.
+      {{ t('config.teams.info') }}
     </p>
 
     <!-- Lista de equipos -->
@@ -79,7 +82,7 @@ const handleSave = async () => {
             v-model="equipo.nombre"
             type="text"
             class="input"
-            placeholder="Nombre del equipo"
+            :placeholder="t('config.teams.namePlaceholder')"
           />
         </div>
         <div class="w-32">
@@ -113,7 +116,7 @@ const handleSave = async () => {
           v-model="newTeam.nombre"
           type="text"
           class="input"
-          placeholder="Nuevo equipo"
+          :placeholder="t('config.teams.newTeamPlaceholder')"
         />
       </div>
       <div class="w-32">
@@ -129,7 +132,7 @@ const handleSave = async () => {
         </div>
       </div>
       <button @click="addTeam" class="btn btn-secondary">
-        Agregar
+        {{ t('config.teams.add') }}
       </button>
     </div>
 
@@ -138,13 +141,13 @@ const handleSave = async () => {
       :class="isValid ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'"
     >
       <span class="font-medium" :class="isValid ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'">
-        Total: {{ totalPorcentaje }}%
+        {{ t('config.teams.total', { n: totalPorcentaje }) }}
       </span>
       <span v-if="!isValid" class="text-sm text-red-600 dark:text-red-400">
-        Debe sumar exactamente 100%
+        {{ t('config.teams.invalidTotal') }}
       </span>
       <span v-else class="text-sm text-green-600 dark:text-green-400">
-        Configuración válida
+        {{ t('config.teams.valid') }}
       </span>
     </div>
 
@@ -163,7 +166,7 @@ const handleSave = async () => {
       class="btn btn-primary"
       :class="{ 'opacity-50 cursor-not-allowed': !isValid }"
     >
-      Guardar Cambios
+      {{ t('common.saveChanges') }}
     </button>
   </div>
 </template>

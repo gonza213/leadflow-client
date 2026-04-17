@@ -3,7 +3,10 @@ import { onMounted, ref, computed, watch } from 'vue'
 import { useSellersStore } from '../stores/sellers'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
+import { useI18n } from 'vue-i18n'
 import SellerCard from '../components/sellers/SellerCard.vue'
+
+const { t } = useI18n()
 
 const sellersStore = useSellersStore()
 const configStore = useConfigStore()
@@ -74,7 +77,7 @@ const handleAddSeller = async () => {
 }
 
 const handleDeleteSeller = async (sellerId) => {
-  if (confirm('¿Estás seguro de eliminar este vendedor?')) {
+  if (confirm(t('sellers.deleteConfirm'))) {
     await sellersStore.deleteSeller(sellerId)
   }
 }
@@ -104,13 +107,13 @@ const handleEditSeller = async () => {
 <template>
   <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Vendedores</h1>
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('sellers.title') }}</h1>
       <button
         v-if="authStore.canCreate"
         @click="showAddModal = true"
         class="btn btn-primary w-full sm:w-auto"
       >
-        + Agregar Vendedor
+        {{ t('sellers.add') }}
       </button>
     </div>
 
@@ -118,9 +121,9 @@ const handleEditSeller = async () => {
     <div class="card">
       <div class="flex items-center gap-4">
         <div class="flex-1 max-w-xs">
-          <label class="label">Filtrar por equipo</label>
+          <label class="label">{{ t('sellers.filterTeam') }}</label>
           <select v-model="selectedTeam" @change="handleFilterByTeam" class="input">
-            <option value="">Todos los equipos</option>
+            <option value="">{{ t('sellers.allTeams') }}</option>
             <option
               v-for="equipo in configStore.config?.equipos || []"
               :key="equipo.nombre"
@@ -131,7 +134,7 @@ const handleEditSeller = async () => {
           </select>
         </div>
         <div class="text-sm text-gray-500 dark:text-gray-400 mt-6">
-          {{ sellersStore.sellers.length }} vendedores
+          {{ t('sellers.count', { n: sellersStore.sellers.length }) }}
         </div>
       </div>
     </div>
@@ -212,24 +215,28 @@ const handleEditSeller = async () => {
 
       <!-- Info de paginación -->
       <p v-if="totalPages > 1" class="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
-        Mostrando {{ (currentPage - 1) * sellersPerPage + 1 }}-{{ Math.min(currentPage * sellersPerPage, sellersStore.sellers.length) }} de {{ sellersStore.sellers.length }} vendedores
+        {{ t('sellers.pagination', {
+          start: (currentPage - 1) * sellersPerPage + 1,
+          end: Math.min(currentPage * sellersPerPage, sellersStore.sellers.length),
+          total: sellersStore.sellers.length
+        }) }}
       </p>
     </div>
 
     <!-- Modal agregar vendedor -->
     <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Agregar Vendedor</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ t('sellers.addModal.title') }}</h2>
 
         <div class="space-y-4">
           <div>
-            <label class="label">Nombre</label>
-            <input v-model="newSeller.seller_name" type="text" class="input" placeholder="Nombre del vendedor" />
+            <label class="label">{{ t('sellers.addModal.name') }}</label>
+            <input v-model="newSeller.seller_name" type="text" class="input" :placeholder="t('sellers.addModal.name')" />
           </div>
           <div>
-            <label class="label">Equipo</label>
+            <label class="label">{{ t('sellers.addModal.team') }}</label>
             <select v-model="newSeller.team" class="input">
-              <option value="">Seleccionar equipo</option>
+              <option value="">{{ t('sellers.addModal.selectTeam') }}</option>
               <option
                 v-for="equipo in configStore.config?.equipos || []"
                 :key="equipo.nombre"
@@ -241,31 +248,31 @@ const handleEditSeller = async () => {
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="label">Límite semanal</label>
+              <label class="label">{{ t('sellers.addModal.weeklyLimit') }}</label>
               <input v-model.number="newSeller.weekly_limit" type="number" class="input" min="0" />
             </div>
             <div>
-              <label class="label">Límite diario</label>
+              <label class="label">{{ t('sellers.addModal.dailyLimit') }}</label>
               <input v-model.number="newSeller.daily_limit" type="number" class="input" min="0" />
             </div>
           </div>
           <div>
-            <label class="label">CRM User ID</label>
-            <input v-model="newSeller.ghl_user_id" type="text" class="input" placeholder="ID del usuario en el CRM (GHL, HubSpot, etc.)" />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Se usa para notificar al CRM la asignación del lead. Opcional si no usás integración.</p>
+            <label class="label">{{ t('sellers.addModal.crmId') }}</label>
+            <input v-model="newSeller.ghl_user_id" type="text" class="input" :placeholder="t('sellers.addModal.crmId')" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('sellers.addModal.crmIdInfo') }}</p>
           </div>
         </div>
 
         <div class="flex justify-end gap-3 mt-6">
           <button @click="showAddModal = false" class="btn btn-secondary">
-            Cancelar
+            {{ t('common.cancel') }}
           </button>
           <button
             @click="handleAddSeller"
             class="btn btn-primary"
             :disabled="!newSeller.seller_name || !newSeller.team"
           >
-            Guardar
+            {{ t('common.save') }}
           </button>
         </div>
       </div>
@@ -274,17 +281,17 @@ const handleEditSeller = async () => {
     <!-- Modal editar vendedor -->
     <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Editar Vendedor</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{{ t('sellers.editModal.title') }}</h2>
 
         <div class="space-y-4">
           <div>
-            <label class="label">Nombre</label>
-            <input v-model="editForm.seller_name" type="text" class="input" placeholder="Nombre del vendedor" />
+            <label class="label">{{ t('sellers.addModal.name') }}</label>
+            <input v-model="editForm.seller_name" type="text" class="input" :placeholder="t('sellers.addModal.name')" />
           </div>
           <div>
-            <label class="label">Equipo</label>
+            <label class="label">{{ t('sellers.addModal.team') }}</label>
             <select v-model="editForm.team" class="input">
-              <option value="">Seleccionar equipo</option>
+              <option value="">{{ t('sellers.addModal.selectTeam') }}</option>
               <option
                 v-for="equipo in configStore.config?.equipos || []"
                 :key="equipo.nombre"
@@ -296,31 +303,31 @@ const handleEditSeller = async () => {
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="label">Limite semanal</label>
+              <label class="label">{{ t('sellers.addModal.weeklyLimit') }}</label>
               <input v-model.number="editForm.weekly_limit" type="number" class="input" min="0" />
             </div>
             <div>
-              <label class="label">Limite diario</label>
+              <label class="label">{{ t('sellers.addModal.dailyLimit') }}</label>
               <input v-model.number="editForm.daily_limit" type="number" class="input" min="0" />
             </div>
           </div>
           <div>
-            <label class="label">CRM User ID</label>
-            <input v-model="editForm.ghl_user_id" type="text" class="input" placeholder="ID del usuario en el CRM (GHL, HubSpot, etc.)" />
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Se usa para notificar al CRM la asignación del lead. Opcional si no usás integración.</p>
+            <label class="label">{{ t('sellers.addModal.crmId') }}</label>
+            <input v-model="editForm.ghl_user_id" type="text" class="input" :placeholder="t('sellers.addModal.crmId')" />
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ t('sellers.addModal.crmIdInfo') }}</p>
           </div>
         </div>
 
         <div class="flex justify-end gap-3 mt-6">
           <button @click="showEditModal = false" class="btn btn-secondary">
-            Cancelar
+            {{ t('common.cancel') }}
           </button>
           <button
             @click="handleEditSeller"
             class="btn btn-primary"
             :disabled="!editForm.seller_name || !editForm.team"
           >
-            Guardar Cambios
+            {{ t('common.saveChanges') }}
           </button>
         </div>
       </div>

@@ -1,4 +1,6 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const props = defineProps({
   seller: {
     type: Object,
@@ -50,32 +52,32 @@ const getAvailabilityColor = (available, limit) => {
           @click="emit('toggle-active', seller._id)"
           class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
         >
-          {{ seller.active ? 'Desactivar' : 'Activar' }}
+          {{ seller.active ? t('common.deactivate') : t('common.activate') }}
         </button>
       </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4 text-sm">
       <div>
-        <p class="text-gray-500 dark:text-gray-400">Leads hoy</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ t('sellers.addModal.leadsToday') }}</p>
         <p class="font-semibold text-lg" :class="getAvailabilityColor(seller.available_today, seller.daily_limit)">
           {{ seller.leads_hoy }} / {{ seller.daily_limit }}
         </p>
       </div>
       <div>
-        <p class="text-gray-500 dark:text-gray-400">Leads semana</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ t('sellers.addModal.leadsWeek') }}</p>
         <p class="font-semibold text-lg" :class="getAvailabilityColor(seller.available, seller.weekly_limit)">
           {{ seller.leads_semana }} / {{ seller.weekly_limit }}
         </p>
       </div>
       <div>
-        <p class="text-gray-500 dark:text-gray-400">Disponible hoy</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ t('sellers.addModal.availableToday') }}</p>
         <p class="font-semibold" :class="getAvailabilityColor(seller.available_today, seller.daily_limit)">
           {{ seller.available_today }}
         </p>
       </div>
       <div>
-        <p class="text-gray-500 dark:text-gray-400">Disponible semana</p>
+        <p class="text-gray-500 dark:text-gray-400">{{ t('sellers.addModal.availableWeek') }}</p>
         <p class="font-semibold" :class="getAvailabilityColor(seller.available, seller.weekly_limit)">
           {{ seller.available }}
         </p>
@@ -85,7 +87,7 @@ const getAvailabilityColor = (available, limit) => {
     <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-xs text-gray-500 dark:text-gray-400">Capacidad usada</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">{{ t('sellers.addModal.capacity') }}</p>
           <p class="font-mono text-sm text-gray-900 dark:text-white">
             {{ seller.ratio !== null ? (parseFloat(seller.ratio) * 100).toFixed(0) + '%' : 'N/A' }}
           </p>
@@ -96,14 +98,14 @@ const getAvailabilityColor = (available, limit) => {
             @click="emit('edit', seller)"
             class="text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            Editar
+            {{ t('common.edit') }}
           </button>
           <button
             v-if="canDelete"
             @click="emit('delete', seller._id)"
             class="text-sm text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
           >
-            Eliminar
+            {{ t('common.delete') }}
           </button>
         </div>
       </div>
