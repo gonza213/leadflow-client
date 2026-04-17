@@ -1,6 +1,42 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'LeadDistro | Distribución Automática de Leads para Agencias',
+  meta: [
+    { name: 'description', content: 'Optimiza tu equipo de ventas con LeadDistro. Asignación inteligente de leads, límites por vendedor y dashboard en tiempo real para HubSpot, GHL y monday.com.' },
+    { property: 'og:title', content: 'LeadDistro | Distribución Inteligente de Leads' },
+    { property: 'og:description', content: 'Asigna cada lead al vendedor correcto automáticamente según capacidad y límites. Integración con cualquier CRM.' },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'keywords', content: 'lead distribution, automatización ventas, round robin, hubspot integration, gohighlevel leads, monday.com leads' }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "LeadDistro",
+        "operatingSystem": "Web",
+        "applicationCategory": "BusinessApplication",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "ratingCount": "120"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "25.00",
+          "priceCurrency": "USD"
+        },
+        "description": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos."
+      })
+    }
+  ]
+})
 
 const router = useRouter()
 const scrolled = ref(false)

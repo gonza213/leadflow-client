@@ -1,6 +1,16 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
+
 const router = useRouter()
+
+useHead({
+  title: 'Política de Privacidad | LeadDistro',
+  meta: [
+    { name: 'description', content: 'Conocé cómo LeadDistro protege tus datos y la privacidad de tu información y la de tus leads.' },
+    { name: 'robots', content: 'noindex, follow' }
+  ]
+})
 </script>
 
 <template>

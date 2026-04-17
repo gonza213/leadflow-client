@@ -1,6 +1,16 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
+
 const router = useRouter()
+
+useHead({
+  title: 'Términos de Servicio | LeadDistro',
+  meta: [
+    { name: 'description', content: 'Leé los términos y condiciones de uso de la plataforma LeadDistro.' },
+    { name: 'robots', content: 'noindex, follow' }
+  ]
+})
 </script>
 
 <template>

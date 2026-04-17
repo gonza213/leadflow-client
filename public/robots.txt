@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /landing
+Allow: /privacy
+Allow: /terms
+
+Disallow: /admin/
+Disallow: /config/
+Disallow: /billing/
+
+Sitemap: https://leaddistro.com/sitemap.xml

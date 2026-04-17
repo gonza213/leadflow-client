@@ -1,4 +1,5 @@
 import { ViteSSG } from 'vite-ssg'
+import { createHead } from '@unhead/vue'
 import { createPinia } from 'pinia'
 import VueApexCharts from 'vue3-apexcharts'
 import App from './App.vue'
@@ -11,7 +12,9 @@ export const createApp = ViteSSG(
   { routes, base: '/' },
   ({ app, router }) => {
     const pinia = createPinia()
+    const head = createHead()
     app.use(pinia)
+    app.use(head)
     app.use(VueApexCharts)
 
     if (import.meta.env.SSR) {

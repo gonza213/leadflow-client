@@ -16,8 +16,9 @@ export default defineConfig({
     script: 'async',
     formatting: 'minify',
     includedRoutes(paths) {
-      // Solo pre-renderizar la landing page
-      return paths.filter(p => p === '/landing')
+      // Pre-renderizar todas las rutas públicas
+      const publicRoutes = ['/landing', '/login', '/register', '/privacy', '/terms', '/payment-success']
+      return paths.filter(p => publicRoutes.includes(p))
     }
   }
 })
