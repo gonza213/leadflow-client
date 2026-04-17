@@ -59,7 +59,7 @@ const setLanguage = (newLocale) => {
 }
 
 const languages = [
-  { code: 'es', label: 'Castellano', flag: 'https://flagcdn.com/w40/ar.png' },
+  { code: 'es', label: 'Español', flag: 'https://flagcdn.com/w40/ar.png' },
   { code: 'pt-BR', label: 'Português', flag: 'https://flagcdn.com/w40/br.png' },
   { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png' }
 ]
