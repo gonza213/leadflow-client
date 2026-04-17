@@ -4,7 +4,7 @@ import ptBR from './locales/pt-BR.json'
 
 const i18n = createI18n({
   legacy: false, 
-  locale: localStorage.getItem('user-locale') || 'es',
+  locale: (typeof window !== 'undefined' && localStorage.getItem('user-locale')) || 'es',
   fallbackLocale: 'es',
   messages: {
     'es': es,
