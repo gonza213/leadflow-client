@@ -235,7 +235,21 @@
     "ogTitle": "LeadDistro | Smart Lead Distribution",
     "ogDescription": "Assign each lead to the right seller automatically based on capacity and limits. Integration with any CRM.",
     "keywords": "lead distribution, sales automation, round robin, hubspot integration, gohighlevel leads, monday.com leads",
+    "ogImage": "https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png",
     "schemaDescription": "LeadDistro assigns each lead to the right seller based on capacity, team, and limits — no manual intervention, no lost leads."
+  },
+  "trial": {
+    "banner": {
+      "expiresIn": "Your trial period expires in",
+      "day": "day",
+      "days": "days",
+      "expired": "Your trial period has expired.",
+      "subscribe": "Subscribe now",
+      "verifyBtn": "I already paid, verify",
+      "verifying": "Verifying...",
+      "success": "Subscription activated",
+      "error": "We couldn't verify the payment. Try again in a few minutes."
+    }
   },
   "landing": {
     "features": {

@@ -8,6 +8,9 @@ const { t, locale } = useI18n()
 
 useHead({
   title: () => t('meta.title'),
+  htmlAttrs: {
+    lang: () => locale.value
+  },
   meta: [
     { name: 'description', content: () => t('meta.description') },
     { property: 'og:title', content: () => t('meta.ogTitle') },
@@ -15,6 +18,12 @@ useHead({
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'keywords', content: () => t('meta.keywords') }
+  ],
+  link: [
+    { rel: 'alternate', hreflang: 'es', href: 'https://leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'pt-br', href: 'https://leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'en', href: 'https://leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'x-default', href: 'https://leaddistro.site/' }
   ],
   script: [
     {
