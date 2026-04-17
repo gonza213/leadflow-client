@@ -8,4 +8,4 @@ Disallow: /admin/
 Disallow: /config/
 Disallow: /billing/
 
-Sitemap: https://leaddistro.com/sitemap.xml
+Sitemap: https://www.leaddistro.site/sitemap.xml

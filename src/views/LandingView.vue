@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 
-const { t, locale } = useI18n()
+const { t, tm, rt, locale } = useI18n()
 
 useHead({
   title: () => t('meta.title'),
@@ -20,10 +20,10 @@ useHead({
     { name: 'keywords', content: () => t('meta.keywords') }
   ],
   link: [
-    { rel: 'alternate', hreflang: 'es', href: 'https://leaddistro.site/' },
-    { rel: 'alternate', hreflang: 'pt-br', href: 'https://leaddistro.site/' },
-    { rel: 'alternate', hreflang: 'en', href: 'https://leaddistro.site/' },
-    { rel: 'alternate', hreflang: 'x-default', href: 'https://leaddistro.site/' }
+    { rel: 'alternate', hreflang: 'es', href: 'https://www.leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'pt-br', href: 'https://www.leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'en', href: 'https://www.leaddistro.site/' },
+    { rel: 'alternate', hreflang: 'x-default', href: 'https://www.leaddistro.site/' }
   ],
   script: [
     {
@@ -45,6 +45,21 @@ useHead({
           "priceCurrency": "USD"
         },
         "description": t('meta.schemaDescription')
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: () => JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": tm('landing.faq.items').map(item => ({
+          "@type": "Question",
+          "name": rt(item.q),
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": rt(item.a)
+          }
+        }))
       })
     }
   ]
