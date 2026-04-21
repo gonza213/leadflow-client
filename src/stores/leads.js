@@ -277,6 +277,50 @@ export const useLeadsStore = defineStore('leads', () => {
     }
   }
 
+  async function exportLeadsToXlsx() {
+    if (!authStore.tenantSlug) return
+    exportLoading.value = true
+
+    try {
+      // Mismos filtros que la lista, pero sin paginación (limit muy alto)
+      const params = { page: 1, limit: 100000 }
+      if (leadsFilters.fecha_inicio) params.fecha_inicio = leadsFilters.fecha_inicio
+      if (leadsFilters.fecha_fin) params.fecha_fin = leadsFilters.fecha_fin
+      if (leadsFilters.equipo) params.equipo = leadsFilters.equipo
+      if (leadsFilters.seller_id) params.seller_id = leadsFilters.seller_id
+      if (leadsFilters.opportunity_stage) params.opportunity_stage = leadsFilters.opportunity_stage
+
+      const response = await leadsApi.getLeads(authStore.tenantSlug, params)
+      const leads = response.data.data.leads
+
+      const headers = ['Fecha', 'Nombre', 'Email', 'Teléfono', 'Estado', 'Equipo', 'Vendedor', 'Etapa', 'Source', 'Contact ID']
+      const rows = leads.map(lead => [
+        lead.date ? new Date(lead.date).toLocaleDateString('es-ES') : '',
+        lead.name || '',
+        lead.email || '',
+        lead.phone || '',
+        lead.state || '',
+        lead.team || '',
+        lead.seller_name || '',
+        lead.opportunity_stage || '',
+        lead.source || '',
+        lead.contact_id || ''
+      ])
+
+      const { utils, writeFile } = await import('xlsx')
+      const worksheet = utils.aoa_to_sheet([headers, ...rows])
+      const workbook = utils.book_new()
+      utils.book_append_sheet(workbook, worksheet, 'Leads')
+
+      const date = new Date().toISOString().slice(0, 10)
+      writeFile(workbook, `leads_${date}.xlsx`)
+    } catch (err) {
+      console.error('Error exportando leads a XLSX:', err)
+    } finally {
+      exportLoading.value = false
+    }
+  }
+
   return {
     // Report
     reportData,
@@ -311,6 +355,7 @@ export const useLeadsStore = defineStore('leads', () => {
     deleteLead,
     // Export
     exportLoading,
-    exportLeadsToCsv
+    exportLeadsToCsv,
+    exportLeadsToXlsx
   }
 })
