@@ -316,7 +316,7 @@ const getStateClass = (state) => {
             </span>
             <div class="flex items-center gap-3">
               <span v-if="lead.source" class="text-xs text-gray-400">{{ lead.source }}</span>
-              <div v-if="authStore.isManager" class="flex items-center gap-2">
+              <div v-if="authStore.canEdit" class="flex items-center gap-2">
                 <button
                   @click="openEditModal(lead)"
                   class="text-blue-600 dark:text-blue-400"
@@ -326,6 +326,7 @@ const getStateClass = (state) => {
                   </svg>
                 </button>
                 <button
+                  v-if="authStore.isManager"
                   @click="openDeleteConfirm(lead)"
                   class="text-red-600 dark:text-red-400"
                 >
@@ -394,7 +395,7 @@ const getStateClass = (state) => {
                 <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                   {{ lead.source || '-' }}
                 </td>
-                <td v-if="authStore.isManager" class="px-4 py-3 text-sm">
+                <td v-if="authStore.canEdit" class="px-4 py-3 text-sm">
                   <div class="flex items-center gap-2">
                     <button
                       @click="openEditModal(lead)"
@@ -406,6 +407,7 @@ const getStateClass = (state) => {
                       </svg>
                     </button>
                     <button
+                      v-if="authStore.isManager"
                       @click="openDeleteConfirm(lead)"
                       class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
                       :title="t('common.delete')"
@@ -503,7 +505,7 @@ const getStateClass = (state) => {
             </select>
           </div>
 
-          <div>
+          <div v-if="authStore.isManager">
             <label class="label">{{ t('leads.table.seller') }}</label>
             <select v-model="editForm.seller_user_id" class="input">
               <option value="">{{ t('leads.edit.noChanges') }}</option>

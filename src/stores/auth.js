@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Permisos especificos
   const canCreate = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
   const canDelete = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
-  const canEdit = computed(() => ['superadmin', 'manager', 'viewer'].includes(user.value?.role))
+  const canEdit = computed(() => ['superadmin', 'manager', 'viewer', 'seller'].includes(user.value?.role))
 
   async function login(email, password) {
     loading.value = true
