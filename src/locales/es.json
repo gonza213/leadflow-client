@@ -525,7 +525,10 @@
     "kpis": {
       "totalLeads": "Total Leads",
       "sellers": "Vendedores",
-      "stages": "Etapas"
+      "stages": "Etapas",
+      "bestSeller": "Mejor Vendedor",
+      "sales": "ventas",
+      "noSales": "Sin ventas"
     },
     "assignment": {
       "nextTeam": "Próximo Equipo",

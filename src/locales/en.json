@@ -515,7 +515,10 @@
     "kpis": {
       "totalLeads": "Total Leads",
       "sellers": "Sellers",
-      "stages": "Stages"
+      "stages": "Stages",
+      "bestSeller": "Best Seller",
+      "sales": "sales",
+      "noSales": "No sales yet"
     },
     "assignment": {
       "nextTeam": "Next Team",

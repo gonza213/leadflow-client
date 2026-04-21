@@ -60,6 +60,11 @@ const handleResetFilters = () => {
   leadsStore.initPeriodFilters(configStore.config)
   leadsStore.fetchNextAssignment()
 }
+
+const canSeeBestSeller = computed(() => {
+  // Simplificado al máximo para debug: si hay datos, se muestra.
+  return !!leadsStore.topSeller
+})
 </script>
 
 <template>
@@ -146,7 +151,7 @@ const handleResetFilters = () => {
 
     <template v-else>
       <!-- KPIs -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
           :title="t('dashboard.kpis.totalLeads')"
           :value="leadsStore.totalLeads"
@@ -165,6 +170,14 @@ const handleResetFilters = () => {
           :value="leadsStore.stages.length"
           icon="layers"
           color="purple"
+        />
+        <KPICard
+          v-if="canSeeBestSeller && leadsStore.topSeller"
+          :title="t('dashboard.kpis.bestSeller')"
+          :value="leadsStore.topSeller.seller_name"
+          :subtitle="leadsStore.topSeller.leads > 0 ? `${leadsStore.topSeller.leads} ${t('dashboard.kpis.sales')}` : t('dashboard.kpis.noSales')"
+          icon="star"
+          color="yellow"
         />
       </div>
 
