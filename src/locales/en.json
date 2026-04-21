@@ -80,6 +80,21 @@
     },
     "logout": "Logout"
   },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information and security",
+    "success": "Profile updated successfully",
+    "securityTitle": "Change Password",
+    "securityDesc": "Leave these fields blank if you don't want to change your password",
+    "labels": {
+      "name": "Full Name",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "errors": {
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
+  },
   "privacy": {
     "title": "Privacy Policy",
     "updated": "Last updated: April 11, 2026",
@@ -723,6 +738,8 @@
       "priority": "Priority",
       "description": "Description",
       "descriptionPlaceholder": "Describe the problem in detail...",
+      "attachments": "Attach Images",
+      "attachmentsHint": "Maximum 5 images (JPG, PNG)",
       "cancel": "Cancel",
       "send": "Send Ticket",
       "sending": "Sending..."

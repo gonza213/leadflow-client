@@ -75,6 +75,21 @@
     "acceptTermsError": "Você deve aceitar os Termos de Serviço e a Política de Privacidade para continuar",
     "logout": "Sair"
   },
+  "profile": {
+    "title": "Meu Perfil",
+    "subtitle": "Gerencie suas informações pessoais e segurança",
+    "success": "Perfil atualizado com sucesso",
+    "securityTitle": "Alterar Senha",
+    "securityDesc": "Deixe estes campos em branco se não desejar alterar sua senha",
+    "labels": {
+      "name": "Nome Completo",
+      "newPassword": "Nova Senha",
+      "confirmPassword": "Confirmar Senha"
+    },
+    "errors": {
+      "passwordsDoNotMatch": "As senhas não coincidem"
+    }
+  },
   "meta": {
     "title": "LeadDistro | Distribuição Automática de Leads para Agências",
     "description": "Otimize sua equipe de vendas com o LeadDistro. Atribuição inteligente de leads, limites por vendedor e dashboard em tempo real para HubSpot, GHL e monday.com.",
@@ -801,6 +816,8 @@
       "priority": "Prioridade",
       "description": "Descrição",
       "descriptionPlaceholder": "Descreva o problema detalhadamente...",
+      "attachments": "Anexar Imagens",
+      "attachmentsHint": "Máximo 5 imagens (JPG, PNG)",
       "cancel": "Cancelar",
       "send": "Enviar Ticket",
       "sending": "Enviando..."

@@ -122,10 +122,21 @@ const handleToggleDarkMode = () => {
         </svg>
       </button>
 
-      <div class="hidden sm:block text-right">
-        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ authStore.user?.name }}</p>
-        <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">{{ authStore.user?.role }}</p>
-      </div>
+      <router-link 
+        to="/profile" 
+        class="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <div class="w-8 h-8 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <img v-if="authStore.user?.avatar" :src="authStore.user.avatar" class="w-full h-full object-cover" />
+          <svg v-else class="w-full h-full text-gray-400 p-1" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="hidden sm:block text-right">
+          <p class="text-sm font-medium text-gray-900 dark:text-white">{{ authStore.user?.name }}</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 capitalize">{{ authStore.user?.role }}</p>
+        </div>
+      </router-link>
       <button @click="handleLogout"
         class="px-3 lg:px-4 py-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
         <span class="hidden sm:inline">{{ t('auth.logout') }}</span>

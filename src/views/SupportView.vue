@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { supportApi } from '../services/api'
+import { supportApi, uploadApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 
 const { t, locale } = useI18n()
@@ -19,8 +19,12 @@ const form = reactive({
   subject: '',
   category: 'otros',
   priority: 'media',
-  description: ''
+  description: '',
+  images: []
 })
+
+const selectedFiles = ref([])
+const uploadingImages = ref(false)
 
 const fetchTickets = async () => {
   loading.value = true
@@ -38,23 +42,53 @@ onMounted(() => {
   fetchTickets()
 })
 
+const handleFileChange = (e) => {
+  const files = Array.from(e.target.files)
+  selectedFiles.value = [...selectedFiles.value, ...files]
+}
+
+const removeFile = (index) => {
+  selectedFiles.value.splice(index, 1)
+}
+
 const handleSubmit = async () => {
   submitting.value = true
   error.value = ''
   successMessage.value = ''
   try {
+    // 1. Upload images if any
+    if (selectedFiles.value.length > 0) {
+      uploadingImages.value = true
+      const formData = new FormData()
+      selectedFiles.value.forEach(file => {
+        formData.append('images', file)
+      })
+      formData.append('folder', 'support-tickets')
+      
+      const uploadRes = await uploadApi.multiple(formData)
+      form.images = uploadRes.data.urls
+      uploadingImages.value = false
+    }
+
+    // 2. Create ticket
     await supportApi.createTicket(authStore.tenantSlug, form)
-    successMessage.value = t('support.success')
+    successMessage.value = t('support.success') || 'Ticket creado con éxito'
+    
+    // 3. Reset form
     form.subject = ''
     form.description = ''
     form.category = 'otros'
     form.priority = 'media'
+    form.images = []
+    selectedFiles.value = []
+    
     showModal.value = false
     await fetchTickets()
   } catch (e) {
-    error.value = e.response?.data?.message || t('support.error')
+    error.value = e.response?.data?.message || t('support.error') || 'Error al enviar el ticket'
   } finally {
     submitting.value = false
+    uploadingImages.value = false
   }
 }
 
@@ -167,6 +201,19 @@ const formatDate = (date) => {
                   {{ formatDate(ticket.createdAt) }}
                 </span>
               </div>
+              
+              <!-- Images display -->
+              <div v-if="ticket.images && ticket.images.length > 0" class="flex gap-2 mt-3 overflow-x-auto pb-2">
+                <a 
+                  v-for="(img, idx) in ticket.images" 
+                  :key="idx" 
+                  :href="img" 
+                  target="_blank"
+                  class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 hover:opacity-80 transition"
+                >
+                  <img :src="img" class="w-full h-full object-cover" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -230,6 +277,35 @@ const formatDate = (date) => {
               :placeholder="t('support.modal.descriptionPlaceholder')"
               required
             ></textarea>
+          </div>
+
+          <!-- Multiple Image Upload -->
+          <div>
+            <label class="label text-sm font-semibold mb-1.5">{{ t('support.modal.attachments') || 'Adjuntar Imágenes' }}</label>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3 flex-wrap">
+                <div 
+                  v-for="(file, idx) in selectedFiles" 
+                  :key="idx"
+                  class="relative w-16 h-16 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-gray-50 dark:bg-gray-800"
+                >
+                  <img :src="URL.createObjectURL(file)" class="w-full h-full object-cover" />
+                  <button 
+                    @click="removeFile(idx)" 
+                    type="button"
+                    class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-sm hover:bg-red-600"
+                  >
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+
+                <label v-if="selectedFiles.length < 5" class="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 cursor-pointer transition">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                  <input type="file" class="hidden" multiple accept="image/*" @change="handleFileChange" />
+                </label>
+              </div>
+              <p class="text-[10px] text-gray-400">{{ t('support.modal.attachmentsHint') || 'Máximo 5 imágenes (JPG, PNG)' }}</p>
+            </div>
           </div>
 
           <div class="pt-4 flex items-center gap-3">

@@ -82,6 +82,21 @@
     },
     "logout": "Cerrar sesión"
   },
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Gestioná tu información personal y seguridad",
+    "success": "Perfil actualizado con éxito",
+    "securityTitle": "Cambiar Contraseña",
+    "securityDesc": "Dejá estos campos en blanco si no deseás cambiar tu contraseña",
+    "labels": {
+      "name": "Nombre Completo",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Contraseña"
+    },
+    "errors": {
+      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+    }
+  },
   "privacy": {
     "title": "Política de Privacidad",
     "updated": "Última actualización: 11 de abril de 2026",
@@ -733,6 +748,8 @@
       "priority": "Prioridad",
       "description": "Descripción",
       "descriptionPlaceholder": "Describí el problema detalladamente...",
+      "attachments": "Adjuntar Imágenes",
+      "attachmentsHint": "Máximo 5 imágenes (JPG, PNG)",
       "cancel": "Cancelar",
       "send": "Enviar Ticket",
       "sending": "Enviando..."

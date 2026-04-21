@@ -39,7 +39,8 @@ api.interceptors.response.use(
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   register: (data) => api.post('/auth/register', data),
-  getMe: () => api.get('/auth/me')
+  getMe: () => api.get('/auth/me'),
+  updateProfile: (data) => api.patch('/auth/profile', data)
 }
 
 export const leadsApi = {
@@ -104,6 +105,15 @@ export const summaryApi = {
 export const supportApi = {
   getTickets: (tenantSlug) => api.get(`/${tenantSlug}/support/tickets`),
   createTicket: (tenantSlug, data) => api.post(`/${tenantSlug}/support/tickets`, data)
+}
+
+export const uploadApi = {
+  single: (formData) => api.post('/upload/single', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  multiple: (formData) => api.post('/upload/multiple', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
 }
 
 export default api
