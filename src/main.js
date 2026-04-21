@@ -2,7 +2,6 @@ import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
 import { createHead } from '@unhead/vue'
 import i18n from './i18n'
-import VueApexCharts from 'vue3-apexcharts'
 import App from './App.vue'
 import { routes } from './router'
 import { useAuthStore } from './stores/auth'
@@ -17,7 +16,6 @@ export const createApp = ViteSSG(
     app.use(pinia)
     app.use(head)
     app.use(i18n)
-    app.use(VueApexCharts)
 
     // Actualizar atributo lang en <html>
     if (!import.meta.env.SSR) {

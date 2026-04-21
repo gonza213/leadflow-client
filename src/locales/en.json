@@ -546,6 +546,9 @@
     "export": "Export CSV",
     "exporting": "Exporting...",
     "total": "{n} leads",
+    "status": {
+      "assigned": "Leads assigned"
+    },
     "table": {
       "date": "Date",
       "name": "Name",
@@ -1005,5 +1008,8 @@
         "actions": "Actions"
       }
     }
+  },
+  "main": {
+    "nextAssignment": "Next assignment"
   }
 }

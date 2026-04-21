@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useUiStore } from '../../stores/ui'
+import apexchart from 'vue3-apexcharts'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

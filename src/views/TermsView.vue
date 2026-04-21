@@ -11,6 +11,9 @@ useHead({
   meta: [
     { name: 'description', content: t('terms.metaDescription') },
     { name: 'robots', content: 'noindex, follow' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://www.leaddistro.site/terms' }
   ]
 })
 </script>

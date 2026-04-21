@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useUiStore } from '../../stores/ui'
+import apexchart from 'vue3-apexcharts'
 
 const props = defineProps({
   stages: {
