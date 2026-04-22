@@ -1466,44 +1466,49 @@ export default {
   }
   .comparison-table thead { display: none; }
   .comparison-table tr {
-    background: rgba(15,23,42,0.6);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    margin-bottom: 20px;
-    padding: 16px;
-    overflow: hidden;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    margin-bottom: 24px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   .comparison-table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    padding: 12px 14px;
     border: none;
-    text-align: right;
+    border-radius: 12px;
   }
   .feat-name {
-    display: block;
-    text-align: left;
-    font-size: 1rem;
-    font-weight: 700;
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: #fff;
     margin-bottom: 12px;
-    padding: 0 0 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 0 0 16px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
   .comparison-table td::before {
     content: attr(data-label);
-    font-size: 0.75rem;
-    color: #94a3b8;
-    font-weight: 600;
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 700;
     text-transform: uppercase;
-    text-align: left;
+    letter-spacing: 0.5px;
+  }
+  .crm-val {
+    background: rgba(255, 255, 255, 0.02);
   }
   .ld-val {
-    background: rgba(59,130,246,0.08);
-    margin: 4px -16px -16px;
-    padding: 12px 16px;
+    background: rgba(59, 130, 246, 0.1);
     color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.15);
   }
   .icon-check, .icon-cross { font-size: 1.1rem; }
 }
