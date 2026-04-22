@@ -502,7 +502,7 @@ onUnmounted(() => {
             <tbody>
               <tr v-for="f in comparisonFeatures" :key="f.name">
                 <td class="feat-name">{{ f.name }}</td>
-                <td class="crm-val">
+                <td class="crm-val" :data-label="t('landing.comparison.headers.crm')">
                   <template v-if="f.native === true">
                     <span class="icon-check">✓</span>
                   </template>
@@ -513,7 +513,7 @@ onUnmounted(() => {
                     <span class="val-text">{{ f.native }}</span>
                   </template>
                 </td>
-                <td class="ld-val">
+                <td class="ld-val" :data-label="t('landing.comparison.headers.ld')">
                   <template v-if="f.leaddistro === true">
                     <span class="icon-check">✓</span>
                   </template>
@@ -1386,25 +1386,13 @@ export default {
 
 /* ===== COMPARISON ===== */
 .comparison-table-wrapper {
-  background: rgba(15,23,42,0.8);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 24px;
-  overflow-x: auto;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   max-width: 900px;
   margin: 0 auto;
-  position: relative;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(59,130,246,0.3) transparent;
 }
-.comparison-table-wrapper::-webkit-scrollbar { height: 4px; }
-.comparison-table-wrapper::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 10px; }
 .comparison-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   text-align: left;
-  min-width: 600px;
 }
 .comparison-table th {
   padding: 24px;
@@ -1413,14 +1401,9 @@ export default {
   text-transform: uppercase;
   letter-spacing: 1px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  background: #0f172a;
-  position: sticky; top: 0; z-index: 2;
+  color: #fff;
 }
-.feat-col {
-  color: #94a3b8;
-  position: sticky; left: 0; z-index: 3;
-  background: #0f172a !important;
-}
+.feat-col { color: #94a3b8; }
 .crm-col { text-align: center; background: rgba(255,255,255,0.02); color: #cbd5e1; }
 .ld-col { text-align: center; background: rgba(59,130,246,0.05); color: #60a5fa; }
 
@@ -1429,15 +1412,10 @@ export default {
   border-bottom: 1px solid rgba(255,255,255,0.04);
   font-size: 0.95rem;
 }
-.feat-name {
-  font-weight: 500; color: #e2e8f0;
-  position: sticky; left: 0; z-index: 1;
-  background: #0f172a;
-  border-right: 1px solid rgba(255,255,255,0.05);
-}
+.feat-name { font-weight: 500; color: #e2e8f0; }
 .crm-val, .ld-val { text-align: center; }
 .crm-val { background: rgba(255,255,255,0.02); }
-.ld-val { background: rgba(59,130,246,0.05); font-weight: 700; }
+.ld-val { background: rgba(59,130,246,0.05); color: #60a5fa; font-weight: 700; }
 
 .icon-check { color: #22c55e; font-size: 1.2rem; }
 .icon-cross { color: #ef4444; font-size: 1.2rem; opacity: 0.5; }
@@ -1480,10 +1458,54 @@ export default {
 .pricing-note { text-align: center; color: #cbd5e1; font-size: 0.85rem; margin-top: 28px; }
 @media (max-width: 640px) {
   .pricing-grid { grid-template-columns: 1fr; }
-  .comparison-table th, .comparison-table td { padding: 14px 12px; font-size: 0.8rem; }
-  .feat-name { font-size: 0.8rem; min-width: 130px; padding-right: 15px !important; }
-  .icon-check, .icon-cross { font-size: 1rem; }
-  .comparison-table { min-width: 500px; }
+  
+  /* Mobile Table to Cards */
+  .comparison-table, .comparison-table thead, .comparison-table tbody, .comparison-table tr, .comparison-table td {
+    display: block;
+    width: 100%;
+  }
+  .comparison-table thead { display: none; }
+  .comparison-table tr {
+    background: rgba(15,23,42,0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    padding: 16px;
+    overflow: hidden;
+  }
+  .comparison-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border: none;
+    text-align: right;
+  }
+  .feat-name {
+    display: block;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    padding: 0 0 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .comparison-table td::before {
+    content: attr(data-label);
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: left;
+  }
+  .ld-val {
+    background: rgba(59,130,246,0.08);
+    margin: 4px -16px -16px;
+    padding: 12px 16px;
+    color: #60a5fa;
+  }
+  .icon-check, .icon-cross { font-size: 1.1rem; }
 }
 
 /* ===== CTA ===== */
