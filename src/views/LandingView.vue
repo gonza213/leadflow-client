@@ -1093,7 +1093,7 @@ export default {
   background: #0f172a;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
-  width: 100%; max-width: 300px;
+  width: 100%; max-width: 400px;
   box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
   overflow: hidden;
   animation: float 6s ease-in-out infinite, entrance 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1580,7 +1580,7 @@ export default {
   .roles-grid { grid-template-columns: 1fr; }
   .steps-flow { flex-direction: column; align-items: center; gap: 24px; }
   .step-connector { display: none; }
-  .dashboard-card { width: min(300px, 90vw); margin: 0 auto; }
+  .dashboard-card { width: min(400px, 90vw); margin: 0 auto; }
   .integrations-grid { grid-template-columns: 1fr; }
 }
 
