@@ -614,7 +614,7 @@ onUnmounted(() => {
           </div>
 
         </div>
-        <p class="pricing-note">{{ t('landing.pricing.note') }}</p>
+        <p v-if="locale === 'es'" class="pricing-note">{{ t('landing.pricing.note') }}</p>
       </div>
     </section>
 
@@ -624,7 +624,7 @@ onUnmounted(() => {
         <div class="section-header">
           <div class="section-tag">{{ t('landing.faq.tag') }}</div>
           <h2 class="section-title">{{ t('landing.faq.title') }}</h2>
-          <p class="section-sub">{{ t('landing.faq.subtitle') }}</p>
+          <p v-if="locale === 'es'" class="section-sub">{{ t('landing.faq.subtitle') }}</p>
         </div>
         <div class="faq-list">
           <div
