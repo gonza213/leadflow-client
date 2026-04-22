@@ -1396,8 +1396,10 @@ export default {
 }
 .comparison-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   text-align: left;
+  min-width: 600px;
 }
 .comparison-table th {
   padding: 24px;
@@ -1406,8 +1408,14 @@ export default {
   text-transform: uppercase;
   letter-spacing: 1px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: #0f172a;
+  position: sticky; top: 0; z-index: 2;
 }
-.feat-col { color: #94a3b8; }
+.feat-col {
+  color: #94a3b8;
+  position: sticky; left: 0; z-index: 3;
+  background: #0f172a !important;
+}
 .crm-col { text-align: center; background: rgba(255,255,255,0.02); color: #cbd5e1; }
 .ld-col { text-align: center; background: rgba(59,130,246,0.05); color: #60a5fa; }
 
@@ -1416,7 +1424,12 @@ export default {
   border-bottom: 1px solid rgba(255,255,255,0.04);
   font-size: 0.95rem;
 }
-.feat-name { font-weight: 500; color: #e2e8f0; }
+.feat-name {
+  font-weight: 500; color: #e2e8f0;
+  position: sticky; left: 0; z-index: 1;
+  background: #0f172a;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
 .crm-val, .ld-val { text-align: center; }
 .crm-val { background: rgba(255,255,255,0.02); }
 .ld-val { background: rgba(59,130,246,0.05); font-weight: 700; }
@@ -1462,6 +1475,9 @@ export default {
 .pricing-note { text-align: center; color: #cbd5e1; font-size: 0.85rem; margin-top: 28px; }
 @media (max-width: 640px) {
   .pricing-grid { grid-template-columns: 1fr; }
+  .comparison-table th, .comparison-table td { padding: 14px 16px; font-size: 0.85rem; }
+  .feat-name { font-size: 0.85rem; min-width: 140px; }
+  .icon-check, .icon-cross { font-size: 1rem; }
 }
 
 /* ===== CTA ===== */
