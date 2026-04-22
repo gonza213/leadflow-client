@@ -1389,11 +1389,16 @@ export default {
   background: rgba(15,23,42,0.8);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 24px;
-  overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   max-width: 900px;
   margin: 0 auto;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59,130,246,0.3) transparent;
 }
+.comparison-table-wrapper::-webkit-scrollbar { height: 4px; }
+.comparison-table-wrapper::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.3); border-radius: 10px; }
 .comparison-table {
   width: 100%;
   border-collapse: separate;
@@ -1475,9 +1480,10 @@ export default {
 .pricing-note { text-align: center; color: #cbd5e1; font-size: 0.85rem; margin-top: 28px; }
 @media (max-width: 640px) {
   .pricing-grid { grid-template-columns: 1fr; }
-  .comparison-table th, .comparison-table td { padding: 14px 16px; font-size: 0.85rem; }
-  .feat-name { font-size: 0.85rem; min-width: 140px; }
+  .comparison-table th, .comparison-table td { padding: 14px 12px; font-size: 0.8rem; }
+  .feat-name { font-size: 0.8rem; min-width: 130px; padding-right: 15px !important; }
   .icon-check, .icon-cross { font-size: 1rem; }
+  .comparison-table { min-width: 500px; }
 }
 
 /* ===== CTA ===== */
