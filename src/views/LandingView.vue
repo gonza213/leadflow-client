@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
@@ -124,12 +124,37 @@ const languages = [
 
 const getLangData = (code) => languages.find(l => l.code === code) || languages[0]
 
+// --- Mockup Animations Logic ---
+const dashboardSellers = ref([
+  { name: 'Karla Perez', team: 'Equipo CH', initials: 'KP', color: '#3b82f6', pct: 43, count: 43, limit: 60 },
+  { name: 'Christopher Valles', team: 'Equipo LATAM', initials: 'CV', color: '#22c55e', pct: 35, count: 32, limit: 90 },
+  { name: 'Adrian Anez', team: 'Equipo ES', initials: 'AA', color: '#eab308', pct: 67, count: 40, limit: 60 }
+])
+
+const currentAssignmentIndex = ref(0)
+const nextSeller = computed(() => dashboardSellers.value[currentAssignmentIndex.value])
+const isAssigning = ref(false)
+
+const rotateAssignment = () => {
+  isAssigning.value = true
+  setTimeout(() => {
+    currentAssignmentIndex.value = (currentAssignmentIndex.value + 1) % dashboardSellers.value.length
+    isAssigning.value = false
+  }, 400)
+}
+
+let rotationInterval = null
+
 onMounted(() => {
   setupObserver()
   document.documentElement.style.scrollBehavior = 'smooth'
+  
+  // Iniciar rotación del mockup
+  rotationInterval = setInterval(rotateAssignment, 4000)
 })
 onUnmounted(() => {
   if (observer) observer.disconnect()
+  if (rotationInterval) clearInterval(rotationInterval)
   document.documentElement.style.scrollBehavior = ''
 })
 </script>
@@ -272,7 +297,7 @@ onUnmounted(() => {
               <div class="mini-kpi purple"><span class="kpi-val">96%</span><span class="kpi-lbl">{{ t('leads.status.assigned') }}</span></div>
             </div>
             <div class="mini-sellers">
-              <div class="mini-seller" v-for="s in mockSellers" :key="s.name">
+              <div class="mini-seller" v-for="(s, i) in dashboardSellers" :key="s.name" :style="{ 'transition-delay': (0.3 + (i * 0.1)) + 's' }">
                 <div class="s-avatar" :style="{ background: s.color }">{{ s.initials }}</div>
                 <div class="s-info">
                   <span class="s-name">{{ s.name }}</span>
@@ -281,9 +306,13 @@ onUnmounted(() => {
                 <span class="s-count">{{ s.count }}/{{ s.limit }}</span>
               </div>
             </div>
-            <div class="mini-next">
+            <div class="mini-next" :class="{ 'is-assigning': isAssigning }">
               <span class="next-lbl">{{ t('main.nextAssignment') }} →</span>
-              <span class="next-val">Equipo CH · Karla Perez</span>
+              <span class="next-val">{{ nextSeller.team }} · {{ nextSeller.name }}</span>
+              <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span class="live-text">LIVE</span>
+              </div>
             </div>
           </div>
         </div>
@@ -702,13 +731,6 @@ export default {
         a: this.$rt(item.a)
       }))
     },
-    mockSellers() {
-      return [
-        { name: 'Karla Perez', initials: 'KP', color: '#3b82f6', pct: 43, count: 43, limit: 60 },
-        { name: 'Christopher Valles', initials: 'CV', color: '#22c55e', pct: 35, count: 32, limit: 90 },
-        { name: 'Adrian Anez', initials: 'AA', color: '#eab308', pct: 67, count: 40, limit: 60 }
-      ]
-    },
     algoSteps() {
       return [
         { n: '1', text: this.$t('landing.features.algoSteps.1'), success: false },
@@ -1063,16 +1085,33 @@ export default {
 .stat-divider { width: 1px; height: 34px; background: rgba(255,255,255,0.1); }
 
 /* ===== HERO VISUAL ===== */
-.hero-visual { position: relative; z-index: 1; flex: 1; display: flex; justify-content: flex-end; }
+.hero-visual {
+  flex: 1; display: flex; justify-content: center; position: relative;
+  perspective: 1000px;
+}
 .dashboard-card {
-  background: rgba(15,23,42,0.92); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px; width: 360px;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.1);
-  backdrop-filter: blur(20px); overflow: hidden;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  width: 100%; max-width: 400px;
+  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  overflow: hidden;
+  animation: float 6s ease-in-out infinite, entrance 1s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+.dashboard-card::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+  transform: skewX(-25deg);
+  animation: shine 8s infinite;
+  pointer-events: none;
 }
 .card-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 13px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center; gap: 16px;
 }
 .card-dots { display: flex; gap: 6px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -1098,21 +1137,75 @@ export default {
 }
 .price-card:hover { transform: translateY(-5px); border-color: rgba(59,130,246,0.3); }
 .price-card h3 { font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-.kpi-val { font-size: 1.3rem; font-weight: 800; color: #fff; line-height: 1; }
-.kpi-lbl { font-size: 0.65rem; color: #94a3b8; font-weight: 500; }
-.mini-sellers { display: flex; flex-direction: column; gap: 8px; }
-.mini-seller { display: flex; align-items: center; gap: 8px; }
-.s-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.kpi-val { font-size: 1.15rem; font-weight: 800; color: #fff; line-height: 1; }
+.kpi-lbl { font-size: 0.6rem; color: #94a3b8; font-weight: 500; }
+.mini-sellers { display: flex; flex-direction: column; gap: 6px; }
+.s-avatar {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; color: #fff;
+}
 /* High contrast for light avatar backgrounds */
 .s-avatar[style*="#eab308"], .s-avatar[style*="rgb(234, 179, 8)"] { color: #0f172a !important; }
-.s-info { flex: 1; min-width: 0; }
-.s-name { font-size: 0.76rem; font-weight: 600; color: #e2e8f0; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.s-bar { height: 3px; background: rgba(255,255,255,0.08); border-radius: 4px; margin-top: 4px; overflow: hidden; }
-.s-fill { height: 100%; border-radius: 4px; }
-.s-count { font-size: 0.7rem; color: #94a3b8; font-weight: 600; flex-shrink: 0; }
-.mini-next { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 8px; padding: 9px 11px; }
-.next-lbl { font-size: 0.65rem; color: #94a3b8; display: block; }
-.next-val { font-size: 0.8rem; font-weight: 700; color: #93c5fd; }
+.s-info { flex: 1; }
+.s-name { display: block; font-size: 0.8rem; font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
+.s-bar { height: 4px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
+.s-fill {
+  height: 100%; border-radius: 10px;
+  animation: fillIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: left;
+}
+.s-count { font-size: 0.75rem; color: #94a3b8; font-weight: 500; }
+
+.mini-next {
+  margin-top: 16px; padding: 12px 14px;
+  background: rgba(30,58,138,0.2);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 10px;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.mini-next.is-assigning {
+  opacity: 0.5;
+  transform: translateY(-2px);
+}
+.next-lbl { display: block; font-size: 0.65rem; font-weight: 600; color: #60a5fa; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.next-val { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+.live-indicator {
+  position: absolute; top: 10px; right: 14px;
+  display: flex; align-items: center; gap: 4px;
+}
+.live-dot {
+  width: 5px; height: 5px; background: #22c55e; border-radius: 50%;
+  box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+  animation: livePulse 2s infinite;
+}
+.live-text {
+  font-size: 8px; font-weight: 800; color: #22c55e; letter-spacing: 1px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotateX(2deg); }
+  50% { transform: translateY(-15px) rotateX(0deg); }
+}
+@keyframes shine {
+  0% { left: -100%; transition-property: left; }
+  20%, 100% { left: 200%; }
+}
+@keyframes entrance {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes fillIn {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
 
 /* ===== SECTIONS ===== */
 .section { padding: 96px 0; }
