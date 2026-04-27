@@ -35,6 +35,7 @@
     "sellers": "Sellers",
     "users": "Users",
     "integrations": "Integrations",
+    "presence": "Live Office",
     "summaries": "AI Summaries",
     "billing": "Billing",
     "config": "Settings",
@@ -538,6 +539,14 @@
       "noState": "No State",
       "noData": "No data available",
       "showingTop": "Showing top {n} of {total} states"
+    },
+    "presence": {
+      "title": "Live Office",
+      "active": "Active",
+      "idle": "Idle",
+      "offline": "Offline",
+      "noSellers": "No sellers configured",
+      "lastUpdate": "Last activity: {time}"
     }
   },
   "leads": {

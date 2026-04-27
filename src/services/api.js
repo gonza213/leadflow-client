@@ -54,6 +54,7 @@ export const leadsApi = {
 
 export const sellersApi = {
   getAll: (tenantSlug, params) => api.get(`/${tenantSlug}/sellers`, { params }),
+  getPresence: (tenantSlug) => api.get(`/${tenantSlug}/sellers/presence`),
   update: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/sellers/${id}`, data),
   create: (tenantSlug, data) => api.post(`/${tenantSlug}/sellers`, data),
   delete: (tenantSlug, id) => api.delete(`/${tenantSlug}/sellers/${id}`)

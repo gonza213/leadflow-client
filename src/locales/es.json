@@ -35,6 +35,7 @@
     "sellers": "Vendedores",
     "users": "Usuarios",
     "integrations": "Integraciones",
+    "presence": "Oficina en Vivo",
     "summaries": "Resúmenes IA",
     "billing": "Facturación",
     "config": "Configuración",
@@ -548,6 +549,14 @@
       "noState": "Sin Estado",
       "noData": "No hay datos disponibles",
       "showingTop": "Mostrando top {n} de {total} estados"
+    },
+    "presence": {
+      "title": "Oficina en Vivo",
+      "active": "Activo",
+      "idle": "Inactivo",
+      "offline": "Offline",
+      "noSellers": "No hay vendedores configurados",
+      "lastUpdate": "Última actividad: {time}"
     }
   },
   "leads": {

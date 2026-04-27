@@ -35,6 +35,7 @@
     "sellers": "Vendedores",
     "users": "Usuários",
     "integrations": "Integrações",
+    "presence": "Escritório ao Vivo",
     "summaries": "Resumos IA",
     "billing": "Faturamento",
     "config": "Configuração",
@@ -599,6 +600,14 @@
       "noState": "Sem Estado",
       "noData": "Não há dados disponíveis",
       "showingTop": "Mostrando top {n} de {total} estados"
+    },
+    "presence": {
+      "title": "Escritório ao Vivo",
+      "active": "Ativo",
+      "idle": "Inativo",
+      "offline": "Offline",
+      "noSellers": "Nenhum vendedor configurado",
+      "lastUpdate": "Última atividade: {time}"
     }
   },
   "leads": {

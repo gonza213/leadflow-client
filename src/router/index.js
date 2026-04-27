@@ -36,6 +36,12 @@ export const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/presence',
+    name: 'Presence',
+    component: () => import('../views/PresenceView.vue'),
+    meta: { requiresAuth: true, denyRoles: ['seller'] }
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/ProfileView.vue'),

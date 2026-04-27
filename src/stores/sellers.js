@@ -7,7 +7,9 @@ export const useSellersStore = defineStore('sellers', () => {
   const authStore = useAuthStore()
 
   const sellers = ref([])
+  const presence = ref([])
   const loading = ref(false)
+  const presenceLoading = ref(false)
   const error = ref(null)
 
   async function fetchSellers(team = null) {
@@ -24,6 +26,19 @@ export const useSellersStore = defineStore('sellers', () => {
       error.value = err.response?.data?.message || 'Error al cargar vendedores'
     } finally {
       loading.value = false
+    }
+  }
+
+  async function fetchPresence() {
+    if (!authStore.tenantSlug) return
+    presenceLoading.value = true
+    try {
+      const response = await sellersApi.getPresence(authStore.tenantSlug)
+      presence.value = response.data.data
+    } catch (err) {
+      console.error('Error fetching presence:', err)
+    } finally {
+      presenceLoading.value = false
     }
   }
 
@@ -79,9 +94,12 @@ export const useSellersStore = defineStore('sellers', () => {
 
   return {
     sellers,
+    presence,
     loading,
+    presenceLoading,
     error,
     fetchSellers,
+    fetchPresence,
     toggleActive,
     updateSeller,
     createSeller,
