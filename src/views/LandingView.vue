@@ -384,6 +384,54 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- PRESENCE FEATURE (NEW) -->
+    <section class="section section-presence overflow-hidden">
+      <div class="container">
+        <div class="presence-layout">
+          <div class="presence-text">
+            <div class="section-tag">{{ t('landing.presence.tag') }}</div>
+            <h2 class="section-title text-left">{{ t('landing.presence.title') }}</h2>
+            <p class="section-sub text-left" style="margin: 0 0 32px">{{ t('landing.presence.subtitle') }}</p>
+            
+            <ul class="presence-list">
+              <li>
+                <div class="p-list-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <span>{{ t('landing.presence.feature1') }}</span>
+              </li>
+              <li>
+                <div class="p-list-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <span>{{ t('landing.presence.feature2') }}</span>
+              </li>
+              <li>
+                <div class="p-list-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <span>{{ t('landing.presence.feature3') }}</span>
+              </li>
+            </ul>
+
+            <button @click="router.push('/register')" class="btn-primary" style="margin-top: 32px">
+              {{ t('landing.cta.cta') }} →
+            </button>
+          </div>
+          <div class="presence-visual">
+            <div class="presence-mockup-wrap">
+              <img src="/presence/office.png" alt="Live Office Preview" class="presence-img" />
+              <div class="presence-floating-card top-right animate-float">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-2 h-2 rounded-full bg-[#06d6a0] animate-pulse"></span>
+                  <span class="text-[10px] font-bold text-white uppercase tracking-tighter">Karla Perez</span>
+                </div>
+                <div class="text-[8px] text-gray-400 uppercase tracking-widest">Estado: <span class="text-[#06d6a0]">Trabajando</span></div>
+              </div>
+              <div class="presence-floating-card bottom-left animate-float" style="animation-delay: 1s">
+                <div class="text-[10px] text-white font-bold mb-1">Registro de Actividad</div>
+                <div class="text-[8px] text-[#06d6a0]">Actualizó a Julieta (Venta)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ROLES -->
     <section class="section" id="roles">
       <div class="container">
@@ -765,6 +813,12 @@ export default {
           desc: this.$rt(items.metrics.desc),
           iconClass: 'icon-cyan',
           icon: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'
+        },
+        {
+          title: this.$rt(items.presence.title),
+          desc: this.$rt(items.presence.desc),
+          iconClass: 'icon-purple',
+          icon: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
         }
       ]
     },
@@ -1666,5 +1720,109 @@ export default {
   .availability-table th, .availability-table td { padding: 16px; }
   .region-name { width: auto; font-size: 0.9rem; }
   .countries-list { font-size: 0.85rem; }
+}
+.section-presence {
+  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f18 100%);
+  position: relative;
+}
+
+.presence-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.presence-list {
+  list-style: none;
+  padding: 0;
+  margin: 32px 0;
+  display: flex;
+  flex-col: column;
+  gap: 16px;
+}
+
+.presence-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #94a3b8;
+}
+
+.p-list-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(6, 214, 160, 0.1);
+  color: #06d6a0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presence-visual {
+  position: relative;
+}
+
+.presence-mockup-wrap {
+  position: relative;
+  background: #283252;
+  padding: 12px;
+  border-radius: 20px;
+  border: 4px solid #4B2BBB;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.presence-img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+
+.presence-floating-card {
+  position: absolute;
+  background: rgba(26, 26, 46, 0.9);
+  backdrop-filter: blur(8px);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(75, 43, 187, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.presence-floating-card.top-right {
+  top: -20px;
+  right: -20px;
+  min-w: 120px;
+}
+
+.presence-floating-card.bottom-left {
+  bottom: 20px;
+  left: -30px;
+  min-w: 160px;
+}
+
+@media (max-width: 992px) {
+  .presence-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    text-align: center;
+  }
+  .presence-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .presence-text .section-title, .presence-text .section-sub {
+    text-align: center !important;
+  }
+  .presence-floating-card.top-right {
+    right: 10px;
+  }
+  .presence-floating-card.bottom-left {
+    left: 10px;
+  }
 }
 </style>

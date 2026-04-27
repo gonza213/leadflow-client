@@ -294,8 +294,12 @@
           "desc": "Configure up to 2 backup sellers. When everyone reaches their limit, new leads are automatically redirected to them so no lead is left unassigned."
         },
         "metrics": {
-          "title": "Real-time metrics dashboard",
-          "desc": "Visualize leads by seller, funnel stages, statuses, and team distribution. Filter by period, seller, team, or stage."
+          "title": "Conversion Metrics",
+          "desc": "Analyze the performance of each seller and team in real time."
+        },
+        "presence": {
+          "title": "Live Virtual Office",
+          "desc": "Visualize your team in an interactive pixel-art environment showing who is calling, idle, or away in real time."
         }
       }
     },
@@ -442,6 +446,14 @@
       },
       "cta": "Start for free",
       "note": "Have questions? Chat with us on WhatsApp and we will respond instantly."
+    },
+    "presence": {
+      "tag": "EXCLUSIVE",
+      "title": "Your Team, Closer Than Ever",
+      "subtitle": "Don't just see numbers. Experience your office activity with our real-time presence engine with retro aesthetics.",
+      "feature1": "Lead Activity Monitoring",
+      "feature2": "Custom Pixel-Art Avatars",
+      "feature3": "Automatic Absence Detection"
     },
     "faq": {
       "tag": "Frequently asked questions",

@@ -296,8 +296,12 @@
           "desc": "Configurá hasta 2 vendedores de respaldo. Cuando todos alcanzan su límite, los nuevos leads se redirigen a ellos para que nunca quede uno sin asignar."
         },
         "metrics": {
-          "title": "Dashboard de métricas en tiempo real",
-          "desc": "Visualizá leads por vendedor, etapas del funnel, estados y distribución por equipos. Filtrá por período, vendedor, equipo o etapa."
+          "title": "Métricas de Conversión",
+          "desc": "Analiza el rendimiento de cada vendedor y equipo en tiempo real."
+        },
+        "presence": {
+          "title": "Oficina Virtual en Vivo",
+          "desc": "Visualiza a tu equipo en un entorno pixel-art interactivo que muestra quién está llamando, inactivo o ausente en tiempo real."
         }
       }
     },
@@ -445,6 +449,14 @@
       },
       "cta": "Empezar gratis",
       "note": "¿Tenés dudas? Escribinos por WhatsApp y te respondemos al instante."
+    },
+    "presence": {
+      "tag": "EXCLUSIVO",
+      "title": "Tu Equipo, Más Cerca que Nunca",
+      "subtitle": "No solo veas números. Vive la actividad de tu oficina con nuestro motor de presencia en tiempo real con estética retro.",
+      "feature1": "Monitoreo por Actividad de Leads",
+      "feature2": "Avatares Pixel-Art Personalizados",
+      "feature3": "Detección Automática de Ausencias"
     },
     "faq": {
       "tag": "Preguntas frecuentes",
