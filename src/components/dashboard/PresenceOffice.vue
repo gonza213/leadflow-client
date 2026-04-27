@@ -132,7 +132,7 @@ const needsSupport = (seller) => {
 
         <!-- Mini Stats at Bottom -->
         <div class="mt-auto pt-4 border-t border-white/5">
-           <div class="text-[6px] text-gray-500 uppercase tracking-widest mb-2">Rendimiento Equipo</div>
+           <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Rendimiento Equipo</div>
            <div class="h-1 w-full bg-white/5 rounded-full overflow-hidden">
               <div class="h-full bg-gradient-to-r from-[#4B2BBB] to-[#06d6a0]" :style="{ width: '75%' }"></div>
            </div>
@@ -254,7 +254,7 @@ const needsSupport = (seller) => {
     </div>
 
     <!-- Footer Stats -->
-    <div class="bg-[#283252] p-3 border-t-4 border-[#4B2BBB] flex flex-wrap justify-center md:justify-around gap-4 text-[7px] text-gray-400">
+    <div class="bg-[#283252] p-3 border-t-4 border-[#4B2BBB] flex flex-wrap justify-center md:justify-around gap-4 text-[10px] font-bold text-gray-300 uppercase">
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-[#06d6a0] animate-pulse"></span>
         TRABAJANDO: {{ sellersStore.presence.filter(s => s.status === 'active').length }}
