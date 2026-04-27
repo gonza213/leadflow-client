@@ -6,6 +6,7 @@ const { t, locale } = useI18n()
 const props = defineProps({
   fechaInicio: String,
   fechaFin: String,
+  timezone: String,
   weekStartDay: {
     type: Number,
     default: null
@@ -15,6 +16,15 @@ const props = defineProps({
     default: null
   }
 })
+
+const TIMEZONES = [
+  'America/New_York', 'America/Chicago', 'America/Denver', 'America/Los_Angeles',
+  'America/Argentina/Buenos_Aires', 'America/Sao_Paulo', 'America/Bogota', 
+  'America/Mexico_City', 'America/Santiago', 'America/Lima', 'America/Guayaquil',
+  'America/Montevideo', 'America/Asuncion', 'America/La_Paz', 'America/Costa_Rica', 
+  'America/Guatemala', 'America/Panama', 'Asia/Jakarta', 'Asia/Kuala_Lumpur', 
+  'Africa/Nairobi', 'Africa/Lagos', 'Europe/Madrid'
+]
 
 const DAYS = computed(() => [
   { value: 1, label: t('config.period.days.1') },
@@ -34,16 +44,16 @@ const formatDate = (date) => {
 // Modo: 'manual' o 'auto'
 const mode = ref(props.weekStartDay !== null && props.weekStartDay !== undefined ? 'auto' : 'manual')
 
-// Manual
+// Configs
+const localTimezone = ref(props.timezone || 'America/Chicago')
 const localFechaInicio = ref(formatDate(props.fechaInicio))
 const localFechaFin = ref(formatDate(props.fechaFin))
-
-// Auto
 const selectedDay = ref(props.weekStartDay ?? 1)
 
 const error = ref('')
 const success = ref('')
 
+watch(() => props.timezone, (val) => { if (val) localTimezone.value = val }, { immediate: true })
 watch(() => props.fechaInicio, (val) => { localFechaInicio.value = formatDate(val) }, { immediate: true })
 watch(() => props.fechaFin, (val) => { localFechaFin.value = formatDate(val) }, { immediate: true })
 watch(() => props.weekStartDay, (val) => {
@@ -78,7 +88,8 @@ const handleSave = async () => {
   error.value = ''
   success.value = ''
 
-  let data
+  let data = { timezone: localTimezone.value }
+  
   if (mode.value === 'manual') {
     if (!localFechaInicio.value || !localFechaFin.value) {
       error.value = t('config.period.errors.required')
@@ -88,9 +99,9 @@ const handleSave = async () => {
       error.value = t('config.period.errors.dateOrder')
       return
     }
-    data = { fecha_inicio: localFechaInicio.value, fecha_fin: localFechaFin.value, week_start_day: null }
+    data = { ...data, fecha_inicio: localFechaInicio.value, fecha_fin: localFechaFin.value, week_start_day: null }
   } else {
-    data = { week_start_day: selectedDay.value }
+    data = { ...data, week_start_day: selectedDay.value }
   }
 
   try {
@@ -113,6 +124,22 @@ const handleSave = async () => {
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
       {{ t('config.period.info') }}
     </p>
+
+    <!-- Zona Horaria -->
+    <div class="mb-8 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700">
+      <label class="label mb-2 flex items-center gap-2">
+        <i class="lucide-globe text-primary-500 w-4 h-4"></i>
+        {{ t('config.period.timezone') }}
+      </label>
+      <select v-model="localTimezone" class="input">
+        <option v-for="tz in TIMEZONES" :key="tz" :value="tz">
+          {{ t(`config.period.timezones.${tz}`) }}
+        </option>
+      </select>
+      <p class="text-xs text-gray-500 mt-2">
+        {{ t('config.period.timezoneInfo') }}
+      </p>
+    </div>
 
     <!-- Toggle de modo -->
     <div class="flex gap-2 mb-6">
