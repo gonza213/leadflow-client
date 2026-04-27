@@ -450,10 +450,10 @@
     "presence": {
       "tag": "EXCLUSIVE",
       "title": "Your Sales Team, Closer Than Ever",
-      "subtitle": "Transform your management with our Virtual Office. Visualize in real-time who is active, who just closed a lead, and who needs support, all in a dynamic and visual environment.",
+      "subtitle": "Transform your management with our Virtual Office. Visualize in real-time who is active, who just closed a sale, and who needs operational support, all in a dynamic and visual environment.",
       "feature1": "Lead Activity Monitoring",
       "feature2": "Custom Pixel-Art Avatars",
-      "feature3": "Automatic Absence Detection"
+      "feature3": "Overloaded Seller Alerts"
     },
     "faq": {
       "tag": "Frequently asked questions",
@@ -474,7 +474,7 @@
       "badge": "Multi-tenant · Multi-team · Real-time",
       "title": "Ready to start?",
       "subtitle": "Sign up in seconds and start distributing leads today. 7 days free, no credit card required. From $25 USD/month.",
-      "cta": "Start for free →",
+      "cta": "Start for free",
       "hasAccount": "I already have an account",
       "feats": ["5-minute setup", "CRM integration", "No lost leads"]
     },

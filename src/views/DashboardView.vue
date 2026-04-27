@@ -12,6 +12,7 @@ import StagesTable from '../components/dashboard/StagesTable.vue'
 import StagesChart from '../components/dashboard/StagesChart.vue'
 import StatesChart from '../components/dashboard/StatesChart.vue'
 import TeamsChart from '../components/dashboard/TeamsChart.vue'
+import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -72,6 +73,8 @@ const canSeeBestSeller = computed(() => {
     <div class="flex items-center justify-between">
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('dashboard.title') }}</h1>
     </div>
+
+    <PeriodExpirationBanner v-if="authStore.isManager" />
 
     <!-- Filtros -->
     <div class="card">

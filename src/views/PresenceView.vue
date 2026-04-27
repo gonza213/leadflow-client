@@ -1,8 +1,11 @@
 <script setup>
 import PresenceOffice from '../components/dashboard/PresenceOffice.vue'
+import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
+import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -12,6 +15,8 @@ const { t } = useI18n()
         {{ t('dashboard.presence.title') }}
       </h1>
     </div>
+
+    <PeriodExpirationBanner v-if="authStore.isManager" />
 
     <div class="h-[calc(100vh-200px)] min-h-[600px]">
       <PresenceOffice />

@@ -5,6 +5,7 @@ import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
+import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -195,6 +196,8 @@ const getStateClass = (state) => {
         </button>
       </div>
     </div>
+
+    <PeriodExpirationBanner v-if="authStore.isManager" />
 
     <!-- Filtros - Colapsable en mobile -->
     <div

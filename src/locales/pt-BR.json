@@ -252,6 +252,14 @@
         { "region": "África", "countries": "Quênia e Nigéria." }
       ]
     },
+    "presence": {
+      "tag": "EXCLUSIVO",
+      "title": "Sua Equipe de Vendas, Mais Perto que Nunca",
+      "subtitle": "Transforme sua gestão com nosso Escritório Virtual. Visualize em tempo real quem está ativo, quem acabou de fechar uma venda e quem precisa de apoio operacional, tudo em um ambiente dinâmico e visual.",
+      "feature1": "Monitoramento por Atividade de Leads",
+      "feature2": "Avatares Pixel-Art Personalizados",
+      "feature3": "Alertas de Vendedores Sobrecarregados"
+    },
     "pricing": {
       "tag": "Preços",
       "title": "Simples e transparente",
@@ -308,7 +316,7 @@
       "badge": "Multi-tenant · Multi-equipe · Tempo real",
       "title": "Pronto para começar?",
       "subtitle": "Cadastre-se em segundos e comece a distribuir leads hoje. 7 dias grátis, sem cartão de crédito. A partir de $25 USD/mês.",
-      "cta": "Começar grátis →",
+      "cta": "Começar grátis",
       "hasAccount": "Já tenho conta",
       "feats": ["Setup em 5 minutos", "Integração com CRM", "Sem leads perdidos"]
     },

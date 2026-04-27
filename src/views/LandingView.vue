@@ -3,8 +3,10 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '../stores/auth'
 
 const { t, tm, rt, locale } = useI18n()
+const authStore = useAuthStore()
 
 useHead({
   title: () => t('meta.title'),
@@ -178,7 +180,13 @@ onUnmounted(() => {
           <li><a href="#pricing">{{ t('nav.pricing') }}</a></li>
           <li><a href="#faq">{{ t('nav.faq') }}</a></li>
         </ul>
-        <button @click="router.push('/login')" class="btn-nav">{{ t('nav.login') }} →</button>
+        <button v-if="!authStore.isAuthenticated" @click="router.push('/login')" class="btn-nav">{{ t('nav.login') }} →</button>
+        <button v-else @click="router.push('/')" class="btn-nav !px-3 !py-1.5 flex items-center gap-2">
+          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white">
+            {{ authStore.user?.name?.charAt(0).toUpperCase() || 'U' }}
+          </div>
+          <span class="truncate max-w-[100px]">{{ authStore.user?.name?.split(' ')[0] || 'Dashboard' }}</span> →
+        </button>
 
         <!-- Language dropdown -->
         <div class="relative ml-2">
@@ -236,7 +244,13 @@ onUnmounted(() => {
         <a href="#integraciones" @click="menuOpen = false">{{ t('nav.integrations') }}</a>
         <a href="#pricing" @click="menuOpen = false">{{ t('nav.pricing') }}</a>
         <a href="#faq" @click="menuOpen = false">{{ t('nav.faq') }}</a>
-        <button @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">{{ t('nav.login') }} →</button>
+        <button v-if="!authStore.isAuthenticated" @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">{{ t('nav.login') }} →</button>
+        <button v-else @click="router.push('/'); menuOpen = false" class="btn-nav mobile-cta flex items-center justify-center gap-2">
+          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white">
+            {{ authStore.user?.name?.charAt(0).toUpperCase() || 'U' }}
+          </div>
+          {{ authStore.user?.name?.split(' ')[0] || 'Dashboard' }} →
+        </button>
       </div>
     </nav>
 
@@ -384,11 +398,14 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- PRESENCE FEATURE (NEW) -->
+    <!-- PRESENCE FEATURE (REFINED) -->
     <section class="section section-presence overflow-hidden">
+      <!-- Background Atmospheric Glow -->
+      <div class="presence-bg-glow"></div>
+      
       <div class="container">
         <div class="presence-layout">
-          <div class="presence-text">
+          <div class="presence-text" data-aos="fade-right">
             <div class="section-tag">{{ t('landing.presence.tag') }}</div>
             <h2 class="section-title text-left">{{ t('landing.presence.title') }}</h2>
             <p class="section-sub text-left" style="margin: 0 0 32px">{{ t('landing.presence.subtitle') }}</p>
@@ -412,19 +429,18 @@ onUnmounted(() => {
               {{ t('landing.cta.cta') }} →
             </button>
           </div>
-          <div class="presence-visual">
-            <div class="presence-mockup-wrap">
-              <img src="/presence/office.png" alt="Live Office Preview" class="presence-img" />
-              <div class="presence-floating-card top-right animate-float">
-                <div class="flex items-center gap-2 mb-2">
-                  <span class="w-2 h-2 rounded-full bg-[#06d6a0] animate-pulse"></span>
-                  <span class="text-[10px] font-bold text-white uppercase tracking-tighter">Karla Perez</span>
+          <div class="presence-visual" data-aos="fade-left">
+            <div class="presence-browser-frame">
+              <div class="browser-header">
+                <div class="browser-dots">
+                  <span class="dot-red"></span>
+                  <span class="dot-yellow"></span>
+                  <span class="dot-green"></span>
                 </div>
-                <div class="text-[8px] text-gray-400 uppercase tracking-widest">Estado: <span class="text-[#06d6a0]">Trabajando</span></div>
+                <div class="browser-address">leaddistro.com/oficina-en-vivo</div>
               </div>
-              <div class="presence-floating-card bottom-left animate-float" style="animation-delay: 1s">
-                <div class="text-[10px] text-white font-bold mb-1">Registro de Actividad</div>
-                <div class="text-[8px] text-[#06d6a0]">Actualizó a Julieta (Venta)</div>
+              <div class="presence-mockup-wrap">
+                <img src="/presence/office.png" alt="Live Office Preview" class="presence-img" />
               </div>
             </div>
           </div>
@@ -1722,92 +1738,123 @@ export default {
   .countries-list { font-size: 0.85rem; }
 }
 .section-presence {
-  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0f18 100%);
+  background: #080810;
   position: relative;
+  padding: 120px 0;
+}
+
+.presence-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(75, 43, 187, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .presence-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .presence-list {
   list-style: none;
   padding: 0;
-  margin: 32px 0;
+  margin: 40px 0;
   display: flex;
-  flex-col: column;
-  gap: 16px;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .presence-list li {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 16px;
+  gap: 16px;
+  font-size: 1.05rem;
   color: #94a3b8;
+  transition: transform 0.2s;
 }
 
+.presence-list li:hover { transform: translateX(8px); color: #fff; }
+
 .p-list-icon {
-  width: 32px;
-  height: 32px;
-  background: rgba(6, 214, 160, 0.1);
-  color: #06d6a0;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  background: rgba(75, 43, 187, 0.1);
+  color: #6366f1;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
 }
 
 .presence-visual {
   position: relative;
 }
 
+.presence-browser-frame {
+  background: #1e1e2e;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  position: relative;
+}
+
+.browser-header {
+  height: 40px;
+  background: #11111a;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.browser-dots { display: flex; gap: 8px; }
+.browser-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.browser-address {
+  background: rgba(255, 255, 255, 0.05);
+  height: 24px;
+  flex: 1;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 10px;
+  color: #64748b;
+  font-family: monospace;
+}
+
 .presence-mockup-wrap {
   position: relative;
-  background: #283252;
-  padding: 12px;
-  border-radius: 20px;
-  border: 4px solid #4B2BBB;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  padding: 4px;
+  background: #0f0f18;
 }
 
 .presence-img {
   width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 4px;
   display: block;
-}
-
-.presence-floating-card {
-  position: absolute;
-  background: rgba(26, 26, 46, 0.9);
-  backdrop-filter: blur(8px);
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(75, 43, 187, 0.3);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-  z-index: 2;
-}
-
-.presence-floating-card.top-right {
-  top: -20px;
-  right: -20px;
-  min-w: 120px;
-}
-
-.presence-floating-card.bottom-left {
-  bottom: 20px;
-  left: -30px;
-  min-w: 160px;
 }
 
 @media (max-width: 992px) {
   .presence-layout {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 60px;
     text-align: center;
   }
   .presence-text {
@@ -1819,10 +1866,12 @@ export default {
     text-align: center !important;
   }
   .presence-floating-card.top-right {
-    right: 10px;
+    right: 20px;
+    top: 20px;
   }
   .presence-floating-card.bottom-left {
-    left: 10px;
+    left: 20px;
+    bottom: 20px;
   }
 }
 </style>

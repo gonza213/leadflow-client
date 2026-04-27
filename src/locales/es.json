@@ -453,10 +453,10 @@
     "presence": {
       "tag": "EXCLUSIVO",
       "title": "Tu Equipo de Ventas, Más Cerca que Nunca",
-      "subtitle": "Transformá tu gestión con nuestra Oficina Virtual. Visualizá en tiempo real quién está activo, quién acaba de cerrar una venta y quién necesita apoyo, todo en un ambiente dinámico y visual.",
+      "subtitle": "Transformá tu gestión con nuestra Oficina Virtual. Visualizá en tiempo real quién está activo, quién acaba de cerrar una venta y quién necesita apoyo operativo, todo en un ambiente dinámico y visual.",
       "feature1": "Monitoreo por Actividad de Leads",
       "feature2": "Avatares Pixel-Art Personalizados",
-      "feature3": "Detección Automática de Ausencias"
+      "feature3": "Alertas de Vendedores Sobrecargados"
     },
     "faq": {
       "tag": "Preguntas frecuentes",
@@ -477,7 +477,7 @@
       "badge": "Multi-tenant · Multi-equipo · Tiempo real",
       "title": "¿Listo para empezar?",
       "subtitle": "Registrate en segundos y empezá a distribuir leads hoy. 7 días gratis, sin tarjeta de crédito. Desde $25 USD/mes.",
-      "cta": "Empezar gratis →",
+      "cta": "Empezar gratis",
       "hasAccount": "Ya tengo cuenta",
       "feats": ["Setup en 5 minutos", "Integración CRM", "Sin leads perdidos"]
     },

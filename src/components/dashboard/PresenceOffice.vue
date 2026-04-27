@@ -57,17 +57,22 @@ const IDENTITY_COLORS = [
 ]
 
 const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLORS.length]
+
+const needsSupport = (seller) => {
+  // Logic: High lead count with zero sales today, or just very high lead volume
+  return seller.status === 'active' && ((seller.leadsToday > 10 && seller.salesToday === 0) || seller.leadsToday > 15)
+}
 </script>
 
 <template>
-  <div class="retro-office-container h-full flex flex-col bg-[#0f0f18] text-[#f0f0f5] font-['Press_Start_2P'] overflow-hidden rounded-xl border-4 border-[#283252] shadow-2xl">
+  <div class="retro-office-container h-full flex flex-col bg-[#0f0f18] text-[#f0f0f5] overflow-hidden rounded-xl border-4 border-[#283252] shadow-2xl">
     <!-- Header / Top Bar -->
     <div class="flex items-center justify-between p-4 bg-[#283252] border-b-4 border-[#4B2BBB]">
       <div class="flex flex-col gap-1">
-        <h2 class="text-[12px] text-white tracking-widest uppercase">
+        <h2 class="text-[14px] text-white tracking-widest uppercase font-['Press_Start_2P']">
           {{ t('dashboard.presence.title', 'Oficina en Vivo') }}
         </h2>
-        <div class="text-[8px] text-[#06d6a0] animate-pulse">
+        <div class="text-[9px] text-[#06d6a0] animate-pulse font-mono font-bold">
           SISTEMA OPERATIVO {{ tenantName.toUpperCase() }} {{ version }}
         </div>
       </div>
@@ -84,18 +89,44 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
       <div class="w-72 bg-[#0a0a16]/80 backdrop-blur-md border-r-4 border-[#4B2BBB]/50 p-5 flex flex-col gap-4 overflow-y-auto hidden lg:flex shadow-2xl z-30">
         <div class="flex items-center gap-2 mb-4">
           <div class="w-2 h-2 rounded-full bg-[#4B2BBB] animate-pulse"></div>
-          <div class="text-[9px] font-bold text-gray-300 uppercase tracking-[2px]">Registro de Actividad</div>
+          <div class="text-[10px] font-bold text-gray-300 uppercase tracking-[2px] font-['Press_Start_2P']">ACTIVIDAD</div>
         </div>
         
+        <!-- Activity Log -->
         <div class="flex flex-col gap-3">
           <div v-for="seller in sellersStore.presence.filter(s => s.lastAction).slice(0, 10)" :key="seller._id" 
-               class="activity-card group text-[7px] leading-relaxed p-3 bg-black/40 rounded-lg border border-white/5 hover:border-[#4B2BBB]/50 transition-all duration-300 transform hover:-translate-x-1" 
+               class="activity-card group text-[11px] leading-relaxed p-3 bg-black/40 rounded-lg border border-white/5 hover:border-[#4B2BBB]/50 transition-all duration-300 transform hover:-translate-x-1" 
                :style="{ borderLeft: `3px solid ${getSellerIdentityColor(sellersStore.presence.indexOf(seller))}` }">
-            <div class="flex justify-between items-center mb-1.1">
+            <div class="flex justify-between items-center mb-1">
               <span class="text-white font-bold opacity-90 group-hover:opacity-100 transition-opacity">{{ seller.seller_name }}</span>
-              <span class="text-[5px] text-gray-500">{{ new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</span>
+              <span class="text-[9px] text-gray-500 font-mono">{{ new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</span>
             </div>
-            <span class="text-[#06d6a0] mt-1 block font-mono">{{ seller.lastAction }}</span>
+            <span class="text-[#06d6a0] mt-1 block font-mono font-bold">{{ seller.lastAction }}</span>
+          </div>
+        </div>
+
+        <!-- System Legend / Info -->
+        <div class="mt-6 p-4 bg-[#4B2BBB]/10 border border-[#4B2BBB]/30 rounded-lg">
+          <div class="text-[10px] font-bold text-white mb-3 flex items-center gap-2 font-['Press_Start_2P']">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            GUÍA
+          </div>
+          <div class="space-y-4">
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 bg-[#d32f2f] text-white text-[9px] font-bold rounded animate-pulse">¡SOPORTE!</span>
+              </div>
+              <p class="text-[11px] text-gray-400 leading-snug">
+                Vendedor con alta carga de leads (>10) pero sin cierres hoy. Requiere atención del manager.
+              </p>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#06d6a0]"></span>
+                <span class="text-[11px] font-bold text-white uppercase">Activo</span>
+              </div>
+              <p class="text-[11px] text-gray-400">Actualizando leads en los últimos 15 min.</p>
+            </div>
           </div>
         </div>
 
@@ -197,12 +228,24 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
 
             <!-- Seller Name & Status Label (Uses status color) -->
             <div class="mt-4 md:mt-8 text-center flex flex-col items-center gap-1">
-              <div class="text-[8px] font-bold tracking-tight" :style="{ color: getStatusColor(seller.status) }">
+              <div class="text-[11px] font-bold tracking-tight uppercase" :style="{ color: getStatusColor(seller.status) }">
                 {{ seller.seller_name }}
               </div>
-              <div class="inline-block px-2 py-1 bg-black/60 rounded text-[5px] border"
-                   :style="{ color: getStatusColor(seller.status), borderColor: getStatusColor(seller.status) + '33' }">
-                {{ getStatusLabel(seller.status) }}
+              <div class="flex items-center gap-1">
+                <div class="inline-block px-2 py-0.5 bg-black/60 rounded text-[9px] font-bold border uppercase"
+                    :style="{ color: getStatusColor(seller.status), borderColor: getStatusColor(seller.status) + '33' }">
+                  {{ getStatusLabel(seller.status) }}
+                </div>
+                <!-- Support Required Alert -->
+                <div v-if="needsSupport(seller)" 
+                     class="px-2 py-0.5 bg-[#d32f2f] text-white rounded text-[9px] font-bold animate-bounce shadow-[0_0_10px_rgba(211,47,47,0.5)]">
+                  ¡SOPORTE!
+                </div>
+              </div>
+              <!-- Mini Desk Stats -->
+              <div v-if="seller.status !== 'offline'" class="mt-2 flex gap-3 text-[10px] text-gray-500 font-mono font-bold">
+                <span :class="seller.leadsToday > 8 ? 'text-[#faae42]' : ''">LEADS: {{ seller.leadsToday }}</span>
+                <span :class="seller.salesToday > 0 ? 'text-[#06d6a0]' : ''">VENTAS: {{ seller.salesToday }}</span>
               </div>
             </div>
           </div>
