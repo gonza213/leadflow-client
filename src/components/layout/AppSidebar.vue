@@ -134,13 +134,15 @@ const filteredMenuItems = computed(() => {
             
             <span class="flex-1 flex items-center justify-between">
               {{ item.name }}
-              <!-- REC Icon for Live Office -->
-              <span v-if="item.path === '/presence' && isAnySellerActive" 
+              <!-- REC Icon for Live Office (Always visible, red when active) -->
+              <span v-if="item.path === '/presence'" 
                     class="flex items-center justify-center w-4 h-4 relative"
-                    title="Vendedores activos ahora">
-                <span class="absolute w-full h-full rounded-full border-2 border-red-500/50 animate-ping"></span>
-                <span class="w-3.5 h-3.5 rounded-full border border-red-500 flex items-center justify-center bg-white dark:bg-gray-900">
-                  <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+                    :title="isAnySellerActive ? 'Vendedores activos ahora' : 'Sin actividad reciente'">
+                <span v-if="isAnySellerActive" class="absolute w-full h-full rounded-full border-2 border-red-500/50 animate-ping"></span>
+                <span class="w-3.5 h-3.5 rounded-full border flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-500"
+                      :class="isAnySellerActive ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'">
+                  <span class="w-1.5 h-1.5 rounded-full transition-all duration-500"
+                        :class="isAnySellerActive ? 'bg-red-600 animate-pulse' : 'bg-gray-300 dark:bg-gray-600'"></span>
                 </span>
               </span>
             </span>
