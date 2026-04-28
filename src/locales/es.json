@@ -61,6 +61,8 @@
     "subscriptionInactive": "Tu suscripción está inactiva",
     "yourName": "Tu nombre",
     "namePlaceholder": "Juan García",
+    "companyName": "Nombre de la empresa",
+    "companyPlaceholder": "Mi Agencia de Ventas",
     "passwordMin": "Mínimo 6 caracteres",
     "acceptTerms": "Acepto los",
     "termsOfService": "Términos de Servicio",

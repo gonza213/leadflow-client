@@ -59,6 +59,8 @@
     "subscriptionInactive": "Your subscription is inactive",
     "yourName": "Your name",
     "namePlaceholder": "John Doe",
+    "companyName": "Company name",
+    "companyPlaceholder": "My Sales Agency",
     "passwordMin": "Minimum 6 characters",
     "acceptTerms": "I accept the",
     "termsOfService": "Terms of Service",
