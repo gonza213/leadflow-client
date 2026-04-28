@@ -17,7 +17,20 @@ body {
   }
 
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600;
+    @apply text-white border-none cursor-pointer font-bold py-3;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    @apply opacity-95;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   .btn-secondary {
