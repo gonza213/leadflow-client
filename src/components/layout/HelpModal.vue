@@ -16,6 +16,19 @@ const sections = [
     desc: 'Visualizá métricas en tiempo real: leads por vendedor, distribución por equipo, etapas del funnel y más. Usá los filtros de período para analizar rangos específicos.'
   },
   {
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    iconColor: '#f43f5e',
+    iconBg: 'rgba(244,63,94,0.12)',
+    title: 'Período de Distribución',
+    desc: 'El período es el ciclo activo de trabajo. Es fundamental para que las métricas y los límites de los vendedores funcionen correctamente.',
+    items: [
+      '**Ciclo de Límites**: Los límites de leads se contabilizan dentro de las fechas del período activo.',
+      '**Métricas**: El Dashboard muestra por defecto los datos del período configurado.',
+      '**Tipos**: Puede ser **Manual** (fechas fijas) o **Automático** (se reinicia solo cada semana).',
+      '**Vencimiento**: Si vence, verás un aviso para actualizarlo y mantener la distribución activa.'
+    ]
+  },
+  {
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>`,
     iconColor: '#22c55e',
     iconBg: 'rgba(34,197,94,0.12)',

@@ -94,13 +94,18 @@ const isOffline = computed(() => props.status === 'offline')
         <rect x="62" y="58" width="12" height="16" :fill="skinColor" />
       </template>
 
-      <!-- Headset (QA style as default or based on id) -->
-      <template v-if="id === 'qa' || isWorking">
-        <rect x="36" y="25" width="4" height="14" fill="#1a1a2a" />
-        <rect x="60" y="25" width="4" height="14" fill="#1a1a2a" />
-        <rect x="36" y="23" width="28" height="5" fill="#1a1a2a" />
-        <rect x="60" y="37" width="8" height="3" fill="#333" /> <!-- mic arm -->
-        <rect x="66" y="37" width="4" height="4" :fill="color" /> <!-- mic -->
+      <!-- Headset (Now for everyone in the office) -->
+      <template v-if="!isOffline">
+        <rect x="36" y="25" width="4" height="14" fill="#1a1a2a" /> <!-- Left cup -->
+        <rect x="60" y="25" width="4" height="14" fill="#1a1a2a" /> <!-- Right cup -->
+        <rect x="38" y="23" width="24" height="4" fill="#1a1a2a" /> <!-- Headband top -->
+        
+        <!-- Mic Arm -->
+        <rect x="62" y="36" width="10" height="2" fill="#333" /> 
+        <rect x="70" y="35" width="4" height="4" fill="#1a1a2a" /> <!-- Mic piece -->
+        
+        <!-- Status LED on headset -->
+        <rect x="61" y="30" width="2" height="2" :fill="isWorking ? '#00f2ff' : '#666'" />
       </template>
     </svg>
   </div>

@@ -52,7 +52,7 @@ export function useTour() {
           element: '#tour-dashboard-link',
           popover: {
             title: `${ic(icons.chart, '#3b82f6', 'rgba(59,130,246,0.12)')} Dashboard`,
-            description: 'Visualizá en tiempo real los leads por vendedor, etapas del funnel y distribución por equipos.',
+            description: 'Visualizá en tiempo real los leads por vendedor y equipo. Las métricas responden al **Período** activo, que define tu ciclo de ventas actual.',
             side: 'right', align: 'start'
           }
         },

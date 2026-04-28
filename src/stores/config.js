@@ -37,10 +37,35 @@ export const useConfigStore = defineStore('config', () => {
     }
   }
 
+  async function updateConfig(data) {
+    if (!authStore.tenantSlug) return
+    try {
+      await configApi.update(authStore.tenantSlug, data)
+      await fetchConfig()
+      return { success: true }
+    } catch (err) {
+      console.error('Error updating config:', err)
+      return { success: false, error: err.response?.data?.message || 'Error updating configuration' }
+    }
+  }
+
+  const updateTeams = (equipos) => updateConfig({ equipos })
+  const updatePeriod = (data) => updateConfig(data)
+  const updateStages = (opportunity_stages) => updateConfig({ opportunity_stages })
+  const updateFallback = (fallback_seller_ids) => updateConfig({ fallback_seller_ids })
+  const updateSummaryConfig = (data) => updateConfig(data)
+  const updateGhlConfig = (data) => updateConfig(data)
+
   return {
     config,
     loading,
     isPeriodExpired,
-    fetchConfig
+    fetchConfig,
+    updateTeams,
+    updatePeriod,
+    updateStages,
+    updateFallback,
+    updateSummaryConfig,
+    updateGhlConfig
   }
 })

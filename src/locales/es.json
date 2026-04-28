@@ -709,8 +709,7 @@
     "crm": {
       "title": "Integración con CRM",
       "info": "Configurá la URL del webhook de notificación para que el sistema avise automáticamente a tu CRM (GoHighLevel, HubSpot, etc.) cuando se asigna un vendedor a un lead.",
-      "timezoneLabel": "Zona Horaria",
-      "timezoneInfo": "La zona horaria se usa para calcular correctamente los leads de 'hoy' y 'esta semana'.",
+
       "webhookLabel": "URL Webhook de notificación (opcional)",
       "webhookPlaceholder": "https://tu-crm.com/webhook/...",
       "webhookInfo": "El sistema hará un POST a esta URL cada vez que asigne un vendedor a un lead. Compatible con GHL, HubSpot, Make, Zapier, o cualquier servicio que acepte webhooks.",
@@ -857,8 +856,8 @@
       "start": "Fecha de inicio",
       "end": "Fecha de fin",
       "active": "Período activo:",
-      "timezone": "Zona Horaria",
-      "timezoneInfo": "Esta zona horaria se usará para el reinicio de los contadores y la oficina virtual.",
+      "timezone": "Zona Horaria de la Organización",
+      "timezoneInfo": "Esta es la zona horaria global de tu cuenta. Afecta al reinicio de los límites, los reportes del dashboard y los horarios de la oficina virtual.",
       "weekStart": "Día de inicio de semana",
       "currentWeek": "Semana actual: {range}",
       "autoDescription": "Cada {day} a las 00:00 comienza una nueva semana y los contadores se reinician automáticamente. El último día de la semana será el {end}.",
@@ -950,7 +949,7 @@
       "sendDay": "Día de envío",
       "sendTime": "Hora de envío",
       "timeSuffix": "hs",
-      "timezoneInfo": "Se usa la zona horaria configurada en Integración.",
+      "timezoneInfo": "Se usa la zona horaria de la organización configurada en el apartado Período.",
       "webhookLabel": "URL del Webhook (Make, Zapier, etc.)",
       "webhookInfo": "El sistema hará un POST con el resumen generado por IA y las métricas del período.",
       "viewJson": "Ver JSON enviado al webhook",
@@ -1068,5 +1067,27 @@
   },
   "main": {
     "nextAssignment": "Próxima asignación"
+  },
+  "presence": {
+    "title": "Oficina en Vivo",
+    "subtitle": "Centro de mando en tiempo real",
+    "logs": "Actividad del Equipo",
+    "activeNodes": "Vendedores Habilitados",
+    "sync": "Sincronización de Red",
+    "stats": {
+      "leads": "Leads",
+      "sales": "Ventas"
+    },
+    "status": {
+      "active": "Activo",
+      "idle": "Inactivo",
+      "away": "Ausente",
+      "offline": "Desconectado"
+    },
+    "alerts": {
+      "processing": "Procesando Lead",
+      "waiting": "Esperando asignación",
+      "support": "¡SOPORTE!"
+    }
   }
 }

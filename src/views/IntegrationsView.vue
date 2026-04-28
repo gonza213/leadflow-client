@@ -175,7 +175,6 @@ onMounted(async () => {
     <div v-if="configStore.config" class="card">
       <GhlConfig
         :ghl-webhook-url="configStore.config.ghl_webhook_url"
-        :timezone="configStore.config.timezone"
         @update="configStore.updateGhlConfig"
       />
     </div>

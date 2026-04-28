@@ -5,30 +5,17 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const props = defineProps({
-  ghlWebhookUrl: String,
-  timezone: String
+  ghlWebhookUrl: String
 })
 
 const emit = defineEmits(['update'])
 
-const timezones = [
-  { value: 'America/New_York', label: 'Eastern (EST/EDT - Nueva York)', offset: 'GMT-5/-4' },
-  { value: 'America/Chicago', label: 'Central (CST/CDT - Chicago)', offset: 'GMT-6/-5' },
-  { value: 'America/Denver', label: 'Mountain (MST/MDT - Denver)', offset: 'GMT-7/-6' },
-  { value: 'America/Los_Angeles', label: 'Pacific (PST/PDT - Los Angeles)', offset: 'GMT-8/-7' }
-]
-
 const localWebhookUrl = ref(props.ghlWebhookUrl || '')
-const localTimezone = ref(props.timezone || 'America/Chicago')
 const error = ref('')
 const success = ref('')
 
 watch(() => props.ghlWebhookUrl, (val) => {
   localWebhookUrl.value = val || ''
-})
-
-watch(() => props.timezone, (val) => {
-  localTimezone.value = val || 'America/Chicago'
 })
 
 const isValidUrl = (string) => {
@@ -49,8 +36,7 @@ const handleSave = async () => {
 
   error.value = ''
   emit('update', {
-    ghl_webhook_url: localWebhookUrl.value || null,
-    timezone: localTimezone.value
+    ghl_webhook_url: localWebhookUrl.value || null
   })
   success.value = t('integrations.crm.success')
   setTimeout(() => success.value = '', 3000)
@@ -64,18 +50,7 @@ const handleSave = async () => {
       {{ t('integrations.crm.info') }}
     </p>
 
-    <!-- Timezone -->
-    <div class="mb-6">
-      <label class="label">{{ t('integrations.crm.timezoneLabel') }}</label>
-      <select v-model="localTimezone" class="input">
-        <option v-for="tz in timezones" :key="tz.value" :value="tz.value">
-          {{ tz.label }} ({{ tz.offset }})
-        </option>
-      </select>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-        {{ t('integrations.crm.timezoneInfo') }}
-      </p>
-    </div>
+
 
     <div class="mb-6">
       <label class="label">{{ t('integrations.crm.webhookLabel') }}</label>
