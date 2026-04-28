@@ -12,11 +12,32 @@ const polling = ref(null)
 const frame = ref(0)
 const animationFrame = ref(null)
 
-onMounted(async () => {
-  await sellersStore.fetchPresence()
+const startPolling = () => {
+  stopPolling()
+  sellersStore.fetchPresence() // Initial fetch on start
   polling.value = setInterval(() => {
     sellersStore.fetchPresence()
   }, 15000)
+}
+
+const stopPolling = () => {
+  if (polling.value) {
+    clearInterval(polling.value)
+    polling.value = null
+  }
+}
+
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    startPolling()
+  } else {
+    stopPolling()
+  }
+}
+
+onMounted(async () => {
+  startPolling()
+  document.addEventListener('visibilitychange', handleVisibilityChange)
 
   const animate = () => {
     frame.value++
@@ -26,7 +47,8 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  if (polling.value) clearInterval(polling.value)
+  stopPolling()
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
   if (animationFrame.value) cancelAnimationFrame(animationFrame.value)
 })
 
