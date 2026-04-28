@@ -99,7 +99,9 @@ const needsSupport = (seller) => {
                :style="{ borderLeft: `3px solid ${getSellerIdentityColor(sellersStore.presence.indexOf(seller))}` }">
             <div class="flex justify-between items-center mb-1">
               <span class="text-white font-bold opacity-90 group-hover:opacity-100 transition-opacity">{{ seller.seller_name }}</span>
-              <span class="text-[9px] text-gray-500 font-mono">{{ new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) }}</span>
+              <span class="text-[9px] text-gray-500 font-mono">
+                {{ seller.lastActive ? new Date(seller.lastActive).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--' }}
+              </span>
             </div>
             <span class="text-[#06d6a0] mt-1 block font-mono font-bold">{{ seller.lastAction }}</span>
           </div>
