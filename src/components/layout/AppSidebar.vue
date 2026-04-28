@@ -1,18 +1,40 @@
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
+import { useSellersStore } from '../../stores/sellers'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
+const sellersStore = useSellersStore()
 
 // Close sidebar on route change (mobile)
 watch(() => route.path, () => {
   uiStore.closeSidebar()
+})
+
+const isAnySellerActive = computed(() => {
+  return sellersStore.presence.some(s => s.status === 'active')
+})
+
+let presenceInterval = null
+
+onMounted(() => {
+  // Poll presence periodically to update the REC icon globally
+  if (['manager', 'viewer'].includes(authStore.user?.role)) {
+    sellersStore.fetchPresence()
+    presenceInterval = setInterval(() => {
+      sellersStore.fetchPresence()
+    }, 30000)
+  }
+})
+
+onUnmounted(() => {
+  if (presenceInterval) clearInterval(presenceInterval)
 })
 
 const filteredMenuItems = computed(() => {
@@ -109,7 +131,19 @@ const filteredMenuItems = computed(() => {
             <svg v-else-if="item.icon === 'support'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M5.636 18.364l3.536-3.536m0-5.656L5.636 5.636M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            {{ item.name }}
+            
+            <span class="flex-1 flex items-center justify-between">
+              {{ item.name }}
+              <!-- REC Icon for Live Office -->
+              <span v-if="item.path === '/presence' && isAnySellerActive" 
+                    class="flex items-center justify-center w-4 h-4 relative"
+                    title="Vendedores activos ahora">
+                <span class="absolute w-full h-full rounded-full border-2 border-red-500/50 animate-ping"></span>
+                <span class="w-3.5 h-3.5 rounded-full border border-red-500 flex items-center justify-center bg-white dark:bg-gray-900">
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
+                </span>
+              </span>
+            </span>
           </router-link>
         </li>
       </ul>
