@@ -9,7 +9,13 @@ export const useConfigStore = defineStore('config', () => {
   const loading = ref(false)
 
   const isPeriodExpired = computed(() => {
+    // Si el periodo es automático (week_start_day existe), no se considera "vencido" nunca
+    if (config.value?.week_start_day !== null && config.value?.week_start_day !== undefined) {
+      return false
+    }
+    
     if (!config.value?.fecha_fin) return false
+    
     const now = new Date()
     const endDate = new Date(config.value.fecha_fin)
     // Compare dates ignoring time

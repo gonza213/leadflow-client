@@ -221,7 +221,7 @@ const handleSave = async () => {
         </p>
         <p class="text-xs text-blue-600 dark:text-blue-500">
           {{ t('config.period.autoDescription', {
-            day: DAYS.value.find(d => d.value === selectedDay)?.label,
+            day: DAYS.find(d => d.value === selectedDay)?.label,
             end: endDayLabel
           }) }}
         </p>
