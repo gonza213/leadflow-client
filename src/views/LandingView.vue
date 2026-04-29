@@ -226,7 +226,7 @@ onUnmounted(() => {
     <nav :class="['landing-nav', { 'nav-scrolled': scrolled }]">
       <div class="nav-inner">
         <a href="#" class="logo">
-          <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-14 dark:brightness-0 dark:invert" />
+          <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-14 brightness-0 invert" />
         </a>
         <ul class="nav-links">
           <li><a href="#features">{{ t('nav.features') }}</a></li>
@@ -802,7 +802,7 @@ onUnmounted(() => {
         <div class="footer-inner">
           <div class="footer-brand">
             <a href="#" class="logo">
-              <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 dark:brightness-0 dark:invert" />
+              <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 brightness-0 invert" />
             </a>
             <p>{{ t('landing.footer.desc') }}</p>
           </div>
