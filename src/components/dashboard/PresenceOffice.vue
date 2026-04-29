@@ -66,32 +66,32 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
 </script>
 
 <template>
-  <div class="executive-office h-full flex flex-col bg-[#0f172a] text-slate-200 overflow-hidden rounded-3xl border border-white/10 shadow-2xl relative font-sans">
+  <div class="executive-office h-full flex flex-col bg-[#0f172a] text-slate-200 overflow-hidden sm:rounded-3xl border border-white/10 shadow-2xl relative font-sans">
     
     <!-- Header: Professional UI -->
-    <div class="h-20 flex items-center justify-between px-8 bg-slate-900/50 backdrop-blur-md border-b border-white/5 z-50">
-      <div class="flex items-center gap-4">
-        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+    <div class="min-h-[5rem] flex flex-col sm:flex-row items-center justify-between px-4 sm:px-8 py-4 sm:py-0 bg-slate-900/50 backdrop-blur-md border-b border-white/5 z-50 gap-4">
+      <div class="flex items-center gap-4 w-full sm:w-auto">
+        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
           </svg>
         </div>
-        <div>
-          <h2 class="text-lg font-bold text-white tracking-tight leading-tight">{{ t('presence.title') }}</h2>
-          <p class="text-xs text-slate-400 font-medium">{{ t('presence.subtitle') }} • {{ authStore.user?.tenant?.name }}</p>
+        <div class="min-w-0">
+          <h2 class="text-sm sm:text-lg font-bold text-white tracking-tight leading-tight truncate">{{ t('presence.title') }}</h2>
+          <p class="text-[10px] sm:text-xs text-slate-400 font-medium truncate">{{ t('presence.subtitle') }} • {{ authStore.user?.tenant?.name }}</p>
         </div>
       </div>
       
-      <div class="flex gap-6">
-        <div v-for="stat in ['active', 'idle', 'away', 'offline']" :key="stat" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/5">
+      <div class="flex gap-3 sm:gap-6 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 px-2 sm:px-0 custom-scroll no-scrollbar">
+        <div v-for="stat in ['active', 'idle', 'away', 'offline']" :key="stat" class="flex items-center gap-2 px-3 py-1 sm:py-1.5 rounded-full bg-white/5 border border-white/5 shrink-0">
           <div class="w-2 h-2 rounded-full shadow-[0_0_8px_currentColor]" :style="{ color: getStatusColor(stat) }"></div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">{{ t('presence.status.' + stat) }}</span>
+          <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-300">{{ t('presence.status.' + stat) }}</span>
         </div>
       </div>
     </div>
 
     <!-- Main Scene -->
-    <div class="flex-1 relative flex">
+    <div class="flex-1 relative flex overflow-hidden">
       
       <!-- Side Activity Bar -->
       <div class="w-80 bg-slate-900/30 backdrop-blur-xl border-r border-white/5 flex flex-col z-40 hidden xl:flex">
@@ -128,32 +128,32 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
       </div>
 
       <!-- Office Floor -->
-      <div class="flex-1 relative overflow-auto custom-scroll p-12 bg-slate-950/50">
+      <div class="flex-1 relative overflow-auto custom-scroll p-4 sm:p-8 md:p-12 bg-slate-950/50">
         <!-- Floor Grid FX -->
         <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#6366f1 1px, transparent 1px); background-size: 40px 40px;"></div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 sm:gap-10">
           <div v-for="(seller, idx) in sellersStore.presence" :key="seller._id" 
                class="workspace-card group relative">
             
             <!-- Desk Background (Glassmorphism) -->
-            <div class="relative p-8 rounded-[2rem] bg-white/[0.03] border border-white/5 backdrop-blur-xl transition-all duration-500 group-hover:bg-white/[0.07] group-hover:border-indigo-500/30 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+            <div class="relative p-5 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] bg-white/[0.03] border border-white/5 backdrop-blur-xl transition-all duration-500 group-hover:bg-white/[0.07] group-hover:border-indigo-500/30 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
               
               <!-- Status Glow -->
               <div class="absolute -top-1 -left-1 w-24 h-24 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-700" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
 
-              <div class="flex items-start gap-6">
+              <div class="flex items-center sm:items-start gap-4 sm:gap-6">
                 <!-- Avatar Section -->
-                <div class="relative pt-6">
+                <div class="relative pt-4 sm:pt-6 shrink-0">
                   <!-- Minimalist Desk -->
-                  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[120%] h-3 bg-[#3e2723] rounded-sm shadow-lg border-b-2 border-black/20 z-0">
+                  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[120%] h-2 sm:h-3 bg-[#3e2723] rounded-sm shadow-lg border-b-2 border-black/20 z-0">
                     <div class="absolute inset-0 bg-white/5 rounded-sm"></div>
                   </div>
                   <!-- Desk Legs (Subtle) -->
                   <div class="absolute bottom-0 left-2 w-0.5 h-2 bg-[#2d1b18] z-0"></div>
                   <div class="absolute bottom-0 right-2 w-0.5 h-2 bg-[#2d1b18] z-0"></div>
 
-                  <div class="w-24 h-24 relative z-10">
+                  <div class="w-16 h-16 sm:w-24 sm:h-24 relative z-10">
                     <PixelAgent 
                       :status="seller.status" 
                       :color="getSellerIdentityColor(idx)" 
@@ -164,36 +164,36 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                 </div>
 
                 <!-- Info Section -->
-                <div class="flex-1">
-                  <div class="mb-4">
-                    <h4 class="text-lg font-bold text-white tracking-tight mb-1">{{ seller.seller_name }}</h4>
-                    <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/40 border border-white/5">
+                <div class="flex-1 min-w-0">
+                  <div class="mb-3 sm:mb-4">
+                    <h4 class="text-sm sm:text-lg font-bold text-white tracking-tight mb-1 truncate">{{ seller.seller_name }}</h4>
+                    <div class="inline-flex items-center gap-1.5 px-2 py-0.5 sm:py-1 rounded-lg bg-black/40 border border-white/5">
                       <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
-                      <span class="text-[10px] font-black uppercase tracking-wider text-slate-300">{{ t('presence.status.' + seller.status) }}</span>
+                      <span class="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-300">{{ t('presence.status.' + seller.status) }}</span>
                     </div>
                   </div>
 
                   <!-- Quick Stats -->
-                  <div class="grid grid-cols-2 gap-4">
-                    <div class="p-3 rounded-xl bg-white/5 border border-white/5">
-                      <div class="text-[9px] font-bold text-slate-500 uppercase mb-1">{{ t('presence.stats.leads') }}</div>
-                      <div class="text-lg font-black text-indigo-400">{{ seller.leadsToday || 0 }}</div>
+                  <div class="grid grid-cols-2 gap-2 sm:gap-4">
+                    <div class="p-2 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                      <div class="text-[8px] font-bold text-slate-500 uppercase mb-0.5">{{ t('presence.stats.leads') }}</div>
+                      <div class="text-sm sm:text-lg font-black text-indigo-400">{{ seller.leadsToday || 0 }}</div>
                     </div>
-                    <div class="p-3 rounded-xl bg-white/5 border border-white/5">
-                      <div class="text-[9px] font-bold text-slate-500 uppercase mb-1">{{ t('presence.stats.sales') }}</div>
-                      <div class="text-lg font-black text-emerald-400">{{ seller.salesToday || 0 }}</div>
+                    <div class="p-2 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                      <div class="text-[8px] font-bold text-slate-500 uppercase mb-0.5">{{ t('presence.stats.sales') }}</div>
+                      <div class="text-sm sm:text-lg font-black text-emerald-400">{{ seller.salesToday || 0 }}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <!-- Realtime Action Badge -->
-              <div v-if="seller.status === 'active'" class="absolute -top-3 -right-3 px-4 py-1.5 bg-indigo-500 rounded-xl shadow-lg shadow-indigo-500/20 text-white text-[10px] font-black uppercase tracking-widest animate-bounce z-30">
+              <div v-if="seller.status === 'active'" class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 px-3 sm:px-4 py-1 sm:py-1.5 bg-indigo-500 rounded-lg sm:rounded-xl shadow-lg shadow-indigo-500/20 text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest animate-bounce z-30">
                 {{ t('presence.alerts.processing') }}
               </div>
 
               <!-- Overload / Support Alert -->
-              <div v-if="seller.supportNeeded" class="absolute -top-3 -left-3 px-4 py-1.5 bg-rose-600 rounded-xl shadow-lg shadow-rose-600/40 text-white text-[10px] font-black uppercase tracking-widest animate-pulse z-30 border border-white/20">
+              <div v-if="seller.supportNeeded" class="absolute -top-2 -left-2 sm:-top-3 sm:-left-3 px-3 sm:px-4 py-1 sm:py-1.5 bg-rose-600 rounded-lg sm:rounded-xl shadow-lg shadow-rose-600/40 text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest animate-pulse z-30 border border-white/20">
                 ⚠️ {{ t('presence.alerts.support') || '¡SOPORTE!' }}
               </div>
             </div>
@@ -204,11 +204,11 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
     </div>
 
     <!-- Ticker: Localized -->
-    <div class="h-10 bg-slate-900 border-t border-white/5 flex items-center overflow-hidden z-50">
-       <div class="animate-marquee whitespace-nowrap flex gap-16 items-center px-10">
+    <div class="h-8 sm:h-10 bg-slate-900 border-t border-white/5 flex items-center overflow-hidden z-50">
+       <div class="animate-marquee whitespace-nowrap flex gap-10 sm:gap-16 items-center px-6 sm:px-10">
           <div v-for="seller in sellersStore.presence" :key="'ticker-'+seller._id" class="flex items-center gap-3">
              <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
-             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+             <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                {{ seller.seller_name }} • {{ t('presence.status.' + seller.status) }} • {{ seller.leadsToday }} {{ t('presence.stats.leads') }}
              </span>
              <span class="text-white/10 opacity-20">/</span>
@@ -240,5 +240,13 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
 
 .animate-marquee {
   animation: marquee 50s infinite linear;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>
