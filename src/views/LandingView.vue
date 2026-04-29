@@ -97,8 +97,6 @@ let observer = null
 
 const setupObserver = () => {
   observer = new IntersectionObserver((entries) => {
-    // isIntersecting será TRUE cuando el centinela sea visible (al inicio)
-    // Queremos que 'scrolled' sea TRUE cuando el centinela deje de verse
     scrolled.value = !entries[0].isIntersecting
   }, {
     threshold: 0
@@ -147,8 +145,65 @@ const rotateAssignment = () => {
 
 let rotationInterval = null
 
+// --- Scroll Reveal Logic ---
+const setupRevealObserver = () => {
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible')
+      }
+    })
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  })
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObs.observe(el)
+  })
+  
+  return revealObs
+}
+
+let revealObserver = null
+
+// --- Hero Interaction Logic ---
+const heroRef = ref(null)
+const cardRef = ref(null)
+
+const handleGlobalMouseMove = (e) => {
+  const root = document.querySelector('.landing-root')
+  if (!root) return
+  
+  const rect = root.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  const y = e.clientY - rect.top
+  
+  root.style.setProperty('--mouse-x', `${x}px`)
+  root.style.setProperty('--mouse-y', `${y}px`)
+  
+  // Hero Tilt (keep it localized to hero for better performance/feel)
+  if (heroRef.value && cardRef.value) {
+    const cardRect = cardRef.value.getBoundingClientRect()
+    const centerX = cardRect.left + cardRect.width / 2
+    const centerY = cardRect.top + cardRect.height / 2
+    const rotateX = (centerY - e.clientY) / 25
+    const rotateY = (e.clientX - centerX) / 25
+    
+    cardRef.value.style.setProperty('--rotate-x', `${rotateX}deg`)
+    cardRef.value.style.setProperty('--rotate-y', `${rotateY}deg`)
+  }
+}
+
+const resetHeroInteraction = () => {
+  if (!cardRef.value) return
+  cardRef.value.style.setProperty('--rotate-x', `0deg`)
+  cardRef.value.style.setProperty('--rotate-y', `0deg`)
+}
+
 onMounted(() => {
   setupObserver()
+  revealObserver = setupRevealObserver()
   document.documentElement.style.scrollBehavior = 'smooth'
   
   // Iniciar rotación del mockup
@@ -156,13 +211,14 @@ onMounted(() => {
 })
 onUnmounted(() => {
   if (observer) observer.disconnect()
+  if (revealObserver) revealObserver.disconnect()
   if (rotationInterval) clearInterval(rotationInterval)
   document.documentElement.style.scrollBehavior = ''
 })
 </script>
 
 <template>
-  <div class="landing-root">
+  <div class="landing-root" @mousemove="handleGlobalMouseMove">
     <!-- Sentinel for scroll detection -->
     <div ref="sentinel" class="scroll-sentinel"></div>
 
@@ -255,7 +311,12 @@ onUnmounted(() => {
     </nav>
 
     <!-- HERO -->
-    <section class="hero" id="top">
+    <section 
+      class="hero" 
+      id="top" 
+      ref="heroRef" 
+    >
+      <div class="hero-spotlight"></div>
       <div class="glow-1"></div>
       <div class="glow-2"></div>
       <div class="hero-content">
@@ -297,7 +358,7 @@ onUnmounted(() => {
 
       <!-- Dashboard mockup -->
       <div class="hero-visual">
-        <div class="dashboard-card">
+        <div class="dashboard-card" ref="cardRef">
           <div class="card-header">
             <div class="card-dots">
               <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
@@ -334,7 +395,7 @@ onUnmounted(() => {
     </section>
 
     <!-- FEATURES -->
-    <section class="section" id="features">
+    <section class="section reveal" id="features">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.features.tag') }}</div>
@@ -370,7 +431,7 @@ onUnmounted(() => {
     </section>
 
     <!-- HOW IT WORKS -->
-    <section class="section section-dark" id="how">
+    <section class="section section-dark reveal" id="how">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.howItWorks.tag') }}</div>
@@ -399,7 +460,7 @@ onUnmounted(() => {
     </section>
 
     <!-- PRESENCE FEATURE (REFINED) -->
-    <section class="section section-presence overflow-hidden">
+    <section class="section section-presence overflow-hidden reveal">
       <!-- Background Atmospheric Glow -->
       <div class="presence-bg-glow"></div>
       
@@ -449,7 +510,7 @@ onUnmounted(() => {
     </section>
 
     <!-- ROLES -->
-    <section class="section" id="roles">
+    <section class="section reveal" id="roles">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.roles.tag') }}</div>
@@ -473,7 +534,7 @@ onUnmounted(() => {
     </section>
 
     <!-- INTEGRACIONES -->
-    <section class="section section-dark" id="integraciones">
+    <section class="section section-dark reveal" id="integraciones">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.integrations.tag') }}</div>
@@ -526,6 +587,7 @@ onUnmounted(() => {
 "source"</span><span class="j-c">:</span> <span class="j-s">"Facebook Ads"</span>}</pre>
             </div>
             <div class="wh-arrow">
+              <div class="wh-flow-dot"></div>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
               <span>{{ t('landing.integrations.assignMsg') }}</span>
             </div>
@@ -546,7 +608,7 @@ onUnmounted(() => {
     </section>
 
     <!-- COMPARISON SECTION -->
-    <section class="section section-dark" id="comparativa">
+    <section class="section section-dark reveal" id="comparativa">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.comparison.tag') }}</div>
@@ -597,7 +659,7 @@ onUnmounted(() => {
     </section>
 
     <!-- AVAILABILITY -->
-    <section class="section section-dark" id="availability">
+    <section class="section section-dark reveal" id="availability">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.availability.tag') }}</div>
@@ -625,7 +687,7 @@ onUnmounted(() => {
     </section>
 
     <!-- PRICING -->
-    <section class="section" id="pricing">
+    <section class="section reveal" id="pricing">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.pricing.tag') }}</div>
@@ -683,7 +745,7 @@ onUnmounted(() => {
     </section>
 
     <!-- FAQ -->
-    <section class="section" id="faq">
+    <section class="section reveal" id="faq">
       <div class="container">
         <div class="section-header">
           <div class="section-tag">{{ t('landing.faq.tag') }}</div>
@@ -711,7 +773,7 @@ onUnmounted(() => {
     </section>
 
     <!-- CTA -->
-    <section class="cta-section">
+    <section class="cta-section reveal">
       <div class="cta-glow"></div>
       <div class="container">
         <div class="cta-box">
@@ -1102,11 +1164,30 @@ export default {
   position: relative; gap: 48px;
 }
 .glow-1, .glow-2 {
-  position: fixed; border-radius: 50%;
-  filter: blur(90px); pointer-events: none; z-index: 0;
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); pointer-events: none; z-index: 0;
 }
-.glow-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%); top: -100px; left: -80px; }
-.glow-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%); bottom: 0; right: -60px; }
+.glow-1 { 
+  width: 600px; height: 600px; 
+  background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%); 
+  top: -150px; left: -150px; 
+}
+.glow-2 { 
+  width: 500px; height: 500px; 
+  background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%); 
+  bottom: 50px; right: -100px; 
+}
+.hero-spotlight {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(59, 130, 246, 0.08),
+    transparent 40%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
 .hero-content { position: relative; z-index: 1; flex: 1; max-width: 560px; }
 .badge-pill {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1127,22 +1208,30 @@ export default {
   display: inline-flex; align-items: center; gap: 8px;
   background: linear-gradient(135deg, #3b82f6, #6366f1);
   color: #fff; font-weight: 700; font-size: 0.95rem;
-  padding: 13px 24px; border-radius: 12px; border: none; cursor: pointer;
-  box-shadow: 0 4px 24px rgba(59,130,246,0.35);
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 13px 26px; border-radius: 12px; border: none; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(59,130,246,0.35), inset 0 0 0 1px rgba(255,255,255,0.1);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative; overflow: hidden;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(59,130,246,0.45); }
-.btn-primary.btn-lg { padding: 15px 32px; font-size: 1rem; }
+.btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px rgba(59,130,246,0.5); }
+.btn-primary::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+.btn-primary:hover::before { left: 100%; }
+
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 8px;
-  color: #94a3b8; font-weight: 600; font-size: 0.95rem;
-  padding: 13px 24px; border-radius: 12px;
+  color: #cbd5e1; font-weight: 600; font-size: 0.95rem;
+  padding: 13px 26px; border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.1);
-  background: none; cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  background: rgba(255,255,255,0.03); cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
   text-decoration: none;
 }
-.btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+.btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 .btn-outline {
   border: 1px solid rgba(255,255,255,0.15); color: #fff;
   background: rgba(255,255,255,0.03);
@@ -1160,14 +1249,20 @@ export default {
   perspective: 1000px;
 }
 .dashboard-card {
-  background: #0f172a;
+  background: rgba(15, 23, 42, 0.8);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   width: 100%; max-width: 400px;
-  box-shadow: 0 40px 80px -20px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  box-shadow: 
+    0 40px 80px -20px rgba(0,0,0,0.5), 
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 0 40px rgba(59, 130, 246, 0.1);
   overflow: hidden;
-  animation: float 6s ease-in-out infinite, entrance 1s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  animation: entrance 1s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+  transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+  transition: transform 0.15s ease-out;
 }
 .dashboard-card::after {
   content: '';
@@ -1280,9 +1375,13 @@ export default {
 /* ===== SECTIONS ===== */
 .section { padding: 96px 0; }
 .section-dark {
-  background: rgba(255,255,255,0.02);
+  background: #060b14;
+  background-image: 
+    radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+  background-size: 32px 32px;
   border-top: 1px solid rgba(255,255,255,0.05);
   border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
 }
 .section-header { text-align: center; margin-bottom: 60px; }
 .section-tag {
@@ -1302,9 +1401,16 @@ export default {
 .feat-card {
   background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07);
   border-radius: 16px; padding: 26px;
-  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
 }
-.feat-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,0.3); }
+.feat-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.06), transparent 40%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feat-card:hover::after { opacity: 1; }
+.feat-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .feat-large { grid-column: span 2; }
 .feat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
 .icon-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
@@ -1349,7 +1455,16 @@ export default {
 .step-item h3 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
 .step-item p { font-size: 0.83rem; color: #94a3b8; line-height: 1.6; }
 .step-connector { display: flex; flex-direction: column; align-items: center; padding-top: 26px; min-width: 36px; }
-.conn-line { width: 28px; height: 1px; background: linear-gradient(90deg, rgba(59,130,246,0.3), rgba(139,92,246,0.3)); }
+.conn-line { 
+  width: 28px; height: 1px; 
+  background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(59,130,246,0.6), rgba(59,130,246,0.1));
+  background-size: 200% 100%;
+  animation: flowBeam 2s linear infinite;
+}
+@keyframes flowBeam {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
 .conn-arrow { font-size: 0.78rem; color: #3b82f6; margin-top: 3px; }
 
 /* ===== ROLES ===== */
@@ -1357,8 +1472,14 @@ export default {
 .role-card {
   background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.07);
   border-radius: 16px; padding: 26px; position: relative; overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.role-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.06), transparent 40%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.role-card:hover::after { opacity: 1; }
 .role-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
 .role-admin::before { background: linear-gradient(90deg, #ef4444, #f97316); }
 .role-manager::before { background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
@@ -1452,7 +1573,22 @@ export default {
 .j-key { color: #a78bfa; }
 .j-c { color: #64748b; }
 .j-s { color: #4ade80; }
-.wh-arrow { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #3b82f6; font-size: 0.76rem; font-weight: 600; }
+.wh-arrow { 
+  display: flex; flex-direction: column; align-items: center; gap: 8px; color: #64748b; 
+  position: relative; font-size: 0.76rem; font-weight: 600;
+}
+.wh-flow-dot {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px; background: #60a5fa; border-radius: 50%;
+  box-shadow: 0 0 10px #3b82f6;
+  animation: leadFlow 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes leadFlow {
+  0% { top: 0; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: 100px; opacity: 0; }
+}
 
 /* ===== COMPARISON ===== */
 .comparison-table-wrapper {
@@ -1516,7 +1652,19 @@ export default {
   position: relative; display: flex; flex-direction: column; gap: 24px;
 }
 .pricing-main { border-color: #6366f1; box-shadow: 0 8px 32px rgba(99,102,241,0.2); }
-.pricing-popular { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg,#6366f1,#8b5cf6); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 16px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.04em; }
+.pricing-popular { 
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%); 
+  background: linear-gradient(90deg,#6366f1,#8b5cf6); color: #fff; 
+  font-size: 0.72rem; font-weight: 700; padding: 4px 16px; border-radius: 99px; 
+  white-space: nowrap; letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.4);
+  animation: badgePulse 2s infinite;
+}
+@keyframes badgePulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 20px rgba(99,102,241,0.6); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 .pricing-optional { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #64748b; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 16px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.04em; }
 .pricing-name { font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-top: 8px; }
 .pricing-price { display: flex; align-items: baseline; gap: 4px; }
@@ -1874,4 +2022,44 @@ export default {
     bottom: 20px;
   }
 }
+
+/* ===== SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay for children if needed */
+.reveal.is-visible .features-grid > * {
+  animation: fade-in-up 0.6s ease forwards;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered children reveal */
+.reveal.is-visible .feat-card:nth-child(1) { transition-delay: 0.1s; }
+.reveal.is-visible .feat-card:nth-child(2) { transition-delay: 0.2s; }
+.reveal.is-visible .feat-card:nth-child(3) { transition-delay: 0.3s; }
+.reveal.is-visible .feat-card:nth-child(4) { transition-delay: 0.4s; }
+
+.reveal.is-visible .step-item:nth-child(1) { transition-delay: 0.1s; }
+.reveal.is-visible .step-item:nth-child(2) { transition-delay: 0.2s; }
+.reveal.is-visible .step-item:nth-child(3) { transition-delay: 0.3s; }
+
 </style>

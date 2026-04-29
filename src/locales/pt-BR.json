@@ -203,6 +203,7 @@
       "title": "Integrações com HubSpot, GoHighLevel e monday.com",
       "subtitle": "O LeadDistro integra-se perfeitamente com seu CRM e ferramentas de automação.",
       "badges": { "optimized": "Otimizado", "webhook": "Webhook" },
+      "assignMsg": "Atribuindo vendedor...",
       "items": {
         "ghl": { "desc": "O aliado #1 para agências GHL" },
         "kommo": { "desc": "Potencialize suas vendas pelo WhatsApp" },
