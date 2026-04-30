@@ -1,22 +1,10 @@
 User-agent: *
-Allow: /
 Allow: /landing
 Allow: /blog
 Allow: /blog/
 Allow: /privacy
 Allow: /terms
-Allow: /login
-Allow: /register
 
-Disallow: /admin/
-Disallow: /config/
-Disallow: /billing/
-Disallow: /leads/
-Disallow: /sellers/
-Disallow: /users/
-Disallow: /integrations/
-Disallow: /summaries/
-Disallow: /presence/
-Disallow: /profile/
+Disallow: /
 
 Sitemap: https://www.leaddistro.site/sitemap.xml
