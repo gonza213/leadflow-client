@@ -6,15 +6,16 @@
     "integrations": "Integraciones",
     "pricing": "Precios",
     "faq": "FAQ",
+    "blog": "Blog",
     "login": "Iniciar sesión",
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio"
   },
   "hero": {
     "badge": "Para agencias en LATAM, Asia y África",
-    "title": "Distribución de leads",
-    "titleGradient": "inteligente y automática",
-    "subtitle": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos.",
+    "title": "Cada lead, asignado",
+    "titleGradient": "sin perder uno solo",
+    "subtitle": "Olvidate de asignar manualmente. LeadDistro distribuye tus leads al vendedor disponible correcto al instante — respetando límites, equipos y capacidad.",
     "ctaPrimary": "Empezar gratis",
     "ctaSecondary": "Ya tengo cuenta",
     "trust": {
@@ -24,8 +25,8 @@
       "cancel": "Cancelás cuando querés"
     },
     "stats": {
-      "assigned": "Leads asignados",
-      "price": "Por mes, sin contratos",
+      "assigned": "0 leads perdidos",
+      "price": "USD 25/mes, sin contratos",
       "crms": "CRMs compatibles"
     }
   },
@@ -250,13 +251,13 @@
     }
   },
   "meta": {
-    "title": "LeadDistro | Distribución Automática de Leads para Agencias",
-    "description": "Optimiza tu equipo de ventas con LeadDistro. Asignación inteligente de leads, límites por vendedor y dashboard en tiempo real para HubSpot, GHL y monday.com.",
-    "ogTitle": "LeadDistro | Distribución Inteligente de Leads",
-    "ogDescription": "Asigna cada lead al vendedor correcto automáticamente según capacidad y límites. Integración con cualquier CRM.",
-    "keywords": "lead distribution, automatización ventas, round robin, hubspot integration, gohighlevel leads, monday.com leads",
+    "title": "LeadDistro | Distribución Automática de Leads - 0 Leads Perdidos",
+    "description": "Distribuí leads automáticamente a tus vendedores sin perder ni uno. Límites por vendedor, equipos y distribución por porcentaje. Integración con GoHighLevel, HubSpot, Kommo y más.",
+    "ogTitle": "LeadDistro | Asigna cada lead automáticamente - 0 Leads Perdidos",
+    "ogDescription": "Sistema de distribución automática de leads para agencias. Cada lead se asigna al vendedor correcto según capacidad y límites. Olvidate de asignar manualmente.",
+    "keywords": "distribución automática de leads, asignar leads automáticamente, lead routing automation, lead distribution software, distribución leads GoHighLevel, distribución leads HubSpot, round robin con límites, lead distribution Kommo, distribuir leads por porcentaje",
     "ogImage": "https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png",
-    "schemaDescription": "LeadDistro asigna cada lead al vendedor correcto según capacidad, equipo y límites — sin intervención manual, sin leads perdidos."
+    "schemaDescription": "LeadDistro distribuye cada lead automáticamente al vendedor correcto — 0 leads perdidos, límites diarios/semanales, equipos y distribución por porcentaje."
   },
   "trial": {
     "banner": {
@@ -1091,6 +1092,64 @@
       "processing": "Procesando Lead",
       "waiting": "Esperando asignación",
       "support": "¡SOPORTE!"
+    }
+  },
+  "blog": {
+    "title": "Blog de LeadDistro",
+    "subtitle": "Consejos y guías sobre distribución automática de leads",
+    "seoTitle": "Blog de LeadDistro | Distribución Automática de Leads",
+    "seoDescription": "Aprendé a distribuir leads automáticamente con GoHighLevel, HubSpot y más CRMs. Guías sobre round robin, límites por vendedor y automatización de ventas.",
+    "readMore": "Leer más",
+    "minRead": "min de lectura",
+    "posts": {
+      "algoritmo": {
+        "title": "Cómo funciona el algoritmo de distribución de LeadDistro",
+        "description": "Entendé cómo el algoritmo selecciona al vendedor correcto considerando equipos, límites y capacidad en tiempo real.",
+        "keywords": "algoritmo distribución leads, lead routing, distribución automática",
+        "content": "El corazón de LeadDistro es un algoritmo inteligente que decide qué vendedor recibe cada lead. Aquí te explico exactamente cómo funciona.\n\n## El flujo del algoritmo\n\nCuando entra un nuevo lead al sistema, el algoritmo ejecuta estos pasos:\n\n### 1. Seleccionar el equipo objetivo\n\nEl sistema calcula qué equipo debe recibir el lead según los **porcentajes de distribución** que configuraste en Configuración → Equipos. Si tienes 3 equipos (España 40%, LATAM 35%, USA 25%), el lead irá a uno de esos equipos según el peso configurado.\n\n### 2. Dentro del equipo, elegir el vendedor\n\nUna vez seleccionado el equipo, el algoritmo busca al vendedor con el **menor ratio**: leads actuales ÷ límite semanal. El que tiene menos carga relativa recibe el nuevo lead.\n\n### 3. Si todos están llenos: Fallback\n\nCuando todos los vendedores del equipo alcanzaron su límite, el lead se redirige a los **vendedores de respaldo** que configures (hasta 2). Esto asegura que ningún lead quede sin atender.\n\n## Por qué es mejor que round-robin\n\nRound-robin simple: vendedor 1, vendedor 2, vendedor 3... sin importar capacidad.\n\n**LeadDistro** considera:\n\n- Límites diarios y semanales por vendedor\n- Distribución por porcentaje entre equipos\n- Capacidad real en tiempo real\n- Vendedores de respaldo para cuando todos están llenos\n\nEl resultado: **0 leads perdidos**, distribución equitativa y equipo siempre productivo."
+      },
+      "periodo": {
+        "title": "Período de distribución: la clave para que los límites funcionen",
+        "description": "El período es el ciclo activo de trabajo. Aprendé la diferencia entre Manual y Automático y por qué es fundamental para las métricas.",
+        "keywords": "período distribución, ciclo activo, límites leads",
+        "content": "El Período de Distribución es uno de los conceptos más importantes de LeadDistro. Si no lo configurás bien, los límites no funcionarán correctamente.\n\n## Qué es el período\n\nEs el **ciclo activo de trabajo** durante el cual se contabilizan los límites de los vendedores. Todo lo que pasa fuera del período activo no cuenta para los límites.\n\n## Tipos de período\n\n### Período Manual\n\nFechas fijas que vos definís. Por ejemplo: 1 de enero al 31 de marzo.\n\n**Ventaja**: Control total sobre las fechas.\n**Ideal para**: Temporadas específicas, campañas trimestrales.\n\n### Período Automático\n\nSe reinicia solo cada semana (puede ser semanal o mensual).\n\n**Ventaja**: No tenés que actualizarlo manualmente.\n**Ideal para**: Equipos que trabajan con ciclos constantes.\n\n## Por qué importa\n\n1. **Ciclo de límites**: Los límites diarios y semanales se resetean cuando inicia un nuevo período.\n\n2. **Métricas del Dashboard**: Por defecto muestran los datos del período activo, no de todo el histórico.\n\n3. **Alertas**: Si el período está por vencer o ya venció, verás un aviso para actualizarlo y mantener la distribución activa.\n\n## Configuración\n\nVas a Configuración → Período de Distribución para elegir el tipo y las fechas. Si usás Automático, el sistema se encarga de los resetear los límites cada semana."
+      },
+      "integraciones": {
+        "title": "Integraciones: conecta LeadDistro con tu CRM favorito",
+        "description": "Webhook de entrada y salida, CRMs compatibles: GoHighLevel, HubSpot, Make, Zapier, y más. Aprendé a configurarlos.",
+        "keywords": "integraciones webhook, GoHighLevel, HubSpot, Make, Zapier",
+        "content": "LeadDistro se conecta con cualquier CRM que soporte webhooks. Acá te cuento las plataformas compatibles y cómo configurarlas.\n\n## Plataformas compatibles\n\n- **GoHighLevel** (integración nativa optimizada)\n- **HubSpot**\n- **Kommo (amoCRM)**\n- **monday.com**\n- **Clientify**\n- **Make / Zapier**\n- **ActiveCampaign**\n- **Pipedrive**\n- **n8n**\n\nEn realidad, cualquier herramienta que pueda enviar un HTTP POST funciona.\n\n## Webhook de entrada\n\nEs la URL donde tu CRM envía los leads nuevos. La encontrás en **Integraciones** → Tu tenant tiene una URL única.\n\n### Configuración\n\n1. Copiá la URL del webhook de entrada\n2. En tu CRM, creá un workflow que envíe un POST a esa URL cuando haya un nuevo lead\n3. El formato debe incluir: nombre, email, teléfono, fuente\n\n## Webhook de salida\n\nLeadDistro notifica a tu CRM cuando asigna un lead. Envía:\n\n- Nombre del vendedor asignado\n- ID del vendedor en tu CRM\n- Equipo\n\nEsto permite que tu CRM actualice automáticamente el lead con la información del vendedor.\n\n## Cambio de etapa\n\nTambién podés configurar un segundo webhook para sincronizar los **cambios de etapa** desde tu CRM al sistema. Así mantenés el pipeline actualizado en ambos lados."
+      },
+      "resumenes-ia": {
+        "title": "Resúmenes IA: métricas automáticas con OpenAI",
+        "description": "El sistema genera resúmenes automáticos de métricas usando OpenAI. Configurá frecuencia diaria o semanal y recibí reportes PDF.",
+        "keywords": "resúmenes IA, OpenAI, métricas automáticas, reportes",
+        "content": "Los Resúmenes IA de LeadDistro te dan un análisis automático de las métricas de tu equipo, generado por inteligencia artificial.\n\n## Cómo funciona\n\nEl sistema usa **OpenAI** para analizar los datos del período y generar un resumen con insights actionable. No es solo un reporte, es un análisis inteligente.\n\n## Configuración\n\nVas a **Configuración → Resumen IA** y configurás:\n\n- **Frecuencia**: Diaria o semanal\n- **Hora de envío**: A qué hora querés recibirlo\n- **Email**: A dónde se envía\n\n## Opciones adicionales\n\n### Descargar PDF\n\nDesde cada resumen podés descargar un **PDF profesional** con el análisis y las métricas del período. Ideal para compartir con tu equipo o clientes.\n\n### Webhook a Make/Zapier\n\nSi configurás una URL de webhook, el resumen también se envía automáticamente cuando se genera. Podés integrarlo con otras herramientas o enviarlo a Slack, email marketing, etc.\n\n## Qué incluye el resumen\n\n- Métricas de leads: total, asignados, por etapa\n- Rendimiento por vendedor y equipo\n- Comparación con períodos anteriores\n- Insights de la IA sobre qué funciona y qué no\n\nEs como tener un analista de datos automático cada día o semana."
+      },
+      "gohighlevel": {
+        "title": "Cómo distribuir leads automáticamente en GoHighLevel",
+        "description": "Aprendé a configurar la distribución automática de leads en GoHighLevel usando webhooks. Olvidate de asignar leads manualmente.",
+        "keywords": "distribución automática leads GoHighLevel, GoHighLevel webhooks, automatizar asignación leads, lead routing GoHighLevel",
+        "content": "Si usas GoHighLevel para gestionar tus clientes potenciales, sabés que asignar leads manualmente consume tiempo valioso. La buena noticia es que podés automatizar todo el proceso.\n\n## ¿Por qué automatizar la distribución de leads en GoHighLevel?\n\nCada lead que llega a tu embudo necesita ser asignado rápidamente al vendedor correcto. El problema es que cuando lo hacés manualmente:\n\n- Se pierden leads por olvido\n- La respuesta se demora horas\n- Los vendedores reciben más leads de los que pueden manejar\n- No hay equidad en la distribución\n\n## Cómo funciona con LeadDistro\n\n1. **Configurá un webhook en GoHighLevel**: Cada vez que entra un nuevo lead, GoHighLevel envía los datos a LeadDistro.\n\n2. **LeadDistro asigna automáticamente**: Nuestro algoritmo distribuye el lead al vendedor disponible considerando:\n   - Límites diarios y semanales\n   - Distribución por porcentaje\n   - Equipos y territorios\n   - Capacidad actual del vendedor\n\n3. **Notificación al vendedor**: El vendedor recibe el lead inmediatamente con toda la información.\n\n## Configuración paso a paso\n\n1. Creá una cuenta en LeadDistro\n2. Configurá tus vendedores y límites\n3. En GoHighLevel, creá un webhook que envíe a LeadDistro\n4. ¡Listo! Cada lead se asigna automáticamente\n\nEl resultado: **0 leads perdidos**, respuesta inmediata y equipo de ventas más productivo."
+      },
+      "hubspot": {
+        "title": "Guía completa: Distribución de leads en HubSpot con LeadDistro",
+        "description": "Integrá HubSpot con LeadDistro para distribuir leads automáticamente. Límites por vendedor, equipos y distribución por porcentaje.",
+        "keywords": "distribución automática leads HubSpot, HubSpot lead assignment, HubSpot automation, lead routing HubSpot",
+        "content": "HubSpot es uno de los CRMs más populares, pero su sistema de distribución de leads tiene limitaciones. Descubrí cómo superarlas con LeadDistro.\n\n## El problema con HubSpot\n\nHubSpot ofrece round-robin básico, pero:\n\n- No permite límites diarios/semanales por vendedor\n- No soporta distribución por porcentaje\n- No considera equipos o territorios\n- No redistribuye cuando un vendedor alcanza su límite\n\n## La solución: HubSpot + LeadDistro\n\n### Flujo de integración\n\n1. **HubSpot** detecta un nuevo lead\n2. Envía los datos via webhook a **LeadDistro**\n3. **LeadDistro** evalúa:\n   - Quién tiene capacidad disponible\n   - Cuál es la distribución justa por equipo\n   - El historial de leads del vendedor\n4. **Asigna** el lead al mejor candidato\n5. **Notifica** al vendedor y actualiza HubSpot\n\n### Beneficios específicos\n\n- **Límites personalizados**: Cada vendedor puede tener límites distintos\n- **Equipos**: Distribuí por región, producto o cualquier criterio\n- **Métricas**: Dashboard en tiempo real de asignaciones\n- **Fallback**: Si un vendedor alcanza su límite, el lead se redistribuye\n\n## Casos de uso reales\n\n**Agencia de marketing digital**: 5 equipos, cada uno atiende un verticales diferente. LeadDistro asegura que los leads del verticales 'finanzas' vayan al equipo de finanzas, manteniendo distribución equitativa dentro del equipo.\n\n**SaaS B2B**: Ventas por inbound y outbound. Los leads inbound van a un equipo específico, los outbound a otro. LeadDistro respeta estas reglas mientras optimiza la carga de trabajo."
+      },
+      "round-robin": {
+        "title": "Round Robin vs Distribución Inteligente: ¿Cuál elegir?",
+        "description": "Comparativa entre round-robin básico y distribución inteligente de leads. Descubrí cuál funciona mejor para equipos de ventas.",
+        "keywords": "round robin vs distribución inteligente, lead distribution methods, algoritmo distribución leads, round robin sales",
+        "content": "Cuando hablamos de distribuir leads, la mayoría pensa en round-robin. Pero hay opciones mucho más sofisticadas que pueden transformar tu equipo de ventas.\n\n## Round Robin: Lo básico\n\nEl round-robin asigna leads en orden: vendedor 1, vendedor 2, vendedor 3, vendedor 1...\n\n### Limitaciones\n\n- ❌ No considera capacidad del vendedor\n- ❌ Un vendedor nuevo recibe la misma cantidad que uno experimentado\n- ❌ No distingue entre equipos o territorios\n- ❌ Todos los leads tienen el mismo valor\n- ❌ Cuando un vendedor está lleno, el lead queda esperando\n\n## Distribución Inteligente\n\nConsidera múltiples factores para cada asignación:\n\n### Lo que sí hace\n\n✅ **Límites por vendedor**: Cada vendedor define cuántos leads recibe\n✅ **Distribución por porcentaje**: Asigna según el peso de cada vendedor\n✅ **Equipos y territorios**: Reglas específicas por grupo\n✅ **Capacidad en tiempo real**: Solo asigna a quien puede atender\n✅ **Fallback**: Redistribución automática si alguien alcanza su límite\n✅ **Métricas**: Análisis de distribución por vendedor/equipo\n\n## Cuándo usar cada uno\n\n| Escenario | Recomendación |\n|-----------|---------------|\n| Equipo pequeño (<5 vendedores) | Round-robin puede funcionar |\n| Múltiples equipos/territorios | Distribución inteligente |\n| Leads de diferente valor | Distribución por porcentaje |\n| Vendedores con capacidad variable | Límites personalizados |\n| Necesitás métricas detalladas | Dashboard avanzado |\n\n## El verdict\n\nEl round-robin es como usar un archivo Excel. La distribución inteligente es como un CRM. Para equipos que quieren escalar y ser eficientes, la elección es clara."
+      },
+      "limites": {
+        "title": "Límites por vendedor: La clave para equipos de ventas productivos",
+        "description": "Aprendé a configurar límites diarios y semanales por vendedor. Mejora la productividad y evita que tus vendedores se saturen.",
+        "keywords": "límites por vendedor, lead limits sales team, daily limits distribution, límites vendedores CRM",
+        "content": "Uno de los errores más comunes en equipos de ventas es sobrecargar a algunos vendedores mientras otros están ociosos. Los límites por vendedor resuelven esto.\n\n## Por qué los límites importan\n\nSin límites, pasa esto:\n\n- Vendedores con 50 leads, otros con 5\n- Calidad de atención baja por saturación\n- Burnout y rotación de equipo\n- Leads perdidos por falta de respuesta\n- Frustración en el equipo\n\n## Tipos de límites en LeadDistro\n\n### Límites diarios\n\nCantidad máxima de leads que un vendedor recibe por día.\n\n**Ejemplo**: Juan recibe máximo 15 leads diarios. Cuando llega a 15, los nuevos leads van a otros vendedores o entran en cola de espera.\n\n### Límites semanales\n\nControl más amplio para evitar saturación semanal.\n\n**Ejemplo**: María tiene límite de 60 leads/semana. Si ya recibió 40 el lunes, el sistema distribuyó otros 20 máximo.\n\n### Distribución por porcentaje\n\nPara equipos donde cada vendedor tiene un peso diferente.\n\n**Ejemplo**:\n- Pedro: 40% de leads\n- Lucía: 35%\n- Carlos: 25%\n\n## Mejores prácticas\n\n1. **Analizá datos históricos**: Cuántos leads maneja actualmente cada vendedor\n2. **Considerá capacidad**: Un vendedor nuevo no receiving igual que uno experimentado\n3. **Ajustá gradualmente**: Empezá conservador, aumentá según resultados\n4. **Monitoreá métricas**: Leads respondidos, tasas de conversión, tiempo de primera respuesta\n\n## El resultado\n\nEquipos con límites bien configurados reportan:\n- 30% más leads atendidos\n- 25% mejor tiempo de respuesta\n- 50% menos leads perdidos\n- Mayor satisfacción del equipo"
+      }
     }
   }
 }

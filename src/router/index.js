@@ -138,6 +138,18 @@ export const routes = [
     meta: { public: true }
   },
   {
+    path: '/blog',
+    name: 'Blog',
+    component: () => import('../views/BlogView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/blog/:slug',
+    name: 'BlogPost',
+    component: () => import('../views/BlogPostView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/landing'
   }

@@ -235,6 +235,7 @@ onUnmounted(() => {
           <li><a href="#integraciones">{{ t('nav.integrations') }}</a></li>
           <li><a href="#pricing">{{ t('nav.pricing') }}</a></li>
           <li><a href="#faq">{{ t('nav.faq') }}</a></li>
+          <li><a href="/blog" target="_blank" class="text-blue-400 hover:text-blue-300">{{ t('nav.blog') || 'Blog' }}</a></li>
         </ul>
         <button v-if="!authStore.isAuthenticated" @click="router.push('/login')" class="btn-nav">{{ t('nav.login') }} →</button>
         <button v-else @click="router.push('/')" class="btn-nav !px-3 !py-1.5 flex items-center gap-2">
@@ -300,6 +301,7 @@ onUnmounted(() => {
         <a href="#integraciones" @click="menuOpen = false">{{ t('nav.integrations') }}</a>
         <a href="#pricing" @click="menuOpen = false">{{ t('nav.pricing') }}</a>
         <a href="#faq" @click="menuOpen = false">{{ t('nav.faq') }}</a>
+        <a href="/blog" target="_blank" @click="menuOpen = false" class="text-blue-400">{{ t('nav.blog') || 'Blog' }}</a>
         <button v-if="!authStore.isAuthenticated" @click="router.push('/login'); menuOpen = false" class="btn-nav mobile-cta">{{ t('nav.login') }} →</button>
         <button v-else @click="router.push('/'); menuOpen = false" class="btn-nav mobile-cta flex items-center justify-center gap-2">
           <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs font-bold text-white">
@@ -813,6 +815,7 @@ onUnmounted(() => {
               <a href="#how">{{ t('nav.howItWorks') }}</a>
               <a href="#integraciones">{{ t('nav.integrations') }}</a>
               <a href="#pricing">{{ t('nav.pricing') }}</a>
+              <a href="/blog" target="_blank">{{ t('nav.blog') || 'Blog' }}</a>
             </div>
             <div class="footer-col">
               <span class="fcol-title">{{ t('landing.footer.access') }}</span>

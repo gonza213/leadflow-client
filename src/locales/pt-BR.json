@@ -6,15 +6,16 @@
     "integrations": "Integrações",
     "pricing": "Preços",
     "faq": "FAQ",
+    "blog": "Blog",
     "login": "Iniciar sessão",
     "privacy": "Política de Privacidade",
     "terms": "Termos de Serviço"
   },
   "hero": {
     "badge": "Para agências em LATAM, Ásia e África",
-    "title": "Distribuição de leads",
-    "titleGradient": "inteligente e automática",
-    "subtitle": "LeadDistro atribui cada lead ao vendedor correto com base na capacidade, equipe e limites — sem intervenção manual, sem leads perdidos.",
+    "title": "Cada lead, atribuído",
+    "titleGradient": "sem perder nenhum",
+    "subtitle": "Pare de atribuir manualmente. LeadDistro distribui seus leads instantaneamente ao vendedor disponível correto — respeitando limites, equipes e capacidade.",
     "ctaPrimary": "Começar grátis",
     "ctaSecondary": "Já tenho conta",
     "trust": {
@@ -24,8 +25,8 @@
       "cancel": "Cancele quando quiser"
     },
     "stats": {
-      "assigned": "Leads atribuídos",
-      "price": "Por mês, sem contratos",
+      "assigned": "0 leads perdidos",
+      "price": "USD 25/mês, sem contratos",
       "crms": "CRMs compatíveis"
     }
   },
@@ -92,13 +93,13 @@
     }
   },
   "meta": {
-    "title": "LeadDistro | Distribuição Automática de Leads para Agências",
-    "description": "Otimize sua equipe de vendas com o LeadDistro. Atribuição inteligente de leads, limites por vendedor e dashboard em tempo real para HubSpot, GHL e monday.com.",
-    "ogTitle": "LeadDistro | Distribuição Inteligente de Leads",
-    "ogDescription": "Distribua cada lead para o vendedor correto automaticamente com base na capacidade e limites. Integração com qualquer CRM.",
-    "keywords": "lead distribution, automação de vendas, round robin, integração hubspot, leads gohighlevel, leads monday.com",
+    "title": "LeadDistro | Distribuição Automática de Leads - 0 Leads Perdidos",
+    "description": "Distribua leads automaticamente para seus vendedores sem perder nenhum. Limites diários/semanais, equipes e distribuição por porcentagem. Integração com GoHighLevel, HubSpot, Kommo e mais.",
+    "ogTitle": "LeadDistro | Atribua Cada Lead Automaticamente - 0 Leads Perdidos",
+    "ogDescription": "Sistema de distribuição automática de leads para agências. Cada lead é atribuído ao vendedor correto com base na capacidade e limites. Pare de atribuir manualmente.",
+    "keywords": "distribuição automática de leads, atribuir leads automaticamente, automação de distribuição de leads, software de distribuição de leads, distribuição leads GoHighLevel, distribuição leads HubSpot, round robin com limites, distribuição leads Kommo, distribuir leads por porcentagem",
     "ogImage": "https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png",
-    "schemaDescription": "O LeadDistro atribui cada lead ao vendedor correto com base na capacidade, equipe e limites — sem intervenção manual, sem leads perdidos."
+    "schemaDescription": "LeadDistro distribui automaticamente cada lead ao vendedor correto — 0 leads perdidos, limites diários/semanais, equipes e distribuição por porcentagem."
   },
   "trial": {
     "banner": {
