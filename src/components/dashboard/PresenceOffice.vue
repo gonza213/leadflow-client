@@ -235,10 +235,6 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                 SOS
               </div>
             </div>
-
-          </div>
-        </div>
-
           </div>
         </div>
       </div>
