@@ -144,7 +144,7 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
               <!-- Status Aura (Subtle) -->
               <div class="absolute -top-10 -left-10 w-48 h-48 blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-1000" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
 
-              <div class="flex flex-row items-center gap-4 sm:gap-8 relative z-20">
+              <div class="flex flex-row items-center gap-4 sm:gap-6 relative z-20">
                 
                 <!-- Interaction Zone: The Desk -->
                 <div class="relative pt-10 pb-1 shrink-0">
@@ -182,20 +182,22 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                 <!-- Info Section -->
                 <div class="flex-1 min-w-0">
                   <div class="mb-3">
-                    <h4 class="text-base sm:text-xl font-black text-white tracking-tight mb-1 truncate group-hover:text-indigo-300 transition-colors">{{ seller.seller_name }}</h4>
-                    <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/40 border border-white/5">
+                    <h4 class="text-base sm:text-xl font-black text-white tracking-tight mb-1 group-hover:text-indigo-300 transition-colors leading-tight">
+                      {{ seller.seller_name }}
+                    </h4>
+                    <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-black/40 border border-white/5">
                       <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
-                      <span class="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400">{{ t('presence.status.' + seller.status) }}</span>
+                      <span class="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-400 whitespace-nowrap">{{ t('presence.status.' + seller.status) }}</span>
                     </div>
                   </div>
 
-                  <!-- Dynamic Stats Grid -->
-                  <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    <div class="p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all">
+                  <!-- Dynamic Stats (Flexible) -->
+                  <div class="flex flex-wrap gap-2 sm:gap-3">
+                    <div class="flex-1 min-w-[70px] sm:min-w-[90px] p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all">
                       <div class="text-[7px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-widest">{{ t('presence.stats.leads') }}</div>
                       <div class="text-sm sm:text-xl font-black text-white">{{ seller.leadsToday || 0 }}</div>
                     </div>
-                    <div class="p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all">
+                    <div class="flex-1 min-w-[70px] sm:min-w-[90px] p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all">
                       <div class="text-[7px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-widest">{{ t('presence.stats.sales') }}</div>
                       <div class="text-sm sm:text-xl font-black text-white">{{ seller.salesToday || 0 }}</div>
                     </div>
