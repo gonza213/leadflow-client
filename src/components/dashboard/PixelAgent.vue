@@ -41,8 +41,8 @@ const isOffline = computed(() => props.status === 'offline')
 </script>
 
 <template>
-  <div class="pixel-agent relative w-20 h-20" :style="{ transform: `translateY(${bounce}px)` }">
-    <svg viewBox="0 0 100 100" class="w-full h-full" :class="{ 'grayscale opacity-60': isOffline }" style="image-rendering: pixelated;">
+  <div class="pixel-agent relative w-20 h-20 sm:w-full sm:h-full" :style="{ transform: `translateY(${bounce}px)` }">
+    <svg viewBox="0 0 100 100" class="w-full h-full" :class="{ 'grayscale opacity-60': isOffline }" style="image-rendering: pixelated; shape-rendering: crispEdges;">
       <!-- Glow effect -->
       <rect v-if="isWorking" x="25" y="10" width="50" height="70" fill="rgba(75,43,187,0.15)" />
       

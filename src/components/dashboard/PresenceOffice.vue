@@ -128,33 +128,71 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
       </div>
 
       <!-- Office Floor -->
-      <div class="flex-1 relative overflow-auto custom-scroll p-4 sm:p-8 md:p-12 bg-slate-950/50">
-        <!-- Floor Grid FX -->
-        <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#6366f1 1px, transparent 1px); background-size: 40px 40px;"></div>
+      <div class="flex-1 relative overflow-auto custom-scroll p-4 sm:p-12 md:p-16 lg:p-20 bg-slate-950/80">
+        <!-- Floor Grid FX: More refined for different pixel densities -->
+        <div class="absolute inset-0 pointer-events-none opacity-[0.05]" 
+             style="background-image: radial-gradient(#6366f1 0.5px, transparent 0.5px); background-size: clamp(20px, 4vw, 40px) clamp(20px, 4vw, 40px);"></div>
+        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-slate-950 via-transparent to-slate-950 opacity-40"></div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6 sm:gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4 gap-8 sm:gap-12 lg:gap-16 max-w-[1800px] mx-auto">
           <div v-for="(seller, idx) in sellersStore.presence" :key="seller._id" 
-               class="workspace-card group relative">
+               class="workspace-card group relative perspective-1000">
             
-            <!-- Desk Background (Glassmorphism) -->
-            <div class="relative p-5 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] bg-white/[0.03] border border-white/5 backdrop-blur-xl transition-all duration-500 group-hover:bg-white/[0.07] group-hover:border-indigo-500/30 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+            <!-- Workspace Environment (Cubicle) -->
+            <div class="relative p-6 sm:p-10 rounded-[2.5rem] bg-slate-900/40 border border-white/10 backdrop-blur-2xl transition-all duration-700 group-hover:bg-slate-800/60 group-hover:border-indigo-500/40 group-hover:translate-y-[-8px] group-hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.6)] overflow-hidden">
               
-              <!-- Status Glow -->
-              <div class="absolute -top-1 -left-1 w-24 h-24 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-700" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
+              <!-- Office Background Details -->
+              <div class="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white/5 to-transparent opacity-50"></div>
+              
+              <!-- Subtle Wall Lines -->
+              <div class="absolute top-0 right-12 w-px h-full bg-white/5"></div>
+              <div class="absolute top-0 right-14 w-px h-full bg-white/5"></div>
 
-              <div class="flex items-center sm:items-start gap-4 sm:gap-6">
-                <!-- Avatar Section -->
-                <div class="relative pt-4 sm:pt-6 shrink-0">
-                  <!-- Minimalist Desk -->
-                  <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[120%] h-2 sm:h-3 bg-[#3e2723] rounded-sm shadow-lg border-b-2 border-black/20 z-0">
-                    <div class="absolute inset-0 bg-white/5 rounded-sm"></div>
+              <!-- Status Aura -->
+              <div class="absolute -top-10 -left-10 w-48 h-48 blur-[80px] opacity-0 group-hover:opacity-30 transition-opacity duration-1000" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
+
+              <div class="flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-10 relative z-20">
+                
+                <!-- Interaction Zone: The Desk -->
+                <div class="relative pt-12 pb-2 shrink-0">
+                  
+                  <!-- Office Chair (Back) -->
+                  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-16 h-20 bg-slate-800/80 rounded-t-2xl border-t border-x border-white/10 -z-10 group-hover:translate-y-[-2px] transition-transform duration-500">
+                    <div class="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-white/5 rounded-full"></div>
                   </div>
-                  <!-- Desk Legs (Subtle) -->
-                  <div class="absolute bottom-0 left-2 w-0.5 h-2 bg-[#2d1b18] z-0"></div>
-                  <div class="absolute bottom-0 right-2 w-0.5 h-2 bg-[#2d1b18] z-0"></div>
 
-                  <div class="w-16 h-16 sm:w-24 sm:h-24 relative z-10">
+                  <!-- The Desk (Refined) -->
+                  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[140%] h-4 bg-[#3e2723] rounded-md shadow-[0_10px_20px_rgba(0,0,0,0.4)] border-b-4 border-black/30 z-20">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-white/10 rounded-md"></div>
+                    <!-- Desk Legs -->
+                    <div class="absolute -bottom-4 left-4 w-1 h-4 bg-[#2d1b18]"></div>
+                    <div class="absolute -bottom-4 right-4 w-1 h-4 bg-[#2d1b18]"></div>
+                  </div>
+
+                  <!-- Office Items -->
+                  <!-- Monitor -->
+                  <div class="absolute bottom-4 -right-2 w-14 h-12 bg-slate-900 border-2 border-slate-700 rounded-sm shadow-xl z-10 group-hover:rotate-[-2deg] transition-transform duration-500 hidden sm:block">
+                     <div class="absolute inset-1 bg-indigo-900/20 flex flex-col gap-1 p-1 overflow-hidden">
+                        <div class="w-full h-1 bg-indigo-500/30 rounded-full animate-pulse"></div>
+                        <div class="w-2/3 h-1 bg-indigo-500/20 rounded-full"></div>
+                        <div class="w-full h-3 bg-indigo-500/10 rounded-sm mt-auto"></div>
+                     </div>
+                     <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-2 bg-slate-800 rounded-b-sm"></div>
+                  </div>
+
+                  <!-- Coffee / Plant -->
+                  <div class="absolute bottom-4 -left-6 w-5 h-6 z-30 hidden sm:block">
+                     <!-- Mug -->
+                     <div class="w-4 h-4 bg-slate-200 rounded-sm relative">
+                        <div class="absolute -right-1 top-1 w-2 h-2 border-2 border-slate-200 rounded-full"></div>
+                        <div class="absolute -top-2 left-1 w-0.5 h-2 bg-white/20 animate-bounce" style="animation-duration: 2s"></div>
+                     </div>
+                  </div>
+
+                  <!-- The Agent -->
+                  <div class="w-20 h-20 sm:w-28 sm:h-28 relative z-10">
                     <PixelAgent 
+                      class="pixel-agent"
                       :status="seller.status" 
                       :color="getSellerIdentityColor(idx)" 
                       :frame="frame"
@@ -164,39 +202,42 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                 </div>
 
                 <!-- Info Section -->
-                <div class="flex-1 min-w-0">
-                  <div class="mb-3 sm:mb-4">
-                    <h4 class="text-sm sm:text-lg font-bold text-white tracking-tight mb-1 truncate">{{ seller.seller_name }}</h4>
-                    <div class="inline-flex items-center gap-1.5 px-2 py-0.5 sm:py-1 rounded-lg bg-black/40 border border-white/5">
-                      <div class="w-1.5 h-1.5 rounded-full" :style="{ backgroundColor: getStatusColor(seller.status) }"></div>
-                      <span class="text-[8px] sm:text-[10px] font-black uppercase tracking-wider text-slate-300">{{ t('presence.status.' + seller.status) }}</span>
+                <div class="flex-1 min-w-0 pb-2 text-center sm:text-left">
+                  <div class="mb-5">
+                    <h4 class="text-lg sm:text-2xl font-black text-white tracking-tight mb-2 truncate group-hover:text-indigo-300 transition-colors">{{ seller.seller_name }}</h4>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-md">
+                      <div class="w-2 h-2 rounded-full animate-pulse" :style="{ backgroundColor: getStatusColor(seller.status), boxShadow: `0 0 10px ${getStatusColor(seller.status)}` }"></div>
+                      <span class="text-[10px] font-black uppercase tracking-[0.15em] text-slate-300">{{ t('presence.status.' + seller.status) }}</span>
                     </div>
                   </div>
 
-                  <!-- Quick Stats -->
-                  <div class="grid grid-cols-2 gap-2 sm:gap-4">
-                    <div class="p-2 sm:p-3 rounded-xl bg-white/5 border border-white/5">
-                      <div class="text-[8px] font-bold text-slate-500 uppercase mb-0.5">{{ t('presence.stats.leads') }}</div>
-                      <div class="text-sm sm:text-lg font-black text-indigo-400">{{ seller.leadsToday || 0 }}</div>
+                  <!-- Dynamic Stats Grid -->
+                  <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                    <div class="group/stat p-3 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-indigo-500/30 transition-all duration-300">
+                      <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1 group-hover/stat:text-indigo-400 transition-colors">{{ t('presence.stats.leads') }}</div>
+                      <div class="text-xl sm:text-2xl font-black text-white group-hover/stat:scale-110 origin-left transition-transform duration-300">{{ seller.leadsToday || 0 }}</div>
                     </div>
-                    <div class="p-2 sm:p-3 rounded-xl bg-white/5 border border-white/5">
-                      <div class="text-[8px] font-bold text-slate-500 uppercase mb-0.5">{{ t('presence.stats.sales') }}</div>
-                      <div class="text-sm sm:text-lg font-black text-emerald-400">{{ seller.salesToday || 0 }}</div>
+                    <div class="group/stat p-3 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] hover:border-emerald-500/30 transition-all duration-300">
+                      <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1 group-hover/stat:text-emerald-400 transition-colors">{{ t('presence.stats.sales') }}</div>
+                      <div class="text-xl sm:text-2xl font-black text-white group-hover/stat:scale-110 origin-left transition-transform duration-300">{{ seller.salesToday || 0 }}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Realtime Action Badge -->
-              <div v-if="seller.status === 'active'" class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 px-3 sm:px-4 py-1 sm:py-1.5 bg-indigo-500 rounded-lg sm:rounded-xl shadow-lg shadow-indigo-500/20 text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest animate-bounce z-30">
-                {{ t('presence.alerts.processing') }}
+              <!-- Floating Action Indicator -->
+              <div v-if="seller.status === 'active'" class="absolute top-4 right-4 flex gap-1">
+                <span v-for="i in 3" :key="i" class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce" :style="{ animationDelay: (i * 0.1) + 's' }"></span>
               </div>
 
-              <!-- Overload / Support Alert -->
-              <div v-if="seller.supportNeeded" class="absolute -top-2 -left-2 sm:-top-3 sm:-left-3 px-3 sm:px-4 py-1 sm:py-1.5 bg-rose-600 rounded-lg sm:rounded-xl shadow-lg shadow-rose-600/40 text-white text-[8px] sm:text-[10px] font-black uppercase tracking-widest animate-pulse z-30 border border-white/20">
-                ⚠️ {{ t('presence.alerts.support') || '¡SOPORTE!' }}
+              <!-- Overload Badge -->
+              <div v-if="seller.supportNeeded" class="absolute top-4 left-4 px-3 py-1 bg-rose-500 text-white text-[10px] font-black uppercase tracking-tighter rounded-md animate-pulse border border-white/20 shadow-lg shadow-rose-500/40">
+                SOS
               </div>
             </div>
+
+          </div>
+        </div>
 
           </div>
         </div>
@@ -248,5 +289,28 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Fix for high-DPI screens and pixel art */
+.pixel-agent {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+@media (min-width: 1920px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 2560px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 </style>
