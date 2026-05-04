@@ -10,7 +10,7 @@ useHead({
   title: () => t('blog.seoTitle') || t('blog.title'),
   meta: [
     { name: 'description', content: () => t('blog.seoDescription') || t('blog.subtitle') },
-    { name: 'keywords', content: 'blog distribución leads, lead distribution, automatización ventas, CRM integración, gohighlevel, hubspot' },
+    
     { property: 'og:title', content: () => t('blog.title') },
     { property: 'og:description', content: () => t('blog.subtitle') },
     { property: 'og:type', content: 'website' },

@@ -900,6 +900,12 @@ export default {
           desc: this.$rt(items.presence.desc),
           iconClass: 'icon-purple',
           icon: '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>'
+        },
+        {
+          title: this.$rt(items.aiScoring?.title || 'AI Scoring'),
+          desc: this.$rt(items.aiScoring?.desc || 'Evaluación inteligente de leads con inteligencia artificial'),
+          iconClass: 'icon-blue',
+          icon: '<path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12l8-4"/><circle cx="12" cy="12" r="10"/>'
         }
       ]
     },

@@ -253,7 +253,7 @@
     "description": "Automatically distribute leads to your sellers without losing a single one. Daily/weekly limits, teams and percentage distribution. Integration with GoHighLevel, HubSpot, Kommo and more.",
     "ogTitle": "LeadDistro | Assign Every Lead Automatically - 0 Lost Leads",
     "ogDescription": "Automatic lead distribution system for agencies. Each lead is assigned to the right seller based on capacity and limits. Stop assigning manually.",
-    "keywords": "automatic lead distribution, auto assign leads, lead routing automation, lead distribution software, lead distribution GoHighLevel, lead distribution HubSpot, round robin with limits, lead distribution Kommo, distribute leads by percentage",
+    "keywords": "",
     "ogImage": "https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png",
     "schemaDescription": "LeadDistro automatically distributes each lead to the right seller — 0 lost leads, daily/weekly limits, teams and percentage distribution."
   },
@@ -584,6 +584,7 @@
       "seller": "Seller",
       "stage": "Stage",
       "source": "Source",
+      "aiScore": "AI Score",
       "actions": "Actions",
       "noLeads": "No leads found"
     },

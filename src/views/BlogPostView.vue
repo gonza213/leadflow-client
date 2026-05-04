@@ -55,7 +55,6 @@ useHead({
   title: () => post.value?.title ? `${post.value.title} | LeadDistro Blog` : 'LeadDistro Blog',
   meta: () => post.value ? [
     { name: 'description', content: post.value.description },
-    { name: 'keywords', content: post.value.keywords },
     { property: 'og:title', content: post.value.title },
     { property: 'og:description', content: post.value.description },
     { property: 'og:type', content: 'article' },

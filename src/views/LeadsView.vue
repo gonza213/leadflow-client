@@ -362,6 +362,7 @@ const getStateClass = (state) => {
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.seller') }}</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.stage') }}</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.source') }}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.aiScore') }}</th>
                 <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.actions') }}</th>
               </tr>
             </thead>
@@ -397,6 +398,18 @@ const getStateClass = (state) => {
                 </td>
                 <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
                   {{ lead.source || '-' }}
+                </td>
+                <td class="px-4 py-3 text-sm">
+                  <span v-if="lead.ai_score !== null && lead.ai_score !== undefined" 
+                    :class="[
+                      'px-2 py-1 text-xs font-medium rounded-full',
+                      lead.ai_score >= 70 ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-400' :
+                      lead.ai_score >= 40 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-400' :
+                      'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400'
+                    ]">
+                    {{ lead.ai_score }}
+                  </span>
+                  <span v-else class="text-gray-400 text-xs">-</span>
                 </td>
                 <td v-if="authStore.canEdit" class="px-4 py-3 text-sm">
                   <div class="flex items-center gap-2">

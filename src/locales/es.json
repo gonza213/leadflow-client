@@ -255,7 +255,7 @@
     "description": "Distribuí leads automáticamente a tus vendedores sin perder ni uno. Límites por vendedor, equipos y distribución por porcentaje. Integración con GoHighLevel, HubSpot, Kommo y más.",
     "ogTitle": "LeadDistro | Asigna cada lead automáticamente - 0 Leads Perdidos",
     "ogDescription": "Sistema de distribución automática de leads para agencias. Cada lead se asigna al vendedor correcto según capacidad y límites. Olvidate de asignar manualmente.",
-    "keywords": "distribución automática de leads, asignar leads automáticamente, lead routing automation, lead distribution software, distribución leads GoHighLevel, distribución leads HubSpot, round robin con límites, lead distribution Kommo, distribuir leads por porcentaje",
+    "keywords": "",
     "ogImage": "https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png",
     "schemaDescription": "LeadDistro distribuye cada lead automáticamente al vendedor correcto — 0 leads perdidos, límites diarios/semanales, equipos y distribución por porcentaje."
   },
@@ -305,6 +305,10 @@
         "presence": {
           "title": "Oficina Virtual en Vivo",
           "desc": "Visualiza a tu equipo en un entorno pixel-art interactivo que muestra quién está llamando, inactivo o ausente en tiempo real."
+        },
+        "aiScoring": {
+          "title": "AI Scoring - Evaluación Inteligente de Leads",
+          "desc": "Cada lead recibe un score de calidad (0-100) generado por IA. Evalúa email corporativo, teléfono, origen, tags y etapa. Los mejores leads van a tus mejores vendedores."
         }
       }
     },
@@ -594,6 +598,7 @@
       "seller": "Vendedor",
       "stage": "Etapa",
       "source": "Source",
+      "aiScore": "Score IA",
       "actions": "Acciones",
       "noLeads": "No se encontraron leads"
     },
