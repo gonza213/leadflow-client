@@ -113,22 +113,26 @@ const handleDelete = async () => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  const tz = configStore.config?.timezone || 'America/New_York'
+  return new Intl.DateTimeFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+    timeZone: tz,
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  })
+  }).format(new Date(date))
 }
 
 const formatDateShort = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  const tz = configStore.config?.timezone || 'America/New_York'
+  return new Intl.DateTimeFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+    timeZone: tz,
     day: '2-digit',
     month: '2-digit',
     year: '2-digit'
-  })
+  }).format(new Date(date))
 }
 
 const getStateClass = (state) => {
