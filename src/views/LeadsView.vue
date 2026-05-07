@@ -318,9 +318,20 @@ const getStateClass = (state) => {
           </div>
 
           <div class="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-            <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary-50 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">
-              {{ lead.opportunity_stage }}
-            </span>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-primary-50 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">
+                {{ lead.opportunity_stage }}
+              </span>
+              <span v-if="lead.ai_score !== null && lead.ai_score !== undefined" 
+                :class="[
+                  'px-2 py-0.5 text-xs font-medium rounded-full',
+                  lead.ai_score >= 70 ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-400' :
+                  lead.ai_score >= 40 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-400' :
+                  'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400'
+                ]">
+                AI: {{ lead.ai_score }}
+              </span>
+            </div>
             <div class="flex items-center gap-3">
               <span v-if="lead.source" class="text-xs text-gray-400">{{ lead.source }}</span>
               <div v-if="authStore.canEdit" class="flex items-center gap-2">
@@ -440,7 +451,7 @@ const getStateClass = (state) => {
                 </td>
               </tr>
               <tr v-if="leadsStore.leadsList.length === 0">
-                <td :colspan="authStore.isManager ? 10 : 9" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td :colspan="authStore.isManager ? 11 : 10" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   {{ t('leads.table.noLeads') }}
                 </td>
               </tr>
