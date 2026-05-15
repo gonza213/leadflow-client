@@ -143,6 +143,14 @@
         "metrics": {
           "title": "Dashboard de métricas em tempo real",
           "desc": "Visualize leads por vendedor, etapas do funil, status e distribuição por equipes. Filtre por período, vendedor, equipe ou etapa."
+        },
+        "presence": {
+          "title": "Escritório Virtual ao Vivo",
+          "desc": "Visualize sua equipe em um ambiente interativo de arte pixelada mostrando quem está ligando, disponível ou ausente em tempo real."
+        },
+        "aiScoring": {
+          "title": "AI Scoring - Avaliação Inteligente de Leads",
+          "desc": "Cada lead recebe uma pontuação de qualidade (0-100) gerada por IA. Avalia e-mail corporativo, telefone, origem, tags e etapa. Os melhores leads vão para os seus melhores vendedores."
         }
       }
     },
