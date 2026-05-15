@@ -4,9 +4,11 @@ import { useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/auth'
+import { useLocationRestriction } from '../composables/useLocationRestriction'
 
 const { t, tm, rt, locale } = useI18n()
 const authStore = useAuthStore()
+const { checkLocation } = useLocationRestriction()
 
 useHead({
   title: () => t('meta.title'),
@@ -202,6 +204,7 @@ const resetHeroInteraction = () => {
 }
 
 onMounted(() => {
+  checkLocation()
   setupObserver()
   revealObserver = setupRevealObserver()
   document.documentElement.style.scrollBehavior = 'smooth'
