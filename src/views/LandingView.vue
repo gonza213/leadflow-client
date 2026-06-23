@@ -2074,4 +2074,72 @@ export default {
 .reveal.is-visible .step-item:nth-child(2) { transition-delay: 0.2s; }
 .reveal.is-visible .step-item:nth-child(3) { transition-delay: 0.3s; }
 
+/* ===== FUTURISTIC LAYER (override-only, no markup changes) ===== */
+
+/* Animated perspective grid + drifting aurora behind everything */
+.landing-root::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+  animation: gridDrift 22s linear infinite;
+}
+.landing-root::after {
+  content: ''; position: fixed; inset: -20% -20% auto -20%; height: 80vh; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(40% 60% at 20% 30%, rgba(59,130,246,0.14), transparent 60%),
+    radial-gradient(40% 60% at 80% 20%, rgba(139,92,246,0.12), transparent 60%),
+    radial-gradient(40% 60% at 60% 70%, rgba(6,182,212,0.10), transparent 60%);
+  filter: blur(40px);
+  animation: auroraShift 18s ease-in-out infinite alternate;
+}
+@keyframes gridDrift { to { background-position: 48px 48px, 48px 48px; } }
+@keyframes auroraShift {
+  0%   { transform: translate3d(-4%, 0, 0) scale(1); }
+  100% { transform: translate3d(4%, 3%, 0) scale(1.1); }
+}
+/* keep real content above the grid/aurora */
+.landing-nav, .hero, .section, .cta-section, .landing-footer { position: relative; z-index: 1; }
+
+/* Rotating neon border on hover for the key cards (role-card keeps its top bar) */
+.feat-card, .integration-card, .pricing-card {
+  --neon: conic-gradient(from var(--a, 0deg), #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
+}
+.feat-card::before, .integration-card::before, .pricing-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+  background: var(--neon);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity 0.4s; pointer-events: none; z-index: 2;
+}
+.feat-card:hover::before,
+.integration-card:hover::before, .pricing-card:hover::before {
+  opacity: 0.8; animation: borderSpin 4s linear infinite;
+}
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes borderSpin { to { --a: 360deg; } }
+
+/* Neon glow pulse on the gradient hero title + cyan halo on primary CTAs */
+.gradient-text {
+  filter: drop-shadow(0 0 18px rgba(99,102,241,0.45));
+  animation: titlePulse 4s ease-in-out infinite;
+}
+@keyframes titlePulse {
+  0%,100% { filter: drop-shadow(0 0 14px rgba(99,102,241,0.35)); }
+  50%     { filter: drop-shadow(0 0 26px rgba(6,182,212,0.55)); }
+}
+.btn-primary { box-shadow: 0 4px 24px rgba(59,130,246,0.35), 0 0 0 1px rgba(6,182,212,0.25) inset, 0 0 30px rgba(6,182,212,0.18); }
+
+/* Sharper glassmorphism on the nav once scrolled */
+.nav-scrolled { background: rgba(6,11,20,0.6); backdrop-filter: blur(22px) saturate(160%); box-shadow: 0 1px 0 rgba(99,102,241,0.25); }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-root::before, .landing-root::after, .gradient-text,
+  .feat-card:hover::before,
+  .integration-card:hover::before, .pricing-card:hover::before { animation: none; }
+}
+
 </style>
