@@ -32,6 +32,12 @@ api.interceptors.response.use(
       localStorage.removeItem('user')
       window.location.href = '/login'
     }
+    // Suscripción vencida/inactiva detectada a mitad de sesión: volver al login (muestra el banner de renovación)
+    if (error.response?.status === 403 && error.response?.data?.message === 'subscription_inactive') {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      window.location.href = '/login'
+    }
     return Promise.reject(error)
   }
 )
