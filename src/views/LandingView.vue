@@ -719,8 +719,8 @@ onUnmounted(() => {
             </button>
           </div>
 
-          <!-- Setup opcional (solo español: el onboarding se coordina por WhatsApp y solo damos soporte en español) -->
-          <div v-if="locale === 'es'" class="pricing-card pricing-addon">
+          <!-- Setup opcional -->
+          <div class="pricing-card pricing-addon">
             <div class="pricing-optional">{{ t('landing.pricing.optional') }}</div>
             <h3 class="pricing-name">{{ t('landing.pricing.setup.title') }}</h3>
             <div class="pricing-price">
@@ -732,7 +732,8 @@ onUnmounted(() => {
             <ul class="pricing-features">
               <li v-for="f in $tm('landing.pricing.setup.features')" :key="f">✓ {{ $rt(f) }}</li>
             </ul>
-            <a href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
+            <!-- Botón solo en español: el setup se coordina por WhatsApp y solo damos soporte en español -->
+            <a v-if="locale === 'es'" href="https://wa.me/542212204194?text=Hola!%20Me%20interesa%20el%20setup%20de%20LeadDistro%20con%20mi%20CRM" target="_blank" class="btn-secondary btn-full">
               {{ t('landing.pricing.setup.cta') }}
             </a>
           </div>
