@@ -29,7 +29,7 @@ const authStore = useAuthStore()
           {{ t('presence.howItWorks.title', '¿Cómo funciona?') }}
         </h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-          {{ t('presence.howItWorks.desc', 'Este panel muestra la actividad real de tus vendedores. Un vendedor se marca como activo cuando realiza una actualización en cualquier lead (cambio de etapa, nota, etc.). Si no hay actividad por más de 15 minutos, pasará a estado inactivo.') }}
+          {{ t('presence.howItWorks.desc', 'Este panel muestra la actividad real de tus vendedores. Un vendedor se marca como activo cuando recibe o actualiza un lead (asignación, cambio de etapa, etc.). Si no hay actividad por más de 15 minutos pasa a inactivo, y a las horas sin movimiento queda offline.') }}
         </p>
       </div>
       <div class="card">

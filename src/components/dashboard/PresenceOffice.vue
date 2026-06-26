@@ -105,7 +105,7 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                     class="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/[0.08] transition-all group cursor-default">
                   <div class="flex justify-between items-center mb-2">
                      <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">{{ seller.seller_name }}</span>
-                     <span class="text-[10px] font-medium text-slate-500">{{ new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) }}</span>
+                     <span class="text-[10px] font-medium text-slate-500">{{ seller.lastActive ? new Date(seller.lastActive).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '—' }}</span>
                   </div>
                   <div class="text-[11px] text-slate-400 leading-relaxed italic">
                      "{{ seller.lastAction }}"
@@ -199,7 +199,7 @@ const getSellerIdentityColor = (index) => IDENTITY_COLORS[index % IDENTITY_COLOR
                     </div>
                     <div class="flex-1 min-w-[70px] sm:min-w-[90px] p-2 sm:p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-all">
                       <div class="text-[7px] sm:text-[9px] font-bold text-slate-500 uppercase tracking-widest">{{ t('presence.stats.sales') }}</div>
-                      <div class="text-sm sm:text-xl font-black text-white">{{ seller.salesToday || 0 }}</div>
+                      <div class="text-sm sm:text-xl font-black text-white">{{ seller.salesPeriod || 0 }}</div>
                     </div>
                   </div>
                 </div>
