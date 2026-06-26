@@ -1,6 +1,5 @@
 import { ViteSSG } from 'vite-ssg'
 import { createPinia } from 'pinia'
-import { createHead } from '@unhead/vue'
 import i18n from './i18n'
 import App from './App.vue'
 import { routes } from './router'
@@ -11,10 +10,10 @@ export const createApp = ViteSSG(
   App,
   { routes, base: '/' },
   ({ app, router }) => {
+    // El head lo provee vite-ssg (createHead + app.use internos): así useHead
+    // se renderiza en el HTML estático. No crear otra instancia acá.
     const pinia = createPinia()
-    const head = createHead()
     app.use(pinia)
-    app.use(head)
     app.use(i18n)
 
     // Actualizar atributo lang en <html>
