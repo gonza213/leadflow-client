@@ -717,6 +717,7 @@ onUnmounted(() => {
             <button @click="router.push('/register')" class="btn-primary btn-full">
               {{ t('landing.pricing.cta') }}
             </button>
+            <p class="pricing-trial">{{ t('landing.pricing.monthly.trialNote') }}</p>
           </div>
 
           <!-- Setup opcional -->
@@ -1692,6 +1693,7 @@ export default {
 .flag-btn.active { background: #fff; opacity: 1; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
 .dark .flag-btn.active { background: #334155; }
 .pricing-note { text-align: center; color: #cbd5e1; font-size: 0.85rem; margin-top: 28px; }
+.pricing-trial { text-align: center; color: #94a3b8; font-size: 0.8rem; margin-top: 12px; }
 @media (max-width: 640px) {
   .pricing-grid { grid-template-columns: 1fr; }
   
