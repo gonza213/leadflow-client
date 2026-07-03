@@ -55,6 +55,7 @@
     "entering": "Signing in...",
     "recoverPassword": "Recover Password",
     "sentLink": "We've sent a link to your email to recover your password.",
+    "forgotPrompt": "Enter your email and we'll send you a link to reset your password.",
     "sendLink": "Send Link",
     "errorEmpty": "Please complete all fields",
     "subscriptionInactive": "Your subscription is inactive",

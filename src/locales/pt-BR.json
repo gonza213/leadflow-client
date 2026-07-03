@@ -62,6 +62,7 @@
     "recoverPassword": "Recuperar senha",
     "sendLink": "Enviar link",
     "sentLink": "Se o e-mail estiver registrado, você receberá um link para redefinir sua senha.",
+    "forgotPrompt": "Digite seu e-mail e enviaremos um link para redefinir sua senha.",
     "companyName": "Nome da empresa",
     "companyPlaceholder": "Ex: Minha Agência",
     "yourName": "Seu nome",

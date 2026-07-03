@@ -191,7 +191,7 @@ const handleForgot = async () => {
         </div>
 
         <template v-else>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('auth.sentLink') }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ t('auth.forgotPrompt') }}</p>
           <div class="space-y-3">
             <input
               v-model="forgotEmail"

@@ -57,6 +57,7 @@
     "entering": "Ingresando...",
     "recoverPassword": "Recuperar Contraseña",
     "sentLink": "Te enviamos un link a tu email para recuperar tu contraseña.",
+    "forgotPrompt": "Ingresá tu email y te enviaremos un link para recuperar tu contraseña.",
     "sendLink": "Enviar Link",
     "errorEmpty": "Por favor, completa todos los campos",
     "subscriptionInactive": "Tu suscripción está inactiva",
