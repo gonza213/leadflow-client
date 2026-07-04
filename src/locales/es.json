@@ -87,6 +87,31 @@
     },
     "logout": "Cerrar sesión"
   },
+  "accounts": {
+    "myAccounts": "Mis empresas",
+    "title": "Mis empresas",
+    "subtitle": "Elegí la empresa a la que querés entrar o creá una nueva",
+    "empty": "Todavía no tenés ninguna empresa. Creá la primera para empezar.",
+    "create": "Crear nueva empresa",
+    "createTitle": "Nueva empresa",
+    "creating": "Creando...",
+    "enter": "Entrar",
+    "renew": "Renovar suscripción",
+    "createError": "Error al crear la empresa",
+    "enterError": "Error al entrar a la empresa",
+    "loadError": "Error al cargar tus empresas",
+    "companies": "Empresas",
+    "companyFilter": "Empresa",
+    "allCompanies": "Todas las empresas",
+    "leadsByCompany": "Leads por empresa",
+    "dashboardSubtitle": "Visión general de todas tus empresas",
+    "status": {
+      "trial": "Prueba — {n} días restantes",
+      "active": "Activa",
+      "inactive": "Vencida",
+      "lifetime": "Vitalicia"
+    }
+  },
   "profile": {
     "title": "Mi Perfil",
     "subtitle": "Gestioná tu información personal y seguridad",
@@ -1004,6 +1029,8 @@
       "filterStatus": "Filtrar por estado",
       "count": "{n} tenants",
       "noTenants": "No hay tenants para mostrar",
+      "legacyGroup": "Sin dueño (clientes clásicos)",
+      "ownerLabel": "Dueño",
       "deleteConfirm": "¿Estás seguro de eliminar el tenant \"{name}\"? Esta acción eliminará TODOS los datos asociados (usuarios, leads, vendedores, configuración) y no se puede deshacer.",
       "detail": {
         "title": "Detalle del Tenant",

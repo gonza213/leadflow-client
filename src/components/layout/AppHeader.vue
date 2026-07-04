@@ -62,6 +62,17 @@ const handleToggleDarkMode = () => {
         class="hidden sm:inline-flex px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium">
         {{ authStore.user.tenant.name }}
       </span>
+      <!-- adminclient: acceso al selector de cuentas -->
+      <router-link
+        v-if="authStore.isAdminClient"
+        to="/cuentas"
+        class="hidden sm:inline-flex items-center gap-1 px-3 py-1 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors border border-gray-200 dark:border-gray-700"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+        {{ t('accounts.myAccounts') }}
+      </router-link>
     </div>
 
     <div class="flex items-center gap-2 lg:gap-3">

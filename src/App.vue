@@ -17,6 +17,7 @@ const verifyError = ref('')
 const verifySuccess = ref(false)
 
 const showLayout = computed(() => {
+  // El portal del dueño (/cuentas*) también usa el layout (header + sidebar propio)
   return authStore.isAuthenticated && route.name !== 'Login' && route.name !== 'Landing'
 })
 
@@ -40,9 +41,9 @@ const handleVerifyPayment = async () => {
   <div class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors">
     <template v-if="showLayout">
       <AppHeader />
-      <!-- Banner trial -->
+      <!-- Banner trial (adminclient lo gestiona en "Mis empresas", no acá) -->
       <div
-        v-if="authStore.subscriptionStatus === 'trial' && authStore.trialDaysLeft !== null"
+        v-if="authStore.subscriptionStatus === 'trial' && authStore.trialDaysLeft !== null && !authStore.isAdminClient"
         class="fixed top-16 left-0 right-0 z-40 lg:pl-64"
       >
         <div :class="['px-4 py-2 text-sm font-medium', authStore.trialDaysLeft <= 2 ? 'bg-red-500 text-white' : 'bg-yellow-400 text-yellow-900']">
@@ -69,7 +70,7 @@ const handleVerifyPayment = async () => {
       </div>
       <div class="flex min-w-0">
         <AppSidebar />
-        <main :class="['flex-1 w-0 min-w-0 p-4 lg:p-6 lg:ml-64 overflow-x-hidden', authStore.subscriptionStatus === 'trial' ? 'mt-24' : 'mt-16']">
+        <main :class="['flex-1 w-0 min-w-0 p-4 lg:p-6 lg:ml-64 overflow-x-hidden', authStore.subscriptionStatus === 'trial' && !authStore.isAdminClient ? 'mt-24' : 'mt-16']">
           <router-view />
         </main>
       </div>

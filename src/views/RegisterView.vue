@@ -18,7 +18,6 @@ onMounted(() => {
   checkLocation()
 })
 
-const companyName = ref('')
 const name = ref('')
 const email = ref('')
 const password = ref('')
@@ -29,7 +28,7 @@ const error = ref('')
 
 const handleSubmit = async () => {
   error.value = ''
-  if (!companyName.value || !name.value || !email.value || !password.value) {
+  if (!name.value || !email.value || !password.value) {
     error.value = t('auth.requiredFields')
     return
   }
@@ -43,8 +42,8 @@ const handleSubmit = async () => {
   }
   loading.value = true
   try {
-    const res = await api.post('/auth/register-tenant', {
-      companyName: companyName.value,
+    // Crea solo la identidad del dueño; las cuentas (tenants) se crean en /cuentas
+    const res = await api.post('/auth/register-owner', {
       name: name.value,
       email: email.value,
       password: password.value
@@ -54,7 +53,7 @@ const handleSubmit = async () => {
     localStorage.setItem('user', JSON.stringify(user))
     authStore.token = token
     authStore.user = user
-    router.push('/')
+    router.push('/cuentas')
   } catch (e) {
     error.value = e.response?.data?.message || t('auth.registerError')
   } finally {
@@ -91,11 +90,6 @@ const handleSubmit = async () => {
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ t('hero.trust.trial') }}, {{ t('hero.trust.noCard') }}</p>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
-          <div>
-            <label class="label">{{ t('auth.companyName') }}</label>
-            <input v-model="companyName" type="text" class="input" :placeholder="t('auth.companyPlaceholder')" autocomplete="organization" />
-          </div>
-
           <div>
             <label class="label">{{ t('auth.yourName') }}</label>
             <input v-model="name" type="text" class="input" :placeholder="t('auth.namePlaceholder')" autocomplete="name" />

@@ -78,6 +78,31 @@
     "acceptTermsError": "Você deve aceitar os Termos de Serviço e a Política de Privacidade para continuar",
     "logout": "Sair"
   },
+  "accounts": {
+    "myAccounts": "Minhas empresas",
+    "title": "Minhas empresas",
+    "subtitle": "Escolha a empresa que você quer acessar ou crie uma nova",
+    "empty": "Você ainda não tem nenhuma empresa. Crie a primeira para começar.",
+    "create": "Criar nova empresa",
+    "createTitle": "Nova empresa",
+    "creating": "Criando...",
+    "enter": "Entrar",
+    "renew": "Renovar assinatura",
+    "createError": "Erro ao criar a empresa",
+    "enterError": "Erro ao acessar a empresa",
+    "loadError": "Erro ao carregar suas empresas",
+    "companies": "Empresas",
+    "companyFilter": "Empresa",
+    "allCompanies": "Todas as empresas",
+    "leadsByCompany": "Leads por empresa",
+    "dashboardSubtitle": "Visão geral de todas as suas empresas",
+    "status": {
+      "trial": "Teste — {n} dias restantes",
+      "active": "Ativa",
+      "inactive": "Vencida",
+      "lifetime": "Vitalícia"
+    }
+  },
   "profile": {
     "title": "Meu Perfil",
     "subtitle": "Gerencie suas informações pessoais e segurança",
@@ -980,6 +1005,8 @@
       "filterStatus": "Filtrar por estado",
       "count": "{n} tenants",
       "noTenants": "Não há tenants para exibir",
+      "legacyGroup": "Sem dono (clientes clássicos)",
+      "ownerLabel": "Dono",
       "deleteConfirm": "Tem certeza que deseja excluir o tenant \"{name}\"? Esta ação excluirá TODOS os dados associados (usuários, leads, vendedores, configuração) e não pode ser desfeita.",
       "detail": {
         "title": "Detalhe do Tenant",

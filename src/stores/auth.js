@@ -13,7 +13,8 @@ export const useAuthStore = defineStore('auth', () => {
   const tenantSlug = computed(() => user.value?.tenant?.slug || null)
   const userRole = computed(() => user.value?.role || null)
   const isSuperAdmin = computed(() => user.value?.role === 'superadmin')
-  const isManager = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
+  const isAdminClient = computed(() => user.value?.role === 'adminclient')
+  const isManager = computed(() => ['superadmin', 'adminclient', 'manager'].includes(user.value?.role))
   const subscriptionStatus = computed(() => user.value?.tenant?.subscriptionStatus || null)
   const trialDaysLeft = computed(() => {
     const endsAt = user.value?.tenant?.trialEndsAt
@@ -22,11 +23,11 @@ export const useAuthStore = defineStore('auth', () => {
     return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)))
   })
   const isSeller = computed(() => user.value?.role === 'seller')
-  const isViewer = computed(() => ['superadmin', 'manager', 'viewer'].includes(user.value?.role))
+  const isViewer = computed(() => ['superadmin', 'adminclient', 'manager', 'viewer'].includes(user.value?.role))
   // Permisos especificos
-  const canCreate = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
-  const canDelete = computed(() => ['superadmin', 'manager'].includes(user.value?.role))
-  const canEdit = computed(() => ['superadmin', 'manager', 'viewer', 'seller'].includes(user.value?.role))
+  const canCreate = computed(() => ['superadmin', 'adminclient', 'manager'].includes(user.value?.role))
+  const canDelete = computed(() => ['superadmin', 'adminclient', 'manager'].includes(user.value?.role))
+  const canEdit = computed(() => ['superadmin', 'adminclient', 'manager', 'viewer', 'seller'].includes(user.value?.role))
 
   async function login(email, password) {
     loading.value = true
@@ -60,11 +61,24 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       const response = await authApi.getMe()
-      user.value = response.data.user
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+      const fresh = response.data.user
+      // adminclient: el server no conoce el tenant seleccionado (viene null);
+      // preservar la selección local y refrescar el estado de suscripción del dueño.
+      // El acceso real lo valida el backend por ownerId.
+      if (fresh.role === 'adminclient' && !fresh.tenant && user.value?.tenant) {
+        fresh.tenant = { ...user.value.tenant, ...(fresh.ownerBilling || {}) }
+      }
+      user.value = fresh
+      localStorage.setItem('user', JSON.stringify(fresh))
     } catch (err) {
       logout()
     }
+  }
+
+  // adminclient: fija el contexto del tenant elegido en la página de cuentas
+  function setActiveAccount(userData) {
+    user.value = userData
+    localStorage.setItem('user', JSON.stringify(userData))
   }
 
   function logout() {
@@ -83,6 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
     tenantSlug,
     userRole,
     isSuperAdmin,
+    isAdminClient,
     isManager,
     isSeller,
     isViewer,
@@ -93,6 +108,7 @@ export const useAuthStore = defineStore('auth', () => {
     canEdit,
     login,
     fetchUser,
+    setActiveAccount,
     logout
   }
 })

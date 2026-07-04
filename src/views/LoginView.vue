@@ -39,6 +39,9 @@ const handleSubmit = async () => {
   if (result.success) {
     if (authStore.isSuperAdmin) {
       router.push('/admin/tenants')
+    } else if (authStore.isAdminClient) {
+      // dueño multi-cuenta: siempre pasa por el selector de cuentas
+      router.push('/cuentas')
     } else {
       router.push('/')
     }

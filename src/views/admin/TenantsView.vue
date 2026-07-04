@@ -25,6 +25,42 @@ const filteredTenants = computed(() => {
   )
 })
 
+// Agrupar por dueño (adminclient); los tenants clásicos sin dueño van en su propia sección
+const groupedTenants = computed(() => {
+  const groups = new Map()
+  const legacy = []
+
+  for (const tenant of filteredTenants.value) {
+    if (tenant.ownerId?._id) {
+      const key = tenant.ownerId._id
+      if (!groups.has(key)) {
+        groups.set(key, { owner: tenant.ownerId, tenants: [] })
+      }
+      groups.get(key).tenants.push(tenant)
+    } else {
+      legacy.push(tenant)
+    }
+  }
+
+  const result = [...groups.values()].sort((a, b) => a.owner.name.localeCompare(b.owner.name))
+  if (legacy.length > 0) {
+    result.push({ owner: null, tenants: legacy })
+  }
+  return result
+})
+
+const ownerStatusClass = (status) => {
+  switch (status) {
+    case 'active':
+    case 'lifetime':
+      return 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+    case 'trial':
+      return 'bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
+    default:
+      return 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+  }
+}
+
 const handleCreateTenant = async (data) => {
   const result = await tenantsStore.createTenant(data)
   if (result.success) {
@@ -83,15 +119,37 @@ const handleDelete = async (tenantId, tenantName) => {
       {{ t('admin.tenants.noTenants') }}
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <TenantCard
-        v-for="tenant in filteredTenants"
-        :key="tenant._id"
-        :tenant="tenant"
-        @toggle-active="handleToggleActive"
-        @delete="handleDelete"
-        @subscription-updated="tenantsStore.fetchTenants()"
-      />
+    <div v-else class="space-y-8">
+      <section v-for="group in groupedTenants" :key="group.owner?._id || 'legacy'">
+        <!-- Encabezado del grupo: dueño (con su suscripción) o clientes clásicos -->
+        <div class="flex flex-wrap items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+          <template v-if="group.owner">
+            <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            <span class="font-semibold text-gray-900 dark:text-white">{{ group.owner.name }}</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ group.owner.email }}</span>
+            <span class="px-2 py-0.5 rounded-full text-xs font-medium" :class="ownerStatusClass(group.owner.subscriptionStatus)">
+              {{ t(`subscription.status.${group.owner.subscriptionStatus}`) }}
+            </span>
+          </template>
+          <template v-else>
+            <span class="font-semibold text-gray-500 dark:text-gray-400">{{ t('admin.tenants.legacyGroup') }}</span>
+          </template>
+          <span class="ml-auto text-xs text-gray-400">{{ t('admin.tenants.count', { n: group.tenants.length }) }}</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TenantCard
+            v-for="tenant in group.tenants"
+            :key="tenant._id"
+            :tenant="tenant"
+            @toggle-active="handleToggleActive"
+            @delete="handleDelete"
+            @subscription-updated="tenantsStore.fetchTenants()"
+          />
+        </div>
+      </section>
     </div>
 
     <CreateTenantModal

@@ -29,12 +29,19 @@ export const createApp = ViteSSG(
     router.beforeEach((to, _from, next) => {
       const authStore = useAuthStore()
 
+      const isAdminClient = authStore.userRole === 'adminclient'
+
       if (to.meta.public) {
         next()
       } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
         next('/landing')
       } else if (to.meta.guest && authStore.isAuthenticated) {
-        next(authStore.isSuperAdmin ? '/admin/tenants' : '/')
+        next(authStore.isSuperAdmin ? '/admin/tenants' : (isAdminClient ? '/cuentas' : '/'))
+      } else if (to.meta.adminClientOnly && !isAdminClient) {
+        next('/')
+      } else if (isAdminClient && to.meta.requiresAuth && !to.meta.adminClientOnly && !to.meta.ownerAllowed && !authStore.tenantSlug) {
+        // dueño sin tenant seleccionado: siempre al portal de cuentas
+        next('/cuentas')
       } else if (to.meta.requiresSuperAdmin && !authStore.isSuperAdmin) {
         next('/')
       } else if (to.meta.requiresManager && !authStore.isManager) {

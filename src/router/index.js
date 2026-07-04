@@ -30,6 +30,24 @@ export const routes = [
     meta: { public: true }
   },
   {
+    path: '/cuentas',
+    name: 'Accounts',
+    component: () => import('../views/AccountsView.vue'),
+    meta: { requiresAuth: true, adminClientOnly: true }
+  },
+  {
+    path: '/cuentas/dashboard',
+    name: 'OwnerDashboard',
+    component: () => import('../views/OwnerDashboardView.vue'),
+    meta: { requiresAuth: true, adminClientOnly: true }
+  },
+  {
+    path: '/cuentas/suscripcion',
+    name: 'OwnerSubscription',
+    component: () => import('../views/OwnerSubscriptionView.vue'),
+    meta: { requiresAuth: true, adminClientOnly: true }
+  },
+  {
     path: '/',
     name: 'Dashboard',
     component: () => import('../views/DashboardView.vue'),
@@ -45,7 +63,8 @@ export const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/ProfileView.vue'),
-    meta: { requiresAuth: true }
+    // ownerAllowed: el dueño (adminclient) puede entrar sin tener empresa seleccionada
+    meta: { requiresAuth: true, ownerAllowed: true }
   },
   {
     path: '/sellers',

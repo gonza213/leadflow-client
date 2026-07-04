@@ -32,11 +32,23 @@ api.interceptors.response.use(
       localStorage.removeItem('user')
       window.location.href = '/login'
     }
-    // Suscripción vencida/inactiva detectada a mitad de sesión: volver al login (muestra el banner de renovación)
+    // Suscripción vencida/inactiva detectada a mitad de sesión
     if (error.response?.status === 403 && error.response?.data?.message === 'subscription_inactive') {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      window.location.href = '/login'
+      const storedUser = JSON.parse(localStorage.getItem('user') || 'null')
+      if (storedUser?.role === 'adminclient') {
+        // dueño multi-cuenta: solo esa subcuenta está vencida; volver a sus cuentas
+        // (dentro del portal /cuentas* cada vista maneja el error localmente)
+        if (!window.location.pathname.startsWith('/cuentas')) {
+          storedUser.tenant = null
+          localStorage.setItem('user', JSON.stringify(storedUser))
+          window.location.href = '/cuentas'
+        }
+      } else {
+        // usuario de un solo tenant: volver al login (muestra el banner de renovación)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }
@@ -45,6 +57,10 @@ api.interceptors.response.use(
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   register: (data) => api.post('/auth/register', data),
+  registerOwner: (data) => api.post('/auth/register-owner', data),
+  getAccounts: () => api.get('/auth/accounts'),
+  createAccount: (companyName) => api.post('/auth/accounts', { companyName }),
+  enterAccount: (id) => api.post(`/auth/accounts/${id}/enter`),
   getMe: () => api.get('/auth/me'),
   updateProfile: (data) => api.patch('/auth/profile', data)
 }
@@ -89,10 +105,20 @@ export const adminApi = {
   getGoogleAuthUrl: () => api.get('/admin/auth/google')
 }
 
+// Tenant activo (necesario para adminclient, cuyo tenant no vive en el JWT;
+// para managers el backend usa su propio tenant e ignora este valor)
+const activeTenantId = () => {
+  try {
+    return JSON.parse(localStorage.getItem('user') || 'null')?.tenant?.id || undefined
+  } catch {
+    return undefined
+  }
+}
+
 export const subscriptionApi = {
-  verify: (tenantId) => api.post('/subscription/verify', { tenantId }),
-  cancel: () => api.post('/subscription/cancel'),
-  getMyInvoices: () => api.get('/subscription/invoices')
+  verify: (tenantId) => api.post('/subscription/verify', { tenantId: tenantId || activeTenantId() }),
+  cancel: () => api.post('/subscription/cancel', { tenantId: activeTenantId() }),
+  getMyInvoices: () => api.get('/subscription/invoices', { params: { tenantId: activeTenantId() } })
 }
 
 export const usersApi = {

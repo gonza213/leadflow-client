@@ -15,14 +15,21 @@ const authStore = useAuthStore()
 const { t } = useI18n()
 const activeTab = ref('teams')
 
-const tabs = [
-  { id: 'teams', name: t('config.tabs.teams'), icon: 'users' },
-  { id: 'period', name: t('config.tabs.period'), icon: 'calendar' },
-  { id: 'stages', name: t('config.tabs.stages'), icon: 'layers' },
-  { id: 'fallback', name: t('config.tabs.fallback'), icon: 'shield' },
-  { id: 'summary', name: t('config.tabs.summary'), icon: 'sparkles' },
-  { id: 'subscription', name: t('config.tabs.subscription'), icon: 'credit-card' }
-]
+const tabs = computed(() => {
+  const items = [
+    { id: 'teams', name: t('config.tabs.teams'), icon: 'users' },
+    { id: 'period', name: t('config.tabs.period'), icon: 'calendar' },
+    { id: 'stages', name: t('config.tabs.stages'), icon: 'layers' },
+    { id: 'fallback', name: t('config.tabs.fallback'), icon: 'shield' },
+    { id: 'summary', name: t('config.tabs.summary'), icon: 'sparkles' }
+  ]
+  // adminclient: la suscripción es del dueño y se gestiona en "Mis empresas",
+  // no dentro de cada empresa
+  if (!authStore.isAdminClient) {
+    items.push({ id: 'subscription', name: t('config.tabs.subscription'), icon: 'credit-card' })
+  }
+  return items
+})
 
 // Cancelación
 const cancelling = ref(false)

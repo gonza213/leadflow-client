@@ -23,9 +23,14 @@ const isAnySellerActive = computed(() => {
 
 let presenceInterval = null
 
+// adminclient (dueño) navega con los mismos permisos que un manager
+const effectiveRole = computed(() =>
+  authStore.user?.role === 'adminclient' ? 'manager' : authStore.user?.role
+)
+
 onMounted(() => {
   // Poll presence periodically to update the REC icon globally
-  if (['manager', 'viewer'].includes(authStore.user?.role)) {
+  if (['manager', 'viewer'].includes(effectiveRole.value)) {
     sellersStore.fetchPresence()
     presenceInterval = setInterval(() => {
       sellersStore.fetchPresence()
@@ -37,12 +42,26 @@ onUnmounted(() => {
   if (presenceInterval) clearInterval(presenceInterval)
 })
 
+// Portal del dueño: en /cuentas* o cuando aún no eligió empresa
+const inOwnerPortal = computed(() =>
+  authStore.isAdminClient && (route.path.startsWith('/cuentas') || !authStore.tenantSlug)
+)
+
 const filteredMenuItems = computed(() => {
   if (authStore.isSuperAdmin) {
     return [
       { name: t('menu.tenants'), path: '/admin/tenants', icon: 'building' },
       { name: t('menu.subscriptions'), path: '/admin/subscriptions', icon: 'credit-card' },
       { name: t('menu.tickets'), path: '/admin/tickets', icon: 'support' }
+    ]
+  }
+
+  if (inOwnerPortal.value) {
+    return [
+      { name: t('menu.dashboard'), path: '/cuentas/dashboard', icon: 'chart-bar' },
+      { name: t('accounts.myAccounts'), path: '/cuentas', icon: 'building' },
+      { name: t('config.tabs.subscription'), path: '/cuentas/suscripcion', icon: 'credit-card' },
+      { name: t('profile.title'), path: '/profile', icon: 'users' }
     ]
   }
 
@@ -60,7 +79,7 @@ const filteredMenuItems = computed(() => {
   ]
 
   return menuItems.filter(item => {
-    const hasRole = item.roles.includes(authStore.user?.role)
+    const hasRole = item.roles.includes(effectiveRole.value)
     const isHiddenForLifetime = item.hiddenIfLifetime && authStore.subscriptionStatus === 'lifetime'
     return hasRole && !isHiddenForLifetime
   })

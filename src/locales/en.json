@@ -85,6 +85,31 @@
     },
     "logout": "Logout"
   },
+  "accounts": {
+    "myAccounts": "My companies",
+    "title": "My companies",
+    "subtitle": "Choose the company you want to enter or create a new one",
+    "empty": "You don't have any companies yet. Create your first one to get started.",
+    "create": "Create new company",
+    "createTitle": "New company",
+    "creating": "Creating...",
+    "enter": "Enter",
+    "renew": "Renew subscription",
+    "createError": "Error creating the company",
+    "enterError": "Error entering the company",
+    "loadError": "Error loading your companies",
+    "companies": "Companies",
+    "companyFilter": "Company",
+    "allCompanies": "All companies",
+    "leadsByCompany": "Leads by company",
+    "dashboardSubtitle": "Overview of all your companies",
+    "status": {
+      "trial": "Trial — {n} days left",
+      "active": "Active",
+      "inactive": "Expired",
+      "lifetime": "Lifetime"
+    }
+  },
   "profile": {
     "title": "My Profile",
     "subtitle": "Manage your personal information and security",
@@ -991,6 +1016,8 @@
       "filterStatus": "Filter by status",
       "count": "{n} tenants",
       "noTenants": "No tenants to show",
+      "legacyGroup": "No owner (classic clients)",
+      "ownerLabel": "Owner",
       "deleteConfirm": "Are you sure you want to delete tenant \"{name}\"? This action will delete ALL associated data (users, leads, sellers, settings) and cannot be undone.",
       "detail": {
         "title": "Tenant Detail",
