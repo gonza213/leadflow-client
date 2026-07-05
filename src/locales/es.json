@@ -459,6 +459,7 @@
         "period": "/ mes",
         "trialNote": "7 días gratis. Después, USD 25/mes. Cancelás cuando quieras.",
         "features": [
+          "Empresas / subcuentas ilimitadas con una sola suscripción",
           "Vendedores ilimitados",
           "Leads ilimitados",
           "Multi-equipo con % configurables",
@@ -501,6 +502,7 @@
       "items": [
         { "q": "¿Cómo funciona la distribución automática de leads?", "a": "Cuando tu CRM envía un lead al webhook de LeadDistro, el sistema identifica el equipo destino según los porcentajes configurados, y dentro de ese equipo selecciona al vendedor con mayor capacidad disponible (menor ratio carga/límite). Todo ocurre en milisegundos y el resultado vuelve al CRM automáticamente." },
         { "q": "¿Con qué CRMs se integra LeadDistro?", "a": "LeadDistro se integra con cualquier plataforma que soporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n y muchos más. Si tu CRM puede enviar un HTTP POST, funciona con LeadDistro." },
+        { "q": "¿Puedo manejar varias empresas o subcuentas con una sola cuenta?", "a": "Sí. LeadDistro es multi-empresa: con un solo login creás y administrás todas tus empresas o subcuentas (por ejemplo, una por cada subcuenta de GoHighLevel), cada una con sus propios equipos, vendedores, webhooks y configuración. Y lo mejor: una única suscripción de $25 USD/mes las cubre a todas." },
         { "q": "¿Qué pasa si todos los vendedores alcanzan su límite?", "a": "Podés configurar hasta 2 vendedores de respaldo (fallback). Cuando todos los vendedores activos alcanzan su límite diario o semanal, los leads se redirigen automáticamente a esos vendedores de respaldo. Así nunca queda un lead sin asignar." },
         { "q": "¿Puedo tener múltiples equipos con distribuciones distintas?", "a": "Sí. Podés crear tantos equipos como necesitás y asignarle a cada uno un porcentaje del total de leads. Por ejemplo: Equipo A recibe 60% y Equipo B el 40%. Cada equipo tiene sus propios vendedores, límites y configuraciones." },
         { "q": "¿Qué sucede cuando vence el período de prueba?", "a": "Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $25 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta." },
@@ -544,6 +546,9 @@
     "actions": "Acciones",
     "save": "Guardar",
     "saveChanges": "Guardar Cambios",
+    "sales": "Ventas",
+    "closeRate": "% Cierre",
+    "aiScore": "Score IA",
     "cancel": "Cancelar",
     "delete": "Eliminar",
     "edit": "Editar",
@@ -609,6 +614,13 @@
   },
   "leads": {
     "title": "Leads",
+    "delivery": {
+      "sent": "Notificación entregada al CRM",
+      "failed": "La notificación al CRM falló — se reintenta automáticamente",
+      "pending": "Notificación pendiente de envío",
+      "skipped": "Sin webhook de CRM configurado",
+      "retry": "Reintentar ahora"
+    },
     "search": "Buscar...",
     "export": "Exportar CSV",
     "exporting": "Exportando...",

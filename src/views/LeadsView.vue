@@ -34,6 +34,30 @@ const showDeleteConfirm = ref(false)
 const deletingLead = ref(null)
 const deleteLoading = ref(false)
 
+// Reintento manual de entrega al CRM
+const redeliveringId = ref(null)
+const handleRedeliver = async (lead) => {
+  redeliveringId.value = lead._id
+  try {
+    const { leadsApi } = await import('../services/api')
+    const res = await leadsApi.redeliverLead(authStore.tenantSlug, lead._id)
+    lead.delivery_status = res.data.delivery?.success ? 'sent' : 'failed'
+  } catch (e) {
+    console.error('Redeliver failed:', e)
+  } finally {
+    redeliveringId.value = null
+  }
+}
+
+const deliveryIcon = (status) => {
+  switch (status) {
+    case 'sent': return { symbol: '✓', class: 'text-green-600 dark:text-green-400', key: 'sent' }
+    case 'failed': return { symbol: '✕', class: 'text-red-600 dark:text-red-400', key: 'failed' }
+    case 'pending': return { symbol: '…', class: 'text-yellow-600 dark:text-yellow-400', key: 'pending' }
+    default: return { symbol: '—', class: 'text-gray-400', key: 'skipped' }
+  }
+}
+
 onMounted(async () => {
   await configStore.fetchConfig()
   if (authStore.isManager) {
@@ -378,6 +402,7 @@ const getStateClass = (state) => {
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.stage') }}</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.source') }}</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.aiScore') }}</th>
+                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">CRM</th>
                 <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.actions') }}</th>
               </tr>
             </thead>
@@ -425,6 +450,21 @@ const getStateClass = (state) => {
                     {{ lead.ai_score }}
                   </span>
                   <span v-else class="text-gray-400 text-xs">-</span>
+                </td>
+                <td class="px-4 py-3 text-sm text-center whitespace-nowrap">
+                  <span class="font-bold" :class="deliveryIcon(lead.delivery_status).class"
+                    :title="t(`leads.delivery.${deliveryIcon(lead.delivery_status).key}`)">
+                    {{ deliveryIcon(lead.delivery_status).symbol }}
+                  </span>
+                  <button
+                    v-if="lead.delivery_status === 'failed' && authStore.isManager"
+                    @click="handleRedeliver(lead)"
+                    :disabled="redeliveringId !== null"
+                    class="ml-1 text-xs text-blue-600 dark:text-blue-400 hover:underline disabled:opacity-50"
+                    :title="t('leads.delivery.retry')"
+                  >
+                    {{ redeliveringId === lead._id ? '…' : '↻' }}
+                  </button>
                 </td>
                 <td v-if="authStore.canEdit" class="px-4 py-3 text-sm">
                   <div class="flex items-center gap-2">

@@ -453,6 +453,7 @@
         "period": "/ month",
         "trialNote": "7 days free. Then USD 25/month. Cancel anytime.",
         "features": [
+          "Unlimited companies / sub-accounts with one subscription",
           "Unlimited sellers",
           "Unlimited leads",
           "Multi-team with configurable %",
@@ -494,6 +495,7 @@
       "items": [
         { "q": "How does automatic lead distribution work?", "a": "When your CRM sends a lead to the LeadDistro webhook, the system identifies the target team based on the configured percentages, and within that team selects the seller with the most available capacity (lowest load/limit ratio). Everything happens in milliseconds and the result is automatically returned to the CRM." },
         { "q": "What CRMs does LeadDistro integrate with?", "a": "LeadDistro integrates with any platform that supports webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n, and many more. If your CRM can send an HTTP POST, it works with LeadDistro." },
+        { "q": "Can I manage multiple companies or sub-accounts with a single account?", "a": "Yes. LeadDistro is multi-company: with a single login you create and manage all your companies or sub-accounts (for example, one per GoHighLevel sub-account), each with its own teams, sellers, webhooks and settings. Best of all: a single $25 USD/month subscription covers them all." },
         { "q": "What happens if all sellers reach their limit?", "a": "You can configure up to 2 backup sellers (fallback). When all active sellers reach their daily or weekly limit, leads are automatically redirected to those backup sellers. This way, no lead is left unassigned." },
         { "q": "Can I have multiple teams with different distributions?", "a": "Yes. You can create as many teams as you need and assign a percentage of the total leads to each one. For example: Team A receives 60% and Team B receives 40%. Each team has its own sellers, limits, and settings." },
         { "q": "What happens when the trial period expires?", "a": "When the 7-day trial period expires, your account is in an inactive state. You don't lose any data — by subscribing for $25 USD/month you regain access immediately with all your settings intact." },
@@ -530,6 +532,9 @@
     "actions": "Actions",
     "save": "Save",
     "saveChanges": "Save Changes",
+    "sales": "Sales",
+    "closeRate": "% Close",
+    "aiScore": "AI Score",
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
@@ -595,6 +600,13 @@
   },
   "leads": {
     "title": "Leads",
+    "delivery": {
+      "sent": "Notification delivered to CRM",
+      "failed": "CRM notification failed — retrying automatically",
+      "pending": "Notification pending",
+      "skipped": "No CRM webhook configured",
+      "retry": "Retry now"
+    },
     "search": "Search...",
     "export": "Export CSV",
     "exporting": "Exporting...",
