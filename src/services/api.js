@@ -56,11 +56,12 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
-  register: (data) => api.post('/auth/register', data),
   registerOwner: (data) => api.post('/auth/register-owner', data),
   getAccounts: () => api.get('/auth/accounts'),
   createAccount: (companyName) => api.post('/auth/accounts', { companyName }),
   enterAccount: (id) => api.post(`/auth/accounts/${id}/enter`),
+  updateAccount: (id, data) => api.patch(`/auth/accounts/${id}`, data),
+  deleteAccount: (id) => api.delete(`/auth/accounts/${id}`),
   getMe: () => api.get('/auth/me'),
   updateProfile: (data) => api.patch('/auth/profile', data)
 }

@@ -69,6 +69,7 @@
     "andThe": "and the",
     "privacyPolicy": "Privacy Policy",
     "createFreeAccount": "Create free account",
+    "creating": "Creating account...",
     "requiredFields": "All fields are required",
     "passwordTooShort": "Password must be at least 6 characters long",
     "acceptTermsError": "You must accept the terms and conditions",
