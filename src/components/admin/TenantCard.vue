@@ -6,6 +6,12 @@ const props = defineProps({
   tenant: {
     type: Object,
     required: true
+  },
+  // Tenant con dueño (adminclient): el billing vive en el dueño,
+  // así que la tarjeta no muestra suscripción ni toggle lifetime
+  owned: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -61,7 +67,7 @@ const toggleLifetime = async () => {
         <span :class="['px-2 py-1 text-xs font-medium rounded-full', tenant.active ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300']">
           {{ tenant.active ? 'Activo' : 'Inactivo' }}
         </span>
-        <span :class="['px-2 py-1 text-xs font-medium rounded-full', subscriptionClass[tenant.subscriptionStatus] || subscriptionClass.inactive]">
+        <span v-if="!owned" :class="['px-2 py-1 text-xs font-medium rounded-full', subscriptionClass[tenant.subscriptionStatus] || subscriptionClass.inactive]">
           {{ subscriptionLabel[tenant.subscriptionStatus] || tenant.subscriptionStatus }}
         </span>
       </div>
@@ -76,20 +82,20 @@ const toggleLifetime = async () => {
         <span>Creado:</span>
         <span>{{ new Date(tenant.createdAt).toLocaleDateString() }}</span>
       </div>
-      <div v-if="tenant.subscriptionStatus === 'trial'" class="flex justify-between">
+      <div v-if="!owned && tenant.subscriptionStatus === 'trial'" class="flex justify-between">
         <span>Trial vence en:</span>
         <span class="font-medium" :class="trialDaysLeft(tenant) <= 2 ? 'text-red-500' : ''">
           {{ trialDaysLeft(tenant) }} días
         </span>
       </div>
-      <div v-if="tenant.subscriptionStatus === 'active' && tenant.subscriptionExpiresAt" class="flex justify-between">
+      <div v-if="!owned && tenant.subscriptionStatus === 'active' && tenant.subscriptionExpiresAt" class="flex justify-between">
         <span>Suscripción vence:</span>
         <span>{{ new Date(tenant.subscriptionExpiresAt).toLocaleDateString() }}</span>
       </div>
     </div>
 
-    <!-- Toggle lifetime -->
-    <div class="flex items-center justify-between mb-4 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+    <!-- Toggle lifetime (solo tenants clásicos; en los con dueño se maneja a nivel dueño) -->
+    <div v-if="!owned" class="flex items-center justify-between mb-4 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
       <span class="text-xs text-gray-600 dark:text-gray-400">Acceso lifetime (sin pago)</span>
       <button
         @click="toggleLifetime"

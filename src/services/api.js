@@ -6,6 +6,9 @@ const apiUrl = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
   baseURL: `${apiUrl}/api`,
+  // Sin timeout, un server caído deja spinners infinitos; con esto la request
+  // falla a los 30s y la UI muestra el error
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -99,6 +102,9 @@ export const adminApi = {
   getTenantUsers: (id) => api.get(`/admin/tenants/${id}/users`),
   updateTenantUser: (id, userId, data) => api.patch(`/admin/tenants/${id}/users/${userId}`, data),
   updateSubscription: (id, subscriptionStatus) => api.patch(`/admin/tenants/${id}/subscription`, { subscriptionStatus }),
+  updateOwnerSubscription: (id, subscriptionStatus) => api.patch(`/admin/owners/${id}/subscription`, { subscriptionStatus }),
+  updateOwner: (id, data) => api.patch(`/admin/owners/${id}`, data),
+  deleteOwner: (id) => api.delete(`/admin/owners/${id}`),
   getSubscriptions: (params) => api.get('/admin/subscriptions', { params }),
   getAdminTickets: (params) => api.get('/admin/tickets', { params }),
   updateAdminTicket: (id, data) => api.patch(`/admin/tickets/${id}`, data),
