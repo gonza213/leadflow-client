@@ -226,6 +226,9 @@ const formatDate = (date) => {
               <td class="px-6 py-4">
                 <div class="font-medium text-gray-900 dark:text-white">{{ sub.name }}</div>
                 <div class="text-xs text-gray-500">{{ sub.slug }}</div>
+                <div v-if="sub.ownerName" class="text-xs text-primary-600 dark:text-primary-400 mt-0.5">
+                  👤 {{ sub.ownerName }}
+                </div>
               </td>
               <td class="px-6 py-4">
                 <span :class="['px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide', getStatusClass(sub.subscriptionStatus)]">
