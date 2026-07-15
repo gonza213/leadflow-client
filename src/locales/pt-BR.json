@@ -1126,6 +1126,36 @@
       }
     }
   },
+  "presence": {
+    "title": "Escritório ao Vivo",
+    "subtitle": "Central de comando em tempo real",
+    "logs": "Atividade da Equipe",
+    "activeNodes": "Vendedores Habilitados",
+    "sync": "Sincronização de Rede",
+    "stats": {
+      "leads": "Leads",
+      "sales": "Vendas"
+    },
+    "status": {
+      "active": "Ativo",
+      "idle": "Inativo",
+      "away": "Ausente",
+      "offline": "Desconectado"
+    },
+    "alerts": {
+      "processing": "Processando Lead",
+      "waiting": "Aguardando atribuição",
+      "support": "SUPORTE!"
+    },
+    "howItWorks": {
+      "title": "Como funciona?",
+      "desc": "Este painel mostra a atividade real dos seus vendedores. Um vendedor é marcado como ativo quando recebe ou atualiza um lead (atribuição, mudança de etapa, etc.). Sem atividade por mais de 15 minutos ele passa a inativo, e após horas sem movimento fica desconectado."
+    },
+    "tip": {
+      "title": "Dica de produtividade",
+      "desc": "Use esta visão para identificar gargalos ou momentos de alta demanda. Se muitos vendedores estiverem inativos nos horários de pico, pode ser um bom momento para revisar a distribuição de leads."
+    }
+  },
   "main": {
     "nextAssignment": "Próxima atribuição"
   }

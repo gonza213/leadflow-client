@@ -1138,6 +1138,36 @@
       }
     }
   },
+  "presence": {
+    "title": "Live Office",
+    "subtitle": "Real-time command center",
+    "logs": "Team Activity",
+    "activeNodes": "Enabled Sellers",
+    "sync": "Network Sync",
+    "stats": {
+      "leads": "Leads",
+      "sales": "Sales"
+    },
+    "status": {
+      "active": "Active",
+      "idle": "Idle",
+      "away": "Away",
+      "offline": "Offline"
+    },
+    "alerts": {
+      "processing": "Processing Lead",
+      "waiting": "Waiting for assignment",
+      "support": "SUPPORT!"
+    },
+    "howItWorks": {
+      "title": "How does it work?",
+      "desc": "This panel shows your sellers' real activity. A seller is marked as active when they receive or update a lead (assignment, stage change, etc.). With no activity for more than 15 minutes they become idle, and after hours without movement they go offline."
+    },
+    "tip": {
+      "title": "Productivity tip",
+      "desc": "Use this view to spot bottlenecks or peak-demand moments. If you see many sellers idle during peak hours, it may be a good time to review your lead distribution."
+    }
+  },
   "main": {
     "nextAssignment": "Next assignment"
   }

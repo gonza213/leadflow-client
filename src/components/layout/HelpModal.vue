@@ -80,7 +80,7 @@ const sections = computed(() => sectionMeta.map(meta => {
 }))
 
 const prev = () => { if (currentStep.value > 0) currentStep.value-- }
-const next = () => { if (currentStep.value < sections.length - 1) currentStep.value++ }
+const next = () => { if (currentStep.value < sections.value.length - 1) currentStep.value++ }
 
 const handleStartTour = () => {
   emit('close')

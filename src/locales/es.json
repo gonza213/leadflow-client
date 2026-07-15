@@ -1174,6 +1174,14 @@
       "processing": "Procesando Lead",
       "waiting": "Esperando asignación",
       "support": "¡SOPORTE!"
+    },
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "desc": "Este panel muestra la actividad real de tus vendedores. Un vendedor se marca como activo cuando recibe o actualiza un lead (asignación, cambio de etapa, etc.). Si no hay actividad por más de 15 minutos pasa a inactivo, y a las horas sin movimiento queda offline."
+    },
+    "tip": {
+      "title": "Tip de productividad",
+      "desc": "Usa esta vista para identificar cuellos de botella o momentos de alta demanda. Si ves a muchos vendedores en inactivo durante horas pico, puede ser un buen momento para revisar la distribución de leads."
     }
   },
   "blog": {
