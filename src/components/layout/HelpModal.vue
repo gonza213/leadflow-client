@@ -70,7 +70,9 @@ const sectionMeta = [
 // Computed para que reaccione al cambio de idioma en vivo
 const sections = computed(() => sectionMeta.map(meta => {
   const base = `help.s.${meta.key}`
-  const rawItems = te(`${base}.items`) ? tm(`${base}.items`) : []
+  // te() devuelve false para nodos array; tm() retorna {} si la clave no existe,
+  // así que el chequeo va sobre el resultado
+  const rawItems = tm(`${base}.items`)
   return {
     ...meta,
     title: t(`${base}.t`),

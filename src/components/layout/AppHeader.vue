@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import HelpModal from './HelpModal.vue'
 
@@ -11,7 +11,14 @@ const { t, locale } = useI18n()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
 const router = useRouter()
+const route = useRoute()
 const showHelp = ref(false)
+
+// La guía/tour describe las secciones de una empresa; en el portal del dueño
+// (/cuentas*) no aplica y confunde
+const inOwnerPortal = computed(() =>
+  authStore.isAdminClient && (route.path.startsWith('/cuentas') || !authStore.tenantSlug)
+)
 
 const handleLogout = () => {
   authStore.logout()
@@ -121,8 +128,8 @@ const handleToggleDarkMode = () => {
         </svg>
       </button>
 
-      <!-- Help button -->
-      <button id="tour-help-btn" @click="showHelp = true"
+      <!-- Help button (oculto en el portal del dueño) -->
+      <button v-if="!inOwnerPortal" id="tour-help-btn" @click="showHelp = true"
         class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
         :title="t('ui.help')">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
