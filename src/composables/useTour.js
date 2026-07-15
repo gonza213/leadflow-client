@@ -1,5 +1,6 @@
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
+import { useI18n } from 'vue-i18n'
 
 // SVG icons matching the dashboard sidebar
 const icons = {
@@ -21,13 +22,18 @@ const ic = (svg, color = '#3b82f6', bg = 'rgba(59,130,246,0.12)') =>
   `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:${bg};color:${color};vertical-align:middle;margin-right:8px;flex-shrink:0">${svg}</span>`
 
 export function useTour() {
+  const { t } = useI18n()
+
   const startTour = () => {
+    const S = 'help.tour.steps'
+
     const driverObj = driver({
       showProgress: true,
-      progressText: 'Paso {{current}} de {{total}}',
-      nextBtnText: 'Siguiente',
-      prevBtnText: 'Anterior',
-      doneBtnText: '¡Entendido!',
+      // driver.js reemplaza {{current}}/{{total}}; i18n interpola {current}/{total}
+      progressText: t('help.tour.progress', { current: '{{current}}', total: '{{total}}' }),
+      nextBtnText: t('help.next'),
+      prevBtnText: t('help.prev'),
+      doneBtnText: t('help.done'),
       animate: true,
       overlayOpacity: 0.7,
       popoverClass: 'leaddistro-tour',
@@ -35,88 +41,88 @@ export function useTour() {
         {
           element: '#tour-header',
           popover: {
-            title: `${ic(icons.wave, '#3b82f6', 'rgba(59,130,246,0.12)')} Bienvenido a LeadDistro`,
-            description: 'Este tour te va a guiar por las funciones principales del sistema. Podés saltearlo cuando quieras.',
+            title: `${ic(icons.wave, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t(`${S}.welcome.t`)}`,
+            description: t(`${S}.welcome.d`),
             side: 'bottom', align: 'start'
           }
         },
         {
           element: '#tour-sidebar',
           popover: {
-            title: `${ic(icons.menu, '#64748b', 'rgba(100,116,139,0.12)')} Navegación principal`,
-            description: 'Desde acá accedés a todas las secciones: Dashboard, Leads, Vendedores, Usuarios y Configuración.',
+            title: `${ic(icons.menu, '#64748b', 'rgba(100,116,139,0.12)')} ${t(`${S}.sidebar.t`)}`,
+            description: t(`${S}.sidebar.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-dashboard-link',
           popover: {
-            title: `${ic(icons.chart, '#3b82f6', 'rgba(59,130,246,0.12)')} Dashboard`,
-            description: 'Visualizá en tiempo real los leads por vendedor y equipo. Las métricas responden al **Período** activo, que define tu ciclo de ventas actual.',
+            title: `${ic(icons.chart, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t('help.s.dashboard.t')}`,
+            description: t(`${S}.dashboard.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-leads-link',
           popover: {
-            title: `${ic(icons.leads, '#22c55e', 'rgba(34,197,94,0.12)')} Leads`,
-            description: 'Listado completo de leads ingresados. Podés filtrar por vendedor, equipo, etapa y período.',
+            title: `${ic(icons.leads, '#22c55e', 'rgba(34,197,94,0.12)')} ${t('help.s.leads.t')}`,
+            description: t(`${S}.leads.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-vendedores-link',
           popover: {
-            title: `${ic(icons.users, '#8b5cf6', 'rgba(139,92,246,0.12)')} Vendedores`,
-            description: 'Gestioná tu equipo de ventas. Configurá límites diarios y semanales para cada vendedor.',
+            title: `${ic(icons.users, '#8b5cf6', 'rgba(139,92,246,0.12)')} ${t('help.s.sellers.t')}`,
+            description: t(`${S}.sellers.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-usuarios-link',
           popover: {
-            title: `${ic(icons.group, '#f97316', 'rgba(249,115,22,0.12)')} Usuarios`,
-            description: 'Gestioná los usuarios de tu organización y sus roles de acceso.',
+            title: `${ic(icons.group, '#f97316', 'rgba(249,115,22,0.12)')} ${t('help.s.users.t')}`,
+            description: t(`${S}.users.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-integraciones-link',
           popover: {
-            title: `${ic(icons.plug, '#06b6d4', 'rgba(6,182,212,0.12)')} Integraciones`,
-            description: 'Conectá tu CRM con LeadDistro. Encontrás las URLs de webhook, las plataformas compatibles y la configuración de notificaciones.',
+            title: `${ic(icons.plug, '#06b6d4', 'rgba(6,182,212,0.12)')} ${t('help.s.integrations.t')}`,
+            description: t(`${S}.integrations.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-resumenes-link',
           popover: {
-            title: `${ic(icons.sparkles, '#6366f1', 'rgba(99,102,241,0.12)')} Resúmenes IA`,
-            description: 'Historial de resúmenes generados automáticamente con OpenAI. Cada resumen incluye métricas del período y se puede descargar como PDF.',
+            title: `${ic(icons.sparkles, '#6366f1', 'rgba(99,102,241,0.12)')} ${t('help.s.summaries.t')}`,
+            description: t(`${S}.summaries.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-configuracion-link',
           popover: {
-            title: `${ic(icons.cog, '#64748b', 'rgba(100,116,139,0.12)')} Configuración`,
-            description: 'Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM, zona horaria y el resumen automático con IA.',
+            title: `${ic(icons.cog, '#64748b', 'rgba(100,116,139,0.12)')} ${t('help.s.config.t')}`,
+            description: t(`${S}.config.d`),
             side: 'right', align: 'start'
           }
         },
         {
           element: '#tour-darkmode',
           popover: {
-            title: `${ic(icons.moon, '#6366f1', 'rgba(99,102,241,0.12)')} Modo oscuro`,
-            description: 'Cambiá entre modo claro y oscuro según tu preferencia.',
+            title: `${ic(icons.moon, '#6366f1', 'rgba(99,102,241,0.12)')} ${t(`${S}.darkmode.t`)}`,
+            description: t(`${S}.darkmode.d`),
             side: 'bottom', align: 'end'
           }
         },
         {
           element: '#tour-help-btn',
           popover: {
-            title: `${ic(icons.help, '#3b82f6', 'rgba(59,130,246,0.12)')} Guía de ayuda`,
-            description: 'Podés volver a ver esta guía o consultar el manual desde este botón en cualquier momento.',
+            title: `${ic(icons.help, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t(`${S}.helpBtn.t`)}`,
+            description: t(`${S}.helpBtn.d`),
             side: 'bottom', align: 'end'
           }
         }

@@ -1,98 +1,83 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useTour } from '../../composables/useTour'
 
 const emit = defineEmits(['close'])
 const { startTour } = useTour()
+const { t, tm, rt, te } = useI18n()
 
 const currentStep = ref(0)
 
-const sections = [
+// Iconografía por sección; los textos viven en i18n (help.s.*)
+const sectionMeta = [
   {
+    key: 'dashboard',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
     iconColor: '#3b82f6',
-    iconBg: 'rgba(59,130,246,0.12)',
-    title: 'Dashboard',
-    desc: 'Visualizá métricas en tiempo real: leads por vendedor, distribución por equipo, etapas del funnel y más. Usá los filtros de período para analizar rangos específicos.'
+    iconBg: 'rgba(59,130,246,0.12)'
   },
   {
+    key: 'period',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
     iconColor: '#f43f5e',
-    iconBg: 'rgba(244,63,94,0.12)',
-    title: 'Período de Distribución',
-    desc: 'El período es el ciclo activo de trabajo. Es fundamental para que las métricas y los límites de los vendedores funcionen correctamente.',
-    items: [
-      '**Ciclo de Límites**: Los límites de leads se contabilizan dentro de las fechas del período activo.',
-      '**Métricas**: El Dashboard muestra por defecto los datos del período configurado.',
-      '**Tipos**: Puede ser **Manual** (fechas fijas) o **Automático** (se reinicia solo cada semana).',
-      '**Vencimiento**: Si vence, verás un aviso para actualizarlo y mantener la distribución activa.'
-    ]
+    iconBg: 'rgba(244,63,94,0.12)'
   },
   {
+    key: 'leads',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>`,
     iconColor: '#22c55e',
-    iconBg: 'rgba(34,197,94,0.12)',
-    title: 'Leads',
-    desc: 'Listado completo de leads ingresados al sistema. Filtrá por vendedor, equipo, etapa y período. Exportá cualquier resultado a CSV con un clic.'
+    iconBg: 'rgba(34,197,94,0.12)'
   },
   {
+    key: 'sellers',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`,
     iconColor: '#8b5cf6',
-    iconBg: 'rgba(139,92,246,0.12)',
-    title: 'Vendedores',
-    desc: 'Creá y administrá tu equipo de ventas. Asignales límites diarios y semanales. El algoritmo de distribución respeta estos límites automáticamente.'
+    iconBg: 'rgba(139,92,246,0.12)'
   },
   {
+    key: 'users',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>`,
     iconColor: '#f97316',
-    iconBg: 'rgba(249,115,22,0.12)',
-    title: 'Usuarios',
-    desc: 'Gestioná los accesos de tu organización. Asigná roles de Manager, Viewer o Seller a cada usuario del tenant.'
+    iconBg: 'rgba(249,115,22,0.12)'
   },
   {
+    key: 'config',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>`,
     iconColor: '#64748b',
-    iconBg: 'rgba(100,116,139,0.12)',
-    title: 'Configuración',
-    items: [
-      '**Equipos**: Definí los equipos de ventas y el porcentaje de leads que recibe cada uno (deben sumar 100%).',
-      '**Etapas**: Configurá las etapas del pipeline (Nuevo, Contactado, Calificado, Cerrado).',
-      '**Respaldo (Fallback)**: Configurá hasta 2 vendedores de respaldo para cuando todos alcancen su límite.',
-      '**Zona horaria**: Configurá la zona horaria de tu organización para que los límites y reportes sean correctos.'
-    ]
+    iconBg: 'rgba(100,116,139,0.12)'
   },
   {
+    key: 'integrations',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
     iconColor: '#06b6d4',
-    iconBg: 'rgba(6,182,212,0.12)',
-    title: 'Integraciones',
-    items: [
-      '**Plataformas**: Compatible con GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n y cualquier herramienta que soporte webhooks.',
-      '**Webhook de entrada**: Copiá la URL única de tu tenant desde la sección Integraciones y pegala en tu workflow del CRM.',
-      '**Webhook de salida**: LeadDistro notifica a tu CRM con el nombre e ID del vendedor asignado.',
-      '**Cambio de etapa**: Usá el segundo webhook para sincronizar los cambios de etapa desde tu CRM al sistema.'
-    ]
+    iconBg: 'rgba(6,182,212,0.12)'
   },
   {
+    key: 'summaries',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>`,
     iconColor: '#6366f1',
-    iconBg: 'rgba(99,102,241,0.12)',
-    title: 'Resúmenes IA',
-    items: [
-      '**Qué es**: El sistema genera automáticamente un resumen de métricas con OpenAI y lo guarda para que puedas consultarlo cuando quieras.',
-      '**Configuración**: Activalo desde Configuración → Resumen IA. Elegí frecuencia diaria o semanal y la hora de envío.',
-      '**PDF**: Desde cada resumen podés descargar un PDF profesional con el análisis y las métricas del período.',
-      '**Webhook**: Si configurás una URL de Make o Zapier, el resumen también se envía automáticamente al generarse.'
-    ]
+    iconBg: 'rgba(99,102,241,0.12)'
   },
   {
+    key: 'algorithm',
     icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
     iconColor: '#ec4899',
-    iconBg: 'rgba(236,72,153,0.12)',
-    title: 'Algoritmo de distribución',
-    desc: 'Cuando entra un lead, el sistema calcula el equipo target según los porcentajes configurados. Dentro del equipo, selecciona al vendedor con el menor ratio (leads actuales / límite semanal). Si todos alcanzan el límite, el lead se redirige al vendedor de respaldo (fallback).'
+    iconBg: 'rgba(236,72,153,0.12)'
   }
 ]
+
+// Computed para que reaccione al cambio de idioma en vivo
+const sections = computed(() => sectionMeta.map(meta => {
+  const base = `help.s.${meta.key}`
+  const rawItems = te(`${base}.items`) ? tm(`${base}.items`) : []
+  return {
+    ...meta,
+    title: t(`${base}.t`),
+    desc: te(`${base}.d`) ? t(`${base}.d`) : null,
+    items: Array.isArray(rawItems) && rawItems.length ? rawItems.map(i => rt(i)) : null
+  }
+}))
 
 const prev = () => { if (currentStep.value > 0) currentStep.value-- }
 const next = () => { if (currentStep.value < sections.length - 1) currentStep.value++ }
@@ -113,8 +98,8 @@ const handleStartTour = () => {
           <div class="hm-title-wrap">
             <div class="hm-icon">❓</div>
             <div>
-              <h2 class="hm-title">Guía de uso — LeadDistro</h2>
-              <p class="hm-subtitle">Paso {{ currentStep + 1 }} de {{ sections.length }}</p>
+              <h2 class="hm-title">{{ t('help.title') }}</h2>
+              <p class="hm-subtitle">{{ t('help.step', { n: currentStep + 1, total: sections.length }) }}</p>
             </div>
           </div>
           <button @click="$emit('close')" class="hm-close">
@@ -174,23 +159,23 @@ const handleStartTour = () => {
         <div class="hm-footer">
           <button @click="handleStartTour" class="btn-tour">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            Tour interactivo
+            {{ t('help.tourBtn') }}
           </button>
           <div class="hm-nav">
             <button @click="prev" :disabled="currentStep === 0" class="hm-nav-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-              Anterior
+              {{ t('help.prev') }}
             </button>
             <button
               v-if="currentStep < sections.length - 1"
               @click="next"
               class="hm-nav-btn primary"
             >
-              Siguiente
+              {{ t('help.next') }}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
             </button>
             <button v-else @click="$emit('close')" class="hm-nav-btn primary">
-              ¡Entendido!
+              {{ t('help.done') }}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             </button>
           </div>

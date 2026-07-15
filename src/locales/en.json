@@ -598,6 +598,41 @@
       "lastUpdate": "Last activity: {time}"
     }
   },
+  "help": {
+    "title": "User Guide — LeadDistro",
+    "step": "Step {n} of {total}",
+    "tourBtn": "Interactive tour",
+    "prev": "Back",
+    "next": "Next",
+    "done": "Got it!",
+    "s": {
+      "dashboard": { "t": "Dashboard", "d": "View real-time metrics: leads per seller, team distribution, funnel stages and more. Use the period filters to analyze specific ranges." },
+      "period": { "t": "Distribution Period", "d": "The period is the active work cycle. It's essential for metrics and seller limits to work correctly.", "items": ["**Limit cycle**: Lead limits are counted within the active period's dates.", "**Metrics**: The Dashboard shows the configured period's data by default.", "**Types**: It can be **Manual** (fixed dates) or **Automatic** (resets every week).", "**Expiration**: If it expires, you'll see a notice to update it and keep distribution running."] },
+      "leads": { "t": "Leads", "d": "Complete list of leads received by the system. Filter by seller, team, stage and period. Export any result to CSV in one click." },
+      "sellers": { "t": "Sellers", "d": "Create and manage your sales team. Assign daily and weekly limits. The distribution algorithm respects these limits automatically." },
+      "users": { "t": "Users", "d": "Manage your organization's access. Assign Manager, Viewer or Seller roles to each tenant user." },
+      "config": { "t": "Settings", "items": ["**Teams**: Define your sales teams and the percentage of leads each one receives (must add up to 100%).", "**Stages**: Configure your pipeline stages (New, Contacted, Qualified, Closed).", "**Fallback**: Set up to 2 fallback sellers for when everyone reaches their limit.", "**Timezone**: Set your organization's timezone so limits and reports are accurate."] },
+      "integrations": { "t": "Integrations", "items": ["**Platforms**: Compatible with GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n and any tool that supports webhooks.", "**Inbound webhook**: Copy your tenant's unique URL from the Integrations section and paste it into your CRM workflow.", "**Outbound webhook**: LeadDistro notifies your CRM with the assigned seller's name and ID.", "**Stage change**: Use the second webhook to sync stage changes from your CRM into the system."] },
+      "summaries": { "t": "AI Summaries", "items": ["**What it is**: The system automatically generates a metrics summary with OpenAI and stores it so you can review it anytime.", "**Setup**: Enable it from Settings → AI Summary. Choose daily or weekly frequency and the send time.", "**PDF**: From each summary you can download a professional PDF with the period's analysis and metrics.", "**Webhook**: If you set a Make or Zapier URL, the summary is also sent automatically when generated."] },
+      "algorithm": { "t": "Distribution algorithm", "d": "When a lead comes in, the system picks the target team based on the configured percentages. Within that team, it selects the seller with the lowest ratio (current leads / weekly limit). If everyone hits their limit, the lead is redirected to the fallback seller." }
+    },
+    "tour": {
+      "progress": "Step {current} of {total}",
+      "steps": {
+        "welcome": { "t": "Welcome to LeadDistro", "d": "This tour will walk you through the system's main features. You can skip it anytime." },
+        "sidebar": { "t": "Main navigation", "d": "From here you can access every section: Dashboard, Leads, Sellers, Users and Settings." },
+        "dashboard": { "d": "View leads per seller and team in real time. Metrics respond to the active **Period**, which defines your current sales cycle." },
+        "leads": { "d": "Complete list of received leads. You can filter by seller, team, stage and period." },
+        "sellers": { "d": "Manage your sales team. Set daily and weekly limits for each seller." },
+        "users": { "d": "Manage your organization's users and their access roles." },
+        "integrations": { "d": "Connect your CRM to LeadDistro. Find the webhook URLs, compatible platforms and notification settings." },
+        "summaries": { "d": "History of summaries automatically generated with OpenAI. Each one includes period metrics and can be downloaded as a PDF." },
+        "config": { "d": "Set up teams with distribution percentages, pipeline stages, CRM webhook, timezone and the automatic AI summary." },
+        "darkmode": { "t": "Dark mode", "d": "Switch between light and dark mode as you prefer." },
+        "helpBtn": { "t": "Help guide", "d": "You can reopen this guide or check the manual from this button at any time." }
+      }
+    }
+  },
   "leads": {
     "title": "Leads",
     "delivery": {
