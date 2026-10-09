@@ -47,6 +47,9 @@ const handleSubmit = async () => {
       name: name.value,
       email: email.value,
       password: password.value
+    }, {
+      // Same-origin: pasa por el rewrite /api de Vercel (agrega x-vercel-ip-country para el bloqueo por pais del backend)
+      baseURL: '/api'
     })
     const { token, user } = res.data
     localStorage.setItem('token', token)

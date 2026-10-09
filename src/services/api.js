@@ -59,7 +59,7 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
-  registerOwner: (data) => api.post('/auth/register-owner', data),
+  registerOwner: (data) => api.post('/auth/register-owner', data, { baseURL: '/api' }),
   getAccounts: () => api.get('/auth/accounts'),
   createAccount: (companyName) => api.post('/auth/accounts', { companyName }),
   enterAccount: (id) => api.post(`/auth/accounts/${id}/enter`),
