@@ -61,6 +61,8 @@ const filteredMenuItems = computed(() => {
       { name: t('menu.dashboard'), path: '/cuentas/dashboard', icon: 'chart-bar' },
       { name: t('accounts.myAccounts'), path: '/cuentas', icon: 'building' },
       { name: t('config.tabs.subscription'), path: '/cuentas/suscripcion', icon: 'credit-card' },
+      { name: t('menu.integrations'), path: '/cuentas/integraciones', icon: 'plug' },
+      { name: t('ownerPayments.menu'), path: '/cuentas/cobros', icon: 'credit-card' },
       { name: t('profile.title'), path: '/profile', icon: 'users' }
     ]
   }
@@ -74,6 +76,7 @@ const filteredMenuItems = computed(() => {
     { name: t('menu.integrations'), path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
     { name: t('menu.summaries'), path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
     { name: t('menu.billing'), path: '/billing', icon: 'credit-card', roles: ['manager'], hiddenIfLifetime: true },
+    { name: t('giftcard.menu'), path: '/credits', icon: 'credit-card', roles: ['manager'], managerOnly: true, requiresGiftCard: true },
     { name: t('menu.config'), path: '/config', icon: 'cog', tourId: 'configuracion', roles: ['manager'] },
     { name: t('menu.support'), path: '/support', icon: 'support', roles: ['manager', 'seller', 'viewer'] }
   ]
@@ -81,7 +84,10 @@ const filteredMenuItems = computed(() => {
   return menuItems.filter(item => {
     const hasRole = item.roles.includes(effectiveRole.value)
     const isHiddenForLifetime = item.hiddenIfLifetime && authStore.subscriptionStatus === 'lifetime'
-    return hasRole && !isHiddenForLifetime
+    // gift card: solo el manager real (no el adminclient) y solo si la empresa la habilitó
+    const blockedByRole = item.managerOnly && authStore.user?.role !== 'manager'
+    const blockedByGiftCard = item.requiresGiftCard && !authStore.user?.tenant?.giftCardEnabled
+    return hasRole && !isHiddenForLifetime && !blockedByRole && !blockedByGiftCard
   })
 })
 </script>

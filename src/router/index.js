@@ -48,6 +48,18 @@ export const routes = [
     meta: { requiresAuth: true, adminClientOnly: true }
   },
   {
+    path: '/cuentas/integraciones',
+    name: 'OwnerIntegrations',
+    component: () => import('../views/OwnerIntegrationsView.vue'),
+    meta: { requiresAuth: true, adminClientOnly: true }
+  },
+  {
+    path: '/cuentas/cobros',
+    name: 'OwnerPayments',
+    component: () => import('../views/OwnerPaymentsView.vue'),
+    meta: { requiresAuth: true, adminClientOnly: true }
+  },
+  {
     path: '/',
     name: 'Dashboard',
     component: () => import('../views/DashboardView.vue'),
@@ -107,6 +119,13 @@ export const routes = [
     name: 'Billing',
     component: () => import('../views/BillingView.vue'),
     meta: { requiresAuth: true, requiresManager: true }
+  },
+  {
+    path: '/credits',
+    name: 'Credits',
+    component: () => import('../views/CreditsView.vue'),
+    // Solo el manager de la empresa compra leads (CreditsView además exige giftCardEnabled)
+    meta: { requiresAuth: true, denyRoles: ['seller', 'viewer', 'adminclient', 'superadmin'] }
   },
   {
     path: '/users',

@@ -15,6 +15,7 @@ const error = ref('')
 
 const showCreate = ref(false)
 const companyName = ref('')
+const giftCardEnabled = ref(false)
 const creating = ref(false)
 const createError = ref('')
 
@@ -44,8 +45,9 @@ const handleCreate = async () => {
   }
   creating.value = true
   try {
-    await authApi.createAccount(companyName.value.trim())
+    await authApi.createAccount(companyName.value.trim(), giftCardEnabled.value)
     companyName.value = ''
+    giftCardEnabled.value = false
     showCreate.value = false
     await fetchAccounts()
   } catch (e) {
@@ -65,6 +67,92 @@ const handleToggleActive = async (account) => {
     error.value = e.response?.data?.message || t('accounts.enterError')
   } finally {
     togglingId.value = null
+  }
+}
+
+// Gift card por empresa: habilitar/deshabilitar y carga manual de saldo
+const giftCardBusyId = ref(null)
+const handleToggleGiftCard = async (account) => {
+  if (account.giftCardEnabled && !confirm(t('giftcard.disableConfirm'))) return
+  giftCardBusyId.value = account.id
+  try {
+    await authApi.updateAccount(account.id, { giftCardEnabled: !account.giftCardEnabled })
+    await fetchAccounts()
+  } catch (e) {
+    error.value = e.response?.data?.message || t('accounts.enterError')
+  } finally {
+    giftCardBusyId.value = null
+  }
+}
+
+const handleAddCredits = async (account) => {
+  const input = prompt(t('giftcard.addCreditsPrompt', { name: account.name }))
+  if (input === null) return
+  const amount = Math.floor(Number(input))
+  if (!Number.isFinite(amount) || amount <= 0) return
+  giftCardBusyId.value = account.id
+  try {
+    const res = await authApi.addAccountCredits(account.id, amount)
+    alert(t('giftcard.addCreditsDone', { queued: res.data.queued }))
+    await fetchAccounts()
+  } catch (e) {
+    error.value = e.response?.data?.message || t('accounts.enterError')
+  } finally {
+    giftCardBusyId.value = null
+  }
+}
+
+// Leads retenidos por falta de saldo: ver y reasignar a otra empresa
+const heldOpenId = ref(null)       // empresa con el panel abierto
+const heldLeads = ref([])
+const heldLoading = ref(false)
+const heldError = ref('')
+const heldMsg = ref('')
+const reassigningId = ref(null)
+const targetFor = ref({})          // heldId -> empresa destino elegida
+
+// Empresas a las que se puede reasignar: activas, distintas al origen y con saldo si usan gift card
+const reassignTargets = (account) =>
+  accounts.value.filter(a => a.id !== account.id && a.active)
+const targetDisabled = (a) => a.giftCardEnabled && a.leadCredits === 0
+
+const toggleHeld = async (account) => {
+  heldError.value = ''
+  heldMsg.value = ''
+  if (heldOpenId.value === account.id) {
+    heldOpenId.value = null
+    return
+  }
+  heldOpenId.value = account.id
+  heldLeads.value = []
+  heldLoading.value = true
+  try {
+    const res = await authApi.getHeldLeads(account.id)
+    heldLeads.value = res.data.leads
+  } catch (e) {
+    heldError.value = e.response?.data?.message || t('accounts.enterError')
+  } finally {
+    heldLoading.value = false
+  }
+}
+
+const handleReassign = async (account, lead) => {
+  const target = targetFor.value[lead.id]
+  if (!target) return
+  heldError.value = ''
+  heldMsg.value = ''
+  reassigningId.value = lead.id
+  try {
+    const res = await authApi.reassignHeldLead(account.id, lead.id, target)
+    heldMsg.value = t('heldLeads.done', { name: lead.name, company: res.data.targetTenant.name })
+    heldLeads.value = heldLeads.value.filter(l => l.id !== lead.id)
+    await fetchAccounts()
+    // fetchAccounts recarga la lista: se mantiene el panel abierto si quedan retenidos
+    if (heldLeads.value.length === 0) heldOpenId.value = null
+  } catch (e) {
+    heldError.value = e.response?.data?.message || t('heldLeads.error')
+  } finally {
+    reassigningId.value = null
   }
 }
 
@@ -134,9 +222,8 @@ const handleEnter = async (account) => {
 
       <!-- Account cards -->
       <div class="space-y-3">
+        <div v-for="account in accounts" :key="account.id" class="space-y-2">
         <div
-          v-for="account in accounts"
-          :key="account.id"
           class="card flex flex-wrap items-center justify-between gap-4"
           :class="{ 'opacity-70': !account.active }"
         >
@@ -145,9 +232,49 @@ const handleEnter = async (account) => {
             <span v-if="!account.active" class="inline-flex mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400">
               {{ t('dashboard.summary.disabled') }}
             </span>
+            <span
+              v-if="account.giftCardEnabled"
+              class="inline-flex mt-1 px-2 py-0.5 rounded-full text-xs font-medium"
+              :class="account.leadCredits > 0
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400'"
+            >
+              {{ t('giftcard.badge') }} · {{ t('giftcard.balanceShort', { count: account.leadCredits }) }}
+            </span>
           </div>
 
           <div class="flex items-center gap-2 flex-shrink-0">
+            <!-- Gift card: leads retenidos por falta de saldo -->
+            <button
+              v-if="account.giftCardEnabled && account.heldLeads > 0"
+              @click="toggleHeld(account)"
+              class="px-3 py-1.5 text-xs font-medium rounded-lg border border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors"
+            >
+              {{ t('heldLeads.viewBtn', { count: account.heldLeads }) }}
+            </button>
+
+            <!-- Gift card: cargar saldo (solo si está habilitada) -->
+            <button
+              v-if="account.giftCardEnabled"
+              @click="handleAddCredits(account)"
+              :disabled="giftCardBusyId !== null || deletingId !== null"
+              class="px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+            >
+              {{ t('giftcard.addCredits') }}
+            </button>
+
+            <!-- Gift card: habilitar / deshabilitar -->
+            <button
+              @click="handleToggleGiftCard(account)"
+              :disabled="giftCardBusyId !== null || deletingId !== null"
+              class="px-3 py-1.5 text-xs font-medium rounded-lg border transition-colors disabled:opacity-50"
+              :class="account.giftCardEnabled
+                ? 'border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'
+                : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'"
+            >
+              {{ giftCardBusyId === account.id ? '…' : t('giftcard.enabledToggle') + ': ' + (account.giftCardEnabled ? 'ON' : 'OFF') }}
+            </button>
+
             <!-- Pausar / Activar -->
             <button
               @click="handleToggleActive(account)"
@@ -184,6 +311,59 @@ const handleEnter = async (account) => {
             </button>
           </div>
         </div>
+
+        <!-- Panel de leads retenidos de esta empresa -->
+        <div
+          v-if="heldOpenId === account.id"
+          class="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50/60 dark:bg-amber-900/10 p-4 space-y-3"
+        >
+          <div>
+            <p class="font-semibold text-gray-900 dark:text-white">{{ t('heldLeads.title', { name: account.name }) }}</p>
+            <p class="text-xs text-gray-600 dark:text-gray-400">{{ t('heldLeads.crmNote') }}</p>
+          </div>
+
+          <p v-if="heldMsg" class="text-sm text-green-700 dark:text-green-400">{{ heldMsg }}</p>
+          <p v-if="heldError" class="text-sm text-red-600 dark:text-red-400">{{ heldError }}</p>
+
+          <div v-if="heldLoading" class="text-sm text-gray-500">…</div>
+          <p v-else-if="heldLeads.length === 0" class="text-sm text-gray-600 dark:text-gray-400">{{ t('heldLeads.empty') }}</p>
+
+          <ul v-else class="space-y-2">
+            <li
+              v-for="lead in heldLeads"
+              :key="lead.id"
+              class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+            >
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ lead.name }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {{ [lead.email, lead.phone].filter(Boolean).join(' · ') || lead.contact_id }}
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <select v-model="targetFor[lead.id]" class="input text-sm py-1.5 w-48">
+                  <option :value="undefined" disabled>{{ t('heldLeads.selectTarget') }}</option>
+                  <option
+                    v-for="target in reassignTargets(account)"
+                    :key="target.id"
+                    :value="target.id"
+                    :disabled="targetDisabled(target)"
+                  >
+                    {{ target.name }}{{ targetDisabled(target) ? ' · ' + t('heldLeads.noBalance') : '' }}
+                  </option>
+                </select>
+                <button
+                  @click="handleReassign(account, lead)"
+                  :disabled="!targetFor[lead.id] || reassigningId !== null"
+                  class="btn btn-primary text-sm py-1.5 disabled:opacity-50"
+                >
+                  {{ reassigningId === lead.id ? '…' : t('heldLeads.reassign') }}
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        </div>
       </div>
 
       <!-- Create account -->
@@ -203,6 +383,13 @@ const handleEnter = async (account) => {
               <label class="label">{{ t('auth.companyName') }}</label>
               <input v-model="companyName" type="text" class="input" :placeholder="t('auth.companyPlaceholder')" autocomplete="organization" />
             </div>
+            <label class="flex items-start gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer">
+              <input v-model="giftCardEnabled" type="checkbox" class="mt-1 h-4 w-4 rounded border-gray-300 text-primary-600" />
+              <span>
+                <span class="block text-sm font-medium text-gray-900 dark:text-white">{{ t('giftcard.enable') }}</span>
+                <span class="block text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ t('giftcard.enableHint') }}</span>
+              </span>
+            </label>
             <div v-if="createError" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
               {{ createError }}
             </div>

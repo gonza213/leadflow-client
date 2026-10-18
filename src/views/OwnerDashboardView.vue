@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { authApi, leadsApi } from '../services/api'
+import { authApi, leadsApi, ownerPaymentsApi } from '../services/api'
 import KPICard from '../components/dashboard/KPICard.vue'
 import StagesChart from '../components/dashboard/StagesChart.vue'
 import StagesTable from '../components/dashboard/StagesTable.vue'
@@ -9,6 +9,7 @@ import StagesTable from '../components/dashboard/StagesTable.vue'
 const { t } = useI18n()
 
 const accounts = ref([])
+const sales = ref({ totals: [], recent: [] }) // ventas de leads (gift card)
 const selectedSlug = ref('') // '' = todas las empresas
 const loading = ref(true)
 const error = ref('')
@@ -22,6 +23,13 @@ const fetchAll = async () => {
   try {
     const res = await authApi.getAccounts()
     accounts.value = res.data.accounts
+
+    // Ventas de leads: si falla no debe romper el dashboard
+    try {
+      sales.value = (await ownerPaymentsApi.getSales()).data
+    } catch {
+      sales.value = { totals: [], recent: [] }
+    }
 
     const targets = selectedSlug.value
       ? accounts.value.filter(a => a.slug === selectedSlug.value)
@@ -75,12 +83,28 @@ const mergedStages = computed(() => {
   }))
 })
 
+// Gift card: solo se muestra el bloque si el dueño usa gift card o ya vendió
+const hasGiftCard = computed(() => accounts.value.some(a => a.giftCardEnabled))
+const showSales = computed(() => hasGiftCard.value || sales.value.totals.length > 0)
+const leadsSold = computed(() => sales.value.totals.reduce((sum, x) => sum + x.leads, 0))
+const revenueLabel = computed(() => {
+  if (sales.value.totals.length === 0) return '—'
+  return sales.value.totals
+    .map(x => new Intl.NumberFormat(undefined, { style: 'currency', currency: x.currency, maximumFractionDigits: 2 }).format(x.amount))
+    .join(' · ')
+})
+const companiesOutOfBalance = computed(() =>
+  accounts.value.filter(a => a.giftCardEnabled && a.leadCredits === 0).length
+)
+
 // Fila por empresa (solo en vista "todas")
 const perCompany = computed(() =>
   accounts.value.map(account => ({
     name: account.name,
     slug: account.slug,
-    leads: reports.value[account.slug]?.total_leads || 0
+    leads: reports.value[account.slug]?.total_leads || 0,
+    // null = la empresa no usa gift card
+    credits: account.giftCardEnabled ? account.leadCredits : null
   }))
 )
 </script>
@@ -119,6 +143,13 @@ const perCompany = computed(() =>
         <KPICard :title="t('dashboard.kpis.sellers')" :value="totalSellers" icon="users" color="purple" />
       </div>
 
+      <!-- Gift card: ventas de leads y empresas sin saldo -->
+      <div v-if="showSales" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <KPICard :title="t('ownerPayments.dashLeadsSold')" :value="leadsSold" icon="layers" color="orange" />
+        <KPICard :title="t('ownerPayments.dashRevenue')" :value="revenueLabel" icon="star" color="green" />
+        <KPICard :title="t('ownerPayments.dashNoBalance')" :value="companiesOutOfBalance" icon="users" color="yellow" />
+      </div>
+
       <!-- Leads por empresa (solo vista "todas") -->
       <div v-if="!selectedSlug && accounts.length > 1" class="card">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ t('accounts.leadsByCompany') }}</h2>
@@ -129,6 +160,7 @@ const perCompany = computed(() =>
                 <th class="text-left py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('accounts.companyFilter') }}</th>
                 <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">Leads</th>
                 <th class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">%</th>
+                <th v-if="hasGiftCard" class="text-right py-3 px-2 text-sm font-medium text-gray-500 dark:text-gray-400">{{ t('ownerPayments.dashBalanceCol') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -141,6 +173,9 @@ const perCompany = computed(() =>
                   <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-50 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300">
                     {{ totalLeads > 0 ? ((row.leads / totalLeads) * 100).toFixed(1) : 0 }}%
                   </span>
+                </td>
+                <td v-if="hasGiftCard" class="py-3 px-2 text-right" :class="row.credits === 0 ? 'text-amber-600 dark:text-amber-400 font-semibold' : 'text-gray-600 dark:text-gray-300'">
+                  {{ row.credits === null ? '—' : row.credits }}
                 </td>
               </tr>
             </tbody>

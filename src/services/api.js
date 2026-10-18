@@ -61,7 +61,10 @@ export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   registerOwner: (data) => api.post('/auth/register-owner', data, { baseURL: '/api' }),
   getAccounts: () => api.get('/auth/accounts'),
-  createAccount: (companyName) => api.post('/auth/accounts', { companyName }),
+  createAccount: (companyName, giftCardEnabled = false) => api.post('/auth/accounts', { companyName, giftCardEnabled }),
+  addAccountCredits: (id, amount) => api.post(`/auth/accounts/${id}/credits`, { amount }),
+  getHeldLeads: (id) => api.get(`/auth/accounts/${id}/held-leads`),
+  reassignHeldLead: (id, heldId, targetTenantId) => api.post(`/auth/accounts/${id}/held-leads/${heldId}/reassign`, { targetTenantId }),
   enterAccount: (id) => api.post(`/auth/accounts/${id}/enter`),
   updateAccount: (id, data) => api.patch(`/auth/accounts/${id}`, data),
   deleteAccount: (id) => api.delete(`/auth/accounts/${id}`),
@@ -85,6 +88,28 @@ export const sellersApi = {
   update: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/sellers/${id}`, data),
   create: (tenantSlug, data) => api.post(`/${tenantSlug}/sellers`, data),
   delete: (tenantSlug, id) => api.delete(`/${tenantSlug}/sellers/${id}`)
+}
+
+export const creditsApi = {
+  get: (tenantSlug) => api.get(`/${tenantSlug}/credits`),
+  getPurchases: (tenantSlug) => api.get(`/${tenantSlug}/credits/purchases`),
+  checkout: (tenantSlug, data) => api.post(`/${tenantSlug}/credits/checkout`, data),
+  confirm: (tenantSlug, purchaseId) => api.post(`/${tenantSlug}/credits/confirm`, { purchaseId })
+}
+
+// Campaña única del adminclient: un webhook repartido entre sus empresas
+export const poolApi = {
+  getOverview: () => api.get('/auth/pool'),
+  updateCompany: (id, data) => api.put(`/auth/pool/companies/${id}`, data),
+  regenerateKey: () => api.post('/auth/pool/regenerate-key'),
+  retryHeld: () => api.post('/auth/pool/retry-held')
+}
+
+// Cobros del adminclient: precio por lead, tokens Stripe / Mercado Pago y ventas
+export const ownerPaymentsApi = {
+  getSettings: () => api.get('/auth/payments/settings'),
+  save: (data) => api.put('/auth/payments/settings', data),
+  getSales: () => api.get('/auth/payments/sales')
 }
 
 export const configApi = {
