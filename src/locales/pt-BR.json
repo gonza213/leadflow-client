@@ -837,6 +837,14 @@
       "make": "Conecte com mais de 3000 apps"
     },
     "webhooks": {
+      "responses": {
+        "title": "Respostas do sistema",
+        "c201": "Lead recebido e atribuído a um vendedor.",
+        "c400": "Faltam contact_id ou name.",
+        "c402": "Saldo de leads esgotado (gift card). O lead fica retido e não se perde: é atribuído ao recarregar o saldo ou reatribuído pelo administrador.",
+        "c409": "Esse contact_id já existe: o lead não é duplicado.",
+        "payloadNote": "Além de contact_id, seller_user_id, seller_name e team, são enviados name, email e phone do lead."
+      },
       "title": "Webhooks da sua conta",
       "info": "Configure estes webhooks no seu CRM para sincronizar leads automaticamente.",
       "input": {

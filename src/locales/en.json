@@ -758,6 +758,14 @@
       "make": "Connect with over 3000 apps"
     },
     "webhooks": {
+      "responses": {
+        "title": "System responses",
+        "c201": "Lead received and assigned to a seller.",
+        "c400": "contact_id or name is missing.",
+        "c402": "Lead balance exhausted (gift card). The lead is held, not lost: it is assigned when balance is topped up or reassigned by the administrator.",
+        "c409": "That contact_id already exists: the lead is not duplicated.",
+        "payloadNote": "Besides contact_id, seller_user_id, seller_name and team, the lead's name, email and phone are sent."
+      },
       "title": "Your Account Webhooks",
       "info": "Configure these webhooks in your CRM to sync leads automatically.",
       "input": {

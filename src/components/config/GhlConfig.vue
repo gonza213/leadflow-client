@@ -71,7 +71,10 @@ const handleSave = async () => {
   "contact_id": "abc123",
   "seller_user_id": "crm_user_id_del_vendedor",
   "seller_name": "Nombre del Vendedor",
-  "team": "Equipo A"
+  "team": "Equipo A",
+  "name": "Nombre del lead",
+  "email": "lead@email.com",
+  "phone": "+5491100000000"
 }</pre>
     </div>
 

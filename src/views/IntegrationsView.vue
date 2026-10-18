@@ -119,6 +119,15 @@ onMounted(async () => {
   "state": "{{contact.state}}"
 }</pre>
         </details>
+        <details class="text-sm mt-2">
+          <summary class="cursor-pointer text-green-700 dark:text-green-400 font-medium">{{ t('integrations.webhooks.responses.title') }}</summary>
+          <ul class="mt-2 space-y-1 text-xs text-gray-700 dark:text-gray-300">
+            <li><code class="font-mono font-bold text-green-700 dark:text-green-400">201</code> {{ t('integrations.webhooks.responses.c201') }}</li>
+            <li><code class="font-mono font-bold text-red-600 dark:text-red-400">400</code> {{ t('integrations.webhooks.responses.c400') }}</li>
+            <li><code class="font-mono font-bold text-amber-600 dark:text-amber-400">402</code> {{ t('integrations.webhooks.responses.c402') }}</li>
+            <li><code class="font-mono font-bold text-red-600 dark:text-red-400">409</code> {{ t('integrations.webhooks.responses.c409') }}</li>
+          </ul>
+        </details>
       </div>
 
       <!-- Webhook 2: Respuesta -->
@@ -131,13 +140,17 @@ onMounted(async () => {
         <p class="text-sm text-blue-700 dark:text-blue-400 mb-3">
           {{ t('integrations.webhooks.output.desc') }}
         </p>
+        <p class="text-xs text-blue-700 dark:text-blue-400 mb-3">{{ t('integrations.webhooks.responses.payloadNote') }}</p>
         <details class="text-sm">
           <summary class="cursor-pointer text-blue-700 dark:text-blue-400 font-medium">{{ t('integrations.webhooks.output.viewJson') }}</summary>
           <pre v-pre class="bg-white dark:bg-gray-800 p-3 rounded text-xs font-mono overflow-x-auto text-gray-700 dark:text-gray-300 mt-2 border border-blue-200 dark:border-blue-700">{
   "contact_id": "abc123",
   "seller_user_id": "crm_user_id_del_vendedor",
   "seller_name": "Nombre del Vendedor",
-  "team": "Equipo A"
+  "team": "Equipo A",
+  "name": "Nombre del lead",
+  "email": "lead@email.com",
+  "phone": "+5491100000000"
 }</pre>
         </details>
       </div>
