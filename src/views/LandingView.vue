@@ -232,26 +232,6 @@ const handleGlobalMouseMove = (e) => {
   
   root.style.setProperty('--mouse-x', `${x}px`)
   root.style.setProperty('--mouse-y', `${y}px`)
-  
-  // Hero Tilt (keep it localized to hero for better performance/feel)
-  if (heroRef.value && cardRef.value) {
-    const cardRect = cardRef.value.getBoundingClientRect()
-    const centerX = cardRect.left + cardRect.width / 2
-    const centerY = cardRect.top + cardRect.height / 2
-    // limitado a ±7° para que no se deforme cuando el mouse está lejos de la tarjeta
-    const clamp = (v) => Math.max(-7, Math.min(7, v))
-    const rotateX = clamp((centerY - e.clientY) / 40)
-    const rotateY = clamp((e.clientX - centerX) / 40)
-    
-    cardRef.value.style.setProperty('--rotate-x', `${rotateX}deg`)
-    cardRef.value.style.setProperty('--rotate-y', `${rotateY}deg`)
-  }
-}
-
-const resetHeroInteraction = () => {
-  if (!cardRef.value) return
-  cardRef.value.style.setProperty('--rotate-x', `0deg`)
-  cardRef.value.style.setProperty('--rotate-y', `0deg`)
 }
 
 onMounted(() => {
@@ -1380,8 +1360,6 @@ export default {
   backdrop-filter: blur(12px);
   animation: entrance 1s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  transform: perspective(1000px) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
-  transition: transform 0.15s ease-out;
 }
 .dashboard-card::after {
   content: '';
