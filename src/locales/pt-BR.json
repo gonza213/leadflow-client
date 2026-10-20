@@ -141,6 +141,27 @@
     }
   },
   "landing": {
+    "extras": {
+      "tag": "Novo",
+      "title": "Venda leads e use uma única campanha",
+      "subtitle": "Duas ferramentas para agências que gerenciam várias empresas: cobre pelos leads entregues e distribua-os a partir de uma única campanha.",
+      "g": {
+        "title": "Gift card de leads",
+        "desc": "Cada empresa pode ter um saldo pré-pago de leads. O gerente compra a quantidade que quiser com Stripe ou Mercado Pago e o pagamento vai direto para a sua conta.",
+        "p1": "Você cadastra suas credenciais de pagamento e define o preço por lead",
+        "p2": "O saldo diminui a cada lead recebido; em 0 o lead fica retido e não se perde",
+        "p3": "Aviso por e-mail ao gerente e a você, e reatribuição manual para outra empresa",
+        "p4": "Opcional: ativado só nas empresas que você escolher"
+      },
+      "c": {
+        "title": "Uma campanha para todas as suas empresas",
+        "desc": "Conecte uma única campanha do Facebook e o LeadDistro divide cada lead entre as suas empresas conforme o peso definido, e depois entre os vendedores de cada uma.",
+        "p1": "Convive com as campanhas individuais de cada empresa",
+        "p2": "Cada empresa participa com seu próprio peso e sua subconta do GoHighLevel",
+        "p3": "Respeita o saldo do gift card: sem saldo, o lead vai para a próxima empresa",
+        "p4": "Webhook próprio com URL, JSON e códigos de resposta no seu painel"
+      }
+    },
     "features": {
       "tag": "Funcionalidades",
       "title": "Tudo o que sua equipe de vendas precisa",

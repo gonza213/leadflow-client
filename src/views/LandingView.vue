@@ -435,6 +435,39 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- GIFT CARD + CAMPAÑA ÚNICA -->
+    <section class="section reveal" id="extras">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">{{ t('landing.extras.tag') }}</div>
+          <h2 class="section-title">{{ t('landing.extras.title') }}</h2>
+          <p class="section-sub">{{ t('landing.extras.subtitle') }}</p>
+        </div>
+        <div class="extras-grid">
+          <div class="feat-card extras-card">
+            <div class="feat-icon icon-green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+            <h3>{{ t('landing.extras.g.title') }}</h3>
+            <p>{{ t('landing.extras.g.desc') }}</p>
+            <ul class="extras-list">
+              <li v-for="n in 4" :key="n">{{ t('landing.extras.g.p' + n) }}</li>
+            </ul>
+          </div>
+          <div class="feat-card extras-card">
+            <div class="feat-icon icon-pink">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+            </div>
+            <h3>{{ t('landing.extras.c.title') }}</h3>
+            <p>{{ t('landing.extras.c.desc') }}</p>
+            <ul class="extras-list">
+              <li v-for="n in 4" :key="n">{{ t('landing.extras.c.p' + n) }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- HOW IT WORKS -->
     <section class="section section-dark reveal" id="how">
       <div class="container">
@@ -1419,6 +1452,10 @@ export default {
 .feat-card:hover::after { opacity: 1; }
 .feat-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
 .feat-large { grid-column: span 2; }
+.extras-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.extras-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.extras-list li { position: relative; padding-left: 22px; font-size: 14px; line-height: 1.5; color: var(--text-muted, #94a3b8); }
+.extras-list li::before { content: '✓'; position: absolute; left: 0; color: #22c55e; font-weight: 700; }
 .feat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
 .icon-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
 .icon-green { background: rgba(34,197,94,0.15); color: #4ade80; }
@@ -1842,6 +1879,7 @@ export default {
   .hamburger { display: flex; }
   .features-grid { grid-template-columns: 1fr; }
   .feat-large { grid-column: span 1; }
+  .extras-grid { grid-template-columns: 1fr; }
   .roles-grid { grid-template-columns: 1fr; }
   .steps-flow { flex-direction: column; align-items: center; gap: 24px; }
   .step-connector { display: none; }

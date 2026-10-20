@@ -298,6 +298,27 @@
     }
   },
   "landing": {
+    "extras": {
+      "tag": "New",
+      "title": "Sell leads and run a single campaign",
+      "subtitle": "Two tools for agencies managing several companies: charge for the leads you deliver and distribute them from one campaign.",
+      "g": {
+        "title": "Lead gift card",
+        "desc": "Each company can have a prepaid lead balance. The manager buys any amount with Stripe or Mercado Pago and the payment goes straight to your account.",
+        "p1": "You add your payment credentials and set the price per lead",
+        "p2": "The balance drops with every incoming lead; at 0 the lead is held, not lost",
+        "p3": "Email alerts to the manager and to you, plus manual reassignment to another company",
+        "p4": "Optional: enabled only for the companies you choose"
+      },
+      "c": {
+        "title": "One campaign for all your companies",
+        "desc": "Connect a single Facebook campaign and LeadDistro splits each lead across your companies by the weight you set, then across each company's sellers.",
+        "p1": "Works alongside each company's own campaigns",
+        "p2": "Each company takes part with its own weight and GoHighLevel subaccount",
+        "p3": "Respects gift card balance: with no balance, the lead goes to the next company",
+        "p4": "Its own webhook with URL, JSON and response codes in your dashboard"
+      }
+    },
     "features": {
       "tag": "Features",
       "title": "Everything your sales team needs",
