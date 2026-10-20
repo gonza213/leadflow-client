@@ -141,6 +141,7 @@
     }
   },
   "landing": {
+    "hero": { "badgeFast": "Lead atribuído em 0,4 s", "badgeSaved": "Nenhum lead perdido" },
     "extras": {
       "tag": "Novo",
       "title": "Venda leads e use uma única campanha",

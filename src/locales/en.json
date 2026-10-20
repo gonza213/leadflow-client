@@ -298,6 +298,7 @@
     }
   },
   "landing": {
+    "hero": { "badgeFast": "Lead assigned in 0.4 s", "badgeSaved": "Zero leads lost" },
     "extras": {
       "tag": "New",
       "title": "Sell leads and run a single campaign",

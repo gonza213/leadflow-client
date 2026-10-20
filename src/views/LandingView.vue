@@ -136,13 +136,62 @@ const dashboardSellers = ref([
 const currentAssignmentIndex = ref(0)
 const nextSeller = computed(() => dashboardSellers.value[currentAssignmentIndex.value])
 const isAssigning = ref(false)
+const hitIndex = ref(-1)
+
+// KPIs: arrancan con el valor final (para el HTML prerenderizado) y al montar cuentan desde 0
+const KPI_TARGET = { leads: 247, sellers: 12, assigned: 96 }
+const kpis = ref({ ...KPI_TARGET })
+let kpiRaf = null
+let kpisExtra = 0
+
+const animateKpis = () => {
+  const start = performance.now()
+  const dur = 1600
+  const tick = (now) => {
+    const k = Math.min(1, (now - start) / dur)
+    const e = 1 - Math.pow(1 - k, 3)
+    kpis.value = {
+      leads: Math.round(KPI_TARGET.leads * e) + (k === 1 ? kpisExtra : 0),
+      sellers: Math.round(KPI_TARGET.sellers * e),
+      assigned: Math.round(KPI_TARGET.assigned * e)
+    }
+    if (k < 1) kpiRaf = requestAnimationFrame(tick)
+  }
+  kpiRaf = requestAnimationFrame(tick)
+}
+
+// Feed de leads entrando en vivo
+const incomingLeads = [
+  { lead: 'María G.', source: 'Facebook Ads' },
+  { lead: 'Lucas R.', source: 'Instagram' },
+  { lead: 'Sofía M.', source: 'WhatsApp' },
+  { lead: 'Diego P.', source: 'Landing' },
+  { lead: 'Valentina C.', source: 'Facebook Ads' },
+  { lead: 'Martín S.', source: 'Google Ads' }
+]
+const feed = ref([])
+let feedId = 0
+let leadCursor = 0
 
 const rotateAssignment = () => {
   isAssigning.value = true
+  const idx = currentAssignmentIndex.value
+  const seller = dashboardSellers.value[idx]
+
   setTimeout(() => {
-    currentAssignmentIndex.value = (currentAssignmentIndex.value + 1) % dashboardSellers.value.length
+    // El lead se asigna: sube el contador del vendedor, su barra y el total
+    if (seller.count < seller.limit) seller.count++
+    hitIndex.value = idx
+    kpisExtra++
+    kpis.value = { ...kpis.value, leads: KPI_TARGET.leads + kpisExtra }
+
+    const l = incomingLeads[leadCursor++ % incomingLeads.length]
+    feed.value = [{ id: ++feedId, lead: l.lead, source: l.source, seller: seller.name.split(' ')[0] }, ...feed.value].slice(0, 3)
+
+    currentAssignmentIndex.value = (idx + 1) % dashboardSellers.value.length
     isAssigning.value = false
-  }, 400)
+    setTimeout(() => { hitIndex.value = -1 }, 700)
+  }, 450)
 }
 
 let rotationInterval = null
@@ -189,8 +238,10 @@ const handleGlobalMouseMove = (e) => {
     const cardRect = cardRef.value.getBoundingClientRect()
     const centerX = cardRect.left + cardRect.width / 2
     const centerY = cardRect.top + cardRect.height / 2
-    const rotateX = (centerY - e.clientY) / 25
-    const rotateY = (e.clientX - centerX) / 25
+    // limitado a ±7° para que no se deforme cuando el mouse está lejos de la tarjeta
+    const clamp = (v) => Math.max(-7, Math.min(7, v))
+    const rotateX = clamp((centerY - e.clientY) / 40)
+    const rotateY = clamp((e.clientX - centerX) / 40)
     
     cardRef.value.style.setProperty('--rotate-x', `${rotateX}deg`)
     cardRef.value.style.setProperty('--rotate-y', `${rotateY}deg`)
@@ -209,13 +260,20 @@ onMounted(() => {
   revealObserver = setupRevealObserver()
   document.documentElement.style.scrollBehavior = 'smooth'
   
-  // Iniciar rotación del mockup
-  rotationInterval = setInterval(rotateAssignment, 4000)
+  // Mockup del hero: contadores y feed en vivo (sin movimiento si el usuario lo desactivó)
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+  if (!reduceMotion) {
+    kpis.value = { leads: 0, sellers: 0, assigned: 0 }
+    animateKpis()
+    setTimeout(rotateAssignment, 1800)
+    rotationInterval = setInterval(rotateAssignment, 3200)
+  }
 })
 onUnmounted(() => {
   if (observer) observer.disconnect()
   if (revealObserver) revealObserver.disconnect()
   if (rotationInterval) clearInterval(rotationInterval)
+  if (kpiRaf) cancelAnimationFrame(kpiRaf)
   document.documentElement.style.scrollBehavior = ''
 })
 </script>
@@ -363,36 +421,57 @@ onUnmounted(() => {
 
       <!-- Dashboard mockup -->
       <div class="hero-visual">
+        <div class="hero-glow"></div>
+
+        <div class="float-badge fb-top">
+          <span class="fb-ic">⚡</span>
+          <span>{{ t('landing.hero.badgeFast') }}</span>
+        </div>
+        <div class="float-badge fb-bottom">
+          <span class="fb-ic ok">✓</span>
+          <span>{{ t('landing.hero.badgeSaved') }}</span>
+        </div>
+
         <div class="dashboard-card" ref="cardRef">
           <div class="card-header">
             <div class="card-dots">
               <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
             </div>
             <span class="card-title">Dashboard LeadDistro</span>
+            <span class="card-live"><span class="live-dot"></span>LIVE</span>
           </div>
           <div class="card-body">
             <div class="mini-kpis">
-              <div class="mini-kpi blue"><span class="kpi-val">247</span><span class="kpi-lbl">{{ t('leads.total') }}</span></div>
-              <div class="mini-kpi emerald"><span class="kpi-val">12</span><span class="kpi-lbl">{{ t('sellers.title') }}</span></div>
-              <div class="mini-kpi purple"><span class="kpi-val">96%</span><span class="kpi-lbl">{{ t('leads.status.assigned') }}</span></div>
+              <div class="mini-kpi blue"><span class="kpi-val">{{ kpis.leads }}</span><span class="kpi-lbl">{{ t('leads.total') }}</span></div>
+              <div class="mini-kpi emerald"><span class="kpi-val">{{ kpis.sellers }}</span><span class="kpi-lbl">{{ t('sellers.title') }}</span></div>
+              <div class="mini-kpi purple"><span class="kpi-val">{{ kpis.assigned }}%</span><span class="kpi-lbl">{{ t('leads.status.assigned') }}</span></div>
             </div>
+
             <div class="mini-sellers">
-              <div class="mini-seller" v-for="(s, i) in dashboardSellers" :key="s.name" :style="{ 'transition-delay': (0.3 + (i * 0.1)) + 's' }">
+              <div class="mini-seller" v-for="(s, i) in dashboardSellers" :key="s.name" :class="{ 'is-hit': hitIndex === i }">
                 <div class="s-avatar" :style="{ background: s.color }">{{ s.initials }}</div>
                 <div class="s-info">
-                  <span class="s-name">{{ s.name }}</span>
-                  <div class="s-bar"><div class="s-fill" :style="{ width: s.pct + '%', background: s.color }"></div></div>
+                  <div class="s-top">
+                    <span class="s-name">{{ s.name }}</span>
+                    <span class="s-count"><b>{{ s.count }}</b>/{{ s.limit }}</span>
+                  </div>
+                  <div class="s-bar"><div class="s-fill" :style="{ width: Math.round(s.count / s.limit * 100) + '%', background: s.color }"></div></div>
                 </div>
-                <span class="s-count">{{ s.count }}/{{ s.limit }}</span>
               </div>
             </div>
+
+            <TransitionGroup name="feed" tag="div" class="mini-feed">
+              <div class="feed-item" v-for="f in feed" :key="f.id">
+                <span class="feed-dot"></span>
+                <span class="feed-txt"><b>{{ f.lead }}</b> · {{ f.source }}</span>
+                <span class="feed-arrow">→</span>
+                <span class="feed-to">{{ f.seller }}</span>
+              </div>
+            </TransitionGroup>
+
             <div class="mini-next" :class="{ 'is-assigning': isAssigning }">
               <span class="next-lbl">{{ t('main.nextAssignment') }} →</span>
               <span class="next-val">{{ nextSeller.team }} · {{ nextSeller.name }}</span>
-              <div class="live-indicator">
-                <span class="live-dot"></span>
-                <span class="live-text">LIVE</span>
-              </div>
             </div>
           </div>
         </div>
@@ -2177,4 +2256,81 @@ export default {
   .integration-card:hover::before, .pricing-card:hover::before { animation: none; }
 }
 
+/* ===== HERO MOCKUP — rediseño ===== */
+.hero-visual { align-items: center; }
+.hero-glow {
+  position: absolute; width: 440px; height: 440px; border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle, rgba(99,102,241,0.35), rgba(59,130,246,0.18) 45%, transparent 70%);
+  filter: blur(40px); animation: glowDrift 9s ease-in-out infinite alternate; pointer-events: none;
+}
+@keyframes glowDrift { from { transform: translate(-30px, -20px) scale(0.95); } to { transform: translate(30px, 20px) scale(1.08); } }
+
+.dashboard-card { max-width: 460px; z-index: 1; border-radius: 16px; border-color: rgba(129,140,248,0.25);
+  box-shadow: 0 50px 100px -25px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06), 0 0 70px rgba(99,102,241,0.22); }
+.card-header { padding: 11px 16px; }
+.dot { width: 9px; height: 9px; }
+.card-title { font-size: 0.68rem; }
+.card-live { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 0.62rem; font-weight: 800; letter-spacing: 1px; color: #22c55e; }
+.card-live .live-dot { width: 7px; height: 7px; }
+.card-body { padding: 16px; gap: 14px; }
+
+.mini-kpis { gap: 10px; }
+.mini-kpi { padding: 12px 6px; border-radius: 12px; gap: 4px; }
+.kpi-val { font-size: 1.5rem; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+.kpi-lbl { font-size: 0.66rem; }
+
+.mini-sellers { gap: 10px; }
+.mini-seller { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 12px; border: 1px solid transparent; transition: background 0.4s, border-color 0.4s; }
+.mini-seller.is-hit { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+.s-avatar { width: 34px; height: 34px; border-radius: 10px; font-size: 0.72rem; flex-shrink: 0; }
+.s-info { flex: 1; min-width: 0; }
+.s-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.s-name { font-size: 0.84rem; margin-bottom: 0; display: inline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-count { font-size: 0.74rem; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.s-count b { color: #fff; font-weight: 700; }
+.s-bar { height: 6px; }
+.s-fill { animation: none; transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+
+.mini-feed { display: flex; flex-direction: column; gap: 6px; min-height: 96px; }
+.feed-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-size: 0.74rem; color: #cbd5e1;
+  background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.18); border-radius: 10px; }
+.feed-item b { color: #fff; font-weight: 700; }
+.feed-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; flex-shrink: 0; }
+.feed-txt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed-arrow { color: #64748b; }
+.feed-to { font-weight: 700; color: #86efac; }
+.feed-enter-active, .feed-leave-active { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.feed-enter-from { opacity: 0; transform: translateY(-14px) scale(0.96); }
+.feed-leave-to { opacity: 0; transform: translateX(24px); }
+.feed-leave-active { position: absolute; width: calc(100% - 32px); }
+.feed-move { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.mini-feed { position: relative; }
+
+.mini-next { margin-top: 0; padding: 12px 14px; border-radius: 12px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(139,92,246,0.18)); border-color: rgba(129,140,248,0.3); }
+.next-lbl { font-size: 0.64rem; margin-bottom: 4px; }
+.next-val { font-size: 0.95rem; }
+
+.float-badge { position: absolute; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 12px;
+  font-size: 0.76rem; font-weight: 600; color: #e2e8f0; white-space: nowrap;
+  background: rgba(15,23,42,0.85); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(14px);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.45); animation: badgeFloat 6s ease-in-out infinite; }
+.fb-top { top: -40px; right: 24px; }
+.fb-bottom { bottom: -40px; left: 24px; animation-delay: -3s; }
+.fb-ic { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(250,204,21,0.15); font-size: 0.8rem; }
+.fb-ic.ok { background: rgba(34,197,94,0.18); color: #4ade80; font-weight: 800; }
+@keyframes badgeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+
+@media (max-width: 1000px) {
+  .fb-top { right: 12px; }
+  .fb-bottom { left: 12px; }
+}
+@media (max-width: 520px) {
+  .float-badge { display: none; }
+  .kpi-val { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow, .float-badge { animation: none; }
+  .feed-enter-active, .feed-leave-active, .feed-move { transition: none; }
+}
 </style>
