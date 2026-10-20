@@ -2136,7 +2136,8 @@ export default {
   100% { transform: translate3d(4%, 3%, 0) scale(1.1); }
 }
 /* keep real content above the grid/aurora */
-.landing-nav, .hero, .section, .cta-section, .landing-footer { position: relative; z-index: 1; }
+/* la barra de navegación queda fuera: es position: fixed y debe seguir al scroll */
+.hero, .section, .cta-section, .landing-footer { position: relative; z-index: 1; }
 
 /* Rotating neon border on hover for the key cards (role-card keeps its top bar) */
 .feat-card, .integration-card, .pricing-card {
