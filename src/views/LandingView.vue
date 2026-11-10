@@ -18,20 +18,21 @@ useHead({
     { property: 'og:title', content: () => t('meta.ogTitle') },
     { property: 'og:description', content: () => t('meta.ogDescription') },
     { property: 'og:type', content: 'website' },
+    { property: 'og:site_name', content: 'LeadDistro' },
+    { property: 'og:locale', content: () => ({ es: 'es_LA', 'pt-BR': 'pt_BR', en: 'en_US' }[locale.value] || 'es_LA') },
     { property: 'og:url', content: 'https://www.leaddistro.site/landing' },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
+    { property: 'og:image:alt', content: 'LeadDistro: distribución automática de leads' },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
     { property: 'og:image', content: 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: () => t('meta.ogTitle') },
     { name: 'twitter:description', content: () => t('meta.ogDescription') },
-    { name: 'twitter:image', content: 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png' },
-    { name: 'keywords', content: () => t('meta.keywords') }
+    { name: 'twitter:image', content: 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png' }
   ],
   link: [
-    { rel: 'canonical', href: 'https://www.leaddistro.site/landing' },
-    { rel: 'alternate', hreflang: 'es', href: 'https://www.leaddistro.site/landing' },
-    { rel: 'alternate', hreflang: 'pt-BR', href: 'https://www.leaddistro.site/landing' },
-    { rel: 'alternate', hreflang: 'en', href: 'https://www.leaddistro.site/landing' },
-    { rel: 'alternate', hreflang: 'x-default', href: 'https://www.leaddistro.site/landing' }
+    { rel: 'canonical', href: 'https://www.leaddistro.site/landing' }
   ],
   script: [
     {
@@ -44,11 +45,6 @@ useHead({
         "logo": "https://www.leaddistro.site/logo_leaddistro.png",
         "operatingSystem": "Web",
         "applicationCategory": "BusinessApplication",
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "ratingCount": "120"
-        },
         "offers": {
           "@type": "Offer",
           "price": "25.00",
@@ -68,6 +64,29 @@ useHead({
           "name": "LeadDistro",
           "url": "https://www.leaddistro.site/"
         }
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: () => JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.leaddistro.site/#organization",
+            "name": "LeadDistro",
+            "url": "https://www.leaddistro.site/",
+            "logo": { "@type": "ImageObject", "url": "https://www.leaddistro.site/favicon-192.png", "width": 192, "height": 192 }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.leaddistro.site/#website",
+            "url": "https://www.leaddistro.site/landing",
+            "name": "LeadDistro",
+            "inLanguage": locale.value,
+            "publisher": { "@id": "https://www.leaddistro.site/#organization" }
+          }
+        ]
       })
     },
     {

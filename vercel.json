@@ -3,7 +3,7 @@
     {
       "source": "/",
       "destination": "/landing",
-      "permanent": false
+      "permanent": true
     }
   ],
   "rewrites": [

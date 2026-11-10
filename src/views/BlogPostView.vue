@@ -51,31 +51,60 @@ const formattedContent = computed(() => {
   return result.join('')
 })
 
+const OG_IMAGE = 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png'
+
 useHead({
   title: () => post.value?.title ? `${post.value.title} | LeadDistro Blog` : 'LeadDistro Blog',
   meta: () => post.value ? [
     { name: 'description', content: post.value.description },
+    { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
     { property: 'og:title', content: post.value.title },
     { property: 'og:description', content: post.value.description },
     { property: 'og:type', content: 'article' },
-    { name: 'robots', content: 'index, follow' },
+    { property: 'og:site_name', content: 'LeadDistro' },
+    { property: 'og:url', content: `https://www.leaddistro.site/blog/${slug.value}` },
+    { property: 'og:image', content: OG_IMAGE },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: post.value.title },
+    { name: 'twitter:description', content: post.value.description },
+    { name: 'twitter:image', content: OG_IMAGE }
+  ] : [],
+  link: () => post.value ? [
     { rel: 'canonical', href: `https://www.leaddistro.site/blog/${slug.value}` }
   ] : [],
-  script: () => post.value ? [{
-    type: 'application/ld+json',
-    children: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": post.value.title,
-      "description": post.value.description,
-      "url": `https://www.leaddistro.site/blog/${slug.value}`,
-      "publisher": {
-        "@type": "Organization",
-        "name": "LeadDistro",
-        "url": "https://www.leaddistro.site"
-      }
-    })
-  }] : []
+  script: () => post.value ? [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": post.value.title,
+        "description": post.value.description,
+        "image": OG_IMAGE,
+        "url": `https://www.leaddistro.site/blog/${slug.value}`,
+        "mainEntityOfPage": `https://www.leaddistro.site/blog/${slug.value}`,
+        "author": { "@type": "Organization", "name": "LeadDistro", "url": "https://www.leaddistro.site" },
+        "publisher": {
+          "@type": "Organization",
+          "name": "LeadDistro",
+          "url": "https://www.leaddistro.site",
+          "logo": { "@type": "ImageObject", "url": "https://www.leaddistro.site/favicon-192.png" }
+        }
+      })
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "LeadDistro", "item": "https://www.leaddistro.site/landing" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.leaddistro.site/blog" },
+          { "@type": "ListItem", "position": 3, "name": post.value.title, "item": `https://www.leaddistro.site/blog/${slug.value}` }
+        ]
+      })
+    }
+  ] : []
 })
 </script>
 
