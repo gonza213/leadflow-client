@@ -1,10 +1,9 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
 import { useI18n } from 'vue-i18n'
-import { useLocationRestriction } from '../composables/useLocationRestriction'
 import api from '../services/api'
 
 const { t } = useI18n()
@@ -12,11 +11,7 @@ const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
-const { checkLocation } = useLocationRestriction()
 
-onMounted(() => {
-  checkLocation()
-})
 
 const name = ref('')
 const email = ref('')
