@@ -77,11 +77,11 @@ const handleForgot = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 py-12 px-4 transition-colors">
+  <div class="auth-shell min-h-screen flex items-center justify-center py-12 px-4">
     <!-- Dark mode toggle -->
     <button
       @click="uiStore.toggleDarkMode"
-      class="fixed top-4 right-4 p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors"
+      class="auth-theme-btn fixed top-4 right-4"
     >
       <svg v-if="uiStore.darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -94,12 +94,12 @@ const handleForgot = async () => {
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
         <router-link to="/" class="inline-flex items-center justify-center gap-3 transition-transform hover:scale-105">
-          <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-20 dark:brightness-0 dark:invert" />
+          <img src="/logo_leaddistro_light.png" alt="LeadDistro Logo" class="h-20 dark:hidden" /><img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-20 hidden dark:block brightness-0 invert" />
         </router-link>
-        <p class="mt-3 text-gray-600 dark:text-gray-400">LeadDistro — {{ t('hero.title') }}</p>
+        <p class="auth-tagline mt-3">LeadDistro — {{ t('hero.title') }}</p>
       </div>
 
-      <div class="card">
+      <div class="card auth-card">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">{{ t('auth.loginTitle') }}</h2>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
@@ -169,7 +169,7 @@ const handleForgot = async () => {
             <button
               type="button"
               @click="openForgot"
-              class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              class="text-sm auth-link"
             >
               {{ t('auth.forgotPassword') }}
             </button>

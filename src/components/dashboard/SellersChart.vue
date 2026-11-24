@@ -12,7 +12,7 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 
-const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+const COLORS = ['#84cc16', '#38bdf8', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#d946ef', '#14b8a6']
 
 const chartOptions = computed(() => ({
   chart: {
@@ -40,14 +40,14 @@ const chartOptions = computed(() => ({
     style: {
       fontSize: '12px',
       fontWeight: 500,
-      colors: [uiStore.darkMode ? '#fff' : '#374151']
+      colors: [uiStore.darkMode ? '#fff' : '#363b37']
     }
   },
   xaxis: {
     categories: props.sellers.map(s => s.seller_name),
     labels: {
       style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+        colors: uiStore.darkMode ? '#9ca299' : '#687068',
         fontSize: '12px'
       }
     }
@@ -55,13 +55,13 @@ const chartOptions = computed(() => ({
   yaxis: {
     labels: {
       style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+        colors: uiStore.darkMode ? '#9ca299' : '#687068',
         fontSize: '12px'
       }
     }
   },
   grid: {
-    borderColor: uiStore.darkMode ? '#374151' : '#e5e7eb',
+    borderColor: uiStore.darkMode ? '#363b37' : '#dfe2da',
     strokeDashArray: 4
   },
   tooltip: {

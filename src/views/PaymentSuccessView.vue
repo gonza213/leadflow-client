@@ -31,7 +31,7 @@ onMounted(async () => {
   <div class="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
     <div class="max-w-md w-full">
       <div class="text-center mb-8">
-        <img src="/logo_leaddistro.png" alt="LeadDistro" class="h-16 mx-auto dark:brightness-0 dark:invert" />
+        <img src="/logo_leaddistro_light.png" alt="LeadDistro" class="h-16 mx-auto dark:hidden" /><img src="/logo_leaddistro.png" alt="LeadDistro" class="h-16 mx-auto hidden dark:block brightness-0 invert" />
       </div>
 
       <div class="card text-center py-8">

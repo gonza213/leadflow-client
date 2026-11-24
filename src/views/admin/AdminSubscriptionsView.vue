@@ -190,7 +190,7 @@ const formatDate = (date) => {
         <div class="text-xs text-emerald-100">{{ t('admin.subscriptions.stats.thisMonthDesc', { month: new Date().toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { month: 'long' }) }) }}</div>
       </div>
 
-      <div class="card bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-none shadow-lg">
+      <div class="card bg-gradient-to-br from-gray-800 to-gray-950 text-white border-none shadow-lg">
         <div class="flex items-center justify-between mb-4">
           <div class="p-2 bg-white/10 rounded-lg">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

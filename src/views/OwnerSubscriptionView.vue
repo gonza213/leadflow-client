@@ -2,10 +2,13 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { authApi, subscriptionApi } from '../services/api'
+import { useAuthStore } from '../stores/auth'
+import { buildSubscribeUrl } from '../services/subscribeUrl'
 
 const { t, locale } = useI18n()
 
-const SUBSCRIBE_URL = 'https://checkout.dlocalgo.com/validate/subscription/jlZVHZj9raWC65A7dr64sH9V7m4Yn2fS'
+const authStore = useAuthStore()
+const subscribeUrl = computed(() => buildSubscribeUrl(authStore.user?.email))
 
 const billing = ref(null)
 const loading = ref(true)
@@ -146,7 +149,7 @@ const handleCancel = async () => {
           {{ subStatus === 'trial' ? t('subscription.trial_message') : t('subscription.inactive_message') }}
         </p>
         <div class="flex flex-wrap items-center gap-3">
-          <a :href="SUBSCRIBE_URL" target="_blank"
+          <a :href="subscribeUrl" target="_blank"
             class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
             {{ t('subscription.subscribe_button') }} →
           </a>

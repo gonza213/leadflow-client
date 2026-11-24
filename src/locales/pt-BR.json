@@ -141,6 +141,8 @@
     }
   },
   "landing": {
+    "crmBar": "Funciona com o seu CRM",
+    "themeToggle": "Alternar modo claro / escuro",
     "hero": { "badgeFast": "Lead atribuído em 0,4 s", "badgeSaved": "Nenhum lead perdido" },
     "extras": {
       "tag": "Novo",
@@ -1157,12 +1159,17 @@
     }
   },
   "presence": {
+    "noActivity": "Sem atividade hoje",
+    "lastSeen": "Última atividade",
+    "empty": "Ainda não há vendedores habilitados.",
     "title": "Escritório ao Vivo",
     "subtitle": "Central de comando em tempo real",
     "logs": "Atividade da Equipe",
     "activeNodes": "Vendedores Habilitados",
     "sync": "Sincronização de Rede",
     "stats": {
+      "leadsToday": "Leads hoje",
+      "salesPeriod": "Vendas do período",
       "leads": "Leads",
       "sales": "Vendas"
     },

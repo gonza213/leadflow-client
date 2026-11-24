@@ -1,23 +1,21 @@
 <script setup>
 import { computed } from 'vue'
 
+// Personaje pixel-art del vendedor (Oficina en Vivo) — rediseño 2026.
+// Las animaciones son CSS (antes dependían de un requestAnimationFrame por frame).
 const props = defineProps({
-  status: { type: String, default: 'idle' },
-  color: { type: String, default: '#4B2BBB' },
-  frame: { type: Number, default: 0 },
-  id: { type: String, default: 'dev' }
+  status: { type: String, default: 'idle' },   // active | idle | away | offline
+  color: { type: String, default: '#84CC16' },  // color de la remera
+  frame: { type: Number, default: 0 },          // compatibilidad, ya no se usa
+  id: { type: String, default: 'dev' }          // nombre: define los rasgos
 })
 
-const isWorking = computed(() => props.status === 'active')
+const isActive = computed(() => props.status === 'active')
+const isIdle = computed(() => props.status === 'idle')
 const isAway = computed(() => props.status === 'away')
 const isOffline = computed(() => props.status === 'offline')
 
-// Animación
-const bounce = computed(() => (isWorking.value ? (props.frame % 30 < 15 ? 0 : -4) : 0))
-const typingY = computed(() => (isWorking.value ? (props.frame % 20 < 10 ? 2 : -2) : 0))
-
-// --- Personalización procedural y determinista a partir del nombre ---
-// Mismo nombre => siempre el mismo avatar. Sin librerías, todo SVG.
+// --- Rasgos deterministas a partir del nombre (mismo nombre => mismo personaje) ---
 const hash = computed(() => {
   let h = 2166136261
   const s = props.id || 'dev'
@@ -27,133 +25,239 @@ const hash = computed(() => {
   }
   return h >>> 0
 })
-// pick: usa distintos bits del hash para que los rasgos no queden correlacionados
 const pick = (arr, shift) => arr[(hash.value >>> shift) % arr.length]
 
-const SKIN = ['#ffd0b0', '#f1c27d', '#e0ac69', '#c68642', '#8d5524']
-const SKIN_EAR = ['#f5c0a0', '#e3b170', '#cf9a58', '#b1742f', '#79461c'] // tono oreja por índice de piel
-const HAIR = ['#2b2b2b', '#5a3a22', '#d9b45b', '#7a3b1d', '#9a9a9a', '#3b2f5e', '#1a1a2a']
-const HEADSET = ['#1a1a2a', '#3949ab', '#00838f', '#ad1457', '#2e7d32', '#ef6c00']
+const SKIN = [
+  { base: '#FFD7B8', shade: '#F2BC98' },
+  { base: '#F3C58E', shade: '#E0A970' },
+  { base: '#E0AC69', shade: '#C99050' },
+  { base: '#C68642', shade: '#A86E31' },
+  { base: '#8D5524', shade: '#74431A' }
+]
+const HAIR = ['#232623', '#5A3A22', '#D9B45B', '#8A3B1D', '#A3A8A3', '#3B2F5E', '#B4532A']
+const HEADSET = ['#1F2320', '#C8F23A', '#38BDF8', '#F472B6', '#F59E0B', '#E5E7EB']
 
-const skinIdx = computed(() => hash.value % SKIN.length)
-const skin = computed(() => SKIN[skinIdx.value])
-const ear = computed(() => SKIN_EAR[skinIdx.value])
+const skin = computed(() => SKIN[hash.value % SKIN.length])
 const hairColor = computed(() => pick(HAIR, 8))
-const hairStyle = computed(() => (hash.value >>> 5) % 6) // 0..5
-const hasGlasses = computed(() => (hash.value >>> 14) % 3 === 0) // ~1/3
-// Sin vello facial: no tenemos el género del vendedor, así que no arriesgamos
-// ponerle barba a una mujer. El pelo da variedad suficiente.
+const hairStyle = computed(() => (hash.value >>> 5) % 6)
+const hasGlasses = computed(() => (hash.value >>> 14) % 3 === 0)
 const headsetColor = computed(() => pick(HEADSET, 22))
 
-const mouthColor = '#c0705a'
-const eyeColor = '#1a1a2a'
-const chairBack = '#263238'
-const chairSeat = '#37474f'
+const OUTLINE = '#141614'
 </script>
 
 <template>
-  <div class="pixel-agent relative w-20 h-20 sm:w-full sm:h-full" :style="{ transform: `translateY(${bounce}px)` }">
-    <svg viewBox="0 0 100 100" class="w-full h-full" :class="{ 'grayscale opacity-60': isOffline }" style="image-rendering: pixelated; shape-rendering: crispEdges;">
-      <!-- Glow -->
-      <rect v-if="isWorking" x="25" y="10" width="50" height="70" fill="rgba(75,43,187,0.15)" />
+  <div class="pixel-agent" :class="['st-' + status]">
+    <svg viewBox="0 0 64 64" class="w-full h-full" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Silla -->
+      <rect x="16" y="20" width="32" height="30" fill="#2A2F2B" />
+      <rect x="17" y="21" width="30" height="2" fill="#3A403B" />
 
-      <!-- Chair -->
-      <rect x="32" y="60" width="36" height="6" :fill="chairBack" />
-      <rect x="32" y="50" width="36" height="12" :fill="chairSeat" />
-      <rect x="34" y="35" width="10" height="15" :fill="chairBack" />
-      <rect x="56" y="35" width="10" height="15" :fill="chairBack" />
+      <!-- Torso (remera del color del vendedor) -->
+      <g class="torso">
+        <rect x="19" y="36" width="26" height="16" :fill="OUTLINE" />
+        <rect x="20" y="37" width="24" height="15" :fill="color" />
+        <rect x="39" y="37" width="5" height="15" fill="#000" opacity="0.18" />
+        <rect x="20" y="37" width="24" height="1" fill="#fff" opacity="0.25" />
+        <!-- cuello -->
+        <rect x="29" y="34" width="6" height="4" :fill="skin.shade" />
+        <rect x="30" y="37" width="4" height="2" :fill="skin.base" />
+      </g>
 
-      <!-- Body -->
-      <rect x="34" y="45" width="32" height="22" :fill="color" />
-      <rect x="44" y="45" width="12" height="6" :fill="skin" /> <!-- cuello -->
+      <!-- Brazos -->
+      <g v-if="isActive" class="arms-typing">
+        <rect class="arm-l" x="13" y="42" width="9" height="6" :fill="color" />
+        <rect class="arm-l" x="13" y="47" width="6" height="3" :fill="skin.base" />
+        <rect class="arm-r" x="42" y="42" width="9" height="6" :fill="color" />
+        <rect class="arm-r" x="45" y="47" width="6" height="3" :fill="skin.base" />
+      </g>
+      <g v-else>
+        <rect x="15" y="40" width="6" height="10" :fill="color" />
+        <rect x="43" y="40" width="6" height="10" :fill="color" />
+        <rect x="15" y="40" width="6" height="10" fill="#000" opacity="0.1" />
+      </g>
 
       <!-- Cabeza -->
-      <rect x="38" y="27" width="24" height="18" :fill="skin" />
-      <rect x="36" y="31" width="4" height="8" :fill="ear" /> <!-- oreja izq -->
-      <rect x="60" y="31" width="4" height="8" :fill="ear" /> <!-- oreja der -->
+      <g class="head">
+        <!-- pelo largo por detrás -->
+        <template v-if="hairStyle === 4">
+          <rect x="19" y="17" width="26" height="20" :fill="hairColor" />
+        </template>
+        <rect x="21" y="15" width="22" height="20" :fill="OUTLINE" />
+        <rect x="22" y="16" width="20" height="18" :fill="skin.base" />
+        <rect x="38" y="17" width="4" height="17" :fill="skin.shade" />
+        <!-- orejas -->
+        <rect x="19" y="23" width="3" height="5" :fill="skin.shade" />
+        <rect x="42" y="23" width="3" height="5" :fill="skin.shade" />
+        <!-- rubor -->
+        <rect x="24" y="29" width="3" height="1" fill="#F472B6" opacity="0.45" />
+        <rect x="37" y="29" width="3" height="1" fill="#F472B6" opacity="0.45" />
 
-      <!-- ===== PELO (estilo según hash) ===== -->
-      <template v-if="hairStyle === 0">
-        <!-- Rapado / corto -->
-        <rect x="38" y="24" width="24" height="5" :fill="hairColor" />
-      </template>
-      <template v-else-if="hairStyle === 1">
-        <!-- Corto con patillas -->
-        <rect x="38" y="22" width="24" height="7" :fill="hairColor" />
-        <rect x="37" y="27" width="3" height="7" :fill="hairColor" />
-        <rect x="60" y="27" width="3" height="7" :fill="hairColor" />
-      </template>
-      <template v-else-if="hairStyle === 2">
-        <!-- Tupé / jopo alto -->
-        <rect x="38" y="19" width="24" height="10" :fill="hairColor" />
-        <rect x="41" y="15" width="10" height="5" :fill="hairColor" />
-      </template>
-      <template v-else-if="hairStyle === 3">
-        <!-- Raya al costado -->
-        <rect x="38" y="23" width="24" height="6" :fill="hairColor" />
-        <rect x="38" y="23" width="13" height="3" :fill="hairColor" />
-        <rect x="36" y="26" width="3" height="6" :fill="hairColor" />
-      </template>
-      <template v-else-if="hairStyle === 4">
-        <!-- Largo (enmarca la cara) -->
-        <rect x="36" y="21" width="28" height="8" :fill="hairColor" />
-        <rect x="34" y="27" width="5" height="18" :fill="hairColor" />
-        <rect x="61" y="27" width="5" height="18" :fill="hairColor" />
-      </template>
-      <template v-else>
-        <!-- Enrulado / afro -->
-        <rect x="41" y="15" width="18" height="5" :fill="hairColor" />
-        <rect x="37" y="18" width="26" height="6" :fill="hairColor" />
-        <rect x="36" y="22" width="4" height="9" :fill="hairColor" />
-        <rect x="60" y="22" width="4" height="9" :fill="hairColor" />
-      </template>
+        <!-- Ojos -->
+        <g v-if="isOffline">
+          <rect x="25" y="26" width="4" height="1" :fill="OUTLINE" />
+          <rect x="35" y="26" width="4" height="1" :fill="OUTLINE" />
+        </g>
+        <g v-else class="eyes" :class="{ 'look-side': isAway }">
+          <rect x="26" y="24" width="3" height="4" :fill="OUTLINE" />
+          <rect x="35" y="24" width="3" height="4" :fill="OUTLINE" />
+          <rect x="26" y="24" width="1" height="1" fill="#fff" />
+          <rect x="35" y="24" width="1" height="1" fill="#fff" />
+        </g>
 
-      <!-- Ojos -->
-      <template v-if="isAway">
-        <rect x="40" y="33" width="4" height="4" :fill="eyeColor" />
-        <rect x="48" y="33" width="4" height="4" :fill="eyeColor" />
-      </template>
-      <template v-else-if="frame % 60 > 5">
-        <rect x="42" y="33" width="4" height="4" :fill="eyeColor" />
-        <rect x="54" y="33" width="4" height="4" :fill="eyeColor" />
-        <rect x="43" y="34" width="2" height="2" fill="white" />
-        <rect x="55" y="34" width="2" height="2" fill="white" />
-      </template>
-      <template v-else>
-        <rect x="42" y="35" width="4" height="2" :fill="eyeColor" />
-        <rect x="54" y="35" width="4" height="2" :fill="eyeColor" />
-      </template>
+        <!-- Lentes -->
+        <g v-if="hasGlasses">
+          <rect x="24" y="22" width="7" height="7" fill="none" :stroke="OUTLINE" stroke-width="1" />
+          <rect x="33" y="22" width="7" height="7" fill="none" :stroke="OUTLINE" stroke-width="1" />
+          <rect x="31" y="24" width="2" height="1" :fill="OUTLINE" />
+          <rect x="25" y="23" width="2" height="1" fill="#fff" opacity="0.5" />
+          <rect x="34" y="23" width="2" height="1" fill="#fff" opacity="0.5" />
+        </g>
 
-      <!-- Lentes -->
-      <template v-if="hasGlasses">
-        <rect x="41" y="32" width="6" height="5" fill="rgba(255,255,255,0.18)" stroke="#1a1a2a" stroke-width="1" />
-        <rect x="53" y="32" width="6" height="5" fill="rgba(255,255,255,0.18)" stroke="#1a1a2a" stroke-width="1" />
-        <rect x="47" y="34" width="6" height="1" fill="#1a1a2a" />
-      </template>
+        <!-- Boca -->
+        <g v-if="isActive">
+          <rect x="29" y="30" width="6" height="1" fill="#9A4A3A" />
+          <rect x="28" y="29" width="1" height="1" fill="#9A4A3A" />
+          <rect x="35" y="29" width="1" height="1" fill="#9A4A3A" />
+        </g>
+        <rect v-else-if="isOffline" x="31" y="30" width="3" height="2" fill="#9A4A3A" opacity="0.8" />
+        <rect v-else x="30" y="30" width="4" height="1" fill="#9A4A3A" />
 
-      <!-- Boca -->
-      <rect v-if="isAway" x="42" y="40" width="4" height="2" :fill="mouthColor" />
-      <rect v-else x="45" y="40" width="10" height="2" :fill="mouthColor" />
+        <!-- Pelo -->
+        <template v-if="hairStyle === 0">
+          <rect x="21" y="13" width="22" height="5" :fill="hairColor" />
+          <rect x="22" y="18" width="8" height="2" :fill="hairColor" />
+        </template>
+        <template v-else-if="hairStyle === 1">
+          <rect x="21" y="12" width="22" height="6" :fill="hairColor" />
+          <rect x="20" y="17" width="3" height="8" :fill="hairColor" />
+          <rect x="41" y="17" width="3" height="8" :fill="hairColor" />
+        </template>
+        <template v-else-if="hairStyle === 2">
+          <rect x="21" y="12" width="22" height="6" :fill="hairColor" />
+          <rect x="23" y="9" width="12" height="4" :fill="hairColor" />
+          <rect x="26" y="8" width="6" height="2" :fill="hairColor" />
+        </template>
+        <template v-else-if="hairStyle === 3">
+          <rect x="21" y="13" width="22" height="5" :fill="hairColor" />
+          <rect x="21" y="11" width="11" height="3" :fill="hairColor" />
+          <rect x="20" y="17" width="3" height="7" :fill="hairColor" />
+          <rect x="32" y="13" width="1" height="4" fill="#000" opacity="0.2" />
+        </template>
+        <template v-else-if="hairStyle === 4">
+          <rect x="20" y="12" width="24" height="6" :fill="hairColor" />
+          <rect x="19" y="17" width="4" height="18" :fill="hairColor" />
+          <rect x="41" y="17" width="4" height="18" :fill="hairColor" />
+        </template>
+        <template v-else>
+          <rect x="23" y="7" width="18" height="5" :fill="hairColor" />
+          <rect x="20" y="10" width="24" height="8" :fill="hairColor" />
+          <rect x="18" y="15" width="5" height="9" :fill="hairColor" />
+          <rect x="41" y="15" width="5" height="9" :fill="hairColor" />
+          <rect x="25" y="8" width="2" height="1" fill="#fff" opacity="0.2" />
+        </template>
+        <!-- brillo del pelo -->
+        <rect x="25" y="14" width="5" height="1" fill="#fff" opacity="0.18" />
 
-      <!-- Brazos / manos -->
-      <template v-if="isWorking">
-        <rect x="24" y="55" width="14" height="8" :fill="skin" :style="{ transform: `translateY(${typingY}px)` }" />
-        <rect x="62" y="55" width="14" height="8" :fill="skin" :style="{ transform: `translateY(${-typingY}px)` }" />
-      </template>
-      <template v-else>
-        <rect x="26" y="58" width="12" height="16" :fill="skin" />
-        <rect x="62" y="58" width="12" height="16" :fill="skin" />
-      </template>
+        <!-- Vincha con micrófono -->
+        <g v-if="!isOffline">
+          <rect x="21" y="11" width="22" height="2" :fill="headsetColor" />
+          <rect x="18" y="21" width="4" height="8" :fill="headsetColor" />
+          <rect x="42" y="21" width="4" height="8" :fill="headsetColor" />
+          <rect x="18" y="21" width="4" height="8" fill="#000" opacity="0.2" />
+          <rect x="40" y="31" width="5" height="1" :fill="OUTLINE" />
+          <rect x="38" y="30" width="3" height="3" :fill="headsetColor" />
+          <rect class="mic-led" x="44" y="22" width="1" height="1" :fill="isActive ? '#C8F23A' : '#687068'" />
+        </g>
+      </g>
 
-      <!-- Headset (color por persona) -->
-      <template v-if="!isOffline">
-        <rect x="36" y="25" width="4" height="14" :fill="headsetColor" />
-        <rect x="60" y="25" width="4" height="14" :fill="headsetColor" />
-        <rect x="38" y="23" width="24" height="4" :fill="headsetColor" />
-        <rect x="62" y="36" width="10" height="2" fill="#333" />
-        <rect x="70" y="35" width="4" height="4" :fill="headsetColor" />
-        <rect x="61" y="30" width="2" height="2" :fill="isWorking ? '#00f2ff' : '#666'" />
-      </template>
+      <!-- Luz de la pantalla sobre la cara -->
+      <rect v-if="isActive" class="screen-light" x="22" y="26" width="20" height="10" fill="#C8F23A" />
+
+      <!-- Escritorio -->
+      <rect x="2" y="50" width="60" height="14" fill="#1C201D" />
+      <rect x="2" y="50" width="60" height="2" fill="#2E342F" />
+      <rect x="2" y="52" width="60" height="1" fill="#C8F23A" opacity="0.18" />
+
+      <!-- Laptop (vista de atrás) -->
+      <rect x="18" y="37" width="28" height="13" :fill="OUTLINE" />
+      <rect x="19" y="38" width="26" height="12" fill="#2A2F2B" />
+      <rect x="19" y="38" width="26" height="1" fill="#fff" opacity="0.08" />
+      <rect class="laptop-logo" x="30" y="42" width="4" height="4" :fill="isOffline ? '#363B37' : '#C8F23A'" :opacity="isActive ? 1 : 0.45" />
+      <rect x="16" y="49" width="32" height="2" fill="#3A403B" />
+
+      <!-- Taza -->
+      <g>
+        <rect x="50" y="43" width="7" height="7" :fill="OUTLINE" />
+        <rect x="51" y="44" width="5" height="6" fill="#F6F7F3" />
+        <rect x="51" y="44" width="5" height="1" fill="#6B3E26" />
+        <rect x="56" y="45" width="2" height="3" fill="#F6F7F3" />
+        <g v-if="isIdle" class="steam">
+          <rect class="s1" x="52" y="39" width="1" height="3" fill="#fff" opacity="0.5" />
+          <rect class="s2" x="54" y="37" width="1" height="3" fill="#fff" opacity="0.4" />
+        </g>
+      </g>
+
+      <!-- Ausente: globo "…" -->
+      <g v-if="isAway" class="bubble">
+        <rect x="45" y="5" width="15" height="9" fill="#F6F7F3" />
+        <rect x="46" y="14" width="3" height="2" fill="#F6F7F3" />
+        <rect x="48" y="9" width="2" height="2" fill="#363B37" />
+        <rect x="51" y="9" width="2" height="2" fill="#363B37" />
+        <rect x="54" y="9" width="2" height="2" fill="#363B37" />
+      </g>
+
+      <!-- Desconectado: Zz -->
+      <g v-if="isOffline" class="zzz" fill="#9CA299">
+        <g class="z1">
+          <rect x="46" y="9" width="5" height="1" /><rect x="49" y="10" width="1" height="1" />
+          <rect x="48" y="11" width="1" height="1" /><rect x="47" y="12" width="1" height="1" /><rect x="46" y="13" width="5" height="1" />
+        </g>
+        <g class="z2">
+          <rect x="53" y="3" width="4" height="1" /><rect x="55" y="4" width="1" height="1" />
+          <rect x="54" y="5" width="1" height="1" /><rect x="53" y="6" width="4" height="1" />
+        </g>
+      </g>
     </svg>
   </div>
 </template>
+
+<style scoped>
+.pixel-agent { width: 100%; height: 100%; image-rendering: pixelated; }
+.pixel-agent svg { overflow: visible; }
+
+/* Activo: rebote suave + manos tipeando + pantalla encendida */
+.st-active .head, .st-active .torso { animation: bob 1.6s steps(2) infinite; }
+.arms-typing .arm-l { animation: typeL 0.36s steps(1) infinite; }
+.arms-typing .arm-r { animation: typeR 0.36s steps(1) infinite; }
+.screen-light { opacity: 0.12; animation: flicker 2.4s steps(3) infinite; mix-blend-mode: screen; }
+.st-active .laptop-logo { filter: drop-shadow(0 0 2px #C8F23A); }
+@keyframes bob { 50% { transform: translateY(-1px); } }
+@keyframes typeL { 50% { transform: translateY(-1px); } }
+@keyframes typeR { 0% { transform: translateY(-1px); } 50% { transform: translateY(0); } }
+@keyframes flicker { 50% { opacity: 0.2; } }
+
+/* Parpadeo */
+.eyes { animation: blink 4.2s infinite; transform-origin: 32px 26px; transform-box: view-box; }
+.eyes.look-side { transform: translateX(-2px); animation: none; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+
+/* Inactivo: vapor del café */
+.steam .s1 { animation: steam 2s infinite; }
+.steam .s2 { animation: steam 2s 1s infinite; }
+@keyframes steam { 0% { transform: translateY(2px); opacity: 0; } 40% { opacity: 0.6; } 100% { transform: translateY(-4px); opacity: 0; } }
+
+/* Ausente: globo flotando */
+.bubble { animation: float 2.4s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-1px); } }
+
+/* Desconectado: Zz + personaje apagado */
+.st-offline .head, .st-offline .torso { filter: grayscale(0.85) brightness(0.8); }
+.zzz .z1 { animation: zz 2.6s infinite; }
+.zzz .z2 { animation: zz 2.6s 0.8s infinite; }
+@keyframes zz { 0% { opacity: 0; transform: translateY(2px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-3px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-agent *, .pixel-agent { animation: none !important; }
+}
+</style>

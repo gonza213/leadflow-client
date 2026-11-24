@@ -138,8 +138,8 @@ useHead({
 <style scoped>
 .post-container {
   min-height: 100vh;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: #0e110f;
+  color: #dfe2da;
   padding: 100px 24px 60px;
   max-width: 800px;
   margin: 0 auto;
@@ -148,7 +148,7 @@ useHead({
 .back-btn {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: #9ca299;
   font-size: 0.95rem;
   cursor: pointer;
   margin-bottom: 32px;
@@ -158,7 +158,7 @@ useHead({
 }
 
 .back-btn:hover {
-  color: #3b82f6;
+  color: #c8f23a;
 }
 
 .post-header {
@@ -174,14 +174,14 @@ useHead({
 
 .post-description {
   font-size: 1.2rem;
-  color: #94a3b8;
+  color: #9ca299;
   line-height: 1.6;
 }
 
 .post-body {
   line-height: 1.8;
   font-size: 1.05rem;
-  color: #cbd5e1;
+  color: #c6cac1;
 }
 
 .post-body :deep(h2) {
@@ -189,7 +189,7 @@ useHead({
   font-size: 1.5rem;
   margin: 32px 0 16px;
   padding-top: 16px;
-  border-top: 1px solid #334155;
+  border-top: 1px solid #363b37;
 }
 
 .post-body :deep(p) {
@@ -211,7 +211,7 @@ useHead({
 }
 
 .post-body :deep(h3) {
-  color: #e2e8f0;
+  color: #dfe2da;
   font-size: 1.25rem;
   margin: 24px 0 12px;
   font-weight: 600;
@@ -225,22 +225,22 @@ useHead({
 
 .post-body :deep(td) {
   padding: 12px;
-  border: 1px solid #334155;
-  color: #cbd5e1;
+  border: 1px solid #363b37;
+  color: #c6cac1;
 }
 
 .post-body :deep(tr:first-child td) {
-  background: #1e293b;
+  background: #1f2320;
   font-weight: 600;
   color: white;
 }
 
 .post-body :deep(strong) {
-  color: #3b82f6;
+  color: #c8f23a;
 }
 
 .post-body :deep(code) {
-  background: #1e293b;
+  background: #1f2320;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;
@@ -250,7 +250,7 @@ useHead({
 .post-cta {
   margin-top: 60px;
   padding: 40px;
-  background: linear-gradient(135deg, #1e293b, #334155);
+  background: linear-gradient(135deg, #1f2320, #363b37);
   border-radius: 16px;
   text-align: center;
 }
@@ -262,8 +262,8 @@ useHead({
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  color: white;
+  background: #c8f23a;
+  color: #0e110f;
   border: none;
   padding: 14px 28px;
   border-radius: 10px;
@@ -288,8 +288,8 @@ useHead({
 }
 
 .not-found button {
-  background: #3b82f6;
-  color: white;
+  background: #c8f23a;
+  color: #0e110f;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;

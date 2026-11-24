@@ -105,25 +105,25 @@ const downloadPdf = (summary) => {
   <title>${t('summaries.pdf.title', { date: formatDateShort(summary.createdAt) })}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; padding: 40px; background: #fff; }
-    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid #6366f1; }
-    .logo { font-size: 22px; font-weight: 800; color: #6366f1; letter-spacing: -0.5px; }
-    .logo span { color: #1e293b; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; color: #1f2320; padding: 40px; background: #fff; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid #4d7c0f; }
+    .logo { font-size: 22px; font-weight: 800; color: #4d7c0f; letter-spacing: -0.5px; }
+    .logo span { color: #1f2320; }
     .meta { text-align: right; }
-    .meta .date { font-size: 13px; color: #64748b; margin-bottom: 4px; }
-    .meta .badge { display: inline-block; background: #ede9fe; color: #7c3aed; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 99px; }
-    h2 { font-size: 15px; font-weight: 700; color: #374151; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .summary-box { background: #f8fafc; border-left: 4px solid #6366f1; padding: 18px 20px; border-radius: 0 8px 8px 0; margin-bottom: 28px; font-size: 15px; line-height: 1.8; color: #1e293b; }
+    .meta .date { font-size: 13px; color: #687068; margin-bottom: 4px; }
+    .meta .badge { display: inline-block; background: #ecfccb; color: #65a30d; font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 99px; }
+    h2 { font-size: 15px; font-weight: 700; color: #363b37; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .summary-box { background: #f6f7f3; border-left: 4px solid #4d7c0f; padding: 18px 20px; border-radius: 0 8px 8px 0; margin-bottom: 28px; font-size: 15px; line-height: 1.8; color: #1f2320; }
     .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-    .metric-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center; }
-    .metric-card .num { font-size: 28px; font-weight: 800; color: #6366f1; }
-    .metric-card .lbl { font-size: 11px; color: #64748b; font-weight: 500; margin-top: 2px; }
+    .metric-card { background: #f6f7f3; border: 1px solid #dfe2da; border-radius: 10px; padding: 16px; text-align: center; }
+    .metric-card .num { font-size: 28px; font-weight: 800; color: #4d7c0f; }
+    .metric-card .lbl { font-size: 11px; color: #687068; font-weight: 500; margin-top: 2px; }
     .section { margin-bottom: 20px; }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-    .tag { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 4px 12px; border-radius: 99px; font-size: 12px; color: #475569; }
+    .tag { background: #eef0ea; border: 1px solid #dfe2da; padding: 4px 12px; border-radius: 99px; font-size: 12px; color: #4c534d; }
     .tag.alert { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
     .ok { color: #16a34a; font-size: 13px; font-weight: 500; }
-    .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center; }
+    .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #dfe2da; font-size: 11px; color: #9ca299; text-align: center; }
     @media print {
       body { padding: 20px; }
       @page { margin: 1.5cm; }

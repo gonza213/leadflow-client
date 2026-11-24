@@ -12,7 +12,7 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 
-const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6', '#84cc16', '#f43f5e']
+const COLORS = ['#84cc16', '#38bdf8', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#d946ef', '#14b8a6', '#22c55e', '#f43f5e']
 
 const chartOptions = computed(() => ({
   chart: {
@@ -46,13 +46,13 @@ const chartOptions = computed(() => ({
             label: 'Total leads',
             fontSize: '13px',
             fontWeight: 600,
-            color: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+            color: uiStore.darkMode ? '#9ca299' : '#687068',
             formatter: () => props.stages.reduce((acc, s) => acc + s.leads, 0)
           },
           value: {
             fontSize: '22px',
             fontWeight: 800,
-            color: uiStore.darkMode ? '#f1f5f9' : '#0f172a',
+            color: uiStore.darkMode ? '#F2F4EF' : '#0E110F',
           }
         }
       }
@@ -63,7 +63,7 @@ const chartOptions = computed(() => ({
     fontSize: '12px',
     fontWeight: 500,
     labels: {
-      colors: uiStore.darkMode ? '#9ca3af' : '#6b7280'
+      colors: uiStore.darkMode ? '#9ca299' : '#687068'
     },
     markers: { width: 10, height: 10, radius: 3 },
     itemMargin: { horizontal: 6, vertical: 4 }
@@ -79,7 +79,7 @@ const chartOptions = computed(() => ({
   },
   stroke: {
     width: 2,
-    colors: [uiStore.darkMode ? '#1f2937' : '#ffffff']
+    colors: [uiStore.darkMode ? '#1f2320' : '#ffffff']
   }
 }))
 

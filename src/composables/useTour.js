@@ -18,7 +18,7 @@ const icons = {
 }
 
 // Wrap icon in a styled span
-const ic = (svg, color = '#3b82f6', bg = 'rgba(59,130,246,0.12)') =>
+const ic = (svg, color = '#4d7c0f', bg = 'rgba(132,204,22,0.16)') =>
   `<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:${bg};color:${color};vertical-align:middle;margin-right:8px;flex-shrink:0">${svg}</span>`
 
 export function useTour() {
@@ -41,7 +41,7 @@ export function useTour() {
         {
           element: '#tour-header',
           popover: {
-            title: `${ic(icons.wave, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t(`${S}.welcome.t`)}`,
+            title: `${ic(icons.wave, '#4d7c0f', 'rgba(132,204,22,0.16)')} ${t(`${S}.welcome.t`)}`,
             description: t(`${S}.welcome.d`),
             side: 'bottom', align: 'start'
           }
@@ -49,7 +49,7 @@ export function useTour() {
         {
           element: '#tour-sidebar',
           popover: {
-            title: `${ic(icons.menu, '#64748b', 'rgba(100,116,139,0.12)')} ${t(`${S}.sidebar.t`)}`,
+            title: `${ic(icons.menu, '#687068', 'rgba(100,116,139,0.12)')} ${t(`${S}.sidebar.t`)}`,
             description: t(`${S}.sidebar.d`),
             side: 'right', align: 'start'
           }
@@ -57,7 +57,7 @@ export function useTour() {
         {
           element: '#tour-dashboard-link',
           popover: {
-            title: `${ic(icons.chart, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t('help.s.dashboard.t')}`,
+            title: `${ic(icons.chart, '#4d7c0f', 'rgba(132,204,22,0.16)')} ${t('help.s.dashboard.t')}`,
             description: t(`${S}.dashboard.d`),
             side: 'right', align: 'start'
           }
@@ -73,7 +73,7 @@ export function useTour() {
         {
           element: '#tour-vendedores-link',
           popover: {
-            title: `${ic(icons.users, '#8b5cf6', 'rgba(139,92,246,0.12)')} ${t('help.s.sellers.t')}`,
+            title: `${ic(icons.users, '#84cc16', 'rgba(132, 204, 22,0.12)')} ${t('help.s.sellers.t')}`,
             description: t(`${S}.sellers.d`),
             side: 'right', align: 'start'
           }
@@ -97,7 +97,7 @@ export function useTour() {
         {
           element: '#tour-resumenes-link',
           popover: {
-            title: `${ic(icons.sparkles, '#6366f1', 'rgba(99,102,241,0.12)')} ${t('help.s.summaries.t')}`,
+            title: `${ic(icons.sparkles, '#4d7c0f', 'rgba(132,204,22,0.16)')} ${t('help.s.summaries.t')}`,
             description: t(`${S}.summaries.d`),
             side: 'right', align: 'start'
           }
@@ -105,7 +105,7 @@ export function useTour() {
         {
           element: '#tour-configuracion-link',
           popover: {
-            title: `${ic(icons.cog, '#64748b', 'rgba(100,116,139,0.12)')} ${t('help.s.config.t')}`,
+            title: `${ic(icons.cog, '#687068', 'rgba(100,116,139,0.12)')} ${t('help.s.config.t')}`,
             description: t(`${S}.config.d`),
             side: 'right', align: 'start'
           }
@@ -113,7 +113,7 @@ export function useTour() {
         {
           element: '#tour-darkmode',
           popover: {
-            title: `${ic(icons.moon, '#6366f1', 'rgba(99,102,241,0.12)')} ${t(`${S}.darkmode.t`)}`,
+            title: `${ic(icons.moon, '#4d7c0f', 'rgba(132,204,22,0.16)')} ${t(`${S}.darkmode.t`)}`,
             description: t(`${S}.darkmode.d`),
             side: 'bottom', align: 'end'
           }
@@ -121,7 +121,7 @@ export function useTour() {
         {
           element: '#tour-help-btn',
           popover: {
-            title: `${ic(icons.help, '#3b82f6', 'rgba(59,130,246,0.12)')} ${t(`${S}.helpBtn.t`)}`,
+            title: `${ic(icons.help, '#4d7c0f', 'rgba(132,204,22,0.16)')} ${t(`${S}.helpBtn.t`)}`,
             description: t(`${S}.helpBtn.d`),
             side: 'bottom', align: 'end'
           }

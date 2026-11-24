@@ -7,7 +7,7 @@ const props = defineProps({
 })
 
 const COLORS = [
-  { bg: 'rgba(59,130,246,0.15)', fill: '#3b82f6', text: 'text-blue-500 dark:text-blue-400' },
+  { bg: 'rgba(132,204,22,0.15)', fill: '#84cc16', text: 'text-lime-600 dark:text-lime-400' },
   { bg: 'rgba(34,197,94,0.15)',  fill: '#22c55e', text: 'text-green-500 dark:text-green-400' },
   { bg: 'rgba(139,92,246,0.15)', fill: '#8b5cf6', text: 'text-purple-500 dark:text-purple-400' },
   { bg: 'rgba(249,115,22,0.15)', fill: '#f97316', text: 'text-orange-500 dark:text-orange-400' },

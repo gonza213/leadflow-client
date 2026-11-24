@@ -300,6 +300,8 @@
     }
   },
   "landing": {
+    "crmBar": "Funciona con tu CRM",
+    "themeToggle": "Cambiar modo claro / oscuro",
     "hero": { "badgeFast": "Lead asignado en 0.4 s", "badgeSaved": "Sin leads perdidos" },
     "extras": {
       "tag": "Nuevo",
@@ -558,6 +560,7 @@
     "changeLang": "Cambiar idioma"
   },
   "common": {
+    "back": "Volver",
     "loading": "Cargando...",
     "apply": "Aplicar",
     "clean": "Limpiar",
@@ -1185,12 +1188,17 @@
     "nextAssignment": "Próxima asignación"
   },
   "presence": {
+    "noActivity": "Sin actividad hoy",
+    "lastSeen": "Última actividad",
+    "empty": "Todavía no hay vendedores habilitados.",
     "title": "Oficina en Vivo",
     "subtitle": "Centro de mando en tiempo real",
     "logs": "Actividad del Equipo",
     "activeNodes": "Vendedores Habilitados",
     "sync": "Sincronización de Red",
     "stats": {
+      "leadsToday": "Leads hoy",
+      "salesPeriod": "Ventas del período",
       "leads": "Leads",
       "sales": "Ventas"
     },

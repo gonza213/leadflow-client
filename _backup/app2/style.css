@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=Press+Start+2P&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Rediseño 2026: títulos de la app en Space Grotesk */
+main h1, main h2, main h3, .font-display {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .btn-primary {
+    @apply border-none cursor-pointer font-bold py-3;
+    background: #C8F23A;
+    color: #0E110F;
+    box-shadow: 0 8px 22px -10px rgba(101, 163, 13, 0.7);
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s, background 0.2s;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #BCE92A;
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -10px rgba(101, 163, 13, 0.8);
+  }
+
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 bg-white text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors;
+    @apply dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-primary-400 dark:focus:border-primary-400;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-200/70 p-6 transition-colors;
+    @apply dark:bg-gray-800 dark:border-gray-700;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+    @apply dark:text-gray-300;
+  }
+}
+
+/* ===== Driver.js Tour Custom Styles ===== */
+.leaddistro-tour .driver-popover-title {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #0E110F !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.leaddistro-tour .driver-popover-description {
+  font-size: 0.875rem !important;
+  color: #64748b !important;
+  line-height: 1.6 !important;
+  margin-top: 6px !important;
+}
+.leaddistro-tour .driver-popover-footer button {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  padding: 7px 14px !important;
+  border-radius: 8px !important;
+}
+.leaddistro-tour .driver-popover-next-btn {
+  background: #C8F23A !important;
+  border: none !important;
+  color: #0E110F !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(101,163,13,0.35) !important;
+}
+.leaddistro-tour .driver-popover-prev-btn {
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+.leaddistro-tour .driver-popover-progress-text {
+  font-size: 0.75rem !important;
+  color: #94a3b8 !important;
+}
+
+
+/* ===================================================================
+   REDISEÑO 2026 · Pantallas de acceso (login, registro, recuperar clave)
+   Mismos tokens que la landing: lima eléctrico + grafito / blanco hueso.
+   =================================================================== */
+.auth-shell {
+  --ld-bg: #F5F6F0; --ld-card: #FFFFFF; --ld-fg: 14,17,15; --ld-ink: #0E110F; --ld-muted: #4A514C;
+  --ld-accent: #C8F23A; --ld-acc: 101,163,13; --ld-acc-text: #3F6212; --ld-on-accent: #0E110F;
+  position: relative; overflow: hidden;
+  background-color: var(--ld-bg); color: var(--ld-ink);
+  background-image:
+    radial-gradient(40% 45% at 75% 15%, rgba(var(--ld-acc),0.14), transparent 70%),
+    linear-gradient(rgba(var(--ld-fg),0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--ld-fg),0.045) 1px, transparent 1px);
+  background-size: auto, 48px 48px, 48px 48px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.dark .auth-shell {
+  --ld-bg: #0B0C0B; --ld-card: #111311; --ld-fg: 255,255,255; --ld-ink: #F2F4EF; --ld-muted: #A3A9A2;
+  --ld-acc: 200,242,58; --ld-acc-text: #C8F23A;
+}
+.auth-shell h2, .auth-shell h3 {
+  font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.02em; color: var(--ld-ink) !important;
+}
+.auth-shell h2 { font-size: 1.6rem; font-weight: 700; }
+.auth-tagline { color: var(--ld-muted); font-size: 0.95rem; }
+.auth-card {
+  background: var(--ld-card) !important; border: 1px solid rgba(var(--ld-fg),0.1) !important;
+  border-radius: 22px !important; padding: 32px !important;
+  box-shadow: 0 30px 70px -35px rgba(14,17,15,0.35);
+}
+.dark .auth-card { box-shadow: 0 40px 90px -30px rgba(200,242,58,0.16); }
+.auth-shell .label { color: var(--ld-ink); font-weight: 600; }
+.auth-shell .input {
+  background: rgba(var(--ld-fg),0.03); border-color: rgba(var(--ld-fg),0.16); color: var(--ld-ink);
+  padding: 12px 14px; border-radius: 12px; font-size: 16px;
+}
+.auth-shell .input::placeholder { color: rgba(var(--ld-fg),0.4); }
+.auth-shell .input:focus { border-color: var(--ld-acc-text); box-shadow: 0 0 0 3px rgba(var(--ld-acc),0.3); --tw-ring-shadow: 0 0 #0000; }
+.auth-shell .btn-primary {
+  background: var(--ld-accent); color: var(--ld-on-accent); border-radius: 12px; padding-top: 14px; padding-bottom: 14px;
+  box-shadow: 0 10px 30px -12px rgba(var(--ld-acc),0.6);
+}
+.auth-shell .btn-primary:hover:not(:disabled) { box-shadow: 0 16px 36px -12px rgba(var(--ld-acc),0.75); }
+.auth-shell .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-shell .btn-secondary {
+  background: transparent; color: var(--ld-ink); border: 1px solid rgba(var(--ld-fg),0.18); border-radius: 12px;
+}
+.auth-shell .btn-secondary:hover { background: rgba(var(--ld-fg),0.06); }
+.auth-shell .fixed.inset-0 > div { background: var(--ld-card); border: 1px solid rgba(var(--ld-fg),0.1); border-radius: 20px; }
+.auth-link { color: var(--ld-acc-text); font-weight: 600; text-decoration: underline; text-decoration-color: rgba(var(--ld-acc),0.5); text-underline-offset: 3px; }
+.auth-link:hover { text-decoration-color: currentColor; }
+.auth-check { accent-color: #65A30D; }
+.auth-theme-btn {
+  width: 42px; height: 42px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ld-ink); background: rgba(var(--ld-fg),0.04); border: 1px solid rgba(var(--ld-fg),0.14);
+  transition: background 0.2s; z-index: 10;
+}
+.auth-theme-btn:hover { background: rgba(var(--ld-fg),0.09); }

@@ -298,6 +298,8 @@
     }
   },
   "landing": {
+    "crmBar": "Works with your CRM",
+    "themeToggle": "Toggle light / dark mode",
     "hero": { "badgeFast": "Lead assigned in 0.4 s", "badgeSaved": "Zero leads lost" },
     "extras": {
       "tag": "New",
@@ -544,6 +546,7 @@
     }
   },
   "common": {
+    "back": "Back",
     "loading": "Loading...",
     "apply": "Apply",
     "clean": "Clear",
@@ -1169,12 +1172,17 @@
     }
   },
   "presence": {
+    "noActivity": "No activity today",
+    "lastSeen": "Last activity",
+    "empty": "No active sellers yet.",
     "title": "Live Office",
     "subtitle": "Real-time command center",
     "logs": "Team Activity",
     "activeNodes": "Enabled Sellers",
     "sync": "Network Sync",
     "stats": {
+      "leadsToday": "Leads today",
+      "salesPeriod": "Sales this period",
       "leads": "Leads",
       "sales": "Sales"
     },

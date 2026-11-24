@@ -10,6 +10,8 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
+import { buildSubscribeUrl } from './services/subscribeUrl'
+
 const authStore = useAuthStore()
 
 const verifying = ref(false)
@@ -53,7 +55,7 @@ const handleVerifyPayment = async () => {
             </span>
             <span v-else>{{ t('trial.banner.expired') }}</span>
             <a
-              href="https://checkout.dlocalgo.com/validate/subscription/jlZVHZj9raWC65A7dr64sH9V7m4Yn2fS"
+              :href="buildSubscribeUrl(authStore.user?.email)"
               target="_blank"
               :class="['underline font-bold', authStore.trialDaysLeft <= 2 ? 'text-white' : 'text-yellow-900']"
             >{{ t('trial.banner.subscribe') }} →</a>

@@ -2,6 +2,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
+import { buildSubscribeUrl } from '../services/subscribeUrl'
 import { useI18n } from 'vue-i18n'
 import { subscriptionApi } from '../services/api'
 import TeamsConfig from '../components/config/TeamsConfig.vue'
@@ -203,7 +204,7 @@ onMounted(async () => {
             {{ subStatus === 'trial' ? t('subscription.trial_message') : t('subscription.inactive_message') }}
           </p>
           <a
-            :href="'https://checkout.dlocalgo.com/validate/subscription/jlZVHZj9raWC65A7dr64sH9V7m4Yn2fS'"
+            :href="buildSubscribeUrl(authStore.user?.email)"
             target="_blank"
             class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors"
           >

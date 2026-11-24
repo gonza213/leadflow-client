@@ -63,7 +63,7 @@ const handleToggleDarkMode = () => {
       </button>
 
       <a href="/" class="flex items-center gap-2 transition-opacity hover:opacity-90">
-        <img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 dark:brightness-0 dark:invert" />
+        <img src="/logo_leaddistro_light.png" alt="LeadDistro Logo" class="h-12 dark:hidden" /><img src="/logo_leaddistro.png" alt="LeadDistro Logo" class="h-12 hidden dark:block brightness-0 invert" />
       </a>
       <span v-if="authStore.user?.tenant"
         class="hidden sm:inline-flex px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm font-medium">

@@ -25,7 +25,7 @@ const uiStore = useUiStore()
 const selectedStage = ref('')
 
 // Colors for top states
-const colors = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+const colors = ['#84cc16', '#38bdf8', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#d946ef', '#14b8a6']
 
 // Filter states by selected stage
 const filteredStates = computed(() => {
@@ -89,7 +89,7 @@ const chartOptions = computed(() => ({
   xaxis: {
     labels: {
       style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+        colors: uiStore.darkMode ? '#9ca299' : '#687068',
         fontSize: '12px'
       }
     }
@@ -97,14 +97,14 @@ const chartOptions = computed(() => ({
   yaxis: {
     labels: {
       style: {
-        colors: uiStore.darkMode ? '#9ca3af' : '#6b7280',
+        colors: uiStore.darkMode ? '#9ca299' : '#687068',
         fontSize: '12px',
         fontWeight: 600
       }
     }
   },
   grid: {
-    borderColor: uiStore.darkMode ? '#374151' : '#e5e7eb',
+    borderColor: uiStore.darkMode ? '#363b37' : '#dfe2da',
     strokeDashArray: 4
   },
   tooltip: {

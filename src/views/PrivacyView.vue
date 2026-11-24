@@ -115,18 +115,18 @@ useHead({
 </template>
 
 <style scoped>
-.legal-page { min-height: 100vh; background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-.legal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background: #0f172a; }
-.back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 0.9rem; transition: color 0.2s; }
+.legal-page { min-height: 100vh; background: #f6f7f3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.legal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; background: #0e110f; }
+.back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; color: #9ca299; cursor: pointer; font-size: 0.9rem; transition: color 0.2s; }
 .back-btn:hover { color: #fff; }
 .legal-logo { height: 40px; filter: brightness(0) invert(1); }
 .legal-container { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; }
-h1 { font-size: 2rem; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
-.legal-updated { color: #94a3b8; font-size: 0.85rem; margin-bottom: 48px; }
+h1 { font-size: 2rem; font-weight: 800; color: #0e110f; margin-bottom: 4px; }
+.legal-updated { color: #9ca299; font-size: 0.85rem; margin-bottom: 48px; }
 section { margin-bottom: 36px; }
-h2 { font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0; }
-p { color: #475569; font-size: 0.92rem; line-height: 1.8; margin-bottom: 12px; }
+h2 { font-size: 1.1rem; font-weight: 700; color: #0e110f; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #dfe2da; }
+p { color: #4c534d; font-size: 0.92rem; line-height: 1.8; margin-bottom: 12px; }
 ul { padding-left: 20px; margin-bottom: 12px; }
-li { color: #475569; font-size: 0.92rem; line-height: 1.8; margin-bottom: 6px; }
-a { color: #6366f1; }
+li { color: #4c534d; font-size: 0.92rem; line-height: 1.8; margin-bottom: 6px; }
+a { color: #4d7c0f; }
 </style>

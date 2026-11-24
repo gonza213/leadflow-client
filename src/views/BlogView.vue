@@ -47,39 +47,39 @@ const posts = postsData ? Object.keys(postsData).map(key => ({
 const getCardStyle = (slug) => {
   const styles = {
     'algoritmo': { 
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #3b82f6 100%)', 
+      gradient: 'linear-gradient(135deg, #0e110f 0%, #4d7c0f 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>'
     },
     'periodo': { 
-      gradient: 'linear-gradient(135deg, #1e293b 0%, #f43f5e 100%)', 
+      gradient: 'linear-gradient(135deg, #1f2320 0%, #f43f5e 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'
     },
     'integraciones': { 
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #22c55e 100%)', 
+      gradient: 'linear-gradient(135deg, #0e110f 0%, #22c55e 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
     },
     'resumenes-ia': { 
-      gradient: 'linear-gradient(135deg, #1e1b4b 0%, #8b5cf6 100%)', 
+      gradient: 'linear-gradient(135deg, #1f2320 0%, #84cc16 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12l8-4"/><circle cx="12" cy="12" r="10"/></svg>'
     },
     'gohighlevel': { 
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #22c55e 100%)', 
+      gradient: 'linear-gradient(135deg, #0e110f 0%, #22c55e 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
     },
     'hubspot': { 
-      gradient: 'linear-gradient(135deg, #1e293b 0%, #f97316 100%)', 
+      gradient: 'linear-gradient(135deg, #1f2320 0%, #f97316 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>'
     },
     'round-robin': { 
-      gradient: 'linear-gradient(135deg, #0f172a 0%, #06b6d4 100%)', 
+      gradient: 'linear-gradient(135deg, #0e110f 0%, #06b6d4 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'
     },
     'limites': { 
-      gradient: 'linear-gradient(135deg, #1e293b 0%, #eab308 100%)', 
+      gradient: 'linear-gradient(135deg, #1f2320 0%, #eab308 100%)', 
       icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
     }
   }
-  return styles[slug] || { gradient: 'linear-gradient(135deg, #1e293b 0%, #6366f1 100%)', icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' }
+  return styles[slug] || { gradient: 'linear-gradient(135deg, #1f2320 0%, #4d7c0f 100%)', icon: '<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' }
 }
 </script>
 
@@ -122,8 +122,8 @@ const getCardStyle = (slug) => {
 <style scoped>
 .blog-container {
   min-height: 100vh;
-  background: #0f172a;
-  color: #e2e8f0;
+  background: #0e110f;
+  color: #dfe2da;
   padding-top: 80px;
 }
 
@@ -142,7 +142,7 @@ const getCardStyle = (slug) => {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, #c8f23a, #84cc16);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -150,12 +150,12 @@ const getCardStyle = (slug) => {
 
 .blog-header p {
   font-size: 1.25rem;
-  color: #94a3b8;
+  color: #9ca299;
 }
 
 .back-link {
   display: inline-block;
-  color: #3b82f6;
+  color: #c8f23a;
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 24px;
@@ -164,7 +164,7 @@ const getCardStyle = (slug) => {
 }
 
 .back-link:hover {
-  color: #60a5fa;
+  color: #a3e635;
 }
 
 .blog-grid {
@@ -175,7 +175,7 @@ const getCardStyle = (slug) => {
 }
 
 .blog-card {
-  background: #1e293b;
+  background: #1f2320;
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
@@ -232,14 +232,14 @@ const getCardStyle = (slug) => {
 }
 
 .card-content p {
-  color: #94a3b8;
+  color: #9ca299;
   font-size: 0.9rem;
   line-height: 1.6;
   margin-bottom: 16px;
 }
 
 .card-link {
-  color: #3b82f6;
+  color: #c8f23a;
   font-weight: 600;
   font-size: 0.9rem;
 }

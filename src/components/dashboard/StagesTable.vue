@@ -8,7 +8,7 @@ defineProps({
   }
 })
 
-const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#6366f1', '#14b8a6']
+const COLORS = ['#84cc16', '#38bdf8', '#eab308', '#a855f7', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#d946ef', '#14b8a6']
 
 const getColor = (index) => COLORS[index % COLORS.length]
 </script>
