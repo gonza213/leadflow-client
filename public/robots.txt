@@ -1,10 +1,21 @@
 User-agent: *
-Allow: /landing
-Allow: /blog
-Allow: /blog/
-Allow: /privacy
-Allow: /terms
+Allow: /
 
-Disallow: /
+# Zonas privadas de la app (requieren login)
+Disallow: /cuentas
+Disallow: /presence
+Disallow: /profile
+Disallow: /sellers
+Disallow: /config
+Disallow: /summaries
+Disallow: /integrations
+Disallow: /leads
+Disallow: /support
+Disallow: /billing
+Disallow: /credits
+Disallow: /users
+Disallow: /admin
+Disallow: /payment-success
+Disallow: /reset-password
 
 Sitemap: https://www.leaddistro.site/sitemap.xml

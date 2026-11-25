@@ -85,7 +85,7 @@ useHead({
           {
             "@type": "WebSite",
             "@id": "https://www.leaddistro.site/#website",
-            "url": "https://www.leaddistro.site/landing",
+            "url": "https://www.leaddistro.site/",
             "name": "LeadDistro",
             "inLanguage": locale.value,
             "publisher": { "@id": "https://www.leaddistro.site/#organization" }
