@@ -680,31 +680,138 @@
     "prev": "Anterior",
     "next": "Siguiente",
     "done": "¡Entendido!",
+    "newBadge": "Nuevo",
+    "goTo": "Ir a {section}",
+    "close": "Cerrar",
     "s": {
-      "dashboard": { "t": "Dashboard", "d": "Visualizá métricas en tiempo real: leads por vendedor, distribución por equipo, etapas del funnel y más. Usá los filtros de período para analizar rangos específicos." },
-      "period": { "t": "Período de Distribución", "d": "El período es el ciclo activo de trabajo. Es fundamental para que las métricas y los límites de los vendedores funcionen correctamente.", "items": ["**Ciclo de Límites**: Los límites de leads se contabilizan dentro de las fechas del período activo.", "**Métricas**: El Dashboard muestra por defecto los datos del período configurado.", "**Tipos**: Puede ser **Manual** (fechas fijas) o **Automático** (se reinicia solo cada semana).", "**Vencimiento**: Si vence, verás un aviso para actualizarlo y mantener la distribución activa."] },
-      "leads": { "t": "Leads", "d": "Listado completo de leads ingresados al sistema. Filtrá por vendedor, equipo, etapa y período. Exportá cualquier resultado a CSV con un clic." },
-      "sellers": { "t": "Vendedores", "d": "Creá y administrá tu equipo de ventas. Asignales límites diarios y semanales. El algoritmo de distribución respeta estos límites automáticamente." },
-      "users": { "t": "Usuarios", "d": "Gestioná los accesos de tu organización. Asigná roles de Manager, Viewer o Seller a cada usuario del tenant." },
-      "config": { "t": "Configuración", "items": ["**Equipos**: Definí los equipos de ventas y el porcentaje de leads que recibe cada uno (deben sumar 100%).", "**Etapas**: Configurá las etapas del pipeline (Nuevo, Contactado, Calificado, Cerrado).", "**Respaldo (Fallback)**: Configurá hasta 2 vendedores de respaldo para cuando todos alcancen su límite.", "**Zona horaria**: Configurá la zona horaria de tu organización para que los límites y reportes sean correctos."] },
-      "integrations": { "t": "Integraciones", "items": ["**Plataformas**: Compatible con GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n y cualquier herramienta que soporte webhooks.", "**Webhook de entrada**: Copiá la URL única de tu tenant desde la sección Integraciones y pegala en tu workflow del CRM.", "**Webhook de salida**: LeadDistro notifica a tu CRM con el nombre e ID del vendedor asignado.", "**Cambio de etapa**: Usá el segundo webhook para sincronizar los cambios de etapa desde tu CRM al sistema."] },
-      "summaries": { "t": "Resúmenes IA", "items": ["**Qué es**: El sistema genera automáticamente un resumen de métricas con OpenAI y lo guarda para que puedas consultarlo cuando quieras.", "**Configuración**: Activalo desde Configuración → Resumen IA. Elegí frecuencia diaria o semanal y la hora de envío.", "**PDF**: Desde cada resumen podés descargar un PDF profesional con el análisis y las métricas del período.", "**Webhook**: Si configurás una URL de Make o Zapier, el resumen también se envía automáticamente al generarse."] },
-      "algorithm": { "t": "Algoritmo de distribución", "d": "Cuando entra un lead, el sistema calcula el equipo target según los porcentajes configurados. Dentro del equipo, selecciona al vendedor con el menor ratio (leads actuales / límite semanal). Si todos alcanzan el límite, el lead se redirige al vendedor de respaldo (fallback)." }
+      "dashboard": {
+        "t": "Dashboard",
+        "d": "Visualizá métricas en tiempo real: leads por vendedor, distribución por equipo, etapas del funnel y más. Usá los filtros de período para analizar rangos específicos."
+      },
+      "period": {
+        "t": "Período de Distribución",
+        "d": "El período es el ciclo activo de trabajo. Es fundamental para que las métricas y los límites de los vendedores funcionen correctamente.",
+        "items": [
+          "**Ciclo de Límites**: Los límites de leads se contabilizan dentro de las fechas del período activo.",
+          "**Métricas**: El Dashboard muestra por defecto los datos del período configurado.",
+          "**Tipos**: Puede ser **Manual** (fechas fijas) o **Automático** (se reinicia solo cada semana).",
+          "**Vencimiento**: Si vence, verás un aviso para actualizarlo y mantener la distribución activa."
+        ]
+      },
+      "leads": {
+        "t": "Leads",
+        "d": "Listado completo de leads. Filtrá por vendedor, equipo, etapa y período, editá un lead o exportá el resultado a CSV."
+      },
+      "sellers": {
+        "t": "Vendedores",
+        "d": "Creá y administrá tu equipo de ventas. Asignales límites diarios y semanales. El algoritmo de distribución respeta estos límites automáticamente."
+      },
+      "users": {
+        "t": "Usuarios",
+        "d": "Gestioná los accesos de tu organización. Asigná roles de Manager, Viewer o Seller a cada usuario del tenant."
+      },
+      "config": {
+        "t": "Configuración",
+        "items": [
+          "**Pipeline**: activá el tablero por etapas desde la tarjeta destacada arriba de todo.",
+          "**Equipos**: definí los equipos de ventas y el porcentaje de leads que recibe cada uno (deben sumar 100%).",
+          "**Etapas**: definí las etapas de tus oportunidades; son las columnas del Pipeline.",
+          "**Respaldo (Fallback)**: configurá hasta 2 vendedores de respaldo para cuando todos alcancen su límite.",
+          "**Zona horaria**: configurá la zona horaria de tu organización para que los límites y reportes sean correctos."
+        ]
+      },
+      "integrations": {
+        "t": "Integraciones",
+        "items": [
+          "**Plataformas**: compatible con GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n y cualquier herramienta que soporte webhooks.",
+          "**Webhook de entrada**: copiá la URL única de tu empresa y pegala en el workflow de tu CRM.",
+          "**Webhook de salida**: LeadDistro avisa a tu CRM el nombre e ID del vendedor asignado.",
+          "**Cambio de etapa**: usá el segundo webhook para que los cambios de etapa de tu CRM lleguen a LeadDistro.",
+          "**Formulario web**: copiá el código del formulario y pegalo en tu sitio para recibir leads sin pasar por un CRM."
+        ]
+      },
+      "summaries": {
+        "t": "Resúmenes IA",
+        "items": [
+          "**Qué es**: El sistema genera automáticamente un resumen de métricas con OpenAI y lo guarda para que puedas consultarlo cuando quieras.",
+          "**Configuración**: Activalo desde Configuración → Resumen IA. Elegí frecuencia diaria o semanal y la hora de envío.",
+          "**PDF**: Desde cada resumen podés descargar un PDF profesional con el análisis y las métricas del período.",
+          "**Webhook**: Si configurás una URL de Make o Zapier, el resumen también se envía automáticamente al generarse."
+        ]
+      },
+      "algorithm": {
+        "t": "Algoritmo de distribución",
+        "d": "Cuando entra un lead, el sistema calcula el equipo target según los porcentajes configurados. Dentro del equipo, selecciona al vendedor con el menor ratio (leads actuales / límite semanal). Si todos alcanzan el límite, el lead se redirige al vendedor de respaldo (fallback)."
+      },
+      "pipeline": {
+        "t": "Pipeline",
+        "d": "Tablero por etapas para hacer el seguimiento de cada lead sin salir de LeadDistro.",
+        "items": [
+          "**Mover leads**: arrastrá cada tarjeta a su nueva etapa; el cambio queda en el historial.",
+          "**Ficha del lead**: tocá una tarjeta para ver sus datos, agregar notas, cargar el valor de la oportunidad y escribirle por WhatsApp o llamarlo.",
+          "**Qué ve cada uno**: el vendedor ve solo sus leads; el manager ve todo el equipo y puede filtrar por vendedor o buscar por nombre y teléfono.",
+          "**Activarlo**: un manager lo enciende en Configuración, en la tarjeta \"Usar el pipeline de LeadDistro\"."
+        ]
+      },
+      "newLeads": {
+        "t": "Cargar leads",
+        "d": "Además del webhook de tu CRM, podés sumar leads por otras vías. Todos pasan por el mismo reparto.",
+        "items": [
+          "**Nuevo lead**: cargalo a mano desde el botón \"Nuevo lead\" del Pipeline.",
+          "**Importar CSV**: desde Leads, subí un archivo y elegí si se reparte entre el equipo o va a un vendedor fijo.",
+          "**Formulario web**: copiá el código desde Integraciones y pegalo en tu sitio.",
+          "**Duplicados**: si el mismo teléfono o email ya entró en los últimos 30 días, no se vuelve a crear.",
+          "**Sin asignar**: si ningún vendedor tiene cupo, el lead se guarda igual como \"Sin asignar\" para que lo asignes a mano."
+        ]
+      },
+      "presence": {
+        "t": "Oficina en Vivo",
+        "d": "Mirá en tiempo real quién de tu equipo está conectado, en qué estado está y cuántos leads recibió hoy."
+      }
     },
     "tour": {
       "progress": "Paso {current} de {total}",
       "steps": {
-        "welcome": { "t": "Bienvenido a LeadDistro", "d": "Este tour te va a guiar por las funciones principales del sistema. Podés saltearlo cuando quieras." },
-        "sidebar": { "t": "Navegación principal", "d": "Desde acá accedés a todas las secciones: Dashboard, Leads, Vendedores, Usuarios y Configuración." },
-        "dashboard": { "d": "Visualizá en tiempo real los leads por vendedor y equipo. Las métricas responden al **Período** activo, que define tu ciclo de ventas actual." },
-        "leads": { "d": "Listado completo de leads ingresados. Podés filtrar por vendedor, equipo, etapa y período." },
-        "sellers": { "d": "Gestioná tu equipo de ventas. Configurá límites diarios y semanales para cada vendedor." },
-        "users": { "d": "Gestioná los usuarios de tu organización y sus roles de acceso." },
-        "integrations": { "d": "Conectá tu CRM con LeadDistro. Encontrás las URLs de webhook, las plataformas compatibles y la configuración de notificaciones." },
-        "summaries": { "d": "Historial de resúmenes generados automáticamente con OpenAI. Cada resumen incluye métricas del período y se puede descargar como PDF." },
-        "config": { "d": "Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM, zona horaria y el resumen automático con IA." },
-        "darkmode": { "t": "Modo oscuro", "d": "Cambiá entre modo claro y oscuro según tu preferencia." },
-        "helpBtn": { "t": "Guía de ayuda", "d": "Podés volver a ver esta guía o consultar el manual desde este botón en cualquier momento." }
+        "welcome": {
+          "t": "Bienvenido a LeadDistro",
+          "d": "Este tour te va a guiar por las funciones principales del sistema. Podés saltearlo cuando quieras."
+        },
+        "sidebar": {
+          "t": "Navegación principal",
+          "d": "Desde acá accedés a todas las secciones: Dashboard, Leads, Pipeline, Vendedores, Usuarios y Configuración."
+        },
+        "dashboard": {
+          "d": "Visualizá en tiempo real los leads por vendedor y equipo. Las métricas responden al **Período** activo, que define tu ciclo de ventas actual."
+        },
+        "leads": {
+          "d": "Listado completo de leads ingresados. Podés filtrar por vendedor, equipo, etapa y período."
+        },
+        "sellers": {
+          "d": "Gestioná tu equipo de ventas. Configurá límites diarios y semanales para cada vendedor."
+        },
+        "users": {
+          "d": "Gestioná los usuarios de tu organización y sus roles de acceso."
+        },
+        "integrations": {
+          "d": "Conectá tu CRM con LeadDistro. Encontrás las URLs de webhook, las plataformas compatibles y la configuración de notificaciones."
+        },
+        "summaries": {
+          "d": "Historial de resúmenes generados automáticamente con OpenAI. Cada resumen incluye métricas del período y se puede descargar como PDF."
+        },
+        "config": {
+          "d": "Configurá equipos con porcentajes de distribución, etapas del pipeline, webhook del CRM, zona horaria y el resumen automático con IA."
+        },
+        "darkmode": {
+          "t": "Modo oscuro",
+          "d": "Cambiá entre modo claro y oscuro según tu preferencia."
+        },
+        "helpBtn": {
+          "t": "Guía de ayuda",
+          "d": "Podés volver a ver esta guía o consultar el manual desde este botón en cualquier momento."
+        },
+        "pipeline": {
+          "d": "Trabajá tus leads en un tablero por etapas: movelos, agregá notas y contactalos por WhatsApp."
+        }
       }
     }
   },

@@ -83,11 +83,11 @@ const filteredMenuItems = computed(() => {
   }
 
   const menuItems = [
-    { name: t('menu.dashboard'), path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
-    { name: t('menu.presence'), path: '/presence', icon: 'video-camera', roles: ['manager', 'viewer'] },
-    { name: t('menu.leads'), path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
-    { name: t('menu.pipeline'), path: '/pipeline', icon: 'view-boards', requiresPipeline: true, roles: ['manager', 'seller', 'viewer'] },
-    { name: t('menu.sellers'), path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
+    { name: t('menu.dashboard'), path: '/', icon: 'chart-bar', tourId: 'dashboard', roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.presence'), path: '/presence', icon: 'video-camera', tourId: 'presence', roles: ['manager', 'viewer'] },
+    { name: t('menu.leads'), path: '/leads', icon: 'clipboard-list', tourId: 'leads', roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.pipeline'), path: '/pipeline', icon: 'view-boards', tourId: 'pipeline', requiresPipeline: true, roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.sellers'), path: '/sellers', icon: 'users', tourId: 'vendedores', roles: ['manager', 'viewer'] },
     { name: t('menu.users'), path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
     { name: t('menu.integrations'), path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
     { name: t('menu.summaries'), path: '/summaries', icon: 'sparkles', tourId: 'resumenes', roles: ['manager'] },
