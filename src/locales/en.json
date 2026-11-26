@@ -1416,5 +1416,79 @@
       "noteAdd": "Could not save the note",
       "noteDelete": "Could not delete the note"
     }
+  },
+  "newLead": {
+    "button": "New lead",
+    "title": "New lead",
+    "info": "It is distributed with the same rules as your CRM leads.",
+    "submit": "Create lead",
+    "created": "{name} was assigned to {seller}",
+    "errors": {
+      "missing_name": "Name is required",
+      "invalid_email": "The email is not valid",
+      "invalid_phone": "The phone number is not valid",
+      "duplicate_lead": "A lead with that phone or email already exists",
+      "duplicateOf": "Already exists: {name} (seller: {seller})",
+      "credits_exhausted": "No lead balance: it is on hold and will be assigned after a top-up",
+      "no_sellers_available": "There are no sellers available to assign it",
+      "unexpected": "Could not create the lead"
+    }
+  },
+  "csvImport": {
+    "button": "Import CSV",
+    "title": "Import leads from CSV",
+    "info": "Up to 1000 rows. Columns: name (required), email, phone and source.",
+    "file": "CSV file",
+    "template": "Download template",
+    "seller": "Assignment",
+    "distribute": "Distribute by the rules",
+    "distributeInfo": "Each row is distributed by teams and limits.",
+    "fixedInfo": "All rows go to this seller, ignoring percentages and limits.",
+    "creditsDistribute": "Each lead uses 1 credit; without balance they stay on hold.",
+    "creditsFixed": "Each lead uses 1 credit; without balance the row is not imported.",
+    "submit": "Import",
+    "stop": "Stop and close",
+    "progress": "{done} of {total} rows",
+    "status": {
+      "created": "Created",
+      "duplicate": "Duplicates",
+      "held": "On hold",
+      "error": "Errors"
+    },
+    "reasons": {
+      "missing_name": "name is missing",
+      "invalid_email": "invalid email",
+      "invalid_phone": "invalid phone",
+      "no_credit": "no lead balance",
+      "no_sellers_available": "no sellers available",
+      "unexpected": "unexpected error"
+    },
+    "errors": {
+      "missing_file": "Choose a file",
+      "invalid_csv": "The file is not a valid CSV (check the quotes)",
+      "missing_name_column": "The name column is missing",
+      "empty_file": "The file has no rows",
+      "too_many_rows": "The file has more than 1000 rows",
+      "file_too_large": "The file is larger than 2 MB",
+      "invalid_upload": "Could not read the file",
+      "invalid_seller": "The selected seller is not available",
+      "interrupted": "The import was interrupted. Check the report before importing again."
+    }
+  },
+  "webForm": {
+    "title": "Web form",
+    "info": "Paste this code on your website: contacts go straight into LeadDistro and get distributed.",
+    "snippet": "HTML code",
+    "origins": "Allowed websites (optional)",
+    "originsInfo": "One per line. If empty, submissions from any website are accepted.",
+    "invalidOrigins": "Check the addresses: they must start with http:// or https:// (10 maximum)",
+    "regenerate": "Generate a new key",
+    "regenerateInfo": "The current key stops working and you have to paste the code again.",
+    "confirmRegenerate": "Generate a new key? The current form will stop working.",
+    "regenerated": "New key generated. Copy the code again.",
+    "loadError": "Could not load the form",
+    "send": "Send",
+    "thanks": "Thank you! We will contact you.",
+    "sendError": "Could not send. Please try again."
   }
 }

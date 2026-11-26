@@ -1487,5 +1487,79 @@
       "noteAdd": "No se pudo guardar la nota",
       "noteDelete": "No se pudo borrar la nota"
     }
+  },
+  "newLead": {
+    "button": "Nuevo lead",
+    "title": "Nuevo lead",
+    "info": "Se reparte con las mismas reglas que los leads de tu CRM.",
+    "submit": "Crear lead",
+    "created": "{name} se asignó a {seller}",
+    "errors": {
+      "missing_name": "El nombre es obligatorio",
+      "invalid_email": "El email no es válido",
+      "invalid_phone": "El teléfono no es válido",
+      "duplicate_lead": "Ya existe un lead con ese teléfono o email",
+      "duplicateOf": "Ya existe: {name} (vendedor: {seller})",
+      "credits_exhausted": "Sin saldo de leads: quedó en espera y se asignará al recargar",
+      "no_sellers_available": "No hay vendedores disponibles para asignarlo",
+      "unexpected": "No se pudo crear el lead"
+    }
+  },
+  "csvImport": {
+    "button": "Importar CSV",
+    "title": "Importar leads desde CSV",
+    "info": "Hasta 1000 filas. Columnas: nombre (obligatoria), email, teléfono y fuente.",
+    "file": "Archivo CSV",
+    "template": "Descargar plantilla",
+    "seller": "Asignación",
+    "distribute": "Repartir según las reglas",
+    "distributeInfo": "Cada fila se reparte por equipos y límites.",
+    "fixedInfo": "Todas las filas van a este vendedor, sin porcentajes ni límites.",
+    "creditsDistribute": "Cada lead consume 1 de saldo; sin saldo quedan en espera.",
+    "creditsFixed": "Cada lead consume 1 de saldo; sin saldo la fila no se importa.",
+    "submit": "Importar",
+    "stop": "Detener y cerrar",
+    "progress": "{done} de {total} filas",
+    "status": {
+      "created": "Creados",
+      "duplicate": "Duplicados",
+      "held": "En espera",
+      "error": "Errores"
+    },
+    "reasons": {
+      "missing_name": "falta el nombre",
+      "invalid_email": "email no válido",
+      "invalid_phone": "teléfono no válido",
+      "no_credit": "sin saldo de leads",
+      "no_sellers_available": "no hay vendedores disponibles",
+      "unexpected": "error inesperado"
+    },
+    "errors": {
+      "missing_file": "Elegí un archivo",
+      "invalid_csv": "El archivo no es un CSV válido (revisá las comillas)",
+      "missing_name_column": "Falta la columna del nombre",
+      "empty_file": "El archivo no tiene filas",
+      "too_many_rows": "El archivo supera las 1000 filas",
+      "file_too_large": "El archivo supera los 2 MB",
+      "invalid_upload": "No se pudo leer el archivo",
+      "invalid_seller": "El vendedor elegido no está disponible",
+      "interrupted": "La importación se interrumpió. Revisá el reporte antes de volver a importar."
+    }
+  },
+  "webForm": {
+    "title": "Formulario web",
+    "info": "Pegá este código en tu sitio: los contactos entran directo a LeadDistro y se reparten.",
+    "snippet": "Código HTML",
+    "origins": "Sitios permitidos (opcional)",
+    "originsInfo": "Uno por línea. Si está vacío, se aceptan envíos desde cualquier sitio.",
+    "invalidOrigins": "Revisá las direcciones: tienen que empezar con http:// o https:// (máximo 10)",
+    "regenerate": "Generar una clave nueva",
+    "regenerateInfo": "La clave actual deja de funcionar y hay que volver a pegar el código.",
+    "confirmRegenerate": "¿Generar una clave nueva? El formulario actual dejará de funcionar.",
+    "regenerated": "Clave nueva generada. Copiá el código otra vez.",
+    "loadError": "No se pudo cargar el formulario",
+    "send": "Enviar",
+    "thanks": "¡Gracias! Te vamos a contactar.",
+    "sendError": "No se pudo enviar. Intentá de nuevo."
   }
 }

@@ -1588,5 +1588,79 @@
       "noteAdd": "Não foi possível salvar a nota",
       "noteDelete": "Não foi possível excluir a nota"
     }
+  },
+  "newLead": {
+    "button": "Novo lead",
+    "title": "Novo lead",
+    "info": "Ele é distribuído com as mesmas regras dos leads do seu CRM.",
+    "submit": "Criar lead",
+    "created": "{name} foi atribuído a {seller}",
+    "errors": {
+      "missing_name": "O nome é obrigatório",
+      "invalid_email": "O e-mail não é válido",
+      "invalid_phone": "O telefone não é válido",
+      "duplicate_lead": "Já existe um lead com esse telefone ou e-mail",
+      "duplicateOf": "Já existe: {name} (vendedor: {seller})",
+      "credits_exhausted": "Sem saldo de leads: ficou em espera e será atribuído após a recarga",
+      "no_sellers_available": "Não há vendedores disponíveis para atribuí-lo",
+      "unexpected": "Não foi possível criar o lead"
+    }
+  },
+  "csvImport": {
+    "button": "Importar CSV",
+    "title": "Importar leads de um CSV",
+    "info": "Até 1000 linhas. Colunas: nome (obrigatória), e-mail, telefone e origem.",
+    "file": "Arquivo CSV",
+    "template": "Baixar modelo",
+    "seller": "Atribuição",
+    "distribute": "Distribuir pelas regras",
+    "distributeInfo": "Cada linha é distribuída por equipes e limites.",
+    "fixedInfo": "Todas as linhas vão para este vendedor, sem porcentagens nem limites.",
+    "creditsDistribute": "Cada lead consome 1 de saldo; sem saldo ficam em espera.",
+    "creditsFixed": "Cada lead consome 1 de saldo; sem saldo a linha não é importada.",
+    "submit": "Importar",
+    "stop": "Parar e fechar",
+    "progress": "{done} de {total} linhas",
+    "status": {
+      "created": "Criados",
+      "duplicate": "Duplicados",
+      "held": "Em espera",
+      "error": "Erros"
+    },
+    "reasons": {
+      "missing_name": "falta o nome",
+      "invalid_email": "e-mail inválido",
+      "invalid_phone": "telefone inválido",
+      "no_credit": "sem saldo de leads",
+      "no_sellers_available": "não há vendedores disponíveis",
+      "unexpected": "erro inesperado"
+    },
+    "errors": {
+      "missing_file": "Escolha um arquivo",
+      "invalid_csv": "O arquivo não é um CSV válido (verifique as aspas)",
+      "missing_name_column": "Falta a coluna do nome",
+      "empty_file": "O arquivo não tem linhas",
+      "too_many_rows": "O arquivo passa de 1000 linhas",
+      "file_too_large": "O arquivo passa de 2 MB",
+      "invalid_upload": "Não foi possível ler o arquivo",
+      "invalid_seller": "O vendedor escolhido não está disponível",
+      "interrupted": "A importação foi interrompida. Verifique o relatório antes de importar de novo."
+    }
+  },
+  "webForm": {
+    "title": "Formulário web",
+    "info": "Cole este código no seu site: os contatos entram direto no LeadDistro e são distribuídos.",
+    "snippet": "Código HTML",
+    "origins": "Sites permitidos (opcional)",
+    "originsInfo": "Um por linha. Se ficar vazio, são aceitos envios de qualquer site.",
+    "invalidOrigins": "Verifique os endereços: precisam começar com http:// ou https:// (no máximo 10)",
+    "regenerate": "Gerar uma nova chave",
+    "regenerateInfo": "A chave atual deixa de funcionar e é preciso colar o código de novo.",
+    "confirmRegenerate": "Gerar uma nova chave? O formulário atual deixará de funcionar.",
+    "regenerated": "Nova chave gerada. Copie o código novamente.",
+    "loadError": "Não foi possível carregar o formulário",
+    "send": "Enviar",
+    "thanks": "Obrigado! Entraremos em contato.",
+    "sendError": "Não foi possível enviar. Tente novamente."
   }
 }

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/auth'
 import { useConfigStore } from '../stores/config'
 import GhlConfig from '../components/config/GhlConfig.vue'
+import WebFormConfig from '../components/config/WebFormConfig.vue'
 
 const { t } = useI18n()
 
@@ -80,6 +81,8 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <WebFormConfig v-if="authStore.tenantSlug && authStore.isManager" :api-base-url="apiBaseUrl" />
 
     <!-- Webhooks -->
     <div v-if="authStore.tenantSlug" class="card">

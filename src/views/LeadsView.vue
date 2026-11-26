@@ -6,6 +6,7 @@ import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
 import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
+import ImportCsvModal from '../components/leads/ImportCsvModal.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -14,6 +15,7 @@ const authStore = useAuthStore()
 const { t, locale } = useI18n()
 
 const showFilters = ref(false)
+const showImport = ref(false)
 
 // Edit modal
 const showEditModal = ref(false)
@@ -173,10 +175,14 @@ const getStateClass = (state) => {
 <template>
   <div class="space-y-4">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap items-center justify-between gap-2">
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('leads.title') }}</h1>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <span class="text-sm text-gray-500 dark:text-gray-400">{{ t('leads.total', { n: leadsStore.pagination.total }) }}</span>
+
+        <button v-if="authStore.isManager" type="button" class="btn btn-primary btn-sm whitespace-nowrap" :title="t('csvImport.title')" @click="showImport = true">
+          {{ t('csvImport.button') }}
+        </button>
 
         <!-- Exportar CSV / XLSX -->
         <div class="flex items-center gap-2">
@@ -525,6 +531,8 @@ const getStateClass = (state) => {
         </div>
       </div>
     </template>
+
+    <ImportCsvModal v-if="showImport" @close="showImport = false" @imported="leadsStore.fetchLeads(1)" />
 
     <!-- Edit Modal -->
     <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">

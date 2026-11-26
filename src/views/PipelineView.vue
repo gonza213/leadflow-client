@@ -5,6 +5,7 @@ import { useLeadsStore, OTHER_STAGES } from '../stores/leads'
 import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
+import NewLeadModal from '../components/leads/NewLeadModal.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -29,6 +30,18 @@ const showError = (key) => {
   toast.value = t(`pipeline.errors.${key}`)
   clearTimeout(toastTimer)
   toastTimer = setTimeout(() => { toast.value = '' }, 4000)
+}
+
+// ===== Alta manual =====
+const showNewLead = ref(false)
+const createdMessage = ref('')
+let createdTimer = null
+const onCreated = (lead) => {
+  showNewLead.value = false
+  createdMessage.value = t('newLead.created', { name: lead.name, seller: lead.seller_name })
+  clearTimeout(createdTimer)
+  createdTimer = setTimeout(() => { createdMessage.value = '' }, 5000)
+  load()
 }
 
 // ===== Columnas =====
@@ -215,6 +228,7 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
   clearTimeout(toastTimer)
+  clearTimeout(createdTimer)
 })
 </script>
 
@@ -225,6 +239,9 @@ onUnmounted(() => {
       <span v-if="!canWork" class="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
         {{ t('pipeline.readOnly') }}
       </span>
+      <button v-if="authStore.isManager" type="button" class="btn btn-primary btn-sm" @click="showNewLead = true">
+        {{ t('newLead.button') }}
+      </button>
     </div>
 
     <!-- Aviso: sin sincronización bidireccional con el CRM -->
@@ -453,6 +470,12 @@ onUnmounted(() => {
           </section>
         </div>
       </aside>
+    </div>
+
+    <NewLeadModal v-if="showNewLead" @close="showNewLead = false" @created="onCreated" />
+
+    <div v-if="createdMessage" role="status" class="fixed bottom-4 right-4 left-4 sm:left-auto z-[70] px-4 py-3 rounded-lg bg-green-700 text-white text-sm shadow-lg">
+      {{ createdMessage }}
     </div>
 
     <!-- Toast de error -->
