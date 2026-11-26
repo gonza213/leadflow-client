@@ -234,6 +234,41 @@
     "crmBar": "Funciona com o seu CRM",
     "themeToggle": "Alternar modo claro / escuro",
     "hero": { "badgeFast": "Lead atribuído em 0,4 s", "badgeSaved": "Nenhum lead perdido" },
+    "crm": {
+      "tag": "Novo",
+      "title": "Trabalhe seus leads",
+      "titleAccent": "sem sair do LeadDistro",
+      "subtitle": "Continue usando seu CRM de sempre ou faça o acompanhamento no pipeline do LeadDistro. Você escolhe onde sua equipe trabalha.",
+      "p1t": "Pipeline por etapas",
+      "p1d": "Arraste cada lead de etapa em etapa, com notas, histórico e o valor de cada oportunidade.",
+      "p2t": "Contato em um clique",
+      "p2d": "Botão de WhatsApp e de ligação em cada lead. Cada vendedor vê apenas os seus.",
+      "p3t": "Leads de qualquer fonte",
+      "p3d": "Do seu CRM, de um formulário no seu site, cadastro manual ou um CSV. Todos são distribuídos com as mesmas regras.",
+      "cta": "Teste grátis",
+      "ctaNote": "7 dias grátis · Sem cartão de crédito",
+      "board": {
+        "title": "Pipeline",
+        "all": "Todos",
+        "col1": "Contatado",
+        "col2": "Em negociação",
+        "col3": "Fechado ganho",
+        "total": "Total",
+        "unassigned": "Sem atribuição"
+      },
+      "src": {
+        "form": "Formulário web",
+        "manual": "Cadastro manual",
+        "csv": "CSV importado",
+        "crm": "Do seu CRM"
+      },
+      "m1t": "Formulário para o seu site",
+      "m1d": "Copie um bloco de código, cole no seu site e os leads entram direto na distribuição, com proteção contra spam.",
+      "m2t": "Importe seus contatos",
+      "m2d": "Envie um CSV e o LeadDistro distribui entre seus vendedores, ou atribui a um vendedor específico.",
+      "m3t": "Com ou sem CRM",
+      "m3d": "Se você conectar o GoHighLevel, o lead também é criado lá e sua equipe pode continuar trabalhando no seu CRM. Sem CRM? Não precisa."
+    },
     "extras": {
       "tag": "Novo",
       "title": "Venda leads e use uma única campanha",
