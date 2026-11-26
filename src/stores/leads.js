@@ -6,8 +6,8 @@ import { leadsApi } from '../services/api'
 const escapeCsvCell = (value) => {
   if (value === null || value === undefined) return ''
   const str = String(value)
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-    return `"${str.replace(/"/g, '""')}`
+  if (/[",\r\n]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`
   }
   return str
 }
@@ -23,6 +23,13 @@ const downloadCsv = (filename, rows) => {
   URL.revokeObjectURL(url)
 }
 import { useAuthStore } from './auth'
+import { useConfigStore } from './config'
+
+// Máximo de leads por pedido que acepta el servidor
+const PAGE_LIMIT = 200
+
+// Columna del pipeline para los leads cuya etapa no está configurada
+export const OTHER_STAGES = '__other_stages__'
 
 export const useLeadsStore = defineStore('leads', () => {
   const authStore = useAuthStore()
@@ -207,17 +214,219 @@ export const useLeadsStore = defineStore('leads', () => {
     leadsFilters.opportunity_stage = ''
   }
 
+  // Trae todos los leads de un filtro, de a páginas
+  async function fetchAllLeads(filterParams) {
+    const slug = authStore.tenantSlug
+    const byId = new Map() // si entran leads nuevos entre páginas, no se duplican
+    let page = 1
+    let pages = 1
+    do {
+      const response = await leadsApi.getLeads(slug, { ...filterParams, page, limit: PAGE_LIMIT })
+      response.data.data.leads.forEach(l => byId.set(l._id, l))
+      pages = response.data.data.pagination.pages
+      page++
+    } while (page <= pages)
+    return [...byId.values()]
+  }
+
+  // ===== Pipeline (kanban) =====
+  const pipelineLeads = ref({})    // { [etapa]: lead[] }
+  const pipelineTotals = ref({})   // total real por etapa (puede superar lo cargado)
+  const pipelineLoading = ref(false)
+  const pipelineError = ref(false)
+  const pendingMoves = ref({})     // { [leadId]: true } mientras se guarda
+  const unknownStages = ref([])    // [{ stage, count }] etapas sin configurar (managers)
+  let pipelineRequest = 0
+  let pipelineSlug = null
+
+  async function fetchPipeline(pipelineFilters = {}) {
+    const slug = authStore.tenantSlug
+    if (!slug) return
+
+    const configStore = useConfigStore()
+    const request = ++pipelineRequest
+
+    // Nunca mostrar leads de otra empresa mientras carga
+    if (pipelineSlug !== slug) {
+      pipelineLeads.value = {}
+      pipelineTotals.value = {}
+      unknownStages.value = []
+      pipelineSlug = slug
+    }
+
+    pipelineLoading.value = true
+    pipelineError.value = false
+
+    try {
+      const stageNames = configStore.config?.opportunity_stages || []
+      const extra = Object.fromEntries(Object.entries(pipelineFilters).filter(([, v]) => v))
+
+      const keys = [...stageNames, OTHER_STAGES]
+      const results = await Promise.all(keys.map(key =>
+        leadsApi.getLeads(slug, {
+          ...extra,
+          ...(key === OTHER_STAGES ? { other_stages: true } : { opportunity_stage: key }),
+          limit: PAGE_LIMIT
+        })
+      ))
+      if (request !== pipelineRequest) return // llegó una respuesta vieja
+
+      pipelineLeads.value = Object.fromEntries(
+        keys.map((key, i) => [key, results[i].data.data.leads])
+      )
+      pipelineTotals.value = Object.fromEntries(
+        keys.map((key, i) => [key, results[i].data.data.pagination.total])
+      )
+      fetchUnknownStages()
+    } catch (err) {
+      if (request === pipelineRequest) pipelineError.value = true
+    } finally {
+      if (request === pipelineRequest) pipelineLoading.value = false
+    }
+  }
+
+  // Solo informativo: si falla, el tablero sigue funcionando
+  async function fetchUnknownStages() {
+    const slug = authStore.tenantSlug
+    if (!slug || !authStore.isManager) {
+      unknownStages.value = []
+      return
+    }
+    try {
+      const response = await leadsApi.getUnknownStages(slug)
+      if (slug === authStore.tenantSlug) unknownStages.value = response.data.stages
+    } catch (err) {
+      console.error('Error fetching unknown stages:', err)
+    }
+  }
+
+  function findPipelineLead(leadId) {
+    for (const [stage, list] of Object.entries(pipelineLeads.value)) {
+      const lead = list.find(l => l._id === leadId)
+      if (lead) return { lead, stage }
+    }
+    return null
+  }
+
+  // stageName: etapa real del lead (difiere de la columna en "Otras etapas")
+  function placeLead(lead, fromStage, toStage, stageName = toStage) {
+    const from = pipelineLeads.value[fromStage]
+    const to = pipelineLeads.value[toStage]
+    if (!from || !to) return false
+    const index = from.findIndex(l => l._id === lead._id)
+    if (index === -1) return false
+
+    from.splice(index, 1)
+    lead.opportunity_stage = stageName
+    // Mantener el orden por fecha (más nuevos primero)
+    const position = to.findIndex(l => new Date(l.date) < new Date(lead.date))
+    to.splice(position === -1 ? to.length : position, 0, lead)
+    pipelineTotals.value[fromStage]--
+    pipelineTotals.value[toStage]++
+    return true
+  }
+
+  function applyServerLead(leadId, saved) {
+    const found = findPipelineLead(leadId)
+    if (!found || !saved) return
+    found.lead.value = saved.value
+    found.lead.ai_score = saved.ai_score
+    found.lead.stage_history = saved.stage_history
+  }
+
+  // Asignar un lead sin vendedor (el servidor avisa al CRM)
+  async function assignLead(leadId, seller) {
+    const result = await editLead(leadId, { seller_user_id: seller._id })
+    const found = result.success && findPipelineLead(leadId)
+    if (found) {
+      found.lead.seller_id = result.lead.seller_user_id
+      found.lead.seller_name = result.lead.seller_name
+      found.lead.team = seller.team
+      found.lead.delivery_status = result.lead.delivery_status
+    }
+    return result
+  }
+
+  // Actualización optimista: primero se mueve en pantalla y si falla se revierte
+  async function moveLead(leadId, fromStage, toStage) {
+    // "Otras etapas" no es un destino válido
+    if (fromStage === toStage || toStage === OTHER_STAGES || pendingMoves.value[leadId]) return { success: true }
+    const found = findPipelineLead(leadId)
+    const originalStage = found?.lead.opportunity_stage
+    if (!found || !placeLead(found.lead, fromStage, toStage)) return { success: true }
+
+    pendingMoves.value[leadId] = true
+    const result = await editLead(leadId, { opportunity_stage: toStage })
+    delete pendingMoves.value[leadId]
+
+    if (result.success) {
+      applyServerLead(leadId, result.lead)
+      if (fromStage === OTHER_STAGES) fetchUnknownStages()
+    } else {
+      const current = findPipelineLead(leadId)
+      if (current) placeLead(current.lead, current.stage, fromStage, originalStage)
+    }
+    return result
+  }
+
+  async function updateLeadValue(leadId, value) {
+    const result = await editLead(leadId, { value })
+    if (result.success) applyServerLead(leadId, result.lead)
+    return result
+  }
+
+  // ===== Notas =====
+  const notes = ref([])
+  const notesLoading = ref(false)
+  let notesLeadId = null
+
+  async function fetchNotes(leadId) {
+    if (!authStore.tenantSlug) return { success: false }
+    notesLeadId = leadId
+    notes.value = []
+    notesLoading.value = true
+    try {
+      const response = await leadsApi.getNotes(authStore.tenantSlug, leadId)
+      if (notesLeadId === leadId) notes.value = response.data.notes
+      return { success: true }
+    } catch (err) {
+      return { success: false }
+    } finally {
+      if (notesLeadId === leadId) notesLoading.value = false
+    }
+  }
+
+  async function addNote(leadId, text) {
+    try {
+      const response = await leadsApi.addNote(authStore.tenantSlug, leadId, text)
+      if (notesLeadId === leadId) notes.value.unshift(response.data.note)
+      return { success: true }
+    } catch (err) {
+      return { success: false }
+    }
+  }
+
+  async function deleteNote(leadId, noteId) {
+    try {
+      await leadsApi.deleteNote(authStore.tenantSlug, leadId, noteId)
+      notes.value = notes.value.filter(n => n._id !== noteId)
+      return { success: true }
+    } catch (err) {
+      return { success: false }
+    }
+  }
+
   async function editLead(id, data) {
     if (!authStore.tenantSlug) return { success: false, error: 'No tenant' }
 
     try {
-      await leadsApi.editLead(authStore.tenantSlug, id, data)
+      const response = await leadsApi.editLead(authStore.tenantSlug, id, data)
       // Update local list
       const index = leadsList.value.findIndex(l => l._id === id)
       if (index !== -1) {
         leadsList.value[index] = { ...leadsList.value[index], ...data }
       }
-      return { success: true }
+      return { success: true, lead: response.data.lead }
     } catch (err) {
       return { success: false, error: err.response?.data?.message || 'Error al editar lead' }
     }
@@ -244,16 +453,15 @@ export const useLeadsStore = defineStore('leads', () => {
     exportLoading.value = true
 
     try {
-      // Mismos filtros que la lista, pero sin paginación (limit muy alto)
-      const params = { page: 1, limit: 100000 }
+      // Mismos filtros que la lista, trayendo todas las páginas
+      const params = {}
       if (leadsFilters.fecha_inicio) params.fecha_inicio = leadsFilters.fecha_inicio
       if (leadsFilters.fecha_fin) params.fecha_fin = leadsFilters.fecha_fin
       if (leadsFilters.equipo) params.equipo = leadsFilters.equipo
       if (leadsFilters.seller_id) params.seller_id = leadsFilters.seller_id
       if (leadsFilters.opportunity_stage) params.opportunity_stage = leadsFilters.opportunity_stage
 
-      const response = await leadsApi.getLeads(authStore.tenantSlug, params)
-      const leads = response.data.data.leads
+      const leads = await fetchAllLeads(params)
 
       const headers = ['Fecha', 'Nombre', 'Email', 'Teléfono', 'Estado', 'Equipo', 'Vendedor', 'Etapa', 'Source', 'Contact ID']
       const rows = leads.map(lead => [
@@ -283,16 +491,15 @@ export const useLeadsStore = defineStore('leads', () => {
     exportLoading.value = true
 
     try {
-      // Mismos filtros que la lista, pero sin paginación (limit muy alto)
-      const params = { page: 1, limit: 100000 }
+      // Mismos filtros que la lista, trayendo todas las páginas
+      const params = {}
       if (leadsFilters.fecha_inicio) params.fecha_inicio = leadsFilters.fecha_inicio
       if (leadsFilters.fecha_fin) params.fecha_fin = leadsFilters.fecha_fin
       if (leadsFilters.equipo) params.equipo = leadsFilters.equipo
       if (leadsFilters.seller_id) params.seller_id = leadsFilters.seller_id
       if (leadsFilters.opportunity_stage) params.opportunity_stage = leadsFilters.opportunity_stage
 
-      const response = await leadsApi.getLeads(authStore.tenantSlug, params)
-      const leads = response.data.data.leads
+      const leads = await fetchAllLeads(params)
 
       const headers = ['Fecha', 'Nombre', 'Email', 'Teléfono', 'Estado', 'Equipo', 'Vendedor', 'Etapa', 'Source', 'Contact ID']
       const rows = leads.map(lead => [
@@ -355,6 +562,23 @@ export const useLeadsStore = defineStore('leads', () => {
     initPeriodFilters,
     editLead,
     deleteLead,
+    // Pipeline
+    pipelineLeads,
+    pipelineTotals,
+    pipelineLoading,
+    pipelineError,
+    pendingMoves,
+    unknownStages,
+    fetchPipeline,
+    moveLead,
+    updateLeadValue,
+    assignLead,
+    // Notas
+    notes,
+    notesLoading,
+    fetchNotes,
+    addNote,
+    deleteNote,
     // Export
     exportLoading,
     exportLeadsToCsv,

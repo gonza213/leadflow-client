@@ -564,6 +564,86 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- CRM PROPIO (pipeline + nuevas fuentes de leads) -->
+    <section class="section reveal ldcrm-section" id="crm">
+      <div class="ldcrm-glow"></div>
+      <div class="container">
+        <div class="ldcrm-grid">
+          <div class="ldcrm-text">
+            <div class="section-tag">{{ t('landing.crm.tag') }}</div>
+            <h2 class="section-title text-left">{{ t('landing.crm.title') }} <span class="ldcrm-accent">{{ t('landing.crm.titleAccent') }}</span></h2>
+            <p class="section-sub text-left">{{ t('landing.crm.subtitle') }}</p>
+            <ul class="ldcrm-points">
+              <li>
+                <span class="ldcrm-pi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg></span>
+                <div><h4>{{ t('landing.crm.p1t') }}</h4><p>{{ t('landing.crm.p1d') }}</p></div>
+              </li>
+              <li>
+                <span class="ldcrm-pi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                <div><h4>{{ t('landing.crm.p2t') }}</h4><p>{{ t('landing.crm.p2d') }}</p></div>
+              </li>
+              <li>
+                <span class="ldcrm-pi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>
+                <div><h4>{{ t('landing.crm.p3t') }}</h4><p>{{ t('landing.crm.p3d') }}</p></div>
+              </li>
+            </ul>
+            <div class="ldcrm-cta">
+              <button @click="router.push('/register')" class="btn-primary">
+                {{ t('landing.crm.cta') }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <span class="ldcrm-note">{{ t('landing.crm.ctaNote') }}</span>
+            </div>
+          </div>
+
+          <!-- Tablero de ejemplo (datos ficticios) -->
+          <div class="ldcrm-board" aria-hidden="true">
+            <div class="ldcrm-board-top">
+              <b>{{ t('landing.crm.board.title') }}</b>
+              <div class="ldcrm-chips"><span class="ldcrm-chip on">{{ t('landing.crm.board.all') }}</span><span class="ldcrm-chip">Karla P.</span><span class="ldcrm-chip">Adrián A.</span></div>
+            </div>
+            <div class="ldcrm-cols">
+              <div class="ldcrm-col">
+                <div class="ldcrm-col-h">{{ t('landing.crm.board.col1') }} <span>3</span></div>
+                <div class="ldcrm-card"><div class="n">Sofía Medina</div><div class="m">{{ t('landing.crm.src.form') }}</div><div class="r"><span class="ldcrm-av"><i></i>Karla P.</span><span class="ldcrm-wa"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span></div></div>
+                <div class="ldcrm-card"><div class="n">Martín Gómez</div><div class="m">{{ t('landing.crm.src.crm') }}</div><div class="r"><span class="ldcrm-av"><i></i>Adrián A.</span><span class="ldcrm-wa"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span></div></div>
+                <div class="ldcrm-card"><div class="n">Lucía Herrera</div><div class="m">{{ t('landing.crm.src.manual') }}</div><div class="r"><span class="ldcrm-unassigned">{{ t('landing.crm.board.unassigned') }}</span><span class="ldcrm-wa"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span></div></div>
+              </div>
+              <div class="ldcrm-col">
+                <div class="ldcrm-col-h">{{ t('landing.crm.board.col2') }} <span>2</span></div>
+                <div class="ldcrm-card ldcrm-drag"><div class="n">Diego Paredes</div><div class="m">{{ t('landing.crm.src.csv') }}</div><div class="r"><span class="ldcrm-av"><i></i>Karla P.</span><span class="ldcrm-val">USD 1.200</span></div></div>
+                <div class="ldcrm-card"><div class="n">Camila Ruiz</div><div class="m">{{ t('landing.crm.src.crm') }}</div><div class="r"><span class="ldcrm-av"><i></i>Adrián A.</span><span class="ldcrm-val">USD 800</span></div></div>
+                <div class="ldcrm-sum">{{ t('landing.crm.board.total') }}: USD 2.000</div>
+              </div>
+              <div class="ldcrm-col">
+                <div class="ldcrm-col-h">{{ t('landing.crm.board.col3') }} <span>2</span></div>
+                <div class="ldcrm-card"><div class="n">Pablo Sosa</div><div class="m">{{ t('landing.crm.src.form') }}</div><div class="r"><span class="ldcrm-av"><i></i>Karla P.</span><span class="ldcrm-val">USD 1.500</span></div></div>
+                <div class="ldcrm-card"><div class="n">Ana Torres</div><div class="m">{{ t('landing.crm.src.crm') }}</div><div class="r"><span class="ldcrm-av"><i></i>Adrián A.</span><span class="ldcrm-val">USD 650</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ldcrm-mini">
+          <div class="feat-card">
+            <div class="feat-icon icon-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></div>
+            <h3>{{ t('landing.crm.m1t') }}</h3>
+            <p>{{ t('landing.crm.m1d') }}</p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon icon-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg></div>
+            <h3>{{ t('landing.crm.m2t') }}</h3>
+            <p>{{ t('landing.crm.m2d') }}</p>
+          </div>
+          <div class="feat-card">
+            <div class="feat-icon icon-green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></div>
+            <h3>{{ t('landing.crm.m3t') }}</h3>
+            <p>{{ t('landing.crm.m3d') }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- GIFT CARD + CAMPAÑA ÚNICA -->
     <section class="section reveal" id="extras">
       <div class="container">
@@ -1920,6 +2000,53 @@ export default {
 .footer-bottom { border-top: 1px solid rgba(var(--ld-fg),0.05); padding-top: 20px; font-size: 0.78rem; color: var(--ld-faint); text-align: center; }
 .footer-inline-link { background: none; border: none; cursor: pointer; color: var(--ld-faint); font-size: 0.78rem; padding: 0; transition: color 0.2s; }
 .footer-inline-link:hover { color: var(--ld-muted); }
+
+/* ===== CRM PROPIO ===== */
+.ldcrm-section { position: relative; overflow: hidden; }
+.ldcrm-glow { position: absolute; width: 560px; height: 560px; border-radius: 50%; right: -140px; top: 40px; background: radial-gradient(circle, rgba(var(--ld-acc),0.10), transparent 70%); filter: blur(60px); pointer-events: none; }
+.ldcrm-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: center; position: relative; }
+.ldcrm-accent { color: var(--ld-acc-text); }
+.ldcrm-points { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.ldcrm-points li { display: flex; gap: 14px; align-items: flex-start; text-align: left; }
+.ldcrm-points li > div { padding-top: 1px; }
+.ldcrm-points h4 { font-size: 0.98rem; font-weight: 700; color: var(--ld-ink); margin: 0 0 3px; padding: 0; line-height: 1.35; }
+.ldcrm-points p { font-size: 0.88rem; color: var(--ld-muted); line-height: 1.55; margin: 0; padding: 0; }
+.ldcrm-pi { width: 40px; height: 40px; border-radius: 11px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(var(--ld-acc),0.12); color: var(--ld-acc-text); }
+.ldcrm-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 30px; }
+.ldcrm-note { font-size: 0.8rem; color: var(--ld-faint); }
+.ldcrm-board { text-align: left; background: var(--ld-card); border: 1px solid rgba(var(--ld-fg),0.1); border-radius: 20px; padding: 16px; box-shadow: 0 30px 70px -30px rgba(0,0,0,0.55); }
+.ldcrm-board-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.ldcrm-board-top b { font-size: 0.85rem; color: var(--ld-ink); }
+.ldcrm-chips { display: flex; gap: 6px; }
+.ldcrm-chip { font-size: 0.68rem; font-weight: 600; padding: 3px 9px; border-radius: 100px; border: 1px solid rgba(var(--ld-fg),0.12); color: var(--ld-muted); white-space: nowrap; }
+.ldcrm-chip.on { background: rgba(var(--ld-acc),0.14); border-color: rgba(var(--ld-acc),0.35); color: var(--ld-acc-text); }
+.ldcrm-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ldcrm-col { background: var(--ld-card-2); border: 1px solid rgba(var(--ld-fg),0.06); border-radius: 14px; padding: 10px; }
+.ldcrm-col-h { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; color: var(--ld-ink-2); margin-bottom: 8px; }
+.ldcrm-col-h span { color: var(--ld-faint); font-weight: 600; }
+.ldcrm-card { background: var(--ld-card); border: 1px solid rgba(var(--ld-fg),0.08); border-radius: 10px; padding: 9px 10px; margin-bottom: 8px; }
+.ldcrm-card .n { font-size: 0.78rem; font-weight: 700; color: var(--ld-ink); }
+.ldcrm-card .m { font-size: 0.66rem; color: var(--ld-faint); margin-top: 1px; }
+.ldcrm-card .r { display: flex; justify-content: space-between; align-items: center; margin-top: 7px; }
+.ldcrm-drag { transform: rotate(-3deg) translateY(-4px); border-color: rgba(var(--ld-acc),0.6); box-shadow: 0 14px 28px -12px rgba(0,0,0,0.6); }
+.ldcrm-av { display: flex; align-items: center; gap: 5px; font-size: 0.64rem; color: var(--ld-muted); }
+.ldcrm-av i { width: 16px; height: 16px; border-radius: 50%; background: rgba(var(--ld-acc),0.25); display: inline-block; }
+.ldcrm-wa { width: 20px; height: 20px; border-radius: 6px; background: rgba(37,211,102,0.15); color: #25d366; display: flex; align-items: center; justify-content: center; }
+.ldcrm-val { font-size: 0.6rem; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: rgba(var(--ld-fg),0.07); color: var(--ld-muted); }
+.ldcrm-unassigned { font-size: 0.6rem; font-weight: 700; padding: 1px 6px; border-radius: 5px; background: rgba(234,179,8,0.15); color: #ca8a04; }
+.ldcrm-sum { font-size: 0.66rem; color: var(--ld-faint); margin-top: 2px; }
+.ldcrm-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; position: relative; }
+:root:not(.dark) .landing-root .ldcrm-board { box-shadow: 0 30px 70px -30px rgba(14,17,15,0.28); }
+:root:not(.dark) .landing-root .ldcrm-drag { box-shadow: 0 14px 28px -12px rgba(14,17,15,0.3); }
+@media (max-width: 960px) {
+  .ldcrm-grid { grid-template-columns: 1fr; gap: 40px; }
+  .ldcrm-mini { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .ldcrm-board { padding: 12px; overflow-x: auto; }
+  .ldcrm-cols { grid-template-columns: repeat(3, 170px); }
+  .ldcrm-chips { display: none; }
+}
 
 /* ===== HERO TRUST BAR ===== */
 .hero-trust {

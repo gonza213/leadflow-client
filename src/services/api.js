@@ -79,7 +79,24 @@ export const leadsApi = {
   updateLead: (tenantSlug, contactId, data) => api.put(`/${tenantSlug}/lead/${contactId}`, data),
   editLead: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/leads/${id}`, data),
   deleteLead: (tenantSlug, id) => api.delete(`/${tenantSlug}/leads/${id}`),
-  redeliverLead: (tenantSlug, id) => api.post(`/${tenantSlug}/leads/${id}/redeliver`)
+  redeliverLead: (tenantSlug, id) => api.post(`/${tenantSlug}/leads/${id}/redeliver`),
+  createManual: (tenantSlug, data) => api.post(`/${tenantSlug}/leads/manual`, data),
+  // Importar tarda: cada fila se reparte y se avisa al CRM
+  importCsv: (tenantSlug, formData) => api.post(`/${tenantSlug}/leads/import`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000
+  }),
+  getUnknownStages: (tenantSlug) => api.get(`/${tenantSlug}/leads/unknown-stages`),
+  getNotes: (tenantSlug, leadId) => api.get(`/${tenantSlug}/leads/${leadId}/notes`),
+  addNote: (tenantSlug, leadId, text) => api.post(`/${tenantSlug}/leads/${leadId}/notes`, { text }),
+  deleteNote: (tenantSlug, leadId, noteId) => api.delete(`/${tenantSlug}/leads/${leadId}/notes/${noteId}`)
+}
+
+// Formulario web (configuración, managers)
+export const formApi = {
+  get: (tenantSlug) => api.get(`/${tenantSlug}/form`),
+  update: (tenantSlug, data) => api.put(`/${tenantSlug}/form`, data),
+  regenerateKey: (tenantSlug) => api.post(`/${tenantSlug}/form/regenerate-key`)
 }
 
 export const sellersApi = {

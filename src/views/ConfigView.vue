@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
 import { buildSubscribeUrl } from '../services/subscribeUrl'
@@ -14,7 +15,11 @@ import SummaryConfig from '../components/config/SummaryConfig.vue'
 const configStore = useConfigStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
-const activeTab = ref('teams')
+// Permite enlazar directo a una pestaña (ej. /config?tab=stages desde el pipeline)
+const requestedTab = useRoute().query.tab
+const activeTab = ref(
+  ['teams', 'period', 'stages', 'fallback', 'summary'].includes(requestedTab) ? requestedTab : 'teams'
+)
 
 const tabs = computed(() => {
   const items = [
@@ -31,6 +36,18 @@ const tabs = computed(() => {
   }
   return items
 })
+
+// Pipeline propio (solo cambia la interfaz)
+const pipelineSaving = ref(false)
+const pipelineError = ref(false)
+
+const togglePipeline = async () => {
+  pipelineSaving.value = true
+  pipelineError.value = false
+  const result = await configStore.updateConfig({ pipeline_enabled: !configStore.config.pipeline_enabled })
+  pipelineError.value = !result?.success
+  pipelineSaving.value = false
+}
 
 // Cancelación
 const cancelling = ref(false)
@@ -71,6 +88,49 @@ onMounted(async () => {
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ t('config.title') }}</h1>
+    </div>
+
+    <!-- Pipeline de LeadDistro: tarjeta destacada, visible desde cualquier pestaña -->
+    <div
+      v-if="authStore.tenantSlug && configStore.config"
+      class="relative overflow-hidden rounded-2xl border p-5 sm:p-6 transition-colors"
+      :class="configStore.config.pipeline_enabled
+        ? 'border-primary-300/60 bg-primary-50 dark:border-primary-400/30 dark:bg-primary-400/10'
+        : 'border-primary-300 bg-gradient-to-br from-primary-50 to-white dark:border-primary-400/50 dark:from-primary-400/15 dark:to-gray-800'"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+        <div class="flex items-start gap-4 flex-1 min-w-0">
+          <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary-300 text-gray-950">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/></svg>
+          </div>
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <p class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ t('config.pipelineEnabled') }}</p>
+              <span class="rounded-full bg-primary-300 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-gray-950">{{ t('config.pipelineNew') }}</span>
+            </div>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">{{ t('config.pipelineEnabledInfo') }}</p>
+            <p v-if="pipelineError" class="mt-1 text-sm text-red-600 dark:text-red-400">{{ t('common.saveError') }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 sm:flex-shrink-0">
+          <router-link
+            v-if="configStore.config.pipeline_enabled"
+            to="/pipeline"
+            class="text-sm font-semibold text-primary-700 hover:underline dark:text-primary-300"
+          >{{ t('config.pipelineOpen') }} →</router-link>
+          <button
+            type="button"
+            role="switch"
+            :aria-checked="!!configStore.config.pipeline_enabled"
+            :aria-label="t('config.pipelineEnabled')"
+            :disabled="pipelineSaving"
+            @click="togglePipeline"
+            :class="['relative inline-flex h-8 w-14 flex-shrink-0 items-center rounded-full transition-colors disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 focus-visible:ring-offset-2', configStore.config.pipeline_enabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-gray-600']"
+          >
+            <span :class="['inline-block h-6 w-6 transform rounded-full bg-white shadow transition-transform', configStore.config.pipeline_enabled ? 'translate-x-7' : 'translate-x-1']" />
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Tabs mobile: grid 2 cols -->
@@ -140,11 +200,12 @@ onMounted(async () => {
         :week-start-day="configStore.config.week_start_day ?? null"
         :on-save="configStore.updatePeriod"
       />
-      <StagesConfig
-        v-else-if="activeTab === 'stages'"
-        :stages="configStore.config.opportunity_stages"
-        :on-save="configStore.updateStages"
-      />
+      <div v-else-if="activeTab === 'stages'" class="space-y-6">
+        <StagesConfig
+          :stages="configStore.config.opportunity_stages"
+          :on-save="configStore.updateStages"
+        />
+      </div>
       <FallbackConfig
         v-else-if="activeTab === 'fallback'"
         :fallback-seller-ids="configStore.config.fallback_seller_ids || []"

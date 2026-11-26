@@ -31,6 +31,7 @@
     }
   },
   "menu": {
+    "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
     "sellers": "Sellers",
@@ -301,6 +302,41 @@
     "crmBar": "Works with your CRM",
     "themeToggle": "Toggle light / dark mode",
     "hero": { "badgeFast": "Lead assigned in 0.4 s", "badgeSaved": "Zero leads lost" },
+    "crm": {
+      "tag": "New",
+      "title": "Work your leads",
+      "titleAccent": "without leaving LeadDistro",
+      "subtitle": "Keep using your current CRM or follow up in the LeadDistro pipeline. You choose where your team works.",
+      "p1t": "Stage-based pipeline",
+      "p1d": "Drag each lead from stage to stage, with notes, history and the value of each opportunity.",
+      "p2t": "One-click contact",
+      "p2d": "WhatsApp and call buttons on every lead. Each sales rep only sees their own.",
+      "p3t": "Leads from any source",
+      "p3d": "From your CRM, a form on your website, manual entry or a CSV. All of them are distributed with the same rules.",
+      "cta": "Try it free",
+      "ctaNote": "7-day free trial · No credit card",
+      "board": {
+        "title": "Pipeline",
+        "all": "All",
+        "col1": "Contacted",
+        "col2": "Negotiating",
+        "col3": "Closed won",
+        "total": "Total",
+        "unassigned": "Unassigned"
+      },
+      "src": {
+        "form": "Web form",
+        "manual": "Manual entry",
+        "csv": "Imported CSV",
+        "crm": "From your CRM"
+      },
+      "m1t": "A form for your website",
+      "m1d": "Copy a code snippet, paste it on your site and leads go straight into distribution, with spam protection.",
+      "m2t": "Import your contacts",
+      "m2d": "Upload a CSV and LeadDistro distributes it among your sales reps, or assigns it to a specific one.",
+      "m3t": "With or without a CRM",
+      "m3d": "If you connect GoHighLevel, the lead is also created there and your team can keep working from your CRM. No CRM? You don't need one."
+    },
     "extras": {
       "tag": "New",
       "title": "Sell leads and run a single campaign",
@@ -630,31 +666,138 @@
     "prev": "Back",
     "next": "Next",
     "done": "Got it!",
+    "newBadge": "New",
+    "goTo": "Go to {section}",
+    "close": "Close",
     "s": {
-      "dashboard": { "t": "Dashboard", "d": "View real-time metrics: leads per seller, team distribution, funnel stages and more. Use the period filters to analyze specific ranges." },
-      "period": { "t": "Distribution Period", "d": "The period is the active work cycle. It's essential for metrics and seller limits to work correctly.", "items": ["**Limit cycle**: Lead limits are counted within the active period's dates.", "**Metrics**: The Dashboard shows the configured period's data by default.", "**Types**: It can be **Manual** (fixed dates) or **Automatic** (resets every week).", "**Expiration**: If it expires, you'll see a notice to update it and keep distribution running."] },
-      "leads": { "t": "Leads", "d": "Complete list of leads received by the system. Filter by seller, team, stage and period. Export any result to CSV in one click." },
-      "sellers": { "t": "Sellers", "d": "Create and manage your sales team. Assign daily and weekly limits. The distribution algorithm respects these limits automatically." },
-      "users": { "t": "Users", "d": "Manage your organization's access. Assign Manager, Viewer or Seller roles to each tenant user." },
-      "config": { "t": "Settings", "items": ["**Teams**: Define your sales teams and the percentage of leads each one receives (must add up to 100%).", "**Stages**: Configure your pipeline stages (New, Contacted, Qualified, Closed).", "**Fallback**: Set up to 2 fallback sellers for when everyone reaches their limit.", "**Timezone**: Set your organization's timezone so limits and reports are accurate."] },
-      "integrations": { "t": "Integrations", "items": ["**Platforms**: Compatible with GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n and any tool that supports webhooks.", "**Inbound webhook**: Copy your tenant's unique URL from the Integrations section and paste it into your CRM workflow.", "**Outbound webhook**: LeadDistro notifies your CRM with the assigned seller's name and ID.", "**Stage change**: Use the second webhook to sync stage changes from your CRM into the system."] },
-      "summaries": { "t": "AI Summaries", "items": ["**What it is**: The system automatically generates a metrics summary with OpenAI and stores it so you can review it anytime.", "**Setup**: Enable it from Settings → AI Summary. Choose daily or weekly frequency and the send time.", "**PDF**: From each summary you can download a professional PDF with the period's analysis and metrics.", "**Webhook**: If you set a Make or Zapier URL, the summary is also sent automatically when generated."] },
-      "algorithm": { "t": "Distribution algorithm", "d": "When a lead comes in, the system picks the target team based on the configured percentages. Within that team, it selects the seller with the lowest ratio (current leads / weekly limit). If everyone hits their limit, the lead is redirected to the fallback seller." }
+      "dashboard": {
+        "t": "Dashboard",
+        "d": "View real-time metrics: leads per seller, team distribution, funnel stages and more. Use the period filters to analyze specific ranges."
+      },
+      "period": {
+        "t": "Distribution Period",
+        "d": "The period is the active work cycle. It's essential for metrics and seller limits to work correctly.",
+        "items": [
+          "**Limit cycle**: Lead limits are counted within the active period's dates.",
+          "**Metrics**: The Dashboard shows the configured period's data by default.",
+          "**Types**: It can be **Manual** (fixed dates) or **Automatic** (resets every week).",
+          "**Expiration**: If it expires, you'll see a notice to update it and keep distribution running."
+        ]
+      },
+      "leads": {
+        "t": "Leads",
+        "d": "Full list of leads. Filter by sales rep, team, stage and period, edit a lead or export the results to CSV."
+      },
+      "sellers": {
+        "t": "Sellers",
+        "d": "Create and manage your sales team. Assign daily and weekly limits. The distribution algorithm respects these limits automatically."
+      },
+      "users": {
+        "t": "Users",
+        "d": "Manage your organization's access. Assign Manager, Viewer or Seller roles to each tenant user."
+      },
+      "config": {
+        "t": "Settings",
+        "items": [
+          "**Pipeline**: turn on the stage board from the highlighted card at the top.",
+          "**Teams**: define your sales teams and the share of leads each one gets (must add up to 100%).",
+          "**Stages**: define your opportunity stages; they are the Pipeline columns.",
+          "**Fallback**: set up to 2 backup reps for when everyone reaches their limit.",
+          "**Time zone**: set your organization time zone so limits and reports are correct."
+        ]
+      },
+      "integrations": {
+        "t": "Integrations",
+        "items": [
+          "**Platforms**: works with GoHighLevel, HubSpot, Make, Zapier, ActiveCampaign, Pipedrive, n8n and any tool that supports webhooks.",
+          "**Inbound webhook**: copy your company unique URL and paste it in your CRM workflow.",
+          "**Outbound webhook**: LeadDistro tells your CRM the name and ID of the assigned rep.",
+          "**Stage changes**: use the second webhook so stage changes in your CRM reach LeadDistro.",
+          "**Web form**: copy the form code and paste it on your site to get leads without a CRM."
+        ]
+      },
+      "summaries": {
+        "t": "AI Summaries",
+        "items": [
+          "**What it is**: The system automatically generates a metrics summary with OpenAI and stores it so you can review it anytime.",
+          "**Setup**: Enable it from Settings → AI Summary. Choose daily or weekly frequency and the send time.",
+          "**PDF**: From each summary you can download a professional PDF with the period's analysis and metrics.",
+          "**Webhook**: If you set a Make or Zapier URL, the summary is also sent automatically when generated."
+        ]
+      },
+      "algorithm": {
+        "t": "Distribution algorithm",
+        "d": "When a lead comes in, the system picks the target team based on the configured percentages. Within that team, it selects the seller with the lowest ratio (current leads / weekly limit). If everyone hits their limit, the lead is redirected to the fallback seller."
+      },
+      "pipeline": {
+        "t": "Pipeline",
+        "d": "A board organized by stage to follow up on every lead without leaving LeadDistro.",
+        "items": [
+          "**Move leads**: drag each card to its new stage; the change is saved in the history.",
+          "**Lead details**: click a card to see its data, add notes, set the opportunity value and message it on WhatsApp or call.",
+          "**Who sees what**: sales reps only see their own leads; managers see the whole team and can filter by rep or search by name and phone.",
+          "**Turn it on**: a manager enables it in Settings, in the \"Use the LeadDistro pipeline\" card."
+        ]
+      },
+      "newLeads": {
+        "t": "Add leads",
+        "d": "Besides your CRM webhook, you can bring in leads in other ways. All of them go through the same distribution.",
+        "items": [
+          "**New lead**: add one manually with the \"New lead\" button in the Pipeline.",
+          "**Import CSV**: from Leads, upload a file and choose whether it is distributed across the team or goes to one rep.",
+          "**Web form**: copy the code from Integrations and paste it on your site.",
+          "**Duplicates**: if the same phone or email came in during the last 30 days, it is not created again.",
+          "**Unassigned**: if no rep has capacity, the lead is still saved as \"Unassigned\" so you can assign it manually."
+        ]
+      },
+      "presence": {
+        "t": "Live Office",
+        "d": "See in real time who on your team is online, their status and how many leads they got today."
+      }
     },
     "tour": {
       "progress": "Step {current} of {total}",
       "steps": {
-        "welcome": { "t": "Welcome to LeadDistro", "d": "This tour will walk you through the system's main features. You can skip it anytime." },
-        "sidebar": { "t": "Main navigation", "d": "From here you can access every section: Dashboard, Leads, Sellers, Users and Settings." },
-        "dashboard": { "d": "View leads per seller and team in real time. Metrics respond to the active **Period**, which defines your current sales cycle." },
-        "leads": { "d": "Complete list of received leads. You can filter by seller, team, stage and period." },
-        "sellers": { "d": "Manage your sales team. Set daily and weekly limits for each seller." },
-        "users": { "d": "Manage your organization's users and their access roles." },
-        "integrations": { "d": "Connect your CRM to LeadDistro. Find the webhook URLs, compatible platforms and notification settings." },
-        "summaries": { "d": "History of summaries automatically generated with OpenAI. Each one includes period metrics and can be downloaded as a PDF." },
-        "config": { "d": "Set up teams with distribution percentages, pipeline stages, CRM webhook, timezone and the automatic AI summary." },
-        "darkmode": { "t": "Dark mode", "d": "Switch between light and dark mode as you prefer." },
-        "helpBtn": { "t": "Help guide", "d": "You can reopen this guide or check the manual from this button at any time." }
+        "welcome": {
+          "t": "Welcome to LeadDistro",
+          "d": "This tour will walk you through the system's main features. You can skip it anytime."
+        },
+        "sidebar": {
+          "t": "Main navigation",
+          "d": "From here you can access every section: Dashboard, Leads, Pipeline, Sellers, Users and Settings."
+        },
+        "dashboard": {
+          "d": "View leads per seller and team in real time. Metrics respond to the active **Period**, which defines your current sales cycle."
+        },
+        "leads": {
+          "d": "Complete list of received leads. You can filter by seller, team, stage and period."
+        },
+        "sellers": {
+          "d": "Manage your sales team. Set daily and weekly limits for each seller."
+        },
+        "users": {
+          "d": "Manage your organization's users and their access roles."
+        },
+        "integrations": {
+          "d": "Connect your CRM to LeadDistro. Find the webhook URLs, compatible platforms and notification settings."
+        },
+        "summaries": {
+          "d": "History of summaries automatically generated with OpenAI. Each one includes period metrics and can be downloaded as a PDF."
+        },
+        "config": {
+          "d": "Set up teams with distribution percentages, pipeline stages, CRM webhook, timezone and the automatic AI summary."
+        },
+        "darkmode": {
+          "t": "Dark mode",
+          "d": "Switch between light and dark mode as you prefer."
+        },
+        "helpBtn": {
+          "t": "Help guide",
+          "d": "You can reopen this guide or check the manual from this button at any time."
+        },
+        "pipeline": {
+          "d": "Work your leads on a stage board: move them, add notes and reach them on WhatsApp."
+        }
       }
     }
   },
@@ -770,6 +913,35 @@
   },
   "integrations": {
     "title": "Integrations",
+    "subtitle": "Connect LeadDistro with your CRM or get leads straight from your website.",
+    "tabs": {
+      "crm": "Connect your CRM",
+      "form": "Web form"
+    },
+    "how": {
+      "title": "How it works",
+      "s1": "Your CRM sends every new lead to LeadDistro.",
+      "s2": "LeadDistro picks the sales rep and notifies your CRM.",
+      "s3": "Optional: your CRM reports stage changes."
+    },
+    "compatible": "Works with",
+    "anyWebhook": "and any tool that supports webhooks",
+    "required": "Required",
+    "optional": "Optional",
+    "configured": "Configured",
+    "notConfigured": "Not configured",
+    "step1": {
+      "title": "Send your leads to LeadDistro",
+      "desc": "In your CRM, create a workflow that triggers when a new contact comes in and sends a POST to this URL. LeadDistro assigns a sales rep instantly."
+    },
+    "step2": {
+      "title": "Get the assigned rep in your CRM",
+      "desc": "Paste the URL of a webhook in your CRM (for example, a GoHighLevel workflow with an inbound webhook trigger). LeadDistro sends it a POST every time it assigns a rep."
+    },
+    "step3": {
+      "title": "Sync stage changes",
+      "desc": "When an opportunity changes stage in your CRM, send a POST to this URL. That way the Dashboard and the Pipeline show the real stage."
+    },
     "platforms": {
       "title": "Compatible Platforms",
       "info": "LeadDistro works with any tool that supports webhooks.",
@@ -927,6 +1099,10 @@
     }
   },
   "config": {
+    "pipelineEnabled": "Use the LeadDistro pipeline",
+    "pipelineNew": "New",
+    "pipelineOpen": "Open pipeline",
+    "pipelineEnabledInfo": "Adds \"Pipeline\" to the menu to work your leads on a board organized by stage.",
     "title": "Settings",
     "tabs": {
       "teams": "Teams",
@@ -1362,5 +1538,138 @@
     "connectionSaved": "Connection validated and saved",
     "loadError": "Could not load the single campaign",
     "saveError": "Could not save"
+  },
+  "pipeline": {
+    "assign": {
+      "label": "Assign seller",
+      "choose": "Choose a seller",
+      "button": "Assign"
+    },
+    "unassigned": "Unassigned",
+    "otherStages": "Other stages",
+    "noStage": "No stage assigned",
+    "unknownStages": {
+      "title": "Some leads have stages that are not in your settings:",
+      "link": "Add them in Settings"
+    },
+    "title": "Pipeline",
+    "searchPlaceholder": "Search by name or phone",
+    "empty": "There are no leads to show yet",
+    "emptyColumn": "No leads",
+    "columns": {
+      "count": "{n} leads",
+      "total": "Total",
+      "truncated": "Showing {shown} of {total}"
+    },
+    "readOnly": "Read only",
+    "crmWarning": "Your CRM also updates stages; a change in the CRM may replace the one you make here.",
+    "detail": {
+      "title": "Lead details",
+      "contact": "Contact info",
+      "stage": "Stage",
+      "value": "Estimated value",
+      "valuePlaceholder": "No value",
+      "whatsapp": "WhatsApp",
+      "call": "Call",
+      "close": "Close",
+      "date": "Received on"
+    },
+    "notes": {
+      "title": "Notes",
+      "placeholder": "Write a note…",
+      "add": "Add note",
+      "empty": "No notes",
+      "delete": "Delete note",
+      "confirmDelete": "Delete this note?"
+    },
+    "history": {
+      "title": "Stage history",
+      "empty": "No changes recorded"
+    },
+    "errors": {
+      "assign": "Could not assign the lead",
+      "load": "Could not load the pipeline",
+      "move": "Could not change the stage",
+      "value": "Could not save the value",
+      "invalidValue": "The value must be a number greater than or equal to 0",
+      "notesLoad": "Could not load the notes",
+      "noteAdd": "Could not save the note",
+      "noteDelete": "Could not delete the note"
+    }
+  },
+  "newLead": {
+    "createdUnassigned": "{name} was left unassigned: no sellers are available. Assign it from Leads.",
+    "button": "New lead",
+    "title": "New lead",
+    "info": "It is distributed with the same rules as your CRM leads.",
+    "submit": "Create lead",
+    "created": "{name} was assigned to {seller}",
+    "errors": {
+      "missing_name": "Name is required",
+      "invalid_email": "The email is not valid",
+      "invalid_phone": "The phone number is not valid",
+      "duplicate_lead": "A lead with that phone or email already exists",
+      "duplicateOf": "Already exists: {name} (seller: {seller})",
+      "credits_exhausted": "No lead balance: it is on hold and will be assigned after a top-up",
+      "no_sellers_available": "There are no sellers available to assign it",
+      "unexpected": "Could not create the lead"
+    }
+  },
+  "csvImport": {
+    "button": "Import CSV",
+    "title": "Import leads from CSV",
+    "info": "Up to 1000 rows. Columns: name (required), email, phone and source.",
+    "file": "CSV file",
+    "template": "Download template",
+    "seller": "Assignment",
+    "distribute": "Distribute by the rules",
+    "distributeInfo": "Each row is distributed by teams and limits.",
+    "fixedInfo": "All rows go to this seller, ignoring percentages and limits.",
+    "creditsDistribute": "Each lead uses 1 credit; without balance they stay on hold.",
+    "creditsFixed": "Each lead uses 1 credit; without balance the row is not imported.",
+    "submit": "Import",
+    "stop": "Stop and close",
+    "progress": "{done} of {total} rows",
+    "status": {
+      "created": "Created",
+      "duplicate": "Duplicates",
+      "held": "On hold",
+      "error": "Errors"
+    },
+    "reasons": {
+      "missing_name": "name is missing",
+      "invalid_email": "invalid email",
+      "invalid_phone": "invalid phone",
+      "no_credit": "no lead balance",
+      "no_sellers_available": "no sellers available",
+      "unexpected": "unexpected error"
+    },
+    "errors": {
+      "missing_file": "Choose a file",
+      "invalid_csv": "The file is not a valid CSV (check the quotes)",
+      "missing_name_column": "The name column is missing",
+      "empty_file": "The file has no rows",
+      "too_many_rows": "The file has more than 1000 rows",
+      "file_too_large": "The file is larger than 2 MB",
+      "invalid_upload": "Could not read the file",
+      "invalid_seller": "The selected seller is not available",
+      "interrupted": "The import was interrupted. Check the report before importing again."
+    }
+  },
+  "webForm": {
+    "title": "Web form",
+    "info": "Paste this code on your website: contacts go straight into LeadDistro and get distributed.",
+    "snippet": "HTML code",
+    "origins": "Allowed websites (optional)",
+    "originsInfo": "One per line. If empty, submissions from any website are accepted.",
+    "invalidOrigins": "Check the addresses: they must start with http:// or https:// (10 maximum)",
+    "regenerate": "Generate a new key",
+    "regenerateInfo": "The current key stops working and you have to paste the code again.",
+    "confirmRegenerate": "Generate a new key? The current form will stop working.",
+    "regenerated": "New key generated. Copy the code again.",
+    "loadError": "Could not load the form",
+    "send": "Send",
+    "thanks": "Thank you! We will contact you.",
+    "sendError": "Could not send. Please try again."
   }
 }
