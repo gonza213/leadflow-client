@@ -38,7 +38,9 @@ const createdMessage = ref('')
 let createdTimer = null
 const onCreated = (lead) => {
   showNewLead.value = false
-  createdMessage.value = t('newLead.created', { name: lead.name, seller: lead.seller_name })
+  createdMessage.value = lead.seller_name
+    ? t('newLead.created', { name: lead.name, seller: lead.seller_name })
+    : t('newLead.createdUnassigned', { name: lead.name })
   clearTimeout(createdTimer)
   createdTimer = setTimeout(() => { createdMessage.value = '' }, 5000)
   load()
@@ -284,6 +286,7 @@ onUnmounted(() => {
           <!-- El servidor prioriza el equipo sobre el vendedor: se elige uno u otro -->
           <select v-model="filters.seller_id" class="input text-sm disabled:opacity-50" :disabled="!!filters.equipo" :aria-label="t('dashboard.filters.seller')" @change="load">
             <option value="">{{ t('dashboard.filters.seller') }}: {{ t('dashboard.filters.all') }}</option>
+            <option value="unassigned">{{ t('pipeline.unassigned') }}</option>
             <option v-for="seller in sellersStore.sellers" :key="seller._id" :value="seller._id">
               {{ seller.seller_name }}
             </option>
@@ -362,6 +365,11 @@ onUnmounted(() => {
                 </span>
               </p>
               <p v-if="authStore.isManager && lead.seller_name" class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ lead.seller_name }}</p>
+              <p v-else-if="authStore.isManager" class="mt-1">
+                <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-400">
+                  {{ t('pipeline.unassigned') }}
+                </span>
+              </p>
               <div class="mt-2 flex items-center justify-between gap-2 text-xs text-gray-400">
                 <span class="truncate">{{ lead.source }}</span>
                 <span class="whitespace-nowrap">{{ age(lead.date) }}</span>
@@ -395,7 +403,7 @@ onUnmounted(() => {
                 [t('leads.table.phone'), selected.lead.phone],
                 [t('leads.table.email'), selected.lead.email],
                 [t('leads.table.source'), selected.lead.source],
-                [t('leads.table.seller'), selected.lead.seller_name],
+                [t('leads.table.seller'), selected.lead.seller_name || t('pipeline.unassigned')],
                 [t('pipeline.detail.date'), formatDate(selected.lead.date)]
               ]" :key="row[0]" class="flex justify-between gap-4">
                 <dt class="text-gray-500 dark:text-gray-400">{{ row[0] }}</dt>

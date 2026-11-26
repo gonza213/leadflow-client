@@ -1438,6 +1438,7 @@
     "saveError": "No se pudo guardar"
   },
   "pipeline": {
+    "unassigned": "Sin asignar",
     "otherStages": "Otras etapas",
     "noStage": "Sin etapa asignada",
     "unknownStages": {
@@ -1489,6 +1490,7 @@
     }
   },
   "newLead": {
+    "createdUnassigned": "{name} quedó sin asignar: no hay vendedores disponibles. Asignalo desde Leads.",
     "button": "Nuevo lead",
     "title": "Nuevo lead",
     "info": "Se reparte con las mismas reglas que los leads de tu CRM.",

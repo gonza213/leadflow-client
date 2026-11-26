@@ -1539,6 +1539,7 @@
     "saveError": "Não foi possível salvar"
   },
   "pipeline": {
+    "unassigned": "Não atribuído",
     "otherStages": "Outras etapas",
     "noStage": "Sem etapa definida",
     "unknownStages": {
@@ -1590,6 +1591,7 @@
     }
   },
   "newLead": {
+    "createdUnassigned": "{name} ficou sem atribuição: não há vendedores disponíveis. Atribua-o em Leads.",
     "button": "Novo lead",
     "title": "Novo lead",
     "info": "Ele é distribuído com as mesmas regras dos leads do seu CRM.",

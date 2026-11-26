@@ -1367,6 +1367,7 @@
     "saveError": "Could not save"
   },
   "pipeline": {
+    "unassigned": "Unassigned",
     "otherStages": "Other stages",
     "noStage": "No stage assigned",
     "unknownStages": {
@@ -1418,6 +1419,7 @@
     }
   },
   "newLead": {
+    "createdUnassigned": "{name} was left unassigned: no sellers are available. Assign it from Leads.",
     "button": "New lead",
     "title": "New lead",
     "info": "It is distributed with the same rules as your CRM leads.",
