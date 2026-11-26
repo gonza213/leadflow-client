@@ -977,6 +977,8 @@
   },
   "config": {
     "pipelineEnabled": "Usar el pipeline de LeadDistro",
+    "pipelineNew": "Nuevo",
+    "pipelineOpen": "Abrir el pipeline",
     "pipelineEnabledInfo": "Agrega \"Pipeline\" al menú para trabajar los leads en un tablero por etapas.",
     "title": "Configuración",
     "tabs": {

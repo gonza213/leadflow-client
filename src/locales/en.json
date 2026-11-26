@@ -964,6 +964,8 @@
   },
   "config": {
     "pipelineEnabled": "Use the LeadDistro pipeline",
+    "pipelineNew": "New",
+    "pipelineOpen": "Open pipeline",
     "pipelineEnabledInfo": "Adds \"Pipeline\" to the menu to work your leads on a board organized by stage.",
     "title": "Settings",
     "tabs": {

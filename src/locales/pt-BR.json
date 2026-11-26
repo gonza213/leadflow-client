@@ -1190,6 +1190,8 @@
       }
     },
     "pipelineEnabled": "Usar o pipeline do LeadDistro",
+    "pipelineNew": "Novo",
+    "pipelineOpen": "Abrir o pipeline",
     "pipelineEnabledInfo": "Adiciona \"Pipeline\" ao menu para trabalhar os leads em um quadro por etapas.",
     "title": "Configuração",
     "tabs": {
