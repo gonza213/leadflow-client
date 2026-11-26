@@ -6,6 +6,9 @@ import { useConfigStore } from '../stores/config'
 import { useSellersStore } from '../stores/sellers'
 import { useAuthStore } from '../stores/auth'
 import NewLeadModal from '../components/leads/NewLeadModal.vue'
+import AppointmentModal from '../components/calendar/AppointmentModal.vue'
+import { useAppointmentsStore } from '../stores/appointments'
+import { safeTimeZone, formatZoned } from '../utils/zonedTime'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -171,10 +174,30 @@ const openLead = async (lead) => {
   valueDraft.value = lead.value ?? ''
   noteText.value = ''
   assigneeId.value = ''
+  loadLeadAppts(lead._id)
   const result = await leadsStore.fetchNotes(lead._id)
   if (!result.success && selectedId.value === lead._id) showError('notesLoad')
 }
 const closeLead = () => { selectedId.value = null }
+
+// Citas del lead abierto en la ficha
+const appointmentsStore = useAppointmentsStore()
+const leadAppts = ref([])
+const apptModal = ref(null)
+const apptTz = computed(() => safeTimeZone(configStore.config?.timezone))
+const loadLeadAppts = async (leadId) => {
+  leadAppts.value = []
+  const result = await appointmentsStore.fetchForLead(leadId)
+  if (selectedId.value === leadId) leadAppts.value = result.appointments
+}
+const formatAppt = (a) => formatZoned(a.startsAt, apptTz.value, intlLocale.value, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hour12: false })
+const scheduleFor = (lead) => {
+  apptModal.value = { appointment: null, defaults: { lead: { _id: lead._id, name: lead.name, phone: lead.phone }, sellerId: lead.seller_id || '' } }
+}
+const onApptDone = () => {
+  apptModal.value = null
+  if (selectedId.value) loadLeadAppts(selectedId.value)
+}
 
 const onStageSelect = async (event) => {
   const { lead, stage } = selected.value
@@ -436,6 +459,24 @@ onUnmounted(() => {
             </div>
           </section>
 
+          <!-- Citas del lead -->
+          <section>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h4 class="text-sm font-semibold text-gray-900 dark:text-white">{{ t('calendar.lead.title') }}</h4>
+              <button v-if="canWork" type="button" class="btn btn-secondary btn-sm" @click="scheduleFor(selected.lead)">+ {{ t('calendar.lead.schedule') }}</button>
+            </div>
+            <p v-if="leadAppts.length === 0" class="text-sm text-gray-400">{{ t('calendar.lead.empty') }}</p>
+            <ul v-else class="space-y-1.5">
+              <li v-for="a in leadAppts" :key="a._id">
+                <button type="button" class="w-full rounded-lg bg-gray-50 dark:bg-gray-700/50 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700" @click="apptModal = { appointment: a, defaults: {} }">
+                  <span class="font-semibold text-gray-900 dark:text-white capitalize">{{ formatAppt(a) }}</span>
+                  <span class="text-gray-500 dark:text-gray-400"> · {{ a.title }}</span>
+                  <span v-if="a.status !== 'scheduled'" class="ml-1 text-xs text-gray-400">({{ t(`calendar.statuses.${a.status}`) }})</span>
+                </button>
+              </li>
+            </ul>
+          </section>
+
           <!-- Asignación de un lead sin vendedor (managers) -->
           <section v-if="authStore.isManager && !selected.lead.seller_id">
             <label class="label" for="pipeline-assign">{{ t('pipeline.assign.label') }}</label>
@@ -511,6 +552,15 @@ onUnmounted(() => {
         </div>
       </aside>
     </div>
+
+    <AppointmentModal
+      v-if="apptModal"
+      :appointment="apptModal.appointment"
+      :defaults="apptModal.defaults"
+      @close="apptModal = null"
+      @saved="onApptDone"
+      @deleted="onApptDone"
+    />
 
     <NewLeadModal v-if="showNewLead" @close="showNewLead = false" @created="onCreated" />
 

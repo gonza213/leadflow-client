@@ -120,6 +120,7 @@
     }
   },
   "menu": {
+    "calendar": "Calendário",
     "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
@@ -835,6 +836,17 @@
     "goTo": "Ir para {section}",
     "close": "Fechar",
     "s": {
+      "calendar": {
+        "t": "Calendário",
+        "d": "Agende ligações, reuniões e visitas com seus leads e receba um lembrete por email antes de cada uma.",
+        "items": [
+          "**Agendar**: pelo botão \"Novo compromisso\", clicando em um horário livre ou na ficha do lead no Pipeline.",
+          "**Visualizações**: semana, dia ou lista dos próximos 30 dias. Os horários aparecem no fuso horário da sua empresa.",
+          "**Lembrete**: receba um email 15 minutos, 1 hora ou 1 dia antes.",
+          "**Acompanhamento**: marque cada compromisso como feito, não compareceu ou cancelado, e lembre o lead pelo WhatsApp com uma mensagem pronta.",
+          "**Quem vê o quê**: o vendedor vê os seus compromissos; o manager vê os da equipe toda e pode filtrar por vendedor."
+        ]
+      },
       "dashboard": {
         "t": "Dashboard",
         "d": "Visualize métricas em tempo real: leads por vendedor, distribuição por equipe, etapas do funil e mais. Use os filtros de período para analisar intervalos específicos."
@@ -923,6 +935,7 @@
     "tour": {
       "progress": "Passo {current} de {total}",
       "steps": {
+        "calendar": {"d": "Agende compromissos com seus leads e receba um lembrete por email antes de cada um."},
         "welcome": {
           "t": "Bem-vindo ao LeadDistro",
           "d": "Este tour vai guiá-lo pelas funções principais do sistema. Você pode pulá-lo quando quiser."
@@ -1710,6 +1723,95 @@
     "connectionSaved": "Conexão validada e salva",
     "loadError": "Não foi possível carregar a campanha única",
     "saveError": "Não foi possível salvar"
+  },
+  "calendar": {
+    "title": "Calendário",
+    "subtitle": "Seus compromissos com leads: ligações, reuniões e visitas.",
+    "new": "Novo compromisso",
+    "newTitle": "Novo compromisso",
+    "editTitle": "Editar compromisso",
+    "today": "Hoje",
+    "prev": "Anterior",
+    "next": "Próximo",
+    "views": {
+      "week": "Semana",
+      "day": "Dia",
+      "list": "Lista"
+    },
+    "allSellers": "Todos os vendedores",
+    "empty": "Não há compromissos nestas datas.",
+    "emptyHint": "Não há compromissos nestas datas. Clique em um horário para agendar.",
+    "emptyList": "Não há compromissos nos próximos 30 dias.",
+    "outsideHours": "{n} fora do horário",
+    "minutes": "{n} min",
+    "types": {
+      "call": "Ligação",
+      "meeting": "Reunião",
+      "visit": "Visita",
+      "other": "Outro"
+    },
+    "statuses": {
+      "scheduled": "Agendado",
+      "done": "Feito",
+      "canceled": "Cancelado",
+      "no_show": "Não compareceu"
+    },
+    "reminders": {
+      "r0": "Sem lembrete",
+      "r15": "Email 15 minutos antes",
+      "r60": "Email 1 hora antes",
+      "r1440": "Email 1 dia antes"
+    },
+    "fields": {
+      "type": "Tipo",
+      "lead": "Lead",
+      "noLead": "Sem lead",
+      "searchLead": "Buscar lead por nome ou telefone",
+      "seller": "Vendedor",
+      "chooseSeller": "Escolha um vendedor",
+      "title": "Título",
+      "date": "Data",
+      "time": "Hora",
+      "duration": "Duração",
+      "reminder": "Lembrete",
+      "notes": "Notas"
+    },
+    "titleWith": "{type} com {name}",
+    "actions": {
+      "save": "Salvar",
+      "markDone": "Marcar como feito",
+      "markNoShow": "Não compareceu",
+      "cancel": "Cancelar compromisso",
+      "reopen": "Agendar de novo",
+      "delete": "Excluir",
+      "confirmDelete": "Excluir este compromisso? Não é possível desfazer.",
+      "whatsapp": "Lembrar pelo WhatsApp"
+    },
+    "waMessage": "Olá {name}, lembrando do nosso compromisso de {day} às {time}. Até lá!",
+    "created": "Compromisso agendado.",
+    "updated": "Compromisso atualizado.",
+    "deleted": "Compromisso excluído.",
+    "overlap": "Compromisso salvo. Atenção: ele se sobrepõe a \"{title}\" ({time}).",
+    "errors": {
+      "load": "Não foi possível carregar os compromissos.",
+      "save": "Não foi possível salvar o compromisso.",
+      "delete": "Não foi possível excluir o compromisso.",
+      "date": "Confira a data e a hora.",
+      "title": "Escreva um título.",
+      "seller": "Escolha um vendedor."
+    },
+    "lead": {
+      "title": "Compromissos",
+      "schedule": "Agendar",
+      "empty": "Sem compromissos próximos."
+    },
+    "dashboard": {
+      "mine": "Seus compromissos de hoje",
+      "team": "Compromissos de hoje da equipe",
+      "none": "Não há compromissos hoje.",
+      "open": "Ver calendário",
+      "more": "e mais {n}"
+    }
   },
   "pipeline": {
     "assign": {

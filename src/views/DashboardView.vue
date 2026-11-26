@@ -14,6 +14,7 @@ import StatesChart from '../components/dashboard/StatesChart.vue'
 import TeamsChart from '../components/dashboard/TeamsChart.vue'
 import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
 import GiftCardBanner from '../components/common/GiftCardBanner.vue'
+import TodayAppointments from '../components/calendar/TodayAppointments.vue'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -77,6 +78,8 @@ const canSeeBestSeller = computed(() => {
 
     <PeriodExpirationBanner v-if="authStore.isManager" />
     <GiftCardBanner />
+
+    <TodayAppointments />
 
     <!-- Filtros -->
     <div class="card">

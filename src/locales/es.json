@@ -31,6 +31,7 @@
     }
   },
   "menu": {
+    "calendar": "Calendario",
     "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
@@ -684,6 +685,17 @@
     "goTo": "Ir a {section}",
     "close": "Cerrar",
     "s": {
+      "calendar": {
+        "t": "Calendario",
+        "d": "Agendá llamadas, reuniones y visitas con tus leads y recibí un recordatorio por email antes de cada una.",
+        "items": [
+          "**Agendar**: desde el botón \"Nueva cita\", haciendo clic en un horario libre o desde la ficha del lead en el Pipeline.",
+          "**Vistas**: semana, día o lista de los próximos 30 días. Los horarios se muestran en la zona horaria de tu empresa.",
+          "**Recordatorio**: elegí recibir un email 15 minutos, 1 hora o 1 día antes.",
+          "**Seguimiento**: marcá cada cita como hecha, no asistió o cancelada, y recordale al lead por WhatsApp con un mensaje armado.",
+          "**Qué ve cada uno**: el vendedor ve sus citas; el manager ve las de todo el equipo y puede filtrar por vendedor."
+        ]
+      },
       "dashboard": {
         "t": "Dashboard",
         "d": "Visualizá métricas en tiempo real: leads por vendedor, distribución por equipo, etapas del funnel y más. Usá los filtros de período para analizar rangos específicos."
@@ -772,6 +784,7 @@
     "tour": {
       "progress": "Paso {current} de {total}",
       "steps": {
+        "calendar": {"d": "Agendá citas con tus leads y recibí un recordatorio por email antes de cada una."},
         "welcome": {
           "t": "Bienvenido a LeadDistro",
           "d": "Este tour te va a guiar por las funciones principales del sistema. Podés saltearlo cuando quieras."
@@ -1609,6 +1622,95 @@
     "connectionSaved": "Conexión validada y guardada",
     "loadError": "No se pudo cargar la campaña única",
     "saveError": "No se pudo guardar"
+  },
+  "calendar": {
+    "title": "Calendario",
+    "subtitle": "Tus citas con leads: llamadas, reuniones y visitas.",
+    "new": "Nueva cita",
+    "newTitle": "Nueva cita",
+    "editTitle": "Editar cita",
+    "today": "Hoy",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "views": {
+      "week": "Semana",
+      "day": "Día",
+      "list": "Lista"
+    },
+    "allSellers": "Todos los vendedores",
+    "empty": "No hay citas en estas fechas.",
+    "emptyHint": "No hay citas en estas fechas. Hacé clic en un horario para agendar una.",
+    "emptyList": "No hay citas en los próximos 30 días.",
+    "outsideHours": "{n} fuera de horario",
+    "minutes": "{n} min",
+    "types": {
+      "call": "Llamada",
+      "meeting": "Reunión",
+      "visit": "Visita",
+      "other": "Otro"
+    },
+    "statuses": {
+      "scheduled": "Programada",
+      "done": "Hecha",
+      "canceled": "Cancelada",
+      "no_show": "No asistió"
+    },
+    "reminders": {
+      "r0": "Sin recordatorio",
+      "r15": "Email 15 minutos antes",
+      "r60": "Email 1 hora antes",
+      "r1440": "Email 1 día antes"
+    },
+    "fields": {
+      "type": "Tipo",
+      "lead": "Lead",
+      "noLead": "Sin lead",
+      "searchLead": "Buscar lead por nombre o teléfono",
+      "seller": "Vendedor",
+      "chooseSeller": "Elegí un vendedor",
+      "title": "Título",
+      "date": "Fecha",
+      "time": "Hora",
+      "duration": "Duración",
+      "reminder": "Recordatorio",
+      "notes": "Notas"
+    },
+    "titleWith": "{type} con {name}",
+    "actions": {
+      "save": "Guardar",
+      "markDone": "Marcar como hecha",
+      "markNoShow": "No asistió",
+      "cancel": "Cancelar cita",
+      "reopen": "Volver a programar",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar esta cita? No se puede deshacer.",
+      "whatsapp": "Recordarle por WhatsApp"
+    },
+    "waMessage": "Hola {name}, te recuerdo nuestra cita del {day} a las {time}. ¡Nos vemos!",
+    "created": "Cita agendada.",
+    "updated": "Cita actualizada.",
+    "deleted": "Cita eliminada.",
+    "overlap": "Cita guardada. Ojo: se superpone con \"{title}\" ({time}).",
+    "errors": {
+      "load": "No se pudieron cargar las citas.",
+      "save": "No se pudo guardar la cita.",
+      "delete": "No se pudo eliminar la cita.",
+      "date": "Revisá la fecha y la hora.",
+      "title": "Escribí un título.",
+      "seller": "Elegí un vendedor."
+    },
+    "lead": {
+      "title": "Citas",
+      "schedule": "Agendar cita",
+      "empty": "Sin citas próximas."
+    },
+    "dashboard": {
+      "mine": "Tus citas de hoy",
+      "team": "Citas de hoy del equipo",
+      "none": "No hay citas para hoy.",
+      "open": "Ver calendario",
+      "more": "y {n} más"
+    }
   },
   "pipeline": {
     "assign": {

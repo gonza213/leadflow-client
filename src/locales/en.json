@@ -31,6 +31,7 @@
     }
   },
   "menu": {
+    "calendar": "Calendar",
     "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
@@ -670,6 +671,17 @@
     "goTo": "Go to {section}",
     "close": "Close",
     "s": {
+      "calendar": {
+        "t": "Calendar",
+        "d": "Schedule calls, meetings and visits with your leads and get an email reminder before each one.",
+        "items": [
+          "**Schedule**: with the \"New appointment\" button, by clicking a free time slot or from the lead details in the Pipeline.",
+          "**Views**: week, day or a list of the next 30 days. Times are shown in your company time zone.",
+          "**Reminder**: get an email 15 minutes, 1 hour or 1 day before.",
+          "**Follow-up**: mark each appointment as done, no show or canceled, and remind the lead on WhatsApp with a ready-made message.",
+          "**Who sees what**: sales reps see their own appointments; managers see the whole team and can filter by rep."
+        ]
+      },
       "dashboard": {
         "t": "Dashboard",
         "d": "View real-time metrics: leads per seller, team distribution, funnel stages and more. Use the period filters to analyze specific ranges."
@@ -758,6 +770,7 @@
     "tour": {
       "progress": "Step {current} of {total}",
       "steps": {
+        "calendar": {"d": "Schedule appointments with your leads and get an email reminder before each one."},
         "welcome": {
           "t": "Welcome to LeadDistro",
           "d": "This tour will walk you through the system's main features. You can skip it anytime."
@@ -1538,6 +1551,95 @@
     "connectionSaved": "Connection validated and saved",
     "loadError": "Could not load the single campaign",
     "saveError": "Could not save"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Your appointments with leads: calls, meetings and visits.",
+    "new": "New appointment",
+    "newTitle": "New appointment",
+    "editTitle": "Edit appointment",
+    "today": "Today",
+    "prev": "Previous",
+    "next": "Next",
+    "views": {
+      "week": "Week",
+      "day": "Day",
+      "list": "List"
+    },
+    "allSellers": "All sales reps",
+    "empty": "No appointments in these dates.",
+    "emptyHint": "No appointments in these dates. Click a time slot to schedule one.",
+    "emptyList": "No appointments in the next 30 days.",
+    "outsideHours": "{n} outside hours",
+    "minutes": "{n} min",
+    "types": {
+      "call": "Call",
+      "meeting": "Meeting",
+      "visit": "Visit",
+      "other": "Other"
+    },
+    "statuses": {
+      "scheduled": "Scheduled",
+      "done": "Done",
+      "canceled": "Canceled",
+      "no_show": "No show"
+    },
+    "reminders": {
+      "r0": "No reminder",
+      "r15": "Email 15 minutes before",
+      "r60": "Email 1 hour before",
+      "r1440": "Email 1 day before"
+    },
+    "fields": {
+      "type": "Type",
+      "lead": "Lead",
+      "noLead": "No lead",
+      "searchLead": "Search lead by name or phone",
+      "seller": "Sales rep",
+      "chooseSeller": "Choose a sales rep",
+      "title": "Title",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "reminder": "Reminder",
+      "notes": "Notes"
+    },
+    "titleWith": "{type} with {name}",
+    "actions": {
+      "save": "Save",
+      "markDone": "Mark as done",
+      "markNoShow": "No show",
+      "cancel": "Cancel appointment",
+      "reopen": "Schedule again",
+      "delete": "Delete",
+      "confirmDelete": "Delete this appointment? This cannot be undone.",
+      "whatsapp": "Remind on WhatsApp"
+    },
+    "waMessage": "Hi {name}, just a reminder of our appointment on {day} at {time}. See you then!",
+    "created": "Appointment scheduled.",
+    "updated": "Appointment updated.",
+    "deleted": "Appointment deleted.",
+    "overlap": "Appointment saved. Heads up: it overlaps with \"{title}\" ({time}).",
+    "errors": {
+      "load": "Could not load appointments.",
+      "save": "Could not save the appointment.",
+      "delete": "Could not delete the appointment.",
+      "date": "Check the date and time.",
+      "title": "Enter a title.",
+      "seller": "Choose a sales rep."
+    },
+    "lead": {
+      "title": "Appointments",
+      "schedule": "Schedule",
+      "empty": "No upcoming appointments."
+    },
+    "dashboard": {
+      "mine": "Your appointments today",
+      "team": "Team appointments today",
+      "none": "No appointments today.",
+      "open": "Open calendar",
+      "more": "and {n} more"
+    }
   },
   "pipeline": {
     "assign": {

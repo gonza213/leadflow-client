@@ -93,6 +93,13 @@ export const leadsApi = {
 }
 
 // Formulario web (configuración, managers)
+export const appointmentsApi = {
+  list: (tenantSlug, params) => api.get(`/${tenantSlug}/appointments`, { params }),
+  create: (tenantSlug, data) => api.post(`/${tenantSlug}/appointments`, data),
+  update: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/appointments/${id}`, data),
+  remove: (tenantSlug, id) => api.delete(`/${tenantSlug}/appointments/${id}`)
+}
+
 export const formApi = {
   get: (tenantSlug) => api.get(`/${tenantSlug}/form`),
   update: (tenantSlug, data) => api.put(`/${tenantSlug}/form`, data),
