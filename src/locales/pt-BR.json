@@ -1,4 +1,93 @@
 {
+  "ui": {
+    "help": "Guia de ajuda",
+    "darkMode": "Modo escuro",
+    "lightMode": "Modo claro",
+    "changeLang": "Mudar idioma"
+  },
+  "subscription": {
+    "title": "Status da assinatura",
+    "info": "Gerencie seu plano por aqui.",
+    "status": {
+      "label": "Status",
+      "trial": "Teste grátis",
+      "active": "Ativa",
+      "inactive": "Inativa",
+      "lifetime": "Vitalícia"
+    },
+    "trial_ends": "O teste termina em",
+    "next_renewal": "Próxima renovação",
+    "plan": "Plano",
+    "lifetime_plan": "Vitalício (sem custo)",
+    "monthly_plan": "$25 USD / mês",
+    "trial_message": "Assine para continuar usando o LeadDistro quando seu período de teste terminar.",
+    "inactive_message": "Sua assinatura está inativa. Ative-a para voltar a usar a plataforma.",
+    "subscribe_button": "Assinar por $25 USD/mês",
+    "cancel_success": "✓ Assinatura cancelada. Você pode continuar usando o LeadDistro até o fim do período atual.",
+    "cancel_action": "Cancelar assinatura",
+    "confirm_cancel_title": "Tem certeza de que deseja cancelar?",
+    "confirm_cancel_text": "Sua conta ficará inativa ao final do período atual. Não haverá novas cobranças.",
+    "confirm_cancel_button": "Sim, cancelar assinatura",
+    "cancel_error": "Erro ao cancelar. Tente novamente."
+  },
+  "blog": {
+    "title": "Blog do LeadDistro",
+    "subtitle": "Dicas e guias sobre distribuição automática de leads",
+    "seoTitle": "Blog do LeadDistro | Distribuição Automática de Leads",
+    "seoDescription": "Aprenda a distribuir leads automaticamente com GoHighLevel, HubSpot e outros CRMs. Guias sobre round robin, limites por vendedor e automação de vendas.",
+    "readMore": "Ler mais",
+    "minRead": "min de leitura",
+    "posts": {
+      "algoritmo": {
+        "title": "Como funciona o algoritmo de distribuição do LeadDistro",
+        "description": "Entenda como o algoritmo escolhe o vendedor certo considerando equipes, limites e capacidade em tempo real.",
+        "keywords": "algoritmo de distribuição de leads, lead routing, distribuição automática",
+        "content": "O coração do LeadDistro é um algoritmo inteligente que decide qual vendedor recebe cada lead. Aqui explico exatamente como ele funciona.\n\n## O fluxo do algoritmo\n\nQuando um novo lead entra no sistema, o algoritmo executa estes passos:\n\n### 1. Escolher a equipe de destino\n\nO sistema calcula qual equipe deve receber o lead de acordo com as **porcentagens de distribuição** que você definiu em Configuração → Equipes. Se você tem 3 equipes (Espanha 40%, LATAM 35%, EUA 25%), o lead irá para uma delas conforme o peso configurado.\n\n### 2. Dentro da equipe, escolher o vendedor\n\nCom a equipe escolhida, o algoritmo procura o vendedor com a **menor proporção**: leads atuais ÷ limite semanal. Quem tem a menor carga relativa recebe o novo lead.\n\n### 3. Se todos estiverem cheios: fallback\n\nQuando todos os vendedores da equipe atingem o limite, o lead é redirecionado aos **vendedores reserva** que você configurar (até 2). Assim nenhum lead fica sem atendimento.\n\n## Por que é melhor que o round-robin\n\nRound-robin simples: vendedor 1, vendedor 2, vendedor 3... sem considerar a capacidade.\n\nO **LeadDistro** considera:\n\n- Limites diários e semanais por vendedor\n- Distribuição por porcentagem entre equipes\n- Capacidade real em tempo real\n- Vendedores reserva para quando todos estão cheios\n\nO resultado: **0 leads perdidos**, distribuição equilibrada e uma equipe sempre produtiva."
+      },
+      "periodo": {
+        "title": "Período de distribuição: a chave para os limites funcionarem",
+        "description": "O período é o ciclo ativo de trabalho. Aprenda a diferença entre Manual e Automático e por que ele é fundamental para as métricas.",
+        "keywords": "período de distribuição, ciclo ativo, limites de leads",
+        "content": "O Período de Distribuição é um dos conceitos mais importantes do LeadDistro. Se você não o configurar bem, os limites não funcionarão corretamente.\n\n## O que é o período\n\nÉ o **ciclo ativo de trabalho** durante o qual os limites dos vendedores são contabilizados. Tudo o que acontece fora do período ativo não conta para os limites.\n\n## Tipos de período\n\n### Período Manual\n\nDatas fixas definidas por você. Por exemplo: de 1º de janeiro a 31 de março.\n\n**Vantagem**: controle total sobre as datas.\n**Ideal para**: temporadas específicas e campanhas trimestrais.\n\n### Período Automático\n\nReinicia sozinho a cada semana (pode ser semanal ou mensal).\n\n**Vantagem**: você não precisa atualizá-lo manualmente.\n**Ideal para**: equipes que trabalham com ciclos constantes.\n\n## Por que ele importa\n\n1. **Ciclo de limites**: os limites diários e semanais são zerados quando começa um novo período.\n\n2. **Métricas do Dashboard**: por padrão mostram os dados do período ativo, não de todo o histórico.\n\n3. **Alertas**: se o período estiver para vencer ou já tiver vencido, você verá um aviso para atualizá-lo e manter a distribuição ativa.\n\n## Configuração\n\nAcesse Configuração → Período de Distribuição para escolher o tipo e as datas. Se usar o Automático, o sistema se encarrega de zerar os limites a cada semana."
+      },
+      "integraciones": {
+        "title": "Integrações: conecte o LeadDistro ao seu CRM favorito",
+        "description": "Webhook de entrada e de saída e CRMs compatíveis: GoHighLevel, HubSpot, Make, Zapier e outros. Aprenda a configurá-los.",
+        "keywords": "integrações webhook, GoHighLevel, HubSpot, Make, Zapier",
+        "content": "O LeadDistro se conecta a qualquer CRM com suporte a webhooks. Aqui estão as plataformas compatíveis e como configurá-las.\n\n## Plataformas compatíveis\n\n- **GoHighLevel** (integração nativa otimizada)\n- **HubSpot**\n- **Kommo (amoCRM)**\n- **monday.com**\n- **Clientify**\n- **Make / Zapier**\n- **ActiveCampaign**\n- **Pipedrive**\n- **n8n**\n\nNa prática, qualquer ferramenta capaz de enviar um HTTP POST funciona.\n\n## Webhook de entrada\n\nÉ a URL para onde seu CRM envia os novos leads. Você a encontra em **Integrações** → seu tenant tem uma URL exclusiva.\n\n### Configuração\n\n1. Copie a URL do webhook de entrada\n2. No seu CRM, crie um workflow que envie um POST para essa URL quando houver um novo lead\n3. O formato deve incluir: nome, e-mail, telefone e origem\n\n## Webhook de saída\n\nO LeadDistro avisa seu CRM quando atribui um lead. Ele envia:\n\n- Nome do vendedor atribuído\n- ID do vendedor no seu CRM\n- Equipe\n\nIsso permite que o CRM atualize automaticamente o lead com os dados do vendedor.\n\n## Mudança de etapa\n\nVocê também pode configurar um segundo webhook para sincronizar as **mudanças de etapa** do seu CRM para o sistema. Assim o pipeline fica atualizado dos dois lados."
+      },
+      "resumenes-ia": {
+        "title": "Resumos com IA: métricas automáticas com a OpenAI",
+        "description": "O sistema gera resumos automáticos de métricas usando a OpenAI. Configure a frequência diária ou semanal e receba relatórios em PDF.",
+        "keywords": "resumos IA, OpenAI, métricas automáticas, relatórios",
+        "content": "Os Resumos com IA do LeadDistro oferecem uma análise automática das métricas da sua equipe, gerada por inteligência artificial.\n\n## Como funciona\n\nO sistema usa a **OpenAI** para analisar os dados do período e gerar um resumo com insights acionáveis. Não é só um relatório, é uma análise inteligente.\n\n## Configuração\n\nAcesse **Configuração → Resumo IA** e defina:\n\n- **Frequência**: diária ou semanal\n- **Horário de envio**: a que horas você quer recebê-lo\n- **E-mail**: para onde ele é enviado\n\n## Opções adicionais\n\n### Baixar PDF\n\nEm cada resumo você pode baixar um **PDF profissional** com a análise e as métricas do período. Ideal para compartilhar com sua equipe ou com clientes.\n\n### Webhook para Make/Zapier\n\nSe você configurar uma URL de webhook, o resumo também é enviado automaticamente quando é gerado. Dá para integrá-lo a outras ferramentas ou enviá-lo ao Slack, e-mail marketing etc.\n\n## O que o resumo inclui\n\n- Métricas de leads: total, atribuídos e por etapa\n- Desempenho por vendedor e por equipe\n- Comparação com períodos anteriores\n- Insights da IA sobre o que funciona e o que não funciona\n\nÉ como ter um analista de dados automático a cada dia ou semana."
+      },
+      "gohighlevel": {
+        "title": "Como distribuir leads automaticamente no GoHighLevel",
+        "description": "Aprenda a configurar a distribuição automática de leads no GoHighLevel usando webhooks. Esqueça a atribuição manual de leads.",
+        "keywords": "distribuição automática de leads GoHighLevel, GoHighLevel webhooks, automatizar atribuição de leads, lead routing GoHighLevel",
+        "content": "Se você usa o GoHighLevel para gerenciar seus potenciais clientes, sabe que atribuir leads manualmente consome um tempo precioso. A boa notícia é que dá para automatizar todo o processo.\n\n## Por que automatizar a distribuição de leads no GoHighLevel?\n\nCada lead que chega ao seu funil precisa ser atribuído rapidamente ao vendedor certo. O problema é que, quando isso é feito manualmente:\n\n- Leads se perdem por esquecimento\n- A resposta demora horas\n- Os vendedores recebem mais leads do que conseguem atender\n- Não há equilíbrio na distribuição\n\n## Como funciona com o LeadDistro\n\n1. **Configure um webhook no GoHighLevel**: a cada novo lead, o GoHighLevel envia os dados ao LeadDistro.\n\n2. **O LeadDistro atribui automaticamente**: nosso algoritmo distribui o lead ao vendedor disponível considerando:\n   - Limites diários e semanais\n   - Distribuição por porcentagem\n   - Equipes e territórios\n   - Capacidade atual do vendedor\n\n3. **Notificação ao vendedor**: o vendedor recebe o lead imediatamente, com todas as informações.\n\n## Configuração passo a passo\n\n1. Crie uma conta no LeadDistro\n2. Configure seus vendedores e limites\n3. No GoHighLevel, crie um webhook que envie para o LeadDistro\n4. Pronto! Cada lead é atribuído automaticamente\n\nO resultado: **0 leads perdidos**, resposta imediata e uma equipe de vendas mais produtiva."
+      },
+      "hubspot": {
+        "title": "Guia completo: distribuição de leads no HubSpot com o LeadDistro",
+        "description": "Integre o HubSpot ao LeadDistro para distribuir leads automaticamente. Limites por vendedor, equipes e distribuição por porcentagem.",
+        "keywords": "distribuição automática de leads HubSpot, HubSpot lead assignment, HubSpot automation, lead routing HubSpot",
+        "content": "O HubSpot é um dos CRMs mais populares, mas seu sistema de distribuição de leads tem limitações. Descubra como superá-las com o LeadDistro.\n\n## O problema do HubSpot\n\nO HubSpot oferece um round-robin básico, mas:\n\n- Não permite limites diários/semanais por vendedor\n- Não suporta distribuição por porcentagem\n- Não considera equipes nem territórios\n- Não redistribui quando um vendedor atinge o limite\n\n## A solução: HubSpot + LeadDistro\n\n### Fluxo de integração\n\n1. O **HubSpot** detecta um novo lead\n2. Envia os dados via webhook ao **LeadDistro**\n3. O **LeadDistro** avalia:\n   - Quem tem capacidade disponível\n   - Qual é a distribuição justa por equipe\n   - O histórico de leads do vendedor\n4. **Atribui** o lead ao melhor candidato\n5. **Avisa** o vendedor e atualiza o HubSpot\n\n### Benefícios específicos\n\n- **Limites personalizados**: cada vendedor pode ter limites diferentes\n- **Equipes**: distribua por região, produto ou qualquer critério\n- **Métricas**: dashboard de atribuições em tempo real\n- **Fallback**: se um vendedor atinge o limite, o lead é redistribuído\n\n## Casos de uso reais\n\n**Agência de marketing digital**: 5 equipes, cada uma atende um segmento diferente. O LeadDistro garante que os leads do segmento 'finanças' vão para a equipe de finanças, mantendo uma distribuição equilibrada dentro da equipe.\n\n**SaaS B2B**: vendas inbound e outbound. Os leads inbound vão para uma equipe específica e os outbound para outra. O LeadDistro respeita essas regras enquanto otimiza a carga de trabalho."
+      },
+      "round-robin": {
+        "title": "Round Robin vs Distribuição Inteligente: qual escolher?",
+        "description": "Comparação entre o round-robin básico e a distribuição inteligente de leads. Descubra qual funciona melhor para equipes de vendas.",
+        "keywords": "round robin vs distribuição inteligente, lead distribution methods, algoritmo de distribuição de leads, round robin sales",
+        "content": "Quando falamos em distribuir leads, a maioria pensa em round-robin. Mas há opções muito mais sofisticadas que podem transformar sua equipe de vendas.\n\n## Round Robin: o básico\n\nO round-robin atribui leads em ordem: vendedor 1, vendedor 2, vendedor 3, vendedor 1...\n\n### Limitações\n\n- ❌ Não considera a capacidade do vendedor\n- ❌ Um vendedor novo recebe a mesma quantidade que um experiente\n- ❌ Não distingue equipes nem territórios\n- ❌ Todos os leads têm o mesmo valor\n- ❌ Quando um vendedor está cheio, o lead fica esperando\n\n## Distribuição Inteligente\n\nConsidera vários fatores em cada atribuição:\n\n### O que ela faz\n\n✅ **Limites por vendedor**: cada vendedor define quantos leads recebe\n✅ **Distribuição por porcentagem**: atribui conforme o peso de cada vendedor\n✅ **Equipes e territórios**: regras específicas por grupo\n✅ **Capacidade em tempo real**: só atribui a quem pode atender\n✅ **Fallback**: redistribuição automática se alguém atingir o limite\n✅ **Métricas**: análise da distribuição por vendedor/equipe\n\n## Quando usar cada uma\n\n| Cenário | Recomendação |\n|-----------|---------------|\n| Equipe pequena (<5 vendedores) | O round-robin pode funcionar |\n| Várias equipes/territórios | Distribuição inteligente |\n| Leads de valores diferentes | Distribuição por porcentagem |\n| Vendedores com capacidade variável | Limites personalizados |\n| Precisa de métricas detalhadas | Dashboard avançado |\n\n## O veredito\n\nO round-robin é como usar uma planilha do Excel. A distribuição inteligente é como um CRM. Para equipes que querem escalar e ser eficientes, a escolha é clara."
+      },
+      "limites": {
+        "title": "Limites por vendedor: a chave para equipes de vendas produtivas",
+        "description": "Aprenda a configurar limites diários e semanais por vendedor. Melhore a produtividade e evite que seus vendedores fiquem sobrecarregados.",
+        "keywords": "limites por vendedor, lead limits sales team, daily limits distribution, limites de vendedores CRM",
+        "content": "Um dos erros mais comuns em equipes de vendas é sobrecarregar alguns vendedores enquanto outros ficam ociosos. Os limites por vendedor resolvem isso.\n\n## Por que os limites importam\n\nSem limites, acontece o seguinte:\n\n- Vendedores com 50 leads e outros com 5\n- Baixa qualidade de atendimento por sobrecarga\n- Burnout e rotatividade na equipe\n- Leads perdidos por falta de resposta\n- Frustração na equipe\n\n## Tipos de limites no LeadDistro\n\n### Limites diários\n\nQuantidade máxima de leads que um vendedor recebe por dia.\n\n**Exemplo**: João recebe no máximo 15 leads por dia. Quando chega a 15, os novos leads vão para outros vendedores ou entram na fila de espera.\n\n### Limites semanais\n\nUm controle mais amplo para evitar a sobrecarga semanal.\n\n**Exemplo**: Maria tem um limite de 60 leads por semana. Se ela já recebeu 40 na segunda-feira, o sistema só distribui no máximo mais 20 para ela.\n\n### Distribuição por porcentagem\n\nPara equipes em que cada vendedor tem um peso diferente.\n\n**Exemplo**:\n- Pedro: 40% dos leads\n- Lúcia: 35%\n- Carlos: 25%\n\n## Boas práticas\n\n1. **Analise dados históricos**: quantos leads cada vendedor atende hoje\n2. **Considere a capacidade**: um vendedor novo não deve receber o mesmo que um experiente\n3. **Ajuste aos poucos**: comece conservador e aumente conforme os resultados\n4. **Monitore as métricas**: leads respondidos, taxas de conversão e tempo da primeira resposta\n\n## O resultado\n\nEquipes com limites bem configurados relatam:\n- 30% mais leads atendidos\n- Tempo de resposta 25% melhor\n- 50% menos leads perdidos\n- Maior satisfação da equipe"
+      }
+    }
+  },
   "nav": {
     "features": "Funcionalidades",
     "howItWorks": "Como funciona",
@@ -31,6 +120,7 @@
     }
   },
   "menu": {
+    "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
     "sellers": "Vendedores",
@@ -343,6 +433,7 @@
         ]
       },
       "setup": {
+        "alert": "Serviço disponível em breve para o seu mercado",
         "title": "Setup & Configuração",
         "amount": "100",
         "period": "pagamento único",
@@ -384,6 +475,7 @@
       "feats": ["Setup em 5 minutos", "Integração com CRM", "Sem leads perdidos"]
     },
     "footer": {
+      "alert": "Serviço disponível em breve para o seu mercado",
       "desc": "Distribuição inteligente de leads para equipes de vendas modernas.",
       "product": "Produto",
       "access": "Acesso",
@@ -393,6 +485,16 @@
     }
   },
   "common": {
+    "apply": "Aplicar",
+    "clean": "Limpar",
+    "all": "Todos",
+    "all_f": "Todas",
+    "actions": "Ações",
+    "activate": "Ativar",
+    "deactivate": "Desativar",
+    "date": "Data",
+    "team": "Equipe",
+    "seller": "Vendedor",
     "save": "Salvar",
     "saving": "Salvando...",
     "saveChanges": "Salvar Alterações",
@@ -416,6 +518,9 @@
     "of": "de"
   },
   "auth": {
+    "noAccount": "Não tem uma conta?",
+    "forgotPrompt": "Digite seu e-mail e enviaremos um link para recuperar sua senha.",
+    "logout": "Sair",
     "login": "Entrar",
     "loginTitle": "Iniciar Sessão",
     "register": "Criar Conta",
@@ -1005,6 +1110,52 @@
     }
   },
   "config": {
+    "fallback": {
+      "title": "Vendedores reserva",
+      "info": "Quando todos os vendedores atingirem o limite (diário ou semanal), os novos leads serão atribuídos ao reserva com mais capacidade disponível.",
+      "orderTitle": "Ordem de atribuição",
+      "order1": "Equipe atribuída conforme a % configurada",
+      "order2": "Qualquer equipe disponível (fallback geral)",
+      "order3": "Reserva 1 ou 2 → o que tiver mais vagas disponíveis",
+      "order4": "Se ambos estiverem no limite → o lead vai mesmo assim para o menos carregado",
+      "label": "Reserva {n}",
+      "optional": "(opcional)",
+      "unassigned": "Não atribuído",
+      "noFallbackWarning": "Sem reserva configurado: os leads serão perdidos quando todos estiverem no limite",
+      "remove": "Remover reservas",
+      "errors": {
+        "save": "Erro ao salvar"
+      }
+    },
+    "summary": {
+      "title": "Resumo inteligente com IA",
+      "info": "O sistema gera automaticamente um resumo de métricas com a OpenAI e o envia ao webhook configurado (Make, Zapier etc.).",
+      "automatic": "Resumo automático",
+      "active": "Ativo",
+      "disabled": "Desativado",
+      "everyDay": "Todos os dias",
+      "onceAWeek": "Uma vez por semana",
+      "frequency": "Frequência",
+      "daily": "Diário",
+      "dailyInfo": "Todos os dias no horário configurado",
+      "weekly": "Semanal",
+      "weeklyInfo": "Um dia fixo por semana",
+      "sendDay": "Dia de envio",
+      "sendTime": "Horário de envio",
+      "timeSuffix": "h",
+      "timezoneInfo": "É usado o fuso horário da organização configurado na seção Período.",
+      "webhookLabel": "URL do webhook (Make, Zapier etc.)",
+      "webhookInfo": "O sistema fará um POST com o resumo gerado por IA e as métricas do período.",
+      "viewJson": "Ver o JSON enviado ao webhook",
+      "testButton": "Enviar resumo agora",
+      "testing": "Gerando...",
+      "testResult": "Resumo gerado:",
+      "errors": {
+        "test": "Erro ao gerar o resumo"
+      }
+    },
+    "pipelineEnabled": "Usar o pipeline do LeadDistro",
+    "pipelineEnabledInfo": "Adiciona \"Pipeline\" ao menu para trabalhar os leads em um quadro por etapas.",
     "title": "Configuração",
     "tabs": {
       "teams": "Equipes",
@@ -1044,6 +1195,32 @@
       "percentError": "O porcentagem deve ser maior que 0"
     },
     "period": {
+      "timezone": "Fuso horário da organização",
+      "timezoneInfo": "Este é o fuso horário global da sua conta. Ele afeta a reinicialização dos limites, os relatórios do dashboard e os horários do escritório virtual.",
+      "timezones": {
+        "America/New_York": "EUA (Nova York) - EST/EDT",
+        "America/Chicago": "EUA (Central) - CST/CDT",
+        "America/Denver": "EUA (Montanhas) - MST/MDT",
+        "America/Los_Angeles": "EUA (Pacífico) - PST/PDT",
+        "America/Argentina/Buenos_Aires": "Argentina (Buenos Aires)",
+        "America/Sao_Paulo": "Brasil (São Paulo)",
+        "America/Bogota": "Colômbia (Bogotá)",
+        "America/Mexico_City": "México (Cidade do México)",
+        "America/Santiago": "Chile (Santiago)",
+        "America/Lima": "Peru (Lima)",
+        "America/Guayaquil": "Equador (Guayaquil)",
+        "America/Montevideo": "Uruguai (Montevidéu)",
+        "America/Asuncion": "Paraguai (Assunção)",
+        "America/La_Paz": "Bolívia (La Paz)",
+        "America/Costa_Rica": "Costa Rica",
+        "America/Guatemala": "Guatemala",
+        "America/Panama": "Panamá",
+        "Asia/Jakarta": "Indonésia (Jacarta)",
+        "Asia/Kuala_Lumpur": "Malásia (Kuala Lumpur)",
+        "Africa/Nairobi": "Quênia (Nairóbi)",
+        "Africa/Lagos": "Nigéria (Lagos)",
+        "Europe/Madrid": "Espanha (Madri)"
+      },
       "title": "Configuração de Período",
       "info": "Define como o período ativo é contado para a distribuição de leads entre as equipes.",
       "manual": "Período manual",
@@ -1073,6 +1250,17 @@
       }
     },
     "stages": {
+      "info": "Configure as etapas do pipeline de vendas. Você pode reordená-las usando as setas.",
+      "placeholder": "Nome da etapa",
+      "add": "Adicionar etapa",
+      "newStagePlaceholder": "Nova etapa...",
+      "addButton": "Adicionar",
+      "errors": {
+        "required": "O nome da etapa é obrigatório",
+        "exists": "Esta etapa já existe",
+        "minOne": "É preciso ter pelo menos uma etapa",
+        "update": "Erro ao atualizar as etapas"
+      },
       "title": "Etapas de Oportunidade",
       "success": "Configuração salva com sucesso"
     }
@@ -1349,5 +1537,56 @@
     "connectionSaved": "Conexão validada e salva",
     "loadError": "Não foi possível carregar a campanha única",
     "saveError": "Não foi possível salvar"
+  },
+  "pipeline": {
+    "otherStages": "Outras etapas",
+    "noStage": "Sem etapa definida",
+    "unknownStages": {
+      "title": "Há leads com etapas que não estão na sua configuração:",
+      "link": "Adicionar em Configuração"
+    },
+    "title": "Pipeline",
+    "searchPlaceholder": "Buscar por nome ou telefone",
+    "empty": "Ainda não há leads para mostrar",
+    "emptyColumn": "Sem leads",
+    "columns": {
+      "count": "{n} leads",
+      "total": "Total",
+      "truncated": "Mostrando {shown} de {total}"
+    },
+    "readOnly": "Somente leitura",
+    "crmWarning": "Seu CRM também atualiza as etapas; uma mudança no CRM pode substituir a que você fizer aqui.",
+    "detail": {
+      "title": "Ficha do lead",
+      "contact": "Dados de contato",
+      "stage": "Etapa",
+      "value": "Valor estimado",
+      "valuePlaceholder": "Sem valor",
+      "whatsapp": "WhatsApp",
+      "call": "Ligar",
+      "close": "Fechar",
+      "date": "Data de entrada"
+    },
+    "notes": {
+      "title": "Notas",
+      "placeholder": "Escreva uma nota…",
+      "add": "Adicionar nota",
+      "empty": "Sem notas",
+      "delete": "Excluir nota",
+      "confirmDelete": "Excluir esta nota?"
+    },
+    "history": {
+      "title": "Histórico de etapas",
+      "empty": "Nenhuma mudança registrada"
+    },
+    "errors": {
+      "load": "Não foi possível carregar o pipeline",
+      "move": "Não foi possível mudar a etapa",
+      "value": "Não foi possível salvar o valor",
+      "invalidValue": "O valor precisa ser um número maior ou igual a 0",
+      "notesLoad": "Não foi possível carregar as notas",
+      "noteAdd": "Não foi possível salvar a nota",
+      "noteDelete": "Não foi possível excluir a nota"
+    }
   }
 }

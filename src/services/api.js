@@ -79,7 +79,11 @@ export const leadsApi = {
   updateLead: (tenantSlug, contactId, data) => api.put(`/${tenantSlug}/lead/${contactId}`, data),
   editLead: (tenantSlug, id, data) => api.patch(`/${tenantSlug}/leads/${id}`, data),
   deleteLead: (tenantSlug, id) => api.delete(`/${tenantSlug}/leads/${id}`),
-  redeliverLead: (tenantSlug, id) => api.post(`/${tenantSlug}/leads/${id}/redeliver`)
+  redeliverLead: (tenantSlug, id) => api.post(`/${tenantSlug}/leads/${id}/redeliver`),
+  getUnknownStages: (tenantSlug) => api.get(`/${tenantSlug}/leads/unknown-stages`),
+  getNotes: (tenantSlug, leadId) => api.get(`/${tenantSlug}/leads/${leadId}/notes`),
+  addNote: (tenantSlug, leadId, text) => api.post(`/${tenantSlug}/leads/${leadId}/notes`, { text }),
+  deleteNote: (tenantSlug, leadId, noteId) => api.delete(`/${tenantSlug}/leads/${leadId}/notes/${noteId}`)
 }
 
 export const sellersApi = {

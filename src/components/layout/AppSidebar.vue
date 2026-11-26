@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 import { useUiStore } from '../../stores/ui'
 import { useSellersStore } from '../../stores/sellers'
+import { useConfigStore } from '../../stores/config'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -11,6 +12,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 const uiStore = useUiStore()
 const sellersStore = useSellersStore()
+const configStore = useConfigStore()
 
 // Close sidebar on route change (mobile)
 watch(() => route.path, () => {
@@ -47,6 +49,19 @@ const inOwnerPortal = computed(() =>
   authStore.isAdminClient && (route.path.startsWith('/cuentas') || !authStore.tenantSlug)
 )
 
+// El menú necesita la config de la empresa activa para saber si usa el pipeline
+watch(
+  () => (authStore.isSuperAdmin || inOwnerPortal.value ? null : authStore.tenantSlug),
+  (slug) => {
+    if (slug && configStore.configSlug !== slug) configStore.fetchConfig()
+  },
+  { immediate: true }
+)
+
+const showPipeline = computed(() =>
+  configStore.configSlug === authStore.tenantSlug && !!configStore.config?.pipeline_enabled
+)
+
 const filteredMenuItems = computed(() => {
   if (authStore.isSuperAdmin) {
     return [
@@ -71,6 +86,7 @@ const filteredMenuItems = computed(() => {
     { name: t('menu.dashboard'), path: '/', icon: 'chart-bar', roles: ['manager', 'seller', 'viewer'] },
     { name: t('menu.presence'), path: '/presence', icon: 'video-camera', roles: ['manager', 'viewer'] },
     { name: t('menu.leads'), path: '/leads', icon: 'clipboard-list', roles: ['manager', 'seller', 'viewer'] },
+    { name: t('menu.pipeline'), path: '/pipeline', icon: 'view-boards', requiresPipeline: true, roles: ['manager', 'seller', 'viewer'] },
     { name: t('menu.sellers'), path: '/sellers', icon: 'users', roles: ['manager', 'viewer'] },
     { name: t('menu.users'), path: '/users', icon: 'user-group', tourId: 'usuarios', roles: ['manager'] },
     { name: t('menu.integrations'), path: '/integrations', icon: 'plug', tourId: 'integraciones', roles: ['manager'] },
@@ -87,7 +103,8 @@ const filteredMenuItems = computed(() => {
     // gift card: solo el manager real (no el adminclient) y solo si la empresa la habilitó
     const blockedByRole = item.managerOnly && authStore.user?.role !== 'manager'
     const blockedByGiftCard = item.requiresGiftCard && !authStore.user?.tenant?.giftCardEnabled
-    return hasRole && !isHiddenForLifetime && !blockedByRole && !blockedByGiftCard
+    const blockedByPipeline = item.requiresPipeline && !showPipeline.value
+    return hasRole && !isHiddenForLifetime && !blockedByRole && !blockedByGiftCard && !blockedByPipeline
   })
 })
 </script>
@@ -130,6 +147,9 @@ const filteredMenuItems = computed(() => {
             </svg>
             <svg v-else-if="item.icon === 'clipboard-list'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <svg v-else-if="item.icon === 'view-boards'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
             </svg>
             <svg v-else-if="item.icon === 'users'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />

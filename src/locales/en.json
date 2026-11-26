@@ -31,6 +31,7 @@
     }
   },
   "menu": {
+    "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
     "sellers": "Sellers",
@@ -927,6 +928,8 @@
     }
   },
   "config": {
+    "pipelineEnabled": "Use the LeadDistro pipeline",
+    "pipelineEnabledInfo": "Adds \"Pipeline\" to the menu to work your leads on a board organized by stage.",
     "title": "Settings",
     "tabs": {
       "teams": "Teams",
@@ -1362,5 +1365,56 @@
     "connectionSaved": "Connection validated and saved",
     "loadError": "Could not load the single campaign",
     "saveError": "Could not save"
+  },
+  "pipeline": {
+    "otherStages": "Other stages",
+    "noStage": "No stage assigned",
+    "unknownStages": {
+      "title": "Some leads have stages that are not in your settings:",
+      "link": "Add them in Settings"
+    },
+    "title": "Pipeline",
+    "searchPlaceholder": "Search by name or phone",
+    "empty": "There are no leads to show yet",
+    "emptyColumn": "No leads",
+    "columns": {
+      "count": "{n} leads",
+      "total": "Total",
+      "truncated": "Showing {shown} of {total}"
+    },
+    "readOnly": "Read only",
+    "crmWarning": "Your CRM also updates stages; a change in the CRM may replace the one you make here.",
+    "detail": {
+      "title": "Lead details",
+      "contact": "Contact info",
+      "stage": "Stage",
+      "value": "Estimated value",
+      "valuePlaceholder": "No value",
+      "whatsapp": "WhatsApp",
+      "call": "Call",
+      "close": "Close",
+      "date": "Received on"
+    },
+    "notes": {
+      "title": "Notes",
+      "placeholder": "Write a note…",
+      "add": "Add note",
+      "empty": "No notes",
+      "delete": "Delete note",
+      "confirmDelete": "Delete this note?"
+    },
+    "history": {
+      "title": "Stage history",
+      "empty": "No changes recorded"
+    },
+    "errors": {
+      "load": "Could not load the pipeline",
+      "move": "Could not change the stage",
+      "value": "Could not save the value",
+      "invalidValue": "The value must be a number greater than or equal to 0",
+      "notesLoad": "Could not load the notes",
+      "noteAdd": "Could not save the note",
+      "noteDelete": "Could not delete the note"
+    }
   }
 }

@@ -7,6 +7,8 @@ export const useConfigStore = defineStore('config', () => {
   const authStore = useAuthStore()
   const config = ref(null)
   const loading = ref(false)
+  // Empresa a la que pertenece la config cargada (el adminclient cambia de empresa)
+  const configSlug = ref(null)
 
   const isPeriodExpired = computed(() => {
     // Si el periodo es automático (week_start_day existe), no se considera "vencido" nunca
@@ -26,10 +28,12 @@ export const useConfigStore = defineStore('config', () => {
 
   async function fetchConfig() {
     if (!authStore.tenantSlug) return
+    const slug = authStore.tenantSlug
     loading.value = true
     try {
-      const response = await configApi.get(authStore.tenantSlug)
+      const response = await configApi.get(slug)
       config.value = response.data.config
+      configSlug.value = slug
     } catch (err) {
       console.error('Error fetching config:', err)
     } finally {
@@ -58,9 +62,11 @@ export const useConfigStore = defineStore('config', () => {
 
   return {
     config,
+    configSlug,
     loading,
     isPeriodExpired,
     fetchConfig,
+    updateConfig,
     updateTeams,
     updatePeriod,
     updateStages,

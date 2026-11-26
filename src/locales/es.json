@@ -31,6 +31,7 @@
     }
   },
   "menu": {
+    "pipeline": "Pipeline",
     "dashboard": "Dashboard",
     "leads": "Leads",
     "sellers": "Vendedores",
@@ -940,6 +941,8 @@
     }
   },
   "config": {
+    "pipelineEnabled": "Usar el pipeline de LeadDistro",
+    "pipelineEnabledInfo": "Agrega \"Pipeline\" al menú para trabajar los leads en un tablero por etapas.",
     "title": "Configuración",
     "tabs": {
       "teams": "Equipos",
@@ -1433,5 +1436,56 @@
     "connectionSaved": "Conexión validada y guardada",
     "loadError": "No se pudo cargar la campaña única",
     "saveError": "No se pudo guardar"
+  },
+  "pipeline": {
+    "otherStages": "Otras etapas",
+    "noStage": "Sin etapa asignada",
+    "unknownStages": {
+      "title": "Hay leads con etapas que no están en tu configuración:",
+      "link": "Agregarlas en Configuración"
+    },
+    "title": "Pipeline",
+    "searchPlaceholder": "Buscar por nombre o teléfono",
+    "empty": "Todavía no hay leads para mostrar",
+    "emptyColumn": "Sin leads",
+    "columns": {
+      "count": "{n} leads",
+      "total": "Total",
+      "truncated": "Mostrando {shown} de {total}"
+    },
+    "readOnly": "Solo lectura",
+    "crmWarning": "Tu CRM también actualiza las etapas; un cambio en el CRM puede reemplazar el que hagas acá.",
+    "detail": {
+      "title": "Ficha del lead",
+      "contact": "Datos de contacto",
+      "stage": "Etapa",
+      "value": "Valor estimado",
+      "valuePlaceholder": "Sin valor",
+      "whatsapp": "WhatsApp",
+      "call": "Llamar",
+      "close": "Cerrar",
+      "date": "Fecha de ingreso"
+    },
+    "notes": {
+      "title": "Notas",
+      "placeholder": "Escribí una nota…",
+      "add": "Agregar nota",
+      "empty": "Sin notas",
+      "delete": "Borrar nota",
+      "confirmDelete": "¿Borrar esta nota?"
+    },
+    "history": {
+      "title": "Historial de etapas",
+      "empty": "Sin cambios registrados"
+    },
+    "errors": {
+      "load": "No se pudo cargar el pipeline",
+      "move": "No se pudo cambiar la etapa",
+      "value": "No se pudo guardar el valor",
+      "invalidValue": "El valor tiene que ser un número mayor o igual a 0",
+      "notesLoad": "No se pudieron cargar las notas",
+      "noteAdd": "No se pudo guardar la nota",
+      "noteDelete": "No se pudo borrar la nota"
+    }
   }
 }

@@ -109,6 +109,12 @@ export const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/pipeline',
+    name: 'Pipeline',
+    component: () => import('../views/PipelineView.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/support',
     name: 'Support',
     component: () => import('../views/SupportView.vue'),

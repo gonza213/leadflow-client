@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
 import { buildSubscribeUrl } from '../services/subscribeUrl'
@@ -14,7 +15,11 @@ import SummaryConfig from '../components/config/SummaryConfig.vue'
 const configStore = useConfigStore()
 const authStore = useAuthStore()
 const { t } = useI18n()
-const activeTab = ref('teams')
+// Permite enlazar directo a una pestaña (ej. /config?tab=stages desde el pipeline)
+const requestedTab = useRoute().query.tab
+const activeTab = ref(
+  ['teams', 'period', 'stages', 'fallback', 'summary'].includes(requestedTab) ? requestedTab : 'teams'
+)
 
 const tabs = computed(() => {
   const items = [
@@ -31,6 +36,18 @@ const tabs = computed(() => {
   }
   return items
 })
+
+// Pipeline propio (solo cambia la interfaz)
+const pipelineSaving = ref(false)
+const pipelineError = ref(false)
+
+const togglePipeline = async () => {
+  pipelineSaving.value = true
+  pipelineError.value = false
+  const result = await configStore.updateConfig({ pipeline_enabled: !configStore.config.pipeline_enabled })
+  pipelineError.value = !result?.success
+  pipelineSaving.value = false
+}
 
 // Cancelación
 const cancelling = ref(false)
@@ -140,11 +157,31 @@ onMounted(async () => {
         :week-start-day="configStore.config.week_start_day ?? null"
         :on-save="configStore.updatePeriod"
       />
-      <StagesConfig
-        v-else-if="activeTab === 'stages'"
-        :stages="configStore.config.opportunity_stages"
-        :on-save="configStore.updateStages"
-      />
+      <div v-else-if="activeTab === 'stages'" class="space-y-6">
+        <!-- Interruptor del pipeline -->
+        <div class="flex items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div>
+            <p class="font-medium text-gray-900 dark:text-white">{{ t('config.pipelineEnabled') }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('config.pipelineEnabledInfo') }}</p>
+            <p v-if="pipelineError" class="text-sm text-red-600 dark:text-red-400 mt-1">{{ t('common.saveError') }}</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            :aria-checked="!!configStore.config.pipeline_enabled"
+            :aria-label="t('config.pipelineEnabled')"
+            :disabled="pipelineSaving"
+            @click="togglePipeline"
+            :class="['relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors disabled:opacity-50', configStore.config.pipeline_enabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-gray-600']"
+          >
+            <span :class="['inline-block h-4 w-4 transform rounded-full bg-white transition-transform', configStore.config.pipeline_enabled ? 'translate-x-6' : 'translate-x-1']" />
+          </button>
+        </div>
+        <StagesConfig
+          :stages="configStore.config.opportunity_stages"
+          :on-save="configStore.updateStages"
+        />
+      </div>
       <FallbackConfig
         v-else-if="activeTab === 'fallback'"
         :fallback-seller-ids="configStore.config.fallback_seller_ids || []"
