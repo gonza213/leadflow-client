@@ -1367,6 +1367,11 @@
     "saveError": "Could not save"
   },
   "pipeline": {
+    "assign": {
+      "label": "Assign seller",
+      "choose": "Choose a seller",
+      "button": "Assign"
+    },
     "unassigned": "Unassigned",
     "otherStages": "Other stages",
     "noStage": "No stage assigned",
@@ -1409,6 +1414,7 @@
       "empty": "No changes recorded"
     },
     "errors": {
+      "assign": "Could not assign the lead",
       "load": "Could not load the pipeline",
       "move": "Could not change the stage",
       "value": "Could not save the value",

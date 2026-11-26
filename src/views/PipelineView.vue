@@ -170,6 +170,7 @@ const openLead = async (lead) => {
   selectedId.value = lead._id
   valueDraft.value = lead.value ?? ''
   noteText.value = ''
+  assigneeId.value = ''
   const result = await leadsStore.fetchNotes(lead._id)
   if (!result.success && selectedId.value === lead._id) showError('notesLoad')
 }
@@ -193,6 +194,21 @@ const saveValue = async () => {
   const result = await leadsStore.updateLeadValue(selectedId.value, value)
   savingValue.value = false
   if (!result.success) showError('value')
+}
+
+const assigneeId = ref('')
+const assigning = ref(false)
+const assign = async () => {
+  const seller = sellersStore.sellers.find(s => s._id === assigneeId.value)
+  if (!seller) return
+  assigning.value = true
+  const result = await leadsStore.assignLead(selectedId.value, seller)
+  assigning.value = false
+  assigneeId.value = ''
+  if (!result.success) {
+    showError('assign')
+    await load() // puede haberlo asignado otra persona
+  }
 }
 
 const addNote = async () => {
@@ -418,6 +434,22 @@ onUnmounted(() => {
                 {{ t('pipeline.detail.call') }}
               </a>
             </div>
+          </section>
+
+          <!-- Asignación de un lead sin vendedor (managers) -->
+          <section v-if="authStore.isManager && !selected.lead.seller_id">
+            <label class="label" for="pipeline-assign">{{ t('pipeline.assign.label') }}</label>
+            <form class="flex gap-2" @submit.prevent="assign">
+              <select id="pipeline-assign" v-model="assigneeId" class="input">
+                <option value="">{{ t('pipeline.assign.choose') }}</option>
+                <option v-for="seller in sellersStore.sellers.filter(s => s.active)" :key="seller._id" :value="seller._id">
+                  {{ seller.seller_name }} ({{ seller.team }})
+                </option>
+              </select>
+              <button type="submit" class="btn btn-primary btn-sm" :disabled="!assigneeId || assigning">
+                {{ t('pipeline.assign.button') }}
+              </button>
+            </form>
           </section>
 
           <!-- Etapa y valor -->

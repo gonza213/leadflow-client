@@ -334,6 +334,19 @@ export const useLeadsStore = defineStore('leads', () => {
     found.lead.stage_history = saved.stage_history
   }
 
+  // Asignar un lead sin vendedor (el servidor avisa al CRM)
+  async function assignLead(leadId, seller) {
+    const result = await editLead(leadId, { seller_user_id: seller._id })
+    const found = result.success && findPipelineLead(leadId)
+    if (found) {
+      found.lead.seller_id = result.lead.seller_user_id
+      found.lead.seller_name = result.lead.seller_name
+      found.lead.team = seller.team
+      found.lead.delivery_status = result.lead.delivery_status
+    }
+    return result
+  }
+
   // Actualización optimista: primero se mueve en pantalla y si falla se revierte
   async function moveLead(leadId, fromStage, toStage) {
     // "Otras etapas" no es un destino válido
@@ -559,6 +572,7 @@ export const useLeadsStore = defineStore('leads', () => {
     fetchPipeline,
     moveLead,
     updateLeadValue,
+    assignLead,
     // Notas
     notes,
     notesLoading,

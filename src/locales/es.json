@@ -1438,6 +1438,11 @@
     "saveError": "No se pudo guardar"
   },
   "pipeline": {
+    "assign": {
+      "label": "Asignar vendedor",
+      "choose": "Elegí un vendedor",
+      "button": "Asignar"
+    },
     "unassigned": "Sin asignar",
     "otherStages": "Otras etapas",
     "noStage": "Sin etapa asignada",
@@ -1480,6 +1485,7 @@
       "empty": "Sin cambios registrados"
     },
     "errors": {
+      "assign": "No se pudo asignar el lead",
       "load": "No se pudo cargar el pipeline",
       "move": "No se pudo cambiar la etapa",
       "value": "No se pudo guardar el valor",

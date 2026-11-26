@@ -1539,6 +1539,11 @@
     "saveError": "Não foi possível salvar"
   },
   "pipeline": {
+    "assign": {
+      "label": "Atribuir vendedor",
+      "choose": "Escolha um vendedor",
+      "button": "Atribuir"
+    },
     "unassigned": "Não atribuído",
     "otherStages": "Outras etapas",
     "noStage": "Sem etapa definida",
@@ -1581,6 +1586,7 @@
       "empty": "Nenhuma mudança registrada"
     },
     "errors": {
+      "assign": "Não foi possível atribuir o lead",
       "load": "Não foi possível carregar o pipeline",
       "move": "Não foi possível mudar a etapa",
       "value": "Não foi possível salvar o valor",
