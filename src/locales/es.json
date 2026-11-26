@@ -927,6 +927,35 @@
   },
   "integrations": {
     "title": "Integraciones",
+    "subtitle": "Conectá LeadDistro con tu CRM o recibí leads directo desde tu sitio web.",
+    "tabs": {
+      "crm": "Conectar tu CRM",
+      "form": "Formulario web"
+    },
+    "how": {
+      "title": "Cómo funciona",
+      "s1": "Tu CRM le envía cada lead nuevo a LeadDistro.",
+      "s2": "LeadDistro elige el vendedor y le avisa a tu CRM.",
+      "s3": "Opcional: tu CRM avisa los cambios de etapa."
+    },
+    "compatible": "Compatible con",
+    "anyWebhook": "y cualquier herramienta que soporte webhooks",
+    "required": "Obligatorio",
+    "optional": "Opcional",
+    "configured": "Configurado",
+    "notConfigured": "Sin configurar",
+    "step1": {
+      "title": "Enviá tus leads a LeadDistro",
+      "desc": "En tu CRM, creá un workflow que se active cuando entra un contacto nuevo y haga un POST a esta URL. LeadDistro le asigna un vendedor al instante."
+    },
+    "step2": {
+      "title": "Recibí el vendedor asignado en tu CRM",
+      "desc": "Pegá la URL de un webhook de tu CRM (por ejemplo, un workflow de GoHighLevel con disparador de webhook entrante). LeadDistro le envía un POST cada vez que asigna un vendedor."
+    },
+    "step3": {
+      "title": "Sincronizá los cambios de etapa",
+      "desc": "Cuando una oportunidad cambia de etapa en tu CRM, enviá un POST a esta URL. Así el Dashboard y el Pipeline muestran la etapa real."
+    },
     "platforms": {
       "title": "Plataformas compatibles",
       "info": "LeadDistro funciona con cualquier herramienta que soporte webhooks.",

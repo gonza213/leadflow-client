@@ -913,6 +913,35 @@
   },
   "integrations": {
     "title": "Integrations",
+    "subtitle": "Connect LeadDistro with your CRM or get leads straight from your website.",
+    "tabs": {
+      "crm": "Connect your CRM",
+      "form": "Web form"
+    },
+    "how": {
+      "title": "How it works",
+      "s1": "Your CRM sends every new lead to LeadDistro.",
+      "s2": "LeadDistro picks the sales rep and notifies your CRM.",
+      "s3": "Optional: your CRM reports stage changes."
+    },
+    "compatible": "Works with",
+    "anyWebhook": "and any tool that supports webhooks",
+    "required": "Required",
+    "optional": "Optional",
+    "configured": "Configured",
+    "notConfigured": "Not configured",
+    "step1": {
+      "title": "Send your leads to LeadDistro",
+      "desc": "In your CRM, create a workflow that triggers when a new contact comes in and sends a POST to this URL. LeadDistro assigns a sales rep instantly."
+    },
+    "step2": {
+      "title": "Get the assigned rep in your CRM",
+      "desc": "Paste the URL of a webhook in your CRM (for example, a GoHighLevel workflow with an inbound webhook trigger). LeadDistro sends it a POST every time it assigns a rep."
+    },
+    "step3": {
+      "title": "Sync stage changes",
+      "desc": "When an opportunity changes stage in your CRM, send a POST to this URL. That way the Dashboard and the Pipeline show the real stage."
+    },
     "platforms": {
       "title": "Compatible Platforms",
       "info": "LeadDistro works with any tool that supports webhooks.",
