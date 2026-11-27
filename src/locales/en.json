@@ -27,7 +27,7 @@
     },
     "stats": {
       "assigned": "0 leads lost",
-      "price": "USD 25/month, no contracts",
+      "price": "USD 49/month, no contracts",
       "crms": "Compatible CRMs"
     }
   },
@@ -223,7 +223,7 @@
     "s4": {
       "title": "4. Subscription and payments",
       "p1": "Free trial: When you sign up you get a 7-day free trial, no credit card required. When the trial ends, the account stays inactive until you activate a subscription.",
-      "p2": "Monthly subscription: The plan costs USD 25 per month. Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.",
+      "p2": "Monthly subscription: The plan costs USD 49 per month. Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns.",
       "p3": "Renewal: The subscription renews automatically every month until you cancel it. You can cancel at any time from your account.",
       "p4": "Refunds: We offer a 14-day money-back guarantee on every payment. See our Refund Policy at www.leaddistro.site/refund."
     },
@@ -509,7 +509,7 @@
         "title": "Monthly Plan",
         "desc": "Everything your agency needs to not lose a single lead.",
         "period": "/ month",
-        "trialNote": "7 days free. Then USD 25/month. Cancel anytime.",
+        "trialNote": "7 days free. Then USD 49/month. Cancel anytime.",
         "features": [
           "Unlimited companies / sub-accounts with one subscription",
           "Unlimited sellers",
@@ -556,19 +556,19 @@
       "items": [
         { "q": "How does automatic lead distribution work?", "a": "When your CRM sends a lead to the LeadDistro webhook, the system identifies the target team based on the configured percentages, and within that team selects the seller with the most available capacity (lowest load/limit ratio). Everything happens in milliseconds and the result is automatically returned to the CRM." },
         { "q": "What CRMs does LeadDistro integrate with?", "a": "LeadDistro integrates with any platform that supports webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n, and many more. If your CRM can send an HTTP POST, it works with LeadDistro." },
-        { "q": "Can I manage multiple companies or sub-accounts with a single account?", "a": "Yes. LeadDistro is multi-company: with a single login you create and manage all your companies or sub-accounts (for example, one per GoHighLevel sub-account), each with its own teams, sellers, webhooks and settings. Best of all: a single $25 USD/month subscription covers them all." },
+        { "q": "Can I manage multiple companies or sub-accounts with a single account?", "a": "Yes. LeadDistro is multi-company: with a single login you create and manage all your companies or sub-accounts (for example, one per GoHighLevel sub-account), each with its own teams, sellers, webhooks and settings. Best of all: a single $49 USD/month subscription covers them all." },
         { "q": "What happens if all sellers reach their limit?", "a": "You can configure up to 2 backup sellers (fallback). When all active sellers reach their daily or weekly limit, leads are automatically redirected to those backup sellers. This way, no lead is left unassigned." },
         { "q": "Can I have multiple teams with different distributions?", "a": "Yes. You can create as many teams as you need and assign a percentage of the total leads to each one. For example: Team A receives 60% and Team B receives 40%. Each team has its own sellers, limits, and settings." },
-        { "q": "What happens when the trial period expires?", "a": "When the 7-day trial period expires, your account is in an inactive state. You don't lose any data — by subscribing for $25 USD/month you regain access immediately with all your settings intact." },
+        { "q": "What happens when the trial period expires?", "a": "When the 7-day trial period expires, your account is in an inactive state. You don't lose any data — by subscribing for $49 USD/month you regain access immediately with all your settings intact." },
         { "q": "Can I cancel at any time?", "a": "Yes, without any mandatory stay or penalties. When you cancel your subscription, it does not renew the next month. Your data remains available until the end of the paid period." },
         { "q": "Are my leads' data safe?", "a": "Yes. Each company has its own isolated space — no data is accessible from another account. Every new account confirms its email, you can turn on two-step verification (2FA) with an authenticator app, and your lead webhook can be protected with an API key. Communications are encrypted via HTTPS and passwords are stored with bcrypt. We do not share or sell data of any kind." },
-        { "q": "How do I pay? Is there a refund?", "a": "You pay by card through Paddle, our Merchant of Record, which handles the payment, sales tax and invoices. The plan is USD 25/month, renews automatically and you can cancel anytime. Every payment has a 14-day money-back guarantee, no questions asked." }
+        { "q": "How do I pay? Is there a refund?", "a": "You pay by card through Paddle, our Merchant of Record, which handles the payment, sales tax and invoices. The plan is USD 49/month, renews automatically and you can cancel anytime. Every payment has a 14-day money-back guarantee, no questions asked." }
       ]
     },
     "cta": {
       "badge": "Multi-tenant · Multi-team · Real-time",
       "title": "Ready to start?",
-      "subtitle": "Sign up in seconds and start distributing leads today. 7 days free, no credit card required. From $25 USD/month.",
+      "subtitle": "Sign up in seconds and start distributing leads today. 7 days free, no credit card required. From $49 USD/month.",
       "cta": "Start for free",
       "hasAccount": "I already have an account",
       "feats": ["5-minute setup", "CRM integration", "No lost leads"]
@@ -1281,10 +1281,10 @@
     "next_renewal": "Next renewal",
     "plan": "Plan",
     "lifetime_plan": "Lifetime (no cost)",
-    "monthly_plan": "$25 USD / month",
+    "monthly_plan": "$49 USD / month",
     "trial_message": "Subscribe to continue using LeadDistro after your trial period expires.",
     "inactive_message": "Your subscription is inactive. Activate it to use the platform again.",
-    "subscribe_button": "Subscribe for $25 USD/month",
+    "subscribe_button": "Subscribe for $49 USD/month",
     "cancel_success": "✓ Subscription canceled. You can keep using LeadDistro until the current period expires.",
     "cancel_action": "Cancel subscription",
     "confirm_cancel_title": "Are you sure you want to cancel?",
