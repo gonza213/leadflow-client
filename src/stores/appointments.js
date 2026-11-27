@@ -10,28 +10,28 @@ export const useAppointmentsStore = defineStore('appointments', () => {
   const items = ref([])
   const loading = ref(false)
   const error = ref(null)
-  let lastRange = null
+  let lastRequest = 0
 
   const sortByStart = (list) => [...list].sort((a, b) => new Date(a.startsAt) - new Date(b.startsAt))
 
   async function fetchRange(from, to, filters = {}) {
     if (!authStore.tenantSlug) return { success: false }
-    lastRange = { from, to, filters }
+    const request = ++lastRequest
     loading.value = true
     error.value = null
     try {
       const params = { from: from.toISOString(), to: to.toISOString() }
       if (filters.seller_id) params.seller_id = filters.seller_id
       const { data } = await appointmentsApi.list(authStore.tenantSlug, params)
-      // Si mientras tanto se pidió otro rango, se descarta esta respuesta
-      if (lastRange?.from !== from) return { success: true }
+      // Si mientras tanto se pidió otro rango u otro vendedor, se descarta esta respuesta
+      if (request !== lastRequest) return { success: true }
       items.value = sortByStart(data.appointments)
       return { success: true }
     } catch (err) {
-      error.value = err.response?.data?.message || 'error'
+      if (request === lastRequest) error.value = err.response?.data?.message || 'error'
       return { success: false }
     } finally {
-      loading.value = false
+      if (request === lastRequest) loading.value = false
     }
   }
 
