@@ -1553,6 +1553,7 @@
     "saveError": "Could not save"
   },
   "calendar": {
+    "customEnd": "End time…",
     "title": "Calendar",
     "subtitle": "Your appointments with leads: calls, meetings and visits.",
     "new": "New appointment",
@@ -1591,6 +1592,7 @@
       "r1440": "Email 1 day before"
     },
     "fields": {
+      "end": "End time",
       "type": "Type",
       "lead": "Lead",
       "noLead": "No lead",
@@ -1621,6 +1623,8 @@
     "deleted": "Appointment deleted.",
     "overlap": "Appointment saved. Heads up: it overlaps with \"{title}\" ({time}).",
     "errors": {
+      "tooLong": "An appointment can last at most 8 hours.",
+      "end": "The end time must be after the start time.",
       "load": "Could not load appointments.",
       "save": "Could not save the appointment.",
       "delete": "Could not delete the appointment.",

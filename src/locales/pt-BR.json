@@ -1725,6 +1725,7 @@
     "saveError": "Não foi possível salvar"
   },
   "calendar": {
+    "customEnd": "Horário de término…",
     "title": "Calendário",
     "subtitle": "Seus compromissos com leads: ligações, reuniões e visitas.",
     "new": "Novo compromisso",
@@ -1763,6 +1764,7 @@
       "r1440": "Email 1 dia antes"
     },
     "fields": {
+      "end": "Horário de término",
       "type": "Tipo",
       "lead": "Lead",
       "noLead": "Sem lead",
@@ -1793,6 +1795,8 @@
     "deleted": "Compromisso excluído.",
     "overlap": "Compromisso salvo. Atenção: ele se sobrepõe a \"{title}\" ({time}).",
     "errors": {
+      "tooLong": "Um compromisso pode durar no máximo 8 horas.",
+      "end": "O término precisa ser depois do início.",
       "load": "Não foi possível carregar os compromissos.",
       "save": "Não foi possível salvar o compromisso.",
       "delete": "Não foi possível excluir o compromisso.",

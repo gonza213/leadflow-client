@@ -28,6 +28,7 @@ const canWork = computed(() => ['superadmin', 'adminclient', 'manager', 'seller'
 const TYPES = ['call', 'meeting', 'visit', 'other']
 const REMINDERS = [0, 15, 60, 1440]
 const DURATIONS = [15, 30, 45, 60, 90, 120]
+const MAX_MINUTES = 8 * 60
 
 // ---- Formulario ----
 const start = props.appointment ? new Date(props.appointment.startsAt) : (props.defaults.startsAt || nextSlot())
@@ -39,15 +40,27 @@ const form = ref({
   title: props.appointment?.title || '',
   date: initial.date,
   time: initial.time,
-  duration: end ? Math.round((end - start) / 60000) : 30,
+  duration: end ? Math.round((end - start) / 60000) : 30, // minutos, o 'custom' (hora de fin a mano)
+  endTime: '',
   reminderMinutes: props.appointment?.reminderMinutes ?? 60,
   notes: props.appointment?.notes || '',
   sellerId: String(props.appointment?.sellerId || props.defaults.sellerId || ''),
   leadId: String(props.appointment?.leadId || props.defaults.lead?._id || '')
 })
-const durationOptions = computed(() =>
-  DURATIONS.includes(form.value.duration) ? DURATIONS : [...DURATIONS, form.value.duration].sort((a, b) => a - b)
-)
+// Duraciones fijas; si la cita ya tiene otra, se agrega para no cambiarla al guardar
+const initialDuration = form.value.duration
+const durationOptions = DURATIONS.includes(initialDuration) ? DURATIONS : [...DURATIONS, initialDuration].sort((a, b) => a - b)
+// Al elegir "hora de fin a mano", se parte de la duración que había
+watch(() => form.value.duration, (value, previous) => {
+  if (value !== 'custom') return
+  const from = fromInputs(form.value.date, form.value.time, tz.value)
+  if (from) form.value.endTime = toInputs(new Date(from.getTime() + previous * 60000), tz.value).time
+})
+
+// Fin de la cita según lo elegido, o null si no es válido
+const endFor = (startsAt) => form.value.duration === 'custom'
+  ? fromInputs(form.value.date, form.value.endTime, tz.value)
+  : new Date(startsAt.getTime() + form.value.duration * 60000)
 
 // Próximo horario redondo (media hora) a partir de ahora
 function nextSlot () {
@@ -105,12 +118,15 @@ const save = async () => {
   if (!startsAt) { error.value = t('calendar.errors.date'); return }
   if (!form.value.title.trim()) { error.value = t('calendar.errors.title'); return }
   if (authStore.isManager && !form.value.sellerId) { error.value = t('calendar.errors.seller'); return }
+  const endsAt = endFor(startsAt)
+  if (!endsAt || endsAt <= startsAt) { error.value = t('calendar.errors.end'); return }
+  if (endsAt - startsAt > MAX_MINUTES * 60000) { error.value = t('calendar.errors.tooLong'); return }
 
   const payload = {
     type: form.value.type,
     title: form.value.title.trim(),
     startsAt: startsAt.toISOString(),
-    endsAt: new Date(startsAt.getTime() + form.value.duration * 60000).toISOString(),
+    endsAt: endsAt.toISOString(),
     reminderMinutes: Number(form.value.reminderMinutes),
     notes: form.value.notes,
     leadId: form.value.leadId || null
@@ -235,7 +251,12 @@ onMounted(() => {
                 <label class="label" for="appt-duration">{{ t('calendar.fields.duration') }}</label>
                 <select id="appt-duration" v-model.number="form.duration" class="input">
                   <option v-for="m in durationOptions" :key="m" :value="m">{{ t('calendar.minutes', { n: m }) }}</option>
+                  <option value="custom">{{ t('calendar.customEnd') }}</option>
                 </select>
+              </div>
+              <div v-if="form.duration === 'custom'" class="col-span-2 sm:col-span-1 sm:col-start-3">
+                <label class="label" for="appt-end">{{ t('calendar.fields.end') }}</label>
+                <input id="appt-end" v-model="form.endTime" type="time" step="300" class="input" required />
               </div>
             </div>
 
