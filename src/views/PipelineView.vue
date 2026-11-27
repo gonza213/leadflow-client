@@ -469,7 +469,7 @@ onUnmounted(() => {
             <ul v-else class="space-y-1.5">
               <li v-for="a in leadAppts" :key="a._id">
                 <button type="button" class="w-full rounded-lg bg-gray-50 dark:bg-gray-700/50 px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700" @click="apptModal = { appointment: a, defaults: {} }">
-                  <span class="font-semibold text-gray-900 dark:text-white capitalize">{{ formatAppt(a) }}</span>
+                  <span class="inline-block font-semibold text-gray-900 dark:text-white first-letter:uppercase">{{ formatAppt(a) }}</span>
                   <span class="text-gray-500 dark:text-gray-400"> · {{ a.title }}</span>
                   <span v-if="a.status !== 'scheduled'" class="ml-1 text-xs text-gray-400">({{ t(`calendar.statuses.${a.status}`) }})</span>
                 </button>

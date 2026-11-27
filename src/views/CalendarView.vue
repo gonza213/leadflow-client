@@ -239,7 +239,7 @@ onUnmounted(() => { clearInterval(clock); clearTimeout(toastTimer) })
         <button type="button" class="btn btn-secondary btn-sm rounded-r-none" :aria-label="t('calendar.prev')" @click="go(-1)">‹</button>
         <button type="button" class="btn btn-secondary btn-sm rounded-l-none border-l-0" :aria-label="t('calendar.next')" @click="go(1)">›</button>
       </div>
-      <h2 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white capitalize mr-auto">{{ rangeLabel }}</h2>
+      <h2 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white first-letter:uppercase mr-auto">{{ rangeLabel }}</h2>
 
       <select v-if="canSeeTeam" v-model="sellerFilter" class="input !w-auto text-sm py-1.5" :aria-label="t('calendar.fields.seller')">
         <option value="">{{ t('calendar.allSellers') }}</option>
@@ -325,7 +325,7 @@ onUnmounted(() => { clearInterval(clock); clearTimeout(toastTimer) })
         <button v-if="canWork" type="button" class="btn btn-primary mt-4" @click="openNew()">+ {{ t('calendar.new') }}</button>
       </div>
       <section v-for="g in listGroups" :key="civilKey(g.c)">
-        <h3 class="mb-2 text-sm font-bold capitalize" :class="isToday(g.c) ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'">
+        <h3 class="mb-2 text-sm font-bold first-letter:uppercase" :class="isToday(g.c) ? 'text-primary-700 dark:text-primary-300' : 'text-gray-700 dark:text-gray-300'">
           {{ isToday(g.c) ? t('calendar.today') + ' · ' : '' }}{{ fmt(civilDate(g.c), { weekday: 'long', day: 'numeric', month: 'long' }) }}
         </h3>
         <ul class="space-y-2">
