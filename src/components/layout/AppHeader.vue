@@ -25,12 +25,12 @@ const handleLogout = () => {
   router.push('/login')
 }
 
-const currentLang = ref((typeof window !== 'undefined' && localStorage.getItem('user-locale')) || 'es')
+// El idioma activo (elegido o detectado del navegador)
+const currentLang = computed(() => locale.value)
 const showLangMenu = ref(false)
 
 const setLanguage = (newLocale) => {
   locale.value = newLocale
-  currentLang.value = newLocale
   localStorage.setItem('user-locale', newLocale)
   document.documentElement.lang = newLocale
   showLangMenu.value = false
