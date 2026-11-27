@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { authApi, uploadApi } from '../services/api'
 import { useI18n } from 'vue-i18n'
+import TwoFactorSection from '../components/profile/TwoFactorSection.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -179,6 +180,8 @@ const updateProfile = async () => {
             </button>
           </div>
         </form>
+
+        <TwoFactorSection />
       </div>
     </div>
   </div>

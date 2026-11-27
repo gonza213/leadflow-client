@@ -22,7 +22,7 @@ const success = ref(false)
 const handleSubmit = async () => {
   error.value = ''
   if (!password.value || password.value.length < 6) {
-    error.value = t('auth.passwordTooShort')
+    error.value = t('auth.reset.tooShort')
     return
   }
   if (password.value !== confirm.value) {
@@ -89,7 +89,7 @@ const handleSubmit = async () => {
                   v-model="password"
                   :type="showPassword ? 'text' : 'password'"
                   class="input pr-10"
-                  :placeholder="t('auth.passwordMin')"
+                  :placeholder="t('auth.reset.min')"
                 />
                 <button type="button" @click="showPassword = !showPassword"
                   class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">

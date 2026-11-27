@@ -60,7 +60,15 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: (email, password) => api.post('/auth/login', { email, password }),
-  registerOwner: (data) => api.post('/auth/register-owner', data, { baseURL: '/api' }),
+  registerOwner: (data) => api.post('/auth/register-owner', data),
+  // Verificación de email y en dos pasos
+  verifyEmail: (token) => api.get(`/auth/verify-email/${encodeURIComponent(token)}`),
+  resendVerification: (email) => api.post('/auth/resend-verification', { email }),
+  verifyTwoFactor: (challengeToken, code) => api.post('/auth/2fa/verify', { challengeToken, code }),
+  setupTwoFactor: () => api.post('/auth/2fa/setup'),
+  enableTwoFactor: (code) => api.post('/auth/2fa/enable', { code }),
+  disableTwoFactor: (password, code) => api.post('/auth/2fa/disable', { password, code }),
+  regenerateBackupCodes: (code) => api.post('/auth/2fa/backup-codes', { code }),
   getAccounts: () => api.get('/auth/accounts'),
   createAccount: (companyName, giftCardEnabled = false) => api.post('/auth/accounts', { companyName, giftCardEnabled }),
   addAccountCredits: (id, amount) => api.post(`/auth/accounts/${id}/credits`, { amount }),

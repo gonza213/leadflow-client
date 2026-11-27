@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 import { subscriptionApi } from './services/api'
@@ -18,9 +18,16 @@ const verifying = ref(false)
 const verifyError = ref('')
 const verifySuccess = ref(false)
 
+// Superadmin sin verificación en dos pasos: aviso en el panel de administración
+const needsTwoFactor = computed(() =>
+  authStore.isSuperAdmin && authStore.user?.twoFactorEnabled === false && route.path.startsWith('/admin'))
+// Sesiones abiertas antes de esta función no traen el dato
+watch(() => authStore.isSuperAdmin && authStore.user?.twoFactorEnabled === undefined,
+  (missing) => { if (missing) authStore.fetchUser() }, { immediate: true })
+
 const showLayout = computed(() => {
   // El portal del dueño (/cuentas*) también usa el layout (header + sidebar propio)
-  return authStore.isAuthenticated && route.name !== 'Login' && route.name !== 'Landing'
+  return authStore.isAuthenticated && !['Login', 'Landing', 'VerifyEmail'].includes(route.name)
 })
 
 const handleVerifyPayment = async () => {
@@ -70,6 +77,10 @@ const handleVerifyPayment = async () => {
       <div class="flex min-w-0">
         <AppSidebar />
         <main :class="['flex-1 w-0 min-w-0 p-4 lg:p-6 lg:ml-64 overflow-x-hidden', authStore.subscriptionStatus === 'trial' && !authStore.isAdminClient ? 'mt-24' : 'mt-16']">
+          <div v-if="needsTwoFactor" role="alert" class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-red-500 bg-red-50 dark:bg-red-900/30 p-4">
+            <p class="text-sm font-semibold text-red-800 dark:text-red-300">{{ t('security.twoFactor.adminWarning') }}</p>
+            <router-link to="/profile" class="px-4 py-2 text-sm font-semibold rounded-lg bg-red-600 hover:bg-red-700 text-white">{{ t('security.twoFactor.adminAction') }}</router-link>
+          </div>
           <router-view />
         </main>
       </div>

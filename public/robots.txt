@@ -18,5 +18,6 @@ Disallow: /users
 Disallow: /admin
 Disallow: /payment-success
 Disallow: /reset-password
+Disallow: /verify-email
 
 Sitemap: https://www.leaddistro.site/sitemap.xml
