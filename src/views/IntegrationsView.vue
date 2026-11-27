@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../stores/auth'
 import { useConfigStore } from '../stores/config'
 import WebFormConfig from '../components/config/WebFormConfig.vue'
+import { configApi } from '../services/api'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -77,8 +78,49 @@ const platforms = computed(() => [
   { name: 'Make / Zapier' }
 ])
 
+// API key opcional del webhook: con ella, solo quien tiene la clave puede mandar leads
+const apiKey = ref('')
+const apiKeyAvailable = ref(false)
+const showApiKey = ref(false)
+const apiKeyBusy = ref(false)
+const apiKeyMsg = ref('')
+
+const maskedApiKey = computed(() => {
+  const k = apiKey.value
+  return showApiKey.value || k.length < 10 ? k : `${k.slice(0, 6)}••••••••••••${k.slice(-4)}`
+})
+const webhookUrlWithKey = computed(() => `${webhookUrl.value}?api_key=${apiKey.value}`)
+const webhookUrlWithKeyMasked = computed(() => `${webhookUrl.value}?api_key=${maskedApiKey.value}`)
+
+const loadApiKey = async () => {
+  try {
+    const { data } = await configApi.getApiKey(authStore.tenantSlug)
+    apiKey.value = data.apiKey || ''
+    apiKeyAvailable.value = !!apiKey.value
+  } catch {
+    apiKeyAvailable.value = false // sin permiso (viewer/vendedor) o error: no se muestra la sección
+  }
+}
+
+const regenerateApiKey = async () => {
+  if (!confirm(t('integrations.apiKey.regenerateConfirm'))) return
+  apiKeyBusy.value = true
+  apiKeyMsg.value = ''
+  try {
+    const { data } = await configApi.regenerateApiKey(authStore.tenantSlug)
+    apiKey.value = data.apiKey
+    showApiKey.value = true
+    apiKeyMsg.value = t('integrations.apiKey.regenerated')
+  } catch {
+    apiKeyMsg.value = t('integrations.apiKey.error')
+  } finally {
+    apiKeyBusy.value = false
+  }
+}
+
 onMounted(async () => {
   await configStore.fetchConfig()
+  if (authStore.tenantSlug) loadApiKey()
 })
 </script>
 
@@ -184,6 +226,49 @@ onMounted(async () => {
                 <li><code class="font-mono font-bold text-red-600 dark:text-red-400">409</code> {{ t('integrations.webhooks.responses.c409') }}</li>
               </ul>
             </details>
+
+            <!-- API key opcional -->
+            <div v-if="apiKeyAvailable" class="rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+              <div class="flex flex-wrap items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    <h3 class="text-sm font-bold text-gray-900 dark:text-white">{{ t('integrations.apiKey.title') }}</h3>
+                  </div>
+                  <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ t('integrations.apiKey.desc') }}</p>
+                </div>
+                <button type="button" @click="showApiKey = !showApiKey" class="text-xs font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+                  {{ showApiKey ? t('integrations.apiKey.hide') : t('integrations.apiKey.show') }}
+                </button>
+              </div>
+
+              <div>
+                <div class="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">{{ t('integrations.apiKey.urlWithKey') }}</div>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <code class="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-xs break-all text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">{{ webhookUrlWithKeyMasked }}</code>
+                  <button type="button" @click="copy('inputKey', webhookUrlWithKey)" class="btn btn-secondary text-sm whitespace-nowrap">
+                    {{ copiedKey === 'inputKey' ? t('common.copied') : t('common.copy') }}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">{{ t('integrations.apiKey.header') }} <span class="font-mono">X-API-Key</span></div>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <code class="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 font-mono text-xs break-all text-gray-800 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">{{ maskedApiKey }}</code>
+                  <button type="button" @click="copy('apiKey', apiKey)" class="btn btn-secondary text-sm whitespace-nowrap">
+                    {{ copiedKey === 'apiKey' ? t('common.copied') : t('common.copy') }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" @click="regenerateApiKey" :disabled="apiKeyBusy" class="text-xs font-medium text-amber-600 dark:text-amber-400 hover:underline disabled:opacity-50">
+                  {{ apiKeyBusy ? '…' : t('integrations.apiKey.regenerate') }}
+                </button>
+                <span v-if="apiKeyMsg" class="text-xs text-gray-600 dark:text-gray-300">{{ apiKeyMsg }}</span>
+              </div>
+            </div>
           </div>
         </section>
 

@@ -147,7 +147,9 @@ export const ownerPaymentsApi = {
 
 export const configApi = {
   get: (tenantSlug) => api.get(`/${tenantSlug}/config`),
-  update: (tenantSlug, data) => api.post(`/${tenantSlug}/config`, data)
+  update: (tenantSlug, data) => api.post(`/${tenantSlug}/config`, data),
+  getApiKey: (tenantSlug) => api.get(`/${tenantSlug}/config/api-key`),
+  regenerateApiKey: (tenantSlug) => api.post(`/${tenantSlug}/config/api-key/regenerate`)
 }
 
 export const adminApi = {

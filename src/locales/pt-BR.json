@@ -1116,6 +1116,18 @@
     "optional": "Opcional",
     "configured": "Configurado",
     "notConfigured": "Não configurado",
+    "apiKey": {
+      "title": "API key (opcional)",
+      "desc": "Seu webhook funciona com ou sem chave. Para mais segurança, use a URL com a chave: ninguém mais pode enviar leads mesmo conhecendo sua URL.",
+      "urlWithKey": "URL com API key",
+      "header": "Você também pode enviá-la no header",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "regenerate": "Regenerar chave",
+      "regenerateConfirm": "Regenerar a API key? A chave atual deixa de funcionar e você precisará atualizar a URL no seu CRM. As integrações que usam a URL sem chave continuam funcionando.",
+      "regenerated": "Chave regenerada. Atualize a URL no seu CRM.",
+      "error": "Não foi possível carregar a chave."
+    },
     "step1": {
       "title": "Envie seus leads para o LeadDistro",
       "desc": "No seu CRM, crie um workflow que seja acionado quando entra um contato novo e faça um POST para esta URL. O LeadDistro atribui um vendedor na hora."

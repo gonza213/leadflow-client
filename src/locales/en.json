@@ -942,6 +942,18 @@
     "optional": "Optional",
     "configured": "Configured",
     "notConfigured": "Not configured",
+    "apiKey": {
+      "title": "API key (optional)",
+      "desc": "Your webhook works with or without a key. For extra security, use the URL with the key: nobody else can send you leads even if they know your URL.",
+      "urlWithKey": "URL with API key",
+      "header": "You can also send it in the header",
+      "show": "Show",
+      "hide": "Hide",
+      "regenerate": "Regenerate key",
+      "regenerateConfirm": "Regenerate the API key? The current key stops working and you will need to update the URL in your CRM. Integrations using the URL without a key keep working.",
+      "regenerated": "Key regenerated. Update the URL in your CRM.",
+      "error": "We could not load the key."
+    },
     "step1": {
       "title": "Send your leads to LeadDistro",
       "desc": "In your CRM, create a workflow that triggers when a new contact comes in and sends a POST to this URL. LeadDistro assigns a sales rep instantly."
