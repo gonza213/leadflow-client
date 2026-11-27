@@ -23,8 +23,8 @@ const canSeeTeam = computed(() => authStore.isViewer)
 const intlLocale = computed(() => ({ es: 'es-AR', en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || locale.value))
 
 // Grilla horaria visible
-const START_HOUR = 7
-const END_HOUR = 22
+const START_HOUR = 8
+const END_HOUR = 21
 const HOUR_PX = 56
 const hours = Array.from({ length: END_HOUR - START_HOUR }, (_, i) => START_HOUR + i)
 
