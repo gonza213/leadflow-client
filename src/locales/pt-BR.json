@@ -453,6 +453,8 @@
           "Dashboard em tempo real",
           "Integração com qualquer CRM",
           "Exportação de leads para CSV",
+          "Pipeline e calendário de reuniões incluídos",
+          "Verificação em duas etapas (2FA)",
           "Suporte incluso"
         ]
       },
@@ -486,8 +488,8 @@
         { "q": "Posso ter múltiplas equipes com distribuições diferentes?", "a": "Sim. Você pode criar quantas equipes precisar e atribuir a cada uma uma porcentagem do total de leads. Por exemplo: Equipe A recebe 60% e Equipe B 40%. Cada equipe tem seus próprios vendedores, limites e configurações." },
         { "q": "O que acontece quando o período de teste termina?", "a": "Ao final dos 7 dias de teste, sua conta fica inativa. Você não perde nenhum dado — ao assinar por $25 USD/mês, você recupera o acesso imediatamente com toda a sua configuração intacta." },
         { "q": "Posso cancelar a qualquer momento?", "a": "Sim, sem fidelidade ou multas. Ao cancelar, sua assinatura não será renovada no mês seguinte. Seus dados permanecem disponíveis até o final do período pago." },
-        { "q": "Os dados dos meus leads estão seguros?", "a": "Sim. Cada empresa tem seu próprio tenant isolado — nenhum dado é acessível por outra conta. As comunicações são criptografadas via HTTPS e as senhas são armazenadas com hash bcrypt. Não compartilhamos nem vendemos dados de nenhum tipo." },
-        { "q": "O que o serviço de setup inclui?", "a": "O serviço de setup ($100 USD, pagamento único) inclui: configuração completa do sistema, integração com seu CRM, cadastro de equipes e vendedores, configuração de webhooks e uma sessão de treinamento para sua equipe. Tudo pronto em menos de 24 horas." }
+        { "q": "Os dados dos meus leads estão seguros?", "a": "Sim. Cada empresa tem seu próprio espaço isolado — nenhum dado é acessível por outra conta. Toda conta nova confirma o e-mail, você pode ativar a verificação em duas etapas (2FA) com um app autenticador e proteger o webhook de leads com uma API key. As comunicações são criptografadas via HTTPS e as senhas são armazenadas com bcrypt. Não compartilhamos nem vendemos dados de nenhum tipo." },
+        { "q": "Como eu pago? Há reembolso?", "a": "Você paga com cartão através da Paddle, nosso Merchant of Record, que cuida da cobrança, dos impostos e das faturas. O plano custa USD 25/mês, renova automaticamente e você pode cancelar quando quiser. Cada pagamento tem garantia de reembolso de 14 dias, sem perguntas." }
       ]
     },
     "cta": {

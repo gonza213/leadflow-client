@@ -61,7 +61,7 @@ useHead({
           }
         },
         "description": t('meta.schemaDescription'),
-        "featureList": "Automatic lead distribution, HubSpot integration, GoHighLevel integration, monday.com automation, Limits per sales rep, Percentage-based team management",
+        "featureList": "Automatic lead distribution, Percentage-based team management, Daily and weekly limits per sales rep, Backup sellers, Built-in sales pipeline, Appointment calendar, Web form and CSV import, GoHighLevel integration, HubSpot, Make and Zapier webhooks, AI lead scoring, Two-step verification",
         "inLanguage": locale.value,
         "creator": {
           "@type": "Organization",
