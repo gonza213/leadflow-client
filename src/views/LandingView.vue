@@ -51,11 +51,11 @@ useHead({
         "applicationCategory": "BusinessApplication",
         "offers": {
           "@type": "Offer",
-          "price": "25.00",
+          "price": "49.00",
           "priceCurrency": "USD",
           "priceSpecification": {
             "@type": "UnitPriceSpecification",
-            "price": "25.00",
+            "price": "49.00",
             "priceCurrency": "USD",
             "unitText": "month"
           }
@@ -454,7 +454,7 @@ onUnmounted(() => {
         <div class="hero-stats">
           <div class="stat"><span class="stat-num">100%</span><span class="stat-label">{{ t('hero.stats.assigned') }}</span></div>
           <div class="stat-divider"></div>
-          <div class="stat"><span class="stat-num">USD 25</span><span class="stat-label">{{ t('hero.stats.price') }}</span></div>
+          <div class="stat"><span class="stat-num">USD 49</span><span class="stat-label">{{ t('hero.stats.price') }}</span></div>
           <div class="stat-divider"></div>
           <div class="stat"><span class="stat-num">9+</span><span class="stat-label">{{ t('hero.stats.crms') }}</span></div>
         </div>
@@ -944,7 +944,7 @@ onUnmounted(() => {
             <h3 class="pricing-name">{{ t('landing.pricing.monthly.title') }}</h3>
             <div class="pricing-price">
               <span class="price-currency">USD</span>
-              <span class="price-amount">25</span>
+              <span class="price-amount">49</span>
               <span class="price-period">{{ t('landing.pricing.monthly.period') }}</span>
             </div>
             <p class="pricing-desc">{{ t('landing.pricing.monthly.desc') }}</p>

@@ -19,10 +19,10 @@
     "next_renewal": "Próxima renovação",
     "plan": "Plano",
     "lifetime_plan": "Vitalício (sem custo)",
-    "monthly_plan": "$25 USD / mês",
+    "monthly_plan": "$49 USD / mês",
     "trial_message": "Assine para continuar usando o LeadDistro quando seu período de teste terminar.",
     "inactive_message": "Sua assinatura está inativa. Ative-a para voltar a usar a plataforma.",
-    "subscribe_button": "Assinar por $25 USD/mês",
+    "subscribe_button": "Assinar por $49 USD/mês",
     "cancel_success": "✓ Assinatura cancelada. Você pode continuar usando o LeadDistro até o fim do período atual.",
     "cancel_action": "Cancelar assinatura",
     "confirm_cancel_title": "Tem certeza de que deseja cancelar?",
@@ -116,7 +116,7 @@
     },
     "stats": {
       "assigned": "0 leads perdidos",
-      "price": "USD 25/mês, sem contratos",
+      "price": "USD 49/mês, sem contratos",
       "crms": "CRMs compatíveis"
     }
   },
@@ -444,7 +444,7 @@
         "title": "Plano Mensal",
         "desc": "Tudo o que sua agência precisa para não perder nenhum lead.",
         "period": "/ mês",
-        "trialNote": "7 dias grátis. Depois, USD 25/mês. Cancele quando quiser.",
+        "trialNote": "7 dias grátis. Depois, USD 49/mês. Cancele quando quiser.",
         "features": [
           "Empresas / subcontas ilimitadas com uma única assinatura",
           "Vendedores ilimitados",
@@ -483,19 +483,19 @@
       "items": [
         { "q": "Como funciona a distribuição automática de leads?", "a": "Quando seu CRM envia um lead para o webhook do LeadDistro, o sistema identifica a equipe de destino de acordo com as porcentagens configuradas e, dentro dessa equipe, seleciona o vendedor com maior capacidade disponível (menor ratio carga/limite). Tudo acontece em milissegundos e o resultado volta para o CRM automaticamente." },
         { "q": "Com quais CRMs o LeadDistro se integra?", "a": "O LeadDistro integra-se com qualquer plataforma que suporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n e muitos outros. Se o seu CRM pode enviar um HTTP POST, ele funciona com o LeadDistro." },
-        { "q": "Posso gerenciar várias empresas ou subcontas com uma única conta?", "a": "Sim. O LeadDistro é multiempresa: com um único login você cria e gerencia todas as suas empresas ou subcontas (por exemplo, uma para cada subconta do GoHighLevel), cada uma com suas próprias equipes, vendedores, webhooks e configurações. E o melhor: uma única assinatura de $25 USD/mês cobre todas." },
+        { "q": "Posso gerenciar várias empresas ou subcontas com uma única conta?", "a": "Sim. O LeadDistro é multiempresa: com um único login você cria e gerencia todas as suas empresas ou subcontas (por exemplo, uma para cada subconta do GoHighLevel), cada uma com suas próprias equipes, vendedores, webhooks e configurações. E o melhor: uma única assinatura de $49 USD/mês cobre todas." },
         { "q": "O que acontece se todos os vendedores atingirem seu limite?", "a": "Você pode configurar até 2 vendedores de reserva (fallback). Quando todos os vendedores ativos atingem seu limite diário ou semanal, os leads são redirecionados automaticamente para esses vendedores de reserva. Assim, nenhum lead fica sem atribuição." },
         { "q": "Posso ter múltiplas equipes com distribuições diferentes?", "a": "Sim. Você pode criar quantas equipes precisar e atribuir a cada uma uma porcentagem do total de leads. Por exemplo: Equipe A recebe 60% e Equipe B 40%. Cada equipe tem seus próprios vendedores, limites e configurações." },
-        { "q": "O que acontece quando o período de teste termina?", "a": "Ao final dos 7 dias de teste, sua conta fica inativa. Você não perde nenhum dado — ao assinar por $25 USD/mês, você recupera o acesso imediatamente com toda a sua configuração intacta." },
+        { "q": "O que acontece quando o período de teste termina?", "a": "Ao final dos 7 dias de teste, sua conta fica inativa. Você não perde nenhum dado — ao assinar por $49 USD/mês, você recupera o acesso imediatamente com toda a sua configuração intacta." },
         { "q": "Posso cancelar a qualquer momento?", "a": "Sim, sem fidelidade ou multas. Ao cancelar, sua assinatura não será renovada no mês seguinte. Seus dados permanecem disponíveis até o final do período pago." },
         { "q": "Os dados dos meus leads estão seguros?", "a": "Sim. Cada empresa tem seu próprio espaço isolado — nenhum dado é acessível por outra conta. Toda conta nova confirma o e-mail, você pode ativar a verificação em duas etapas (2FA) com um app autenticador e proteger o webhook de leads com uma API key. As comunicações são criptografadas via HTTPS e as senhas são armazenadas com bcrypt. Não compartilhamos nem vendemos dados de nenhum tipo." },
-        { "q": "Como eu pago? Há reembolso?", "a": "Você paga com cartão através da Paddle, nosso Merchant of Record, que cuida da cobrança, dos impostos e das faturas. O plano custa USD 25/mês, renova automaticamente e você pode cancelar quando quiser. Cada pagamento tem garantia de reembolso de 14 dias, sem perguntas." }
+        { "q": "Como eu pago? Há reembolso?", "a": "Você paga com cartão através da Paddle, nosso Merchant of Record, que cuida da cobrança, dos impostos e das faturas. O plano custa USD 49/mês, renova automaticamente e você pode cancelar quando quiser. Cada pagamento tem garantia de reembolso de 14 dias, sem perguntas." }
       ]
     },
     "cta": {
       "badge": "Multi-tenant · Multi-equipe · Tempo real",
       "title": "Pronto para começar?",
-      "subtitle": "Cadastre-se em segundos e comece a distribuir leads hoje. 7 dias grátis, sem cartão de crédito. A partir de $25 USD/mês.",
+      "subtitle": "Cadastre-se em segundos e comece a distribuir leads hoje. 7 dias grátis, sem cartão de crédito. A partir de $49 USD/mês.",
       "cta": "Começar grátis",
       "hasAccount": "Já tenho conta",
       "feats": ["Setup em 5 minutos", "Integração com CRM", "Sem leads perdidos"]
@@ -680,7 +680,7 @@
     "s4": {
       "title": "4. Assinatura e pagamentos",
       "p1": "Teste grátis: Ao se cadastrar, você tem 7 dias de teste grátis, sem cartão. Quando o teste termina, a conta fica inativa até que você ative uma assinatura.",
-      "p2": "Assinatura mensal: O plano custa USD 25 por mês. Nosso processo de compra é realizado pelo nosso revendedor online Paddle.com. A Paddle.com é o Merchant of Record de todos os nossos pedidos. A Paddle atende às solicitações de suporte ao cliente e gerencia as devoluções.",
+      "p2": "Assinatura mensal: O plano custa USD 49 por mês. Nosso processo de compra é realizado pelo nosso revendedor online Paddle.com. A Paddle.com é o Merchant of Record de todos os nossos pedidos. A Paddle atende às solicitações de suporte ao cliente e gerencia as devoluções.",
       "p3": "Renovação: A assinatura é renovada automaticamente todo mês até que você a cancele. Você pode cancelar quando quiser pela sua conta.",
       "p4": "Reembolsos: Oferecemos garantia de devolução de 14 dias em cada pagamento. Veja nossa Política de reembolso em www.leaddistro.site/refund."
     },

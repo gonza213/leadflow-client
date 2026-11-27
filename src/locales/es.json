@@ -27,7 +27,7 @@
     },
     "stats": {
       "assigned": "0 leads perdidos",
-      "price": "USD 25/mes, sin contratos",
+      "price": "USD 49/mes, sin contratos",
       "crms": "CRMs compatibles"
     }
   },
@@ -223,7 +223,7 @@
     "s4": {
       "title": "4. Suscripción y pagos",
       "p1": "Prueba gratis: Al registrarte tenés 7 días de prueba gratis, sin tarjeta. Cuando termina la prueba, la cuenta queda inactiva hasta que actives una suscripción.",
-      "p2": "Suscripción mensual: El plan cuesta USD 25 por mes. Nuestro proceso de compra lo realiza nuestro revendedor online Paddle.com. Paddle.com es el Merchant of Record de todos nuestros pedidos. Paddle atiende las consultas de servicio al cliente y gestiona las devoluciones.",
+      "p2": "Suscripción mensual: El plan cuesta USD 49 por mes. Nuestro proceso de compra lo realiza nuestro revendedor online Paddle.com. Paddle.com es el Merchant of Record de todos nuestros pedidos. Paddle atiende las consultas de servicio al cliente y gestiona las devoluciones.",
       "p3": "Renovación: La suscripción se renueva automáticamente cada mes hasta que la canceles. Podés cancelarla cuando quieras desde tu cuenta.",
       "p4": "Reembolsos: Ofrecemos una garantía de devolución de 14 días en cada pago. Ver nuestra Política de reembolso en www.leaddistro.site/refund."
     },
@@ -509,7 +509,7 @@
         "title": "Plan Mensual",
         "desc": "Todo lo que necesita tu agencia para no perder ni un lead.",
         "period": "/ mes",
-        "trialNote": "7 días gratis. Después, USD 25/mes. Cancelás cuando quieras.",
+        "trialNote": "7 días gratis. Después, USD 49/mes. Cancelás cuando quieras.",
         "features": [
           "Empresas / subcuentas ilimitadas con una sola suscripción",
           "Vendedores ilimitados",
@@ -556,19 +556,19 @@
       "items": [
         { "q": "¿Cómo funciona la distribución automática de leads?", "a": "Cuando tu CRM envía un lead al webhook de LeadDistro, el sistema identifica el equipo destino según los porcentajes configurados, y dentro de ese equipo selecciona al vendedor con mayor capacidad disponible (menor ratio carga/límite). Todo ocurre en milisegundos y el resultado vuelve al CRM automáticamente." },
         { "q": "¿Con qué CRMs se integra LeadDistro?", "a": "LeadDistro se integra con cualquier plataforma que soporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n y muchos más. Si tu CRM puede enviar un HTTP POST, funciona con LeadDistro." },
-        { "q": "¿Puedo manejar varias empresas o subcuentas con una sola cuenta?", "a": "Sí. LeadDistro es multi-empresa: con un solo login creás y administrás todas tus empresas o subcuentas (por ejemplo, una por cada subcuenta de GoHighLevel), cada una con sus propios equipos, vendedores, webhooks y configuración. Y lo mejor: una única suscripción de $25 USD/mes las cubre a todas." },
+        { "q": "¿Puedo manejar varias empresas o subcuentas con una sola cuenta?", "a": "Sí. LeadDistro es multi-empresa: con un solo login creás y administrás todas tus empresas o subcuentas (por ejemplo, una por cada subcuenta de GoHighLevel), cada una con sus propios equipos, vendedores, webhooks y configuración. Y lo mejor: una única suscripción de $49 USD/mes las cubre a todas." },
         { "q": "¿Qué pasa si todos los vendedores alcanzan su límite?", "a": "Podés configurar hasta 2 vendedores de respaldo (fallback). Cuando todos los vendedores activos alcanzan su límite diario o semanal, los leads se redirigen automáticamente a esos vendedores de respaldo. Así nunca queda un lead sin asignar." },
         { "q": "¿Puedo tener múltiples equipos con distribuciones distintas?", "a": "Sí. Podés crear tantos equipos como necesitás y asignarle a cada uno un porcentaje del total de leads. Por ejemplo: Equipo A recibe 60% y Equipo B el 40%. Cada equipo tiene sus propios vendedores, límites y configuraciones." },
-        { "q": "¿Qué sucede cuando vence el período de prueba?", "a": "Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $25 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta." },
+        { "q": "¿Qué sucede cuando vence el período de prueba?", "a": "Al vencer los 7 días de prueba, tu cuenta queda en estado inactivo. No perdés ningún dato — al suscribirte por $49 USD/mes recuperás el acceso inmediatamente con toda tu configuración intacta." },
         { "q": "¿Puedo cancelar en cualquier momento?", "a": "Sí, sin permanencia ni penalidades. Al cancelar tu suscripción no se renueva el siguiente mes. Tus datos permanecen disponibles hasta el final del período pagado." },
         { "q": "¿Los datos de mis leads están seguros?", "a": "Sí. Cada empresa tiene su propio espacio aislado — ningún dato es accesible desde otra cuenta. Toda cuenta nueva confirma su email, podés activar la verificación en dos pasos (2FA) con una app autenticadora y proteger el webhook de leads con una API key. Las comunicaciones van cifradas por HTTPS y las contraseñas se guardan con bcrypt. No compartimos ni vendemos datos de ningún tipo." },
-        { "q": "¿Cómo se paga? ¿Hay reembolso?", "a": "Pagás con tarjeta a través de Paddle, nuestro Merchant of Record, que se encarga del cobro, los impuestos y las facturas. El plan cuesta USD 25/mes, se renueva solo y lo podés cancelar cuando quieras. Cada pago tiene garantía de devolución de 14 días, sin preguntas." }
+        { "q": "¿Cómo se paga? ¿Hay reembolso?", "a": "Pagás con tarjeta a través de Paddle, nuestro Merchant of Record, que se encarga del cobro, los impuestos y las facturas. El plan cuesta USD 49/mes, se renueva solo y lo podés cancelar cuando quieras. Cada pago tiene garantía de devolución de 14 días, sin preguntas." }
       ]
     },
     "cta": {
       "badge": "Multi-tenant · Multi-equipo · Tiempo real",
       "title": "¿Listo para empezar?",
-      "subtitle": "Registrate en segundos y empezá a distribuir leads hoy. 7 días gratis, sin tarjeta de crédito. Desde $25 USD/mes.",
+      "subtitle": "Registrate en segundos y empezá a distribuir leads hoy. 7 días gratis, sin tarjeta de crédito. Desde $49 USD/mes.",
       "cta": "Empezar gratis",
       "hasAccount": "Ya tengo cuenta",
       "feats": ["Setup en 5 minutos", "Integración CRM", "Sin leads perdidos"]
@@ -1286,10 +1286,10 @@
     "next_renewal": "Próxima renovación",
     "plan": "Plan",
     "lifetime_plan": "Lifetime (sin costo)",
-    "monthly_plan": "$25 USD / mes",
+    "monthly_plan": "$49 USD / mes",
     "trial_message": "Suscribite para continuar usando LeadDistro cuando venza tu período de prueba.",
     "inactive_message": "Tu suscripción está inactiva. Activala para volver a usar la plataforma.",
-    "subscribe_button": "Suscribirme por $25 USD/mes",
+    "subscribe_button": "Suscribirme por $49 USD/mes",
     "cancel_success": "✓ Suscripción cancelada. Podés seguir usando LeadDistro hasta que venza el período actual.",
     "cancel_action": "Cancelar suscripción",
     "confirm_cancel_title": "¿Estás seguro que querés cancelar?",
