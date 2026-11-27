@@ -121,12 +121,15 @@ const layoutDay = (list) => {
   return out.map(({ a, start, end, col, cols }) => {
     const top = Math.max(start, min)
     const bottom = Math.min(Math.max(end, top + 15), max)
+    const height = Math.max(((bottom - top) / 60) * HOUR_PX - 2, 22)
     return {
       a,
       outside: end <= min || start >= max,
+      // En las citas cortas no entran dos líneas: va todo en una
+      compact: height < 40,
       style: {
         top: `${((top - min) / 60) * HOUR_PX}px`,
-        height: `${Math.max(((bottom - top) / 60) * HOUR_PX - 2, 22)}px`,
+        height: `${height}px`,
         left: `calc(${(col / cols) * 100}% + 2px)`,
         width: `calc(${100 / cols}% - 4px)`
       }
@@ -297,11 +300,13 @@ onUnmounted(() => { clearInterval(clock); clearTimeout(toastTimer) })
               <button
                 v-for="b in blocksFor(c)" :key="b.a._id" type="button"
                 class="absolute z-20 overflow-hidden rounded-md border-l-4 px-1.5 py-1 text-left text-xs shadow-sm hover:shadow-md transition-shadow"
-                :class="statusClass(b.a)" :style="b.style"
+                :class="statusClass(b.a)" :style="b.style" :title="[time(b.a.startsAt), b.a.title, who(b.a)].filter(Boolean).join(' · ')"
                 @click="openEdit(b.a)"
               >
-                <div class="font-semibold leading-tight truncate">{{ time(b.a.startsAt) }} {{ b.a.title }}</div>
-                <div v-if="who(b.a)" class="truncate opacity-80">{{ who(b.a) }}</div>
+                <div class="font-semibold leading-tight truncate">
+                  {{ time(b.a.startsAt) }} {{ b.a.title }}<span v-if="b.compact && who(b.a)" class="font-normal opacity-80"> · {{ who(b.a) }}</span>
+                </div>
+                <div v-if="!b.compact && who(b.a)" class="truncate opacity-80">{{ who(b.a) }}</div>
               </button>
             </div>
           </div>
