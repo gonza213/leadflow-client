@@ -1,4 +1,5 @@
 <script setup>
+import SubscribeActions from '../components/billing/SubscribeActions.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
@@ -15,7 +16,7 @@ const uiStore = useUiStore()
 const email = ref('')
 const password = ref('')
 const error = ref('')
-const subscriptionLink = ref('')
+const canPay = ref(false)
 const showPassword = ref(false)
 
 // Forgot password
@@ -27,7 +28,7 @@ const forgotError = ref('')
 
 const handleSubmit = async () => {
   error.value = ''
-  subscriptionLink.value = ''
+  canPay.value = false
 
   if (!email.value || !password.value) {
     error.value = t('auth.errorEmpty')
@@ -47,7 +48,7 @@ const handleSubmit = async () => {
     }
   } else {
     error.value = result.error
-    subscriptionLink.value = result.subscriptionLink || ''
+    canPay.value = result.canPay
   }
 }
 
@@ -143,15 +144,11 @@ const handleForgot = async () => {
           <div v-if="error && error === 'subscription_inactive'" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-2">
             <p class="font-semibold text-yellow-800 dark:text-yellow-300">{{ t('auth.subscriptionInactive') }}</p>
             <p class="text-yellow-700 dark:text-yellow-400">{{ t('hero.stats.price') }}.</p>
-            <a
-              v-if="subscriptionLink"
-              :href="subscriptionLink"
-              target="_blank"
-              class="inline-block mt-1 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold rounded-lg transition-colors"
-            >
-              {{ t('auth.activateSubscription') }} →
-            </a>
-            <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">{{ t('auth.paymentInfo') }}</p>
+            <template v-if="canPay">
+              <SubscribeActions />
+              <p class="text-xs text-yellow-600 dark:text-yellow-500 mt-1">{{ t('checkout.paymentInfo') }}</p>
+            </template>
+            <p v-else class="text-yellow-700 dark:text-yellow-400">{{ t('checkout.contactOwner') }}</p>
           </div>
           <div v-else-if="error" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">
             {{ error }}

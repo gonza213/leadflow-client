@@ -53,14 +53,14 @@ const fetchSummaries = async (page = 1) => {
 onMounted(() => fetchSummaries())
 
 const formatDate = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Date(dateStr).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     hour: '2-digit', minute: '2-digit'
   })
 }
 
 const formatDateShort = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Date(dateStr).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     year: 'numeric', month: 'short', day: 'numeric'
   })
 }
@@ -99,7 +99,7 @@ const downloadPdf = (summary) => {
     : `<span class="ok">${t('summaries.pdf.none')}</span>`
 
   printWindow.document.write(`<!DOCTYPE html>
-<html lang="${locale.value === 'pt-BR' ? 'pt' : 'es'}">
+<html lang="${locale.value.split('-')[0]}">
 <head>
   <meta charset="UTF-8"/>
   <title>${t('summaries.pdf.title', { date: formatDateShort(summary.createdAt) })}</title>

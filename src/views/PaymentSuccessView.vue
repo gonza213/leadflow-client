@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { subscriptionApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
+import { getPaymentToken, setPaymentToken } from '../services/paymentToken'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -18,10 +19,11 @@ const MAX_RETRIES = 10
 let left = false
 onUnmounted(() => { left = true })
 
-const verifyPaddle = async (transactionId) => {
+const verify = async (transactionId) => {
   for (let attempt = 0; !left; attempt++) {
     try {
-      await subscriptionApi.verifyPaddle(transactionId)
+      await subscriptionApi.verify(transactionId)
+      setPaymentToken(null)
       await authStore.fetchUser() // refresca el estado (saca el aviso de prueba)
       status.value = 'success'
       return
@@ -33,20 +35,13 @@ const verifyPaddle = async (transactionId) => {
   status.value = 'error'
 }
 
-onMounted(async () => {
-  const { provider, txn } = route.query
-  if (provider === 'paddle' && typeof txn === 'string') return verifyPaddle(txn)
-  try {
-    const tenantId = route.query.external_id || authStore.user?.tenant?.id
-    if (!tenantId) {
-      status.value = 'error'
-      return
-    }
-    await subscriptionApi.verify(tenantId)
-    status.value = 'success'
-  } catch {
+onMounted(() => {
+  const { txn } = route.query
+  if (!authStore.isAuthenticated && !getPaymentToken()) {
     status.value = 'error'
+    return
   }
+  verify(typeof txn === 'string' ? txn : undefined)
 })
 </script>
 
@@ -77,7 +72,7 @@ onMounted(async () => {
             {{ t('paymentSuccess.success.desc') }}
           </p>
           <button @click="router.push('/login')" class="btn btn-primary w-full">
-            {{ t('paymentSuccess.success.btn') }}
+            {{ authStore.isAuthenticated ? t('paymentSuccess.success.btn') : t('auth.login') }}
           </button>
         </div>
 

@@ -23,7 +23,7 @@ const fetchInvoices = async () => {
 }
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Date(dateString).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     day: 'numeric',
     month: 'long',
     year: 'numeric'

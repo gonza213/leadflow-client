@@ -102,7 +102,7 @@
     "terms": "Termos de Serviço"
   },
   "hero": {
-    "badge": "Para agências em LATAM, Ásia e África",
+    "badge": "Para agências de vendas do mundo todo",
     "title": "Cada lead, atribuído",
     "titleGradient": "sem perder nenhum",
     "subtitle": "Pare de atribuir manualmente. LeadDistro distribui seus leads instantaneamente ao vendedor disponível correto — respeitando limites, equipes e capacidade.",
@@ -244,7 +244,7 @@
       "p1t": "Pipeline por etapas",
       "p1d": "Arraste cada lead de etapa em etapa, com notas, histórico e o valor de cada oportunidade.",
       "p2t": "Contato em um clique",
-      "p2d": "Botão de WhatsApp e de ligação em cada lead. Cada vendedor vê apenas os seus.",
+      "p2d": "Botões para enviar mensagem e ligar em cada lead. Cada vendedor vê apenas os seus.",
       "p3t": "Leads de qualquer fonte",
       "p3d": "Do seu CRM, de um formulário no seu site, cadastro manual ou um CSV. Todos são distribuídos com as mesmas regras.",
       "cta": "Teste grátis",
@@ -277,7 +277,7 @@
       "subtitle": "Duas ferramentas para agências que gerenciam várias empresas: cobre pelos leads entregues e distribua-os a partir de uma única campanha.",
       "g": {
         "title": "Gift card de leads",
-        "desc": "Cada empresa pode ter um saldo pré-pago de leads. O gerente compra a quantidade que quiser com Stripe ou Mercado Pago e o pagamento vai direto para a sua conta.",
+        "desc": "Cada empresa pode ter um saldo pré-pago de leads. O gerente compra a quantidade que quiser pela sua conta de cobrança conectada e o pagamento vai direto para você.",
         "p1": "Você cadastra suas credenciais de pagamento e define o preço por lead",
         "p2": "O saldo diminui a cada lead recebido; em 0 o lead fica retido e não se perde",
         "p3": "Aviso por e-mail ao gerente e a você, e reatribuição manual para outra empresa",
@@ -392,7 +392,7 @@
       "assignMsg": "Atribuindo vendedor...",
       "items": {
         "ghl": { "desc": "O aliado #1 para agências GHL" },
-        "kommo": { "desc": "Potencialize suas vendas pelo WhatsApp" },
+        "kommo": { "desc": "Potencialize suas conversas de vendas" },
         "monday": { "desc": "O cérebro de atribuição para o monday.com" },
         "hubspot": { "desc": "Distribuição inteligente para seu CRM" },
         "clientify": { "desc": "Impulsione seu CRM de marketing" },
@@ -424,20 +424,6 @@
       },
       "values": { "basic": "Básico", "advanced": "Avançado" },
       "footer": "O LeadDistro não substitui seu CRM, ele o potencializa para que nenhum lead se perca."
-    },
-    "availability": {
-      "tag": "Disponibilidade",
-      "title": "Países Disponíveis",
-      "subtitle": "O LeadDistro está operando para agências nos mercados com maior crescimento.",
-      "headers": {
-        "region": "Região",
-        "countries": "Países"
-      },
-      "items": [
-        { "region": "América Latina", "countries": "Argentina, Bolívia, Brasil, Chile, Colômbia, Costa Rica, Equador, Guatemala, México, Paraguai, Panamá, Peru e Uruguai." },
-        { "region": "Ásia", "countries": "Indonésia e Malásia." },
-        { "region": "África", "countries": "Quênia e Nigéria." }
-      ]
     },
     "presence": {
       "tag": "EXCLUSIVO",
@@ -491,7 +477,7 @@
     "faq": {
       "tag": "Perguntas frequentes",
       "title": "Tudo o que você precisa saber",
-      "subtitle": "Se tiver mais dúvidas, entre em contato com o nosso suporte para receber ajuda imediata.",
+      "subtitle": "Se tiver mais dúvidas, escreva para support{'@'}leaddistro.site.",
       "items": [
         { "q": "Como funciona a distribuição automática de leads?", "a": "Quando seu CRM envia um lead para o webhook do LeadDistro, o sistema identifica a equipe de destino de acordo com as porcentagens configuradas e, dentro dessa equipe, seleciona o vendedor com maior capacidade disponível (menor ratio carga/limite). Tudo acontece em milissegundos e o resultado volta para o CRM automaticamente." },
         { "q": "Com quais CRMs o LeadDistro se integra?", "a": "O LeadDistro integra-se com qualquer plataforma que suporte webhooks: GoHighLevel, HubSpot, Salesforce, Pipedrive, ActiveCampaign, Make, Zapier, n8n e muitos outros. Se o seu CRM pode enviar um HTTP POST, ele funciona com o LeadDistro." },
@@ -635,19 +621,18 @@
       "l4": "Os dados são armazenados no MongoDB Atlas com backups automáticos."
     },
     "s5": {
-      "payments": "Os pagamentos são processados pela Paddle.com (clientes internacionais) e pela dLocalGo (América Latina). Não armazenamos dados de cartão.",
       "title": "5. Serviços de terceiros",
       "desc": "O LeadDistro utiliza os seguintes prestadores de serviços:",
       "l1": "MongoDB Atlas — armazenamento de dados.",
       "l2": "Resend — envio de e-mails transacionais.",
-      "l3": "dLocalGo — processamento de pagamentos e assinaturas.",
+      "l3": "Paddle.com — processamento de pagamentos e assinaturas (Merchant of Record). Não armazenamos dados de cartão.",
       "l4": "Vercel — hospedagem de frontend.",
       "l5": "Koyeb — hospedagem de backend.",
       "footer": "Esses provedores têm suas próprias políticas de privacidade e recebem apenas as informações necessárias para prestar seus serviços."
     },
     "s6": {
       "title": "6. Retenção e exclusão de dados",
-      "desc": "Seus dados são retidos enquanto sua conta estiver ativa. Se você cancelar sua conta, poderá solicitar a exclusão completa de seus dados através do suporte. Os dados de faturamento podem ser retidos devido a obrigações legais, de acordo com a legislação aplicável."
+      "desc": "Seus dados são mantidos enquanto sua conta estiver ativa. Se cancelar a conta, você pode pedir a exclusão completa dos dados escrevendo para support{'@'}leaddistro.site. Dados de faturamento podem ser mantidos por obrigações legais conforme a legislação aplicável."
     },
     "s7": {
       "title": "7. Seus direitos",
@@ -656,7 +641,7 @@
       "l2": "Corrigir informações incorretas.",
       "l3": "Solicitar a exclusão de sua conta e dados.",
       "l4": "Exportar seus leads em formato CSV a partir do dashboard.",
-      "footer": "Para exercer qualquer um destes direitos, contacte-nos através do suporte."
+      "footer": "Para exercer qualquer um desses direitos, escreva para support{'@'}leaddistro.site."
     },
     "s8": {
       "title": "8. Alterações nesta política",
@@ -673,7 +658,7 @@
     "metaDescription": "Leia os termos e condições de uso da plataforma LeadDistro.",
     "s1": {
       "title": "1. Aceitação dos termos",
-      "desc": "Ao criar uma conta e utilizar o LeadDistro, você aceita estes Termos de Serviço na íntegra. Se você não concordar com qualquer um destes termos, não poderá usar o serviço. O LeadDistro é operado por Gonzalo Vidal, pessoa física, Argentina (support{'@'}leaddistro.site)."
+      "desc": "Ao criar uma conta e utilizar o LeadDistro, você aceita estes Termos de Serviço na íntegra. Se você não concordar com qualquer um destes termos, não poderá usar o serviço. O LeadDistro é um serviço de software operado a partir da Argentina (support{'@'}leaddistro.site)."
     },
     "s2": {
       "title": "2. Descrição do serviço",
@@ -691,8 +676,8 @@
     "s4": {
       "title": "4. Assinatura e pagamentos",
       "p1": "Teste grátis: Ao se cadastrar, você tem 7 dias de teste grátis, sem cartão. Quando o teste termina, a conta fica inativa até que você ative uma assinatura.",
-      "p2": "Assinatura mensal: O plano custa USD 25 por mês. Nosso processo de compra é realizado pelo nosso revendedor online Paddle.com. A Paddle.com é o Merchant of Record de todos os pedidos feitos fora da América Latina; a Paddle atende às solicitações de suporte ao cliente e cuida das devoluções desses pedidos. Clientes da América Latina podem pagar pela dLocalGo, nosso processador de pagamentos local.",
-      "p3": "Renovação: A assinatura é renovada automaticamente todos os meses até que você a cancele. Você pode cancelar quando quiser pela sua conta.",
+      "p2": "Assinatura mensal: O plano custa USD 25 por mês. Nosso processo de compra é realizado pelo nosso revendedor online Paddle.com. A Paddle.com é o Merchant of Record de todos os nossos pedidos. A Paddle atende às solicitações de suporte ao cliente e gerencia as devoluções.",
+      "p3": "Renovação: A assinatura é renovada automaticamente todo mês até que você a cancele. Você pode cancelar quando quiser pela sua conta.",
       "p4": "Reembolsos: Oferecemos garantia de devolução de 14 dias em cada pagamento. Veja nossa Política de reembolso em www.leaddistro.site/refund."
     },
     "s5": {
@@ -1955,12 +1940,11 @@
     "sendError": "Não foi possível enviar. Tente novamente."
   },
   "checkout": {
-    "payByCard": "Pagar com cartão (USD)",
-    "otherInternational": "Está fora da América Latina? Pague com cartão internacional",
-    "otherLocal": "Está na América Latina? Pague com meios locais",
-    "updateCard": "Atualizar cartão",
     "error": "Não foi possível abrir o pagamento. Tente novamente.",
-    "portalError": "Não foi possível abrir o portal de pagamentos. Tente novamente."
+    "portalError": "Não foi possível abrir o portal de pagamentos. Tente novamente.",
+    "manage": "Atualizar cartão / ver faturas",
+    "paymentInfo": "Pagamento seguro com cartão processado pela Paddle. Depois de pagar, entre novamente.",
+    "contactOwner": "Peça ao dono da conta que renove a assinatura, ou escreva para support{'@'}leaddistro.site."
   },
   "refund": {
     "title": "Política de reembolso",
@@ -1972,8 +1956,7 @@
     },
     "s2": {
       "title": "2. Como pedir um reembolso",
-      "p1": "Clientes internacionais (pagamentos processados pela Paddle): peça em paddle.net ou respondendo ao e-mail do recibo da Paddle. Você também pode escrever para support{'@'}leaddistro.site e nós cuidamos disso.",
-      "p2": "Clientes da América Latina (pagamentos processados pela dLocalGo): escreva para support{'@'}leaddistro.site com o e-mail da sua conta."
+      "desc": "Nossos pedidos são processados pela Paddle.com, nosso Merchant of Record. Peça o reembolso em paddle.net ou respondendo ao e-mail do recibo da Paddle. Você também pode escrever para support{'@'}leaddistro.site e nós cuidamos disso."
     },
     "s3": {
       "title": "3. O que acontece depois do reembolso",

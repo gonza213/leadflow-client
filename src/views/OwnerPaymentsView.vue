@@ -110,13 +110,13 @@ const copy = async (key) => {
 }
 
 const money = (amount, currency) =>
-  new Intl.NumberFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  new Intl.NumberFormat(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     style: 'currency',
     currency,
     maximumFractionDigits: 2
   }).format(amount)
 
-const formatDate = (d) => d ? new Date(d).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR') : ''
+const formatDate = (d) => d ? new Date(d).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR')) : ''
 const canPrice = computed(() => Number(price.amount) > 0)
 </script>
 

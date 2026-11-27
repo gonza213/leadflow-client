@@ -3,16 +3,20 @@ import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-const { t, tm } = useI18n()
+// Los artículos no están traducidos al inglés: el blog se muestra completo en español o portugués
+const { messages, locale } = useI18n({ useScope: 'global' })
+const blogLocale = locale.value === 'pt-BR' ? 'pt-BR' : 'es'
+const blog = messages.value[blogLocale].blog
 const router = useRouter()
 
 useHead({
-  title: () => t('blog.seoTitle') || t('blog.title'),
+  htmlAttrs: { lang: blogLocale },
+  title: () => blog.seoTitle || blog.title,
   meta: [
-    { name: 'description', content: () => t('blog.seoDescription') || t('blog.subtitle') },
+    { name: 'description', content: () => blog.seoDescription || blog.subtitle },
     
-    { property: 'og:title', content: () => t('blog.title') },
-    { property: 'og:description', content: () => t('blog.subtitle') },
+    { property: 'og:title', content: () => blog.title },
+    { property: 'og:description', content: () => blog.subtitle },
     { property: 'og:type', content: 'website' },
     { name: 'robots', content: 'index, follow' },
     { rel: 'canonical', href: 'https://www.leaddistro.site/blog' }
@@ -20,11 +24,11 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Blog",
         "name": "LeadDistro Blog",
-        "description": t('blog.subtitle'),
+        "description": blog.subtitle,
         "url": "https://www.leaddistro.site/blog",
         "publisher": {
           "@type": "Organization",
@@ -36,7 +40,7 @@ useHead({
   ]
 })
 
-const postsData = tm('blog.posts')
+const postsData = blog.posts
 
 const posts = postsData ? Object.keys(postsData).map(key => ({
   slug: key,
@@ -88,8 +92,8 @@ const getCardStyle = (slug) => {
     <header class="blog-header">
       <div class="container">
         <a href="/landing" class="back-link">← Volver a LeadDistro</a>
-        <h1>{{ t('blog.title') }}</h1>
-        <p>{{ t('blog.subtitle') }}</p>
+        <h1>{{ blog.title }}</h1>
+        <p>{{ blog.subtitle }}</p>
       </div>
     </header>
 
@@ -111,7 +115,7 @@ const getCardStyle = (slug) => {
           <div class="card-content">
             <h2>{{ post.title }}</h2>
             <p>{{ post.description }}</p>
-            <span class="card-link">{{ t('blog.readMore') }} →</span>
+            <span class="card-link">{{ blog.readMore }} →</span>
           </div>
         </article>
       </div>

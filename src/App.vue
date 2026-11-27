@@ -32,7 +32,8 @@ const handleVerifyPayment = async () => {
     // Refrescar datos del usuario para actualizar subscriptionStatus
     await authStore.fetchUser()
   } catch (e) {
-    verifyError.value = e.response?.data?.message || t('trial.banner.error')
+    // El mensaje del server está en español: se muestra el traducido
+    verifyError.value = t('trial.banner.error')
   } finally {
     verifying.value = false
   }

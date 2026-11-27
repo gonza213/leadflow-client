@@ -75,7 +75,7 @@ const weekPreview = computed(() => {
   const end = new Date(start)
   end.setDate(start.getDate() + 6)
 
-  const fmt = (d) => d.toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'short', year: 'numeric' })
+  const fmt = (d) => d.toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), { day: 'numeric', month: 'short', year: 'numeric' })
   return `${fmt(start)} – ${fmt(end)}`
 })
 
@@ -185,9 +185,9 @@ const handleSave = async () => {
       <div v-if="localFechaInicio && localFechaFin" class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-6">
         <p class="text-sm text-blue-700 dark:text-blue-400">
           <strong>{{ t('config.period.active') }}</strong>
-          {{ new Date(localFechaInicio + 'T12:00:00').toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+          {{ new Date(localFechaInicio + 'T12:00:00').toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale] || 'es-AR'), { day: 'numeric', month: 'long', year: 'numeric' }) }}
           –
-          {{ new Date(localFechaFin + 'T12:00:00').toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: 'numeric', month: 'long', year: 'numeric' }) }}
+          {{ new Date(localFechaFin + 'T12:00:00').toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale] || 'es-AR'), { day: 'numeric', month: 'long', year: 'numeric' }) }}
         </p>
       </div>
     </div>

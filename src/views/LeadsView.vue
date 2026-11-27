@@ -159,7 +159,7 @@ const handleDelete = async () => {
 const formatDate = (date) => {
   if (!date) return '-'
   const tz = configStore.config?.timezone || 'America/New_York'
-  return new Intl.DateTimeFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Intl.DateTimeFormat(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     timeZone: tz,
     day: '2-digit',
     month: '2-digit',
@@ -172,7 +172,7 @@ const formatDate = (date) => {
 const formatDateShort = (date) => {
   if (!date) return '-'
   const tz = configStore.config?.timezone || 'America/New_York'
-  return new Intl.DateTimeFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Intl.DateTimeFormat(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     timeZone: tz,
     day: '2-digit',
     month: '2-digit',

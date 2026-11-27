@@ -32,14 +32,14 @@ const total = computed(() => {
 })
 
 const money = (amount, currency) =>
-  new Intl.NumberFormat(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  new Intl.NumberFormat(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     style: 'currency',
     currency,
     maximumFractionDigits: 2
   }).format(amount)
 
 const statusLabel = (s) => t(`giftcard.status.${s}`)
-const formatDate = (d) => new Date(d).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR')
+const formatDate = (d) => new Date(d).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'))
 
 const fetchAll = async () => {
   const [c, p] = await Promise.all([

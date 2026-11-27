@@ -5,6 +5,7 @@ import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
 import SubscribeActions from '../components/billing/SubscribeActions.vue'
 import PaddleCardButton from '../components/billing/PaddleCardButton.vue'
+import { useHasPaddleSubscription } from '../composables/useHasPaddleSubscription'
 import { useI18n } from 'vue-i18n'
 import { subscriptionApi } from '../services/api'
 import TeamsConfig from '../components/config/TeamsConfig.vue'
@@ -51,6 +52,7 @@ const togglePipeline = async () => {
 }
 
 // Cancelación
+const hasPaddleSubscription = useHasPaddleSubscription()
 const cancelling = ref(false)
 const cancelError = ref('')
 const cancelSuccess = ref(false)
@@ -74,7 +76,7 @@ const handleCancel = async () => {
     showCancelConfirm.value = false
     await authStore.fetchUser()
   } catch (e) {
-    cancelError.value = e.response?.data?.message || t('subscription.cancel_error')
+    cancelError.value = t('subscription.cancel_error')
   } finally {
     cancelling.value = false
   }
@@ -270,10 +272,10 @@ onMounted(async () => {
           </div>
         </div>
 
-        <PaddleCardButton v-if="subStatus === 'active'" />
+        <PaddleCardButton v-if="hasPaddleSubscription" />
 
         <!-- Cancelar (solo activo) -->
-        <div v-if="subStatus === 'active'">
+        <div v-if="subStatus === 'active' && hasPaddleSubscription">
           <div v-if="cancelSuccess" class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-sm text-green-800 dark:text-green-300">
             {{ t('subscription.cancel_success') }}
           </div>

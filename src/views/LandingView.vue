@@ -23,11 +23,11 @@ useHead({
     { property: 'og:description', content: () => t('meta.ogDescription') },
     { property: 'og:type', content: 'website' },
     { property: 'og:site_name', content: 'LeadDistro' },
-    { property: 'og:locale', content: () => ({ es: 'es_LA', 'pt-BR': 'pt_BR', en: 'en_US' }[locale.value] || 'es_LA') },
+    { property: 'og:locale', content: () => ({ es: 'es_ES', 'pt-BR': 'pt_BR', en: 'en_US' }[locale.value] || 'en_US') },
     { property: 'og:url', content: 'https://www.leaddistro.site/landing' },
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
-    { property: 'og:image:alt', content: 'LeadDistro: distribución automática de leads' },
+    { property: 'og:image:alt', content: () => t('meta.ogTitle') },
     { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1' },
     { property: 'og:image', content: 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png' },
     { name: 'twitter:card', content: 'summary_large_image' },
@@ -41,7 +41,7 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: () => JSON.stringify({
+      innerHTML: () => JSON.stringify({
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "LeadDistro",
@@ -57,11 +57,11 @@ useHead({
             "@type": "UnitPriceSpecification",
             "price": "25.00",
             "priceCurrency": "USD",
-            "unitText": "mes"
+            "unitText": "month"
           }
         },
         "description": t('meta.schemaDescription'),
-        "featureList": "Distribución automática de leads, Integración HubSpot, Integración GoHighLevel, Automatización monday.com, Límites por vendedor, Gestión de equipos por porcentaje",
+        "featureList": "Automatic lead distribution, HubSpot integration, GoHighLevel integration, monday.com automation, Limits per sales rep, Percentage-based team management",
         "inLanguage": locale.value,
         "creator": {
           "@type": "Organization",
@@ -72,7 +72,7 @@ useHead({
     },
     {
       type: 'application/ld+json',
-      children: () => JSON.stringify({
+      innerHTML: () => JSON.stringify({
         "@context": "https://schema.org",
         "@graph": [
           {
@@ -95,7 +95,7 @@ useHead({
     },
     {
       type: 'application/ld+json',
-      children: () => JSON.stringify({
+      innerHTML: () => JSON.stringify({
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": tm('landing.faq.items').map(item => ({
@@ -140,7 +140,7 @@ const setLanguage = (newLocale) => {
 }
 
 const languages = [
-  { code: 'es', label: 'Español', flag: 'https://flagcdn.com/w40/ar.png' },
+  { code: 'es', label: 'Español', flag: 'https://flagcdn.com/w40/es.png' },
   { code: 'pt-BR', label: 'Português', flag: 'https://flagcdn.com/w40/br.png' },
   { code: 'en', label: 'English', flag: 'https://flagcdn.com/w40/us.png' }
 ]
@@ -149,9 +149,9 @@ const getLangData = (code) => languages.find(l => l.code === code) || languages[
 
 // --- Mockup Animations Logic ---
 const dashboardSellers = ref([
-  { name: 'Karla Perez', team: 'Equipo CH', initials: 'KP', color: '#C8F23A', pct: 72, count: 43, limit: 60 },
-  { name: 'Christopher Valles', team: 'Equipo LATAM', initials: 'CV', color: '#7DD3FC', pct: 35, count: 32, limit: 90 },
-  { name: 'Adrian Anez', team: 'Equipo ES', initials: 'AA', color: '#FDBA74', pct: 66, count: 40, limit: 60 }
+  { name: 'Karla Perez', team: 'Team CH', initials: 'KP', color: '#C8F23A', pct: 72, count: 43, limit: 60 },
+  { name: 'Christopher Valles', team: 'Team US', initials: 'CV', color: '#7DD3FC', pct: 35, count: 32, limit: 90 },
+  { name: 'Adrian Anez', team: 'Team ES', initials: 'AA', color: '#FDBA74', pct: 66, count: 40, limit: 60 }
 ])
 
 const currentAssignmentIndex = ref(0)
@@ -185,7 +185,7 @@ const animateKpis = () => {
 const incomingLeads = [
   { lead: 'María G.', source: 'Facebook Ads' },
   { lead: 'Lucas R.', source: 'Instagram' },
-  { lead: 'Sofía M.', source: 'WhatsApp' },
+  { lead: 'Sofía M.', source: 'Referral' },
   { lead: 'Diego P.', source: 'Landing' },
   { lead: 'Valentina C.', source: 'Facebook Ads' },
   { lead: 'Martín S.', source: 'Google Ads' }
@@ -222,10 +222,10 @@ const OFFICE_GRADIENTS = [['#C8F23A', '#84CC16'], ['#7DD3FC', '#38BDF8'], ['#FDB
 const OFFICE_STATUS_COLOR = { active: '#84CC16', idle: '#F59E0B', away: '#38BDF8', offline: '#8A918A' }
 const OFFICE_ORDER = { active: 0, idle: 1, away: 2, offline: 3 }
 const officeDemo = ref([
-  { name: 'Karla Pérez', team: 'Equipo CH', status: 'active', leads: 9, sales: 5, g: 0 },
-  { name: 'Christopher Vallés', team: 'Equipo LATAM', status: 'idle', leads: 6, sales: 3, g: 1 },
-  { name: 'Adrián Ávalos', team: 'Equipo ES', status: 'away', leads: 4, sales: 1, g: 2 },
-  { name: 'Luis Rodríguez', team: 'Equipo CH', status: 'offline', leads: 0, sales: 2, g: 3 }
+  { name: 'Karla Pérez', team: 'Team CH', status: 'active', leads: 9, sales: 5, g: 0 },
+  { name: 'Christopher Vallés', team: 'Team US', status: 'idle', leads: 6, sales: 3, g: 1 },
+  { name: 'Adrián Ávalos', team: 'Team ES', status: 'away', leads: 4, sales: 1, g: 2 },
+  { name: 'Luis Rodríguez', team: 'Team CH', status: 'offline', leads: 0, sales: 2, g: 3 }
 ])
 const officeSorted = computed(() =>
   [...officeDemo.value].sort((a, b) => OFFICE_ORDER[a.status] - OFFICE_ORDER[b.status])
@@ -928,34 +928,6 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- AVAILABILITY -->
-    <section class="section section-dark reveal" id="availability">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">{{ t('landing.availability.tag') }}</div>
-          <h2 class="section-title">{{ t('landing.availability.title') }}</h2>
-          <p class="section-sub">{{ t('landing.availability.subtitle') }}</p>
-        </div>
-
-        <div class="availability-table-wrapper">
-          <table class="availability-table">
-            <thead>
-              <tr>
-                <th class="region-col">{{ t('landing.availability.headers.region') }}</th>
-                <th class="countries-col">{{ t('landing.availability.headers.countries') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="item in availabilityItems" :key="item.region">
-                <td class="region-name"><strong>{{ item.region }}</strong></td>
-                <td class="countries-list">{{ item.countries }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
     <!-- PRICING -->
     <section class="section reveal" id="pricing">
       <div class="container">
@@ -998,7 +970,7 @@ onUnmounted(() => {
         <div class="section-header">
           <div class="section-tag">{{ t('landing.faq.tag') }}</div>
           <h2 class="section-title">{{ t('landing.faq.title') }}</h2>
-          <p v-if="locale === 'es'" class="section-sub">{{ t('landing.faq.subtitle') }}</p>
+          <p class="section-sub">{{ t('landing.faq.subtitle') }}</p>
         </div>
         <div class="faq-list">
           <div
@@ -1278,12 +1250,6 @@ export default {
         { name: this.$rt(items.fallback), native: false, leaddistro: true },
         { name: this.$rt(items.metrics), native: false, leaddistro: true }
       ]
-    },
-    availabilityItems() {
-      return this.$tm('landing.availability.items').map(item => ({
-        region: this.$rt(item.region),
-        countries: this.$rt(item.countries)
-      }))
     }
   },
   data() {
@@ -1981,16 +1947,6 @@ export default {
 .cta-sub { font-size: 1rem; color: var(--ld-muted); line-height: 1.7; margin-bottom: 34px; }
 .cta-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
 .cta-feats { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 0.8rem; color: var(--ld-muted); font-weight: 500; }
-.btn-whatsapp {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: #25d366; color: var(--ld-ink);
-  font-weight: 700; font-size: 1rem;
-  padding: 15px 32px; border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(37,211,102,0.4);
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-decoration: none;
-}
-.btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,211,102,0.55); }
 /* ===== FOOTER ===== */
 .landing-footer { padding: 48px 0 24px; border-top: 1px solid rgba(var(--ld-fg),0.06); }
 .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; margin-bottom: 40px; flex-wrap: wrap; }
@@ -2121,48 +2077,8 @@ export default {
 }
 
 /* ===== AVAILABILITY TABLE ===== */
-.availability-table-wrapper {
-  margin-top: 40px;
-  background: rgba(var(--ld-card-rgb),0.4);
-  border: 1px solid rgba(var(--ld-fg),0.05);
-  border-radius: 16px;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-}
-.availability-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-.availability-table th, .availability-table td {
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(var(--ld-fg),0.05);
-}
-.availability-table th {
-  background: rgba(var(--ld-fg),0.02);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--ld-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.availability-table tr:last-child td { border-bottom: none; }
-.region-name { 
-  width: 200px; 
-  color: var(--ld-ink); 
-  font-size: 1rem;
-  white-space: nowrap;
-}
-.countries-list {
-  color: var(--ld-muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
 
 @media (max-width: 640px) {
-  .availability-table th, .availability-table td { padding: 16px; }
-  .region-name { width: auto; font-size: 0.9rem; }
-  .countries-list { font-size: 0.85rem; }
 }
 .section-presence {
   background: var(--ld-bg);

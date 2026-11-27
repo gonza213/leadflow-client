@@ -117,7 +117,7 @@ const getCategoryLabel = (cat) => {
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Date(date).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',

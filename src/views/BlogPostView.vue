@@ -6,11 +6,14 @@ import { useHead } from '@unhead/vue'
 
 const route = useRoute()
 const router = useRouter()
-const { t, tm } = useI18n()
+// Los artículos no están traducidos al inglés: el blog se muestra completo en español o portugués
+const { messages, locale } = useI18n({ useScope: 'global' })
+const blogLocale = locale.value === 'pt-BR' ? 'pt-BR' : 'es'
+const blog = messages.value[blogLocale].blog
 
 const slug = computed(() => route.params.slug)
 
-const postsData = tm('blog.posts')
+const postsData = blog.posts
 
 const post = computed(() => {
   if (!slug.value || !postsData) return null
@@ -54,6 +57,7 @@ const formattedContent = computed(() => {
 const OG_IMAGE = 'https://res.cloudinary.com/dazfmv5ls/image/upload/b_rgb:0f172a,c_pad,w_1200,h_630/v1775877205/Gemini_Generated_Image_66tv5366tv5366tv-removebg-preview_cdwhmv.png'
 
 useHead({
+  htmlAttrs: { lang: blogLocale },
   title: () => post.value?.title ? `${post.value.title} | LeadDistro Blog` : 'LeadDistro Blog',
   meta: () => post.value ? [
     { name: 'description', content: post.value.description },
@@ -75,7 +79,7 @@ useHead({
   script: () => post.value ? [
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": post.value.title,
@@ -94,7 +98,7 @@ useHead({
     },
     {
       type: 'application/ld+json',
-      children: JSON.stringify({
+      innerHTML: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [

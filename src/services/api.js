@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getPaymentToken } from './paymentToken'
 
 // In development, VITE_API_URL is empty and Vite proxy handles /api
 // In production, VITE_API_URL should be the full backend URL (e.g., https://api.leaddistro.app)
@@ -17,7 +18,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
-    if (token) {
+    if (token && !config.headers.Authorization) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
@@ -36,7 +37,7 @@ api.interceptors.response.use(
       window.location.href = '/login'
     }
     // Suscripción vencida/inactiva detectada a mitad de sesión
-    if (error.response?.status === 403 && error.response?.data?.message === 'subscription_inactive') {
+    if (error.response?.status === 403 && error.response?.data?.message === 'subscription_inactive' && localStorage.getItem('token')) {
       const storedUser = JSON.parse(localStorage.getItem('user') || 'null')
       if (storedUser?.role === 'adminclient') {
         // dueño multi-cuenta: solo esa subcuenta está vencida; volver a sus cuentas
@@ -172,10 +173,16 @@ const activeTenantId = () => {
   }
 }
 
+// Pagar sin sesión: solo con el permiso que dio el login bloqueado
+const payingAuth = () => {
+  const token = !localStorage.getItem('token') && getPaymentToken()
+  return token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
+}
+
 export const subscriptionApi = {
-  verify: (tenantId) => api.post('/subscription/verify', { tenantId: tenantId || activeTenantId() }),
-  verifyPaddle: (transactionId) => api.post('/subscription/verify', { provider: 'paddle', transactionId }),
-  getCheckoutInfo: () => api.get('/subscription/checkout-info'),
+  // Con transactionId al volver del checkout; sin él revisa la suscripción actual
+  verify: (transactionId) => api.post('/subscription/verify', transactionId ? { transactionId } : {}, payingAuth()),
+  getCheckoutInfo: () => api.get('/subscription/checkout-info', payingAuth()),
   paddlePortal: () => api.post('/subscription/paddle/portal'),
   cancel: () => api.post('/subscription/cancel', { tenantId: activeTenantId() }),
   getMyInvoices: () => api.get('/subscription/invoices', { params: { tenantId: activeTenantId() } })

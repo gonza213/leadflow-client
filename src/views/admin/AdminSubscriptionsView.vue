@@ -107,7 +107,7 @@ const getStatusClass = (status) => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString(locale.value === 'pt-BR' ? 'pt-BR' : 'es-AR', {
+  return new Date(date).toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale.value] || 'es-AR'), {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'
@@ -187,7 +187,7 @@ const formatDate = (date) => {
           <span class="text-xs font-bold uppercase opacity-80">{{ t('admin.subscriptions.stats.thisMonth') }}</span>
         </div>
         <div class="text-3xl font-bold mb-1">${{ stats.monthly }} <span class="text-lg font-normal opacity-80 text-emerald-100">USD</span></div>
-        <div class="text-xs text-emerald-100">{{ t('admin.subscriptions.stats.thisMonthDesc', { month: new Date().toLocaleDateString(locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { month: 'long' }) }) }}</div>
+        <div class="text-xs text-emerald-100">{{ t('admin.subscriptions.stats.thisMonthDesc', { month: new Date().toLocaleDateString(({ en: 'en-US', 'pt-BR': 'pt-BR' }[locale] || 'es-AR'), { month: 'long' }) }) }}</div>
       </div>
 
       <div class="card bg-gradient-to-br from-gray-800 to-gray-950 text-white border-none shadow-lg">

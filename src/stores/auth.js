@@ -1,3 +1,4 @@
+import { setPaymentToken } from '../services/paymentToken'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authApi } from '../services/api'
@@ -43,14 +44,16 @@ export const useAuthStore = defineStore('auth', () => {
 
       localStorage.setItem('token', newToken)
       localStorage.setItem('user', JSON.stringify(userData))
+      setPaymentToken(null)
 
       return { success: true }
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al iniciar sesión'
+      setPaymentToken(err.response?.data?.paymentToken || null)
       return {
         success: false,
         error: error.value,
-        subscriptionLink: err.response?.data?.subscriptionLink || null
+        canPay: !!err.response?.data?.paymentToken
       }
     } finally {
       loading.value = false
@@ -87,6 +90,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    setPaymentToken(null)
   }
 
   return {

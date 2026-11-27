@@ -81,11 +81,10 @@ useHead({
         <ul>
           <li><strong>MongoDB Atlas</strong> — {{ t('privacy.s5.l1').split('—')[1] }}</li>
           <li><strong>Resend</strong> — {{ t('privacy.s5.l2').split('—')[1] }}</li>
-          <li><strong>dLocalGo</strong> — {{ t('privacy.s5.l3').split('—')[1] }}</li>
+          <li><strong>Paddle.com</strong> — {{ t('privacy.s5.l3').split('—')[1] }}</li>
           <li><strong>Vercel</strong> — {{ t('privacy.s5.l4').split('—')[1] }}</li>
           <li><strong>Koyeb</strong> — {{ t('privacy.s5.l5').split('—')[1] }}</li>
         </ul>
-        <p>{{ t('privacy.s5.payments') }}</p>
         <p>{{ t('privacy.s5.footer') }}</p>
       </section>
 

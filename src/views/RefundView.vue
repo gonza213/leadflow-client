@@ -38,10 +38,7 @@ useHead({
 
       <section>
         <h2>{{ t('refund.s2.title') }}</h2>
-        <ul>
-          <li>{{ t('refund.s2.p1') }}</li>
-          <li>{{ t('refund.s2.p2') }}</li>
-        </ul>
+        <p>{{ t('refund.s2.desc') }}</p>
       </section>
 
       <section v-for="key in ['s3', 's4', 's5']" :key="key">

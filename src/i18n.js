@@ -3,21 +3,21 @@ import es from './locales/es.json'
 import ptBR from './locales/pt-BR.json'
 import en from './locales/en.json'
 
-// Idioma elegido o, si nunca eligió, el del navegador. En el build (sin window) es español
+// Idioma elegido o, si nunca eligió, el del navegador. En el build (sin window) es inglés
 export const detectLocale = () => {
-  if (typeof window === 'undefined') return 'es'
+  if (typeof window === 'undefined') return 'en'
   const saved = localStorage.getItem('user-locale')
   if (saved) return saved
-  const nav = (navigator.language || 'es').toLowerCase()
-  if (nav.startsWith('en')) return 'en'
+  const nav = (navigator.language || 'en').toLowerCase()
+  if (nav.startsWith('es')) return 'es'
   if (nav.startsWith('pt')) return 'pt-BR'
-  return 'es'
+  return 'en'
 }
 
 const i18n = createI18n({
   legacy: false, 
   locale: detectLocale(),
-  fallbackLocale: 'es',
+  fallbackLocale: 'en',
   messages: {
     'es': es,
     'pt-BR': ptBR,
