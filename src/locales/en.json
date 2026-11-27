@@ -662,6 +662,68 @@
     }
   },
   "help": {
+    "owner": {
+      "title": "Your portal guide",
+      "s": {
+        "accounts": {
+          "t": "My companies",
+          "d": "Manage all your companies here (for example, one per GoHighLevel sub-account) with a single subscription.",
+          "items": [
+            "**Create new company**: each one has its own sales reps, teams, webhook and settings.",
+            "**Enter**: opens that company's dashboard to set up reps, teams and integrations. To come back, click **My companies** at the top left.",
+            "**Gift card**: when on, the company only receives leads while it has balance. Use it to sell them leads.",
+            "**Deactivate** stops its leads and its users' access. **The trash icon** deletes it with all its data and cannot be undone."
+          ]
+        },
+        "dashboard": {
+          "t": "Dashboard",
+          "d": "An overview of all your companies together.",
+          "items": [
+            "**Leads by company**: how many each one received in the period.",
+            "Filter by **company** to see just one.",
+            "If you sell leads, you also see **leads sold, revenue and companies with no balance**."
+          ]
+        },
+        "subscription": {
+          "t": "Subscription",
+          "d": "One subscription covers all your companies, with unlimited reps and leads.",
+          "items": [
+            "You pay by card through **Paddle**. From here you update your card, see your invoices or cancel.",
+            "If you cancel, you keep access until the end of the period you already paid for.",
+            "If the subscription expires, your companies stop receiving leads until you renew. You don't lose any data."
+          ]
+        },
+        "integrations": {
+          "t": "Single campaign",
+          "d": "Use one campaign (for example, on Facebook) for all your companies: LeadDistro picks the company, then the sales rep.",
+          "items": [
+            "It works alongside each company's own campaign: whatever already works stays the same.",
+            "**1.** In each target GHL sub-account, create a **Private Integration** token (contacts: read and write) and paste it with its **Location ID** in the company.",
+            "**2.** Turn on **Participates** and set the **weight**: a company with 30 gets twice as many as one with 15.",
+            "**3.** In the sub-account where the campaign lands, add a **Custom Webhook (POST)** with the single campaign URL."
+          ]
+        },
+        "payments": {
+          "t": "Payments",
+          "d": "Sell leads to your companies: managers pay you directly.",
+          "items": [
+            "Connect your **Stripe** and/or **Mercado Pago** with your secret key or Access Token.",
+            "Set the **price per lead** and the currency.",
+            "Turn on the **gift card** for the companies you sell to: they buy balance and each lead uses 1.",
+            "In **Sales** you see every purchase: company, amount, method and date."
+          ]
+        },
+        "held": {
+          "t": "Held leads",
+          "d": "No lead is lost, even when a company can't receive it.",
+          "items": [
+            "If a gift card company runs **out of balance**, its new leads are **held**.",
+            "They're assigned automatically when it tops up. You can also **add balance** yourself or **reassign** them to another company from **Held**.",
+            "In the single campaign, if no company is available, the lead is held and distributed as soon as one is."
+          ]
+        }
+      }
+    },
     "title": "User Guide — LeadDistro",
     "step": "Step {n} of {total}",
     "tourBtn": "Interactive tour",

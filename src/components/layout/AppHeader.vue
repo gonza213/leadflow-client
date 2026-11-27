@@ -14,8 +14,7 @@ const router = useRouter()
 const route = useRoute()
 const showHelp = ref(false)
 
-// La guía/tour describe las secciones de una empresa; en el portal del dueño
-// (/cuentas*) no aplica y confunde
+// En el portal del dueño (/cuentas*) la guía muestra sus propias secciones (HelpModal)
 const inOwnerPortal = computed(() =>
   authStore.isAdminClient && (route.path.startsWith('/cuentas') || !authStore.tenantSlug)
 )
@@ -129,7 +128,7 @@ const handleToggleDarkMode = () => {
       </button>
 
       <!-- Help button (oculto en el portal del dueño) -->
-      <button v-if="!inOwnerPortal" id="tour-help-btn" @click="showHelp = true"
+      <button id="tour-help-btn" @click="showHelp = true"
         class="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
         :title="t('ui.help')">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,5 +167,5 @@ const handleToggleDarkMode = () => {
 </header>
 
 <!-- Help Modal -->
-<HelpModal v-if="showHelp" @close="showHelp = false" />
+<HelpModal v-if="showHelp" :owner-mode="inOwnerPortal" @close="showHelp = false" />
 </template>

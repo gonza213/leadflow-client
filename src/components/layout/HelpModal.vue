@@ -6,6 +6,8 @@ import { useTour } from '../../composables/useTour'
 import { useAuthStore } from '../../stores/auth'
 import { useConfigStore } from '../../stores/config'
 
+// ownerMode: portal del dueño (/cuentas*), con sus propias secciones y sin tour
+const props = defineProps({ ownerMode: { type: Boolean, default: false } })
 const emit = defineEmits(['close'])
 const { startTour } = useTour()
 const { t, tm, rt, te } = useI18n()
@@ -58,25 +60,46 @@ const sectionMeta = [
     icon: svg('<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>') }
 ]
 
+// Portal del dueño: sus pantallas (/cuentas*). Textos en help.owner.s.*
+const ownerSectionMeta = [
+  { key: 'accounts', path: '/cuentas',
+    icon: svg('<path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/>') },
+  { key: 'dashboard', path: '/cuentas/dashboard',
+    icon: svg('<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>') },
+  { key: 'subscription', path: '/cuentas/suscripcion',
+    icon: svg('<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>') },
+  { key: 'integrations', path: '/cuentas/integraciones', isNew: true,
+    icon: svg('<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>') },
+  { key: 'payments', path: '/cuentas/cobros', isNew: true,
+    icon: svg('<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2.1 0 2.8 6 1.4 6 4.2 0 1.2-1.3 2.2-3 2.2-1.5 0-2.7-.6-3.1-1.7M12 6v2M12 16v2"/>') },
+  { key: 'held', path: '/cuentas',
+    icon: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>') }
+]
+
+const buildSection = (meta, base, path = meta.path, goLabel = null) => {
+  // te() devuelve false para nodos array; tm() retorna {} si la clave no existe
+  const rawItems = tm(`${base}.items`)
+  return {
+    ...meta,
+    path,
+    goLabel: goLabel || t(`${base}.t`),
+    title: t(`${base}.t`),
+    desc: te(`${base}.d`) ? t(`${base}.d`) : null,
+    items: Array.isArray(rawItems) && rawItems.length ? rawItems.map(i => rt(i)) : null
+  }
+}
+
 // Computed para que reaccione al cambio de idioma en vivo
-const sections = computed(() => sectionMeta
+const sections = computed(() => props.ownerMode
+  ? ownerSectionMeta.map(meta => buildSection(meta, `help.owner.s.${meta.key}`))
+  : sectionMeta
   .filter(meta => meta.roles.includes(role.value))
   // Sin pipeline activo, solo el manager ve el paso (para saber cómo activarlo)
   .filter(meta => !meta.needsPipeline || pipelineOn.value || role.value === 'manager')
   .map(meta => {
-    const base = `help.s.${meta.key}`
-    // te() devuelve false para nodos array; tm() retorna {} si la clave no existe
-    const rawItems = tm(`${base}.items`)
     // El pipeline apagado lleva a Configuración, donde se activa
-    const path = meta.needsPipeline && !pipelineOn.value ? '/config' : meta.path
-    return {
-      ...meta,
-      path,
-      goLabel: meta.needsPipeline && !pipelineOn.value ? t('menu.config') : t(`${base}.t`),
-      title: t(`${base}.t`),
-      desc: te(`${base}.d`) ? t(`${base}.d`) : null,
-      items: Array.isArray(rawItems) && rawItems.length ? rawItems.map(i => rt(i)) : null
-    }
+    const pipelineOff = meta.needsPipeline && !pipelineOn.value
+    return buildSection(meta, `help.s.${meta.key}`, pipelineOff ? '/config' : meta.path, pipelineOff ? t('menu.config') : null)
   }))
 
 const current = computed(() => sections.value[Math.min(currentStep.value, sections.value.length - 1)])
@@ -112,7 +135,7 @@ const bold = (text) => text
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9.2a2.9 2.9 0 0 1 5.6 1c0 1.9-2.8 2.6-2.8 2.6"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
             </div>
             <div>
-              <h2 class="hm-title">{{ t('help.title') }}</h2>
+              <h2 class="hm-title">{{ ownerMode ? t('help.owner.title') : t('help.title') }}</h2>
               <p class="hm-subtitle">{{ t('help.step', { n: currentStep + 1, total: sections.length }) }}</p>
             </div>
           </div>
@@ -166,10 +189,11 @@ const bold = (text) => text
 
         <!-- Navegación -->
         <div class="hm-footer">
-          <button @click="handleStartTour" class="btn-tour">
+          <button v-if="!ownerMode" @click="handleStartTour" class="btn-tour">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             {{ t('help.tourBtn') }}
           </button>
+          <span v-else></span>
           <div class="hm-nav">
             <button @click="prev" :disabled="currentStep === 0" class="hm-nav-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>

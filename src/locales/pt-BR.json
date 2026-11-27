@@ -819,6 +819,68 @@
     }
   },
   "help": {
+    "owner": {
+      "title": "Guia do seu portal",
+      "s": {
+        "accounts": {
+          "t": "Minhas empresas",
+          "d": "Aqui você gerencia todas as suas empresas (por exemplo, uma por subconta do GoHighLevel) com uma única assinatura.",
+          "items": [
+            "**Criar nova empresa**: cada uma tem seus próprios vendedores, equipes, webhook e configurações.",
+            "**Entrar**: abre o painel dessa empresa para configurar vendedores, equipes e integrações. Para voltar, clique em **Minhas empresas** no canto superior esquerdo.",
+            "**Gift card**: se ativado, a empresa só recebe leads enquanto tiver saldo. Serve para vender leads a ela.",
+            "**Desativar** interrompe os leads e o acesso dos usuários. **A lixeira** a exclui com todos os dados e não pode ser desfeita."
+          ]
+        },
+        "dashboard": {
+          "t": "Dashboard",
+          "d": "A visão geral de todas as suas empresas juntas.",
+          "items": [
+            "**Leads por empresa**: quantos cada uma recebeu no período.",
+            "Filtre por **empresa** para ver só uma.",
+            "Se você vende leads, também vê **leads vendidos, receita e empresas sem saldo**."
+          ]
+        },
+        "subscription": {
+          "t": "Assinatura",
+          "d": "Uma única assinatura cobre todas as suas empresas, com vendedores e leads ilimitados.",
+          "items": [
+            "Você paga com cartão pela **Paddle**. Daqui você atualiza o cartão, vê suas faturas ou cancela.",
+            "Se cancelar, mantém o acesso até o fim do período já pago.",
+            "Se a assinatura vencer, suas empresas deixam de receber leads até você renovar. Você não perde nenhum dado."
+          ]
+        },
+        "integrations": {
+          "t": "Campanha única",
+          "d": "Use uma só campanha (por exemplo, no Facebook) para todas as suas empresas: o LeadDistro escolhe a empresa e depois o vendedor.",
+          "items": [
+            "Funciona junto com a campanha própria de cada empresa: o que já funciona não muda.",
+            "**1.** Em cada subconta de destino do GHL, crie um token de **Private Integration** (contatos: ler e escrever) e cole-o com o **Location ID** na empresa.",
+            "**2.** Ative **Participa** e defina o **peso**: uma empresa com 30 recebe o dobro de uma com 15.",
+            "**3.** Na subconta onde cai a campanha, adicione um **Custom Webhook (POST)** com a URL da campanha única."
+          ]
+        },
+        "payments": {
+          "t": "Cobranças",
+          "d": "Venda leads para suas empresas: os managers pagam direto para você.",
+          "items": [
+            "Conecte seu **Stripe** e/ou **Mercado Pago** com sua chave secreta ou Access Token.",
+            "Defina o **preço por lead** e a moeda.",
+            "Ative o **gift card** nas empresas para as quais você vende: elas compram saldo e cada lead desconta 1.",
+            "Em **Vendas** você vê cada compra: empresa, valor, método e data."
+          ]
+        },
+        "held": {
+          "t": "Leads retidos",
+          "d": "Nenhum lead se perde, mesmo quando uma empresa não pode recebê-lo.",
+          "items": [
+            "Se uma empresa com gift card fica **sem saldo**, seus leads novos ficam **em espera**.",
+            "Eles são atribuídos sozinhos quando ela recarrega. Você também pode **carregar saldo** ou **reatribuí-los** a outra empresa em **Retidos**.",
+            "Na campanha única, se nenhuma empresa estiver disponível, o lead fica retido e é distribuído assim que uma voltar."
+          ]
+        }
+      }
+    },
     "title": "Guia de uso — LeadDistro",
     "step": "Passo {n} de {total}",
     "tourBtn": "Tour interativo",
