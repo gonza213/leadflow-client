@@ -52,5 +52,11 @@ export const createApp = ViteSSG(
         next()
       }
     })
+
+    // Meta Pixel: es una SPA, así que el PageView del index.html solo cuenta la primera carga.
+    // Cada cambio de ruta posterior se registra acá (la primera navegación se saltea para no duplicar).
+    router.afterEach((to, from) => {
+      if (from.matched.length && typeof window.fbq === 'function') window.fbq('track', 'PageView')
+    })
   }
 )
