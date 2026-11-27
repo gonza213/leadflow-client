@@ -518,6 +518,8 @@
           "Real-time dashboard",
           "Integration with any CRM",
           "Lead export to CSV",
+          "Built-in pipeline and appointment calendar",
+          "Two-step verification (2FA)",
           "Support included"
         ]
       },
@@ -559,8 +561,8 @@
         { "q": "Can I have multiple teams with different distributions?", "a": "Yes. You can create as many teams as you need and assign a percentage of the total leads to each one. For example: Team A receives 60% and Team B receives 40%. Each team has its own sellers, limits, and settings." },
         { "q": "What happens when the trial period expires?", "a": "When the 7-day trial period expires, your account is in an inactive state. You don't lose any data — by subscribing for $25 USD/month you regain access immediately with all your settings intact." },
         { "q": "Can I cancel at any time?", "a": "Yes, without any mandatory stay or penalties. When you cancel your subscription, it does not renew the next month. Your data remains available until the end of the paid period." },
-        { "q": "Are my leads' data safe?", "a": "Yes. Each company has its own isolated tenant — no data is accessible from another account. Communications are encrypted via HTTPS and passwords are saved with bcrypt hash. We do not share or sell data of any kind." },
-        { "q": "What does the setup service include?", "a": "The setup service ($100 USD, one-time payment) includes: complete system configuration, integration with your CRM, seller and team setup, webhooks configuration, and a training session for your team. Ready in less than 24 hours." }
+        { "q": "Are my leads' data safe?", "a": "Yes. Each company has its own isolated space — no data is accessible from another account. Every new account confirms its email, you can turn on two-step verification (2FA) with an authenticator app, and your lead webhook can be protected with an API key. Communications are encrypted via HTTPS and passwords are stored with bcrypt. We do not share or sell data of any kind." },
+        { "q": "How do I pay? Is there a refund?", "a": "You pay by card through Paddle, our Merchant of Record, which handles the payment, sales tax and invoices. The plan is USD 25/month, renews automatically and you can cancel anytime. Every payment has a 14-day money-back guarantee, no questions asked." }
       ]
     },
     "cta": {
