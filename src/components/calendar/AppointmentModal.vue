@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '../../stores/auth'
 import { useConfigStore } from '../../stores/config'
@@ -76,29 +76,39 @@ const leadSearch = ref('')
 const leadsLoading = ref(false)
 const lockLead = !!props.defaults.lead && !props.appointment
 
-const filteredLeads = computed(() => {
-  const q = leadSearch.value.trim().toLowerCase()
-  const list = leadOptions.value
-  if (!q) return list.slice(0, 50)
-  return list.filter(l => (l.name || '').toLowerCase().includes(q) || (l.phone || '').includes(q)).slice(0, 50)
+const selectedLead = ref(fixedLead)
+watch(() => form.value.leadId, (id) => {
+  selectedLead.value = leadOptions.value.find(l => String(l._id) === id) || (id ? selectedLead.value : null)
 })
-const selectedLead = computed(() => leadOptions.value.find(l => String(l._id) === form.value.leadId) || null)
+// El elegido se muestra aunque la búsqueda actual no lo incluya
+const shownLeads = computed(() => {
+  const keep = selectedLead.value
+  return keep && !leadOptions.value.some(l => String(l._id) === String(keep._id)) ? [keep, ...leadOptions.value] : leadOptions.value
+})
 
+// Busca en el servidor entre todos los leads a los que el usuario tiene acceso
+// (el seller, solo los suyos). Sin texto, trae los más recientes
+let searchRequest = 0
 const loadLeads = async () => {
   if (lockLead || !canWork.value) return
+  const request = ++searchRequest
   leadsLoading.value = true
   try {
-    // Los 200 leads más recientes a los que el usuario tiene acceso (el seller, solo los suyos)
-    const { data } = await leadsApi.getLeads(authStore.tenantSlug, { page: 1, limit: 200 })
-    const list = data.data?.leads || []
-    if (fixedLead && !list.some(l => String(l._id) === String(fixedLead._id))) list.unshift(fixedLead)
-    leadOptions.value = list
+    const search = leadSearch.value.trim()
+    const { data } = await leadsApi.getLeads(authStore.tenantSlug, { page: 1, limit: 50, ...(search && { search }) })
+    if (request === searchRequest) leadOptions.value = data.data?.leads || []
   } catch {
     // Sin la lista se puede agendar igual, sin lead
   } finally {
-    leadsLoading.value = false
+    if (request === searchRequest) leadsLoading.value = false
   }
 }
+let searchTimer
+watch(leadSearch, () => {
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(loadLeads, 300)
+})
+onUnmounted(() => clearTimeout(searchTimer))
 
 // Título automático: "Llamada con Sofía" mientras el usuario no lo escriba a mano
 const autoTitle = (type, lead) => lead ? t('calendar.titleWith', { type: t(`calendar.types.${type}`), name: lead.name }) : ''
@@ -214,8 +224,7 @@ onMounted(() => {
                 <input v-model="leadSearch" type="search" class="input mb-2" :placeholder="t('calendar.fields.searchLead')" :aria-label="t('calendar.fields.searchLead')" />
                 <select id="appt-lead" v-model="form.leadId" class="input">
                   <option value="">{{ leadsLoading ? t('common.loading') : t('calendar.fields.noLead') }}</option>
-                  <option v-if="selectedLead && !filteredLeads.includes(selectedLead)" :value="String(selectedLead._id)">{{ selectedLead.name }}</option>
-                  <option v-for="lead in filteredLeads" :key="lead._id" :value="String(lead._id)">
+                  <option v-for="lead in shownLeads" :key="lead._id" :value="String(lead._id)">
                     {{ lead.name }}{{ lead.phone ? ` · ${lead.phone}` : '' }}
                   </option>
                 </select>
