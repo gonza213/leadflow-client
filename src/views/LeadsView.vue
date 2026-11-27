@@ -7,6 +7,8 @@ import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
 import PeriodExpirationBanner from '../components/common/PeriodExpirationBanner.vue'
 import ImportCsvModal from '../components/leads/ImportCsvModal.vue'
+import AppointmentModal from '../components/calendar/AppointmentModal.vue'
+import { safeTimeZone, formatZoned } from '../utils/zonedTime'
 
 const leadsStore = useLeadsStore()
 const configStore = useConfigStore()
@@ -16,6 +18,23 @@ const { t, locale } = useI18n()
 
 const showFilters = ref(false)
 const showImport = ref(false)
+
+// Agendar una cita con un lead
+const appointmentLead = ref(null)
+const appointmentMessage = ref('')
+let appointmentTimer
+const scheduleFor = (lead) => {
+  appointmentLead.value = { lead: { _id: lead._id, name: lead.name, phone: lead.phone }, sellerId: lead.seller_id || '' }
+}
+const onAppointmentSaved = ({ overlaps }) => {
+  appointmentLead.value = null
+  const o = overlaps?.[0]
+  appointmentMessage.value = o
+    ? t('calendar.overlap', { title: o.title, time: formatZoned(o.startsAt, safeTimeZone(configStore.config?.timezone), locale.value, { hour: '2-digit', minute: '2-digit', hour12: false }) })
+    : t('calendar.created')
+  clearTimeout(appointmentTimer)
+  appointmentTimer = setTimeout(() => { appointmentMessage.value = '' }, 5000)
+}
 
 // Edit modal
 const showEditModal = ref(false)
@@ -366,6 +385,17 @@ const getStateClass = (state) => {
               <span v-if="lead.source" class="text-xs text-gray-400">{{ lead.source }}</span>
               <div v-if="authStore.canEdit" class="flex items-center gap-2">
                 <button
+                  type="button"
+                  @click="scheduleFor(lead)"
+                  class="text-primary-700 dark:text-primary-300"
+                  :title="t('calendar.lead.schedule')"
+                  :aria-label="t('calendar.lead.schedule')"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </button>
+                <button
                   @click="openEditModal(lead)"
                   class="text-blue-600 dark:text-blue-400"
                 >
@@ -409,7 +439,7 @@ const getStateClass = (state) => {
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.source') }}</th>
                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.aiScore') }}</th>
                 <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">CRM</th>
-                <th v-if="authStore.isManager" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.actions') }}</th>
+                <th v-if="authStore.canEdit" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ t('leads.table.actions') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -475,6 +505,17 @@ const getStateClass = (state) => {
                 <td v-if="authStore.canEdit" class="px-4 py-3 text-sm">
                   <div class="flex items-center gap-2">
                     <button
+                      type="button"
+                      @click="scheduleFor(lead)"
+                      class="text-primary-700 dark:text-primary-300"
+                      :title="t('calendar.lead.schedule')"
+                      :aria-label="t('calendar.lead.schedule')"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </button>
+                    <button
                       @click="openEditModal(lead)"
                       class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                       :title="t('common.edit')"
@@ -497,7 +538,7 @@ const getStateClass = (state) => {
                 </td>
               </tr>
               <tr v-if="leadsStore.leadsList.length === 0">
-                <td :colspan="authStore.isManager ? 11 : 10" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                <td :colspan="authStore.canEdit ? 12 : 11" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                   {{ t('leads.table.noLeads') }}
                 </td>
               </tr>
@@ -533,6 +574,17 @@ const getStateClass = (state) => {
     </template>
 
     <ImportCsvModal v-if="showImport" @close="showImport = false" @imported="leadsStore.fetchLeads(1)" />
+
+    <AppointmentModal
+      v-if="appointmentLead"
+      :defaults="appointmentLead"
+      @close="appointmentLead = null"
+      @saved="onAppointmentSaved"
+    />
+
+    <div v-if="appointmentMessage" role="status" class="fixed bottom-4 right-4 left-4 sm:left-auto z-[90] px-4 py-3 rounded-lg bg-gray-900 text-white text-sm shadow-lg dark:bg-white dark:text-gray-900">
+      {{ appointmentMessage }}
+    </div>
 
     <!-- Edit Modal -->
     <div v-if="showEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
