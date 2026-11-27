@@ -2,16 +2,16 @@ import { defineConfig } from 'vite'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 
 // Slugs del blog leídos del locale → así un post nuevo se pre-renderiza solo
 const esLocale = JSON.parse(readFileSync(fileURLToPath(new URL('./src/locales/es.json', import.meta.url)), 'utf-8'))
 const blogRoutes = Object.keys(esLocale.blog?.posts || {}).map(slug => `/blog/${slug}`)
 
 export default defineConfig({
+  // El CSS sale como archivo enlazado en el <head>: así las páginas pre-renderizadas
+  // se ven con estilos antes de que cargue el JavaScript
   plugins: [
-    vue(),
-    cssInjectedByJsPlugin()
+    vue()
   ],
   server: {
     port: 5173,
