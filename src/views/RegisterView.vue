@@ -1,15 +1,12 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
 import { useI18n } from 'vue-i18n'
-import api from '../services/api'
+import { authApi } from '../services/api'
+import ResendVerification from '../components/auth/ResendVerification.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
-const router = useRouter()
-const authStore = useAuthStore()
 const uiStore = useUiStore()
 
 
@@ -20,6 +17,8 @@ const showPassword = ref(false)
 const acceptedTerms = ref(false)
 const loading = ref(false)
 const error = ref('')
+// Email al que se envió la verificación: con valor, se muestra "Revisá tu email"
+const sentTo = ref('')
 
 const handleSubmit = async () => {
   error.value = ''
@@ -27,7 +26,7 @@ const handleSubmit = async () => {
     error.value = t('auth.requiredFields')
     return
   }
-  if (password.value.length < 6) {
+  if (password.value.length < 8) {
     error.value = t('auth.passwordTooShort')
     return
   }
@@ -37,21 +36,15 @@ const handleSubmit = async () => {
   }
   loading.value = true
   try {
-    // Crea solo la identidad del dueño; las cuentas (tenants) se crean en /cuentas
-    const res = await api.post('/auth/register-owner', {
+    // Crea solo la identidad del dueño; las cuentas (tenants) se crean en /cuentas.
+    // No hay sesión hasta confirmar el email
+    const res = await authApi.registerOwner({
       name: name.value,
       email: email.value,
-      password: password.value
-    }, {
-      // Same-origin: pasa por el rewrite /api de Vercel (agrega x-vercel-ip-country para el bloqueo por pais del backend)
-      baseURL: '/api'
+      password: password.value,
+      locale: locale.value
     })
-    const { token, user } = res.data
-    localStorage.setItem('token', token)
-    localStorage.setItem('user', JSON.stringify(user))
-    authStore.token = token
-    authStore.user = user
-    router.push('/cuentas')
+    sentTo.value = res.data.email
   } catch (e) {
     error.value = e.response?.data?.message || t('auth.registerError')
   } finally {
@@ -83,7 +76,17 @@ const handleSubmit = async () => {
         <p class="auth-tagline mt-3">LeadDistro — {{ t('hero.title') }}</p>
       </div>
 
-      <div class="card auth-card">
+      <div v-if="sentTo" class="card auth-card text-center space-y-4">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ t('security.verify.checkTitle') }}</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          {{ t('security.verify.sentTo') }} <strong class="break-all text-gray-900 dark:text-white">{{ sentTo }}</strong>
+        </p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('security.verify.checkDesc') }}</p>
+        <ResendVerification :email="sentTo" just-sent />
+        <router-link to="/login" class="auth-link text-sm inline-block">{{ t('security.backToLogin') }}</router-link>
+      </div>
+
+      <div v-else class="card auth-card">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-1">{{ t('auth.register') }}</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ t('hero.trust.trial') }}, {{ t('hero.trust.noCard') }}</p>
 

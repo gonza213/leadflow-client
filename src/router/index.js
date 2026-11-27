@@ -24,6 +24,12 @@ export const routes = [
     meta: { public: true }
   },
   {
+    path: '/verify-email/:token',
+    name: 'VerifyEmail',
+    component: () => import('../views/VerifyEmailView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/payment-success',
     name: 'PaymentSuccess',
     component: () => import('../views/PaymentSuccessView.vue'),

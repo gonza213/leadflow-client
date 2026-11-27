@@ -6,6 +6,8 @@ import { useAuthStore } from '../stores/auth'
 import { useUiStore } from '../stores/ui'
 import { useI18n } from 'vue-i18n'
 import api from '../services/api'
+import ResendVerification from '../components/auth/ResendVerification.vue'
+import { homeRoute } from '../utils/homeRoute'
 
 const { t } = useI18n()
 
@@ -18,6 +20,7 @@ const password = ref('')
 const error = ref('')
 const canPay = ref(false)
 const showPassword = ref(false)
+const vFocus = { mounted: (el) => el.focus() }
 
 // Forgot password
 const showForgot = ref(false)
@@ -26,9 +29,38 @@ const forgotLoading = ref(false)
 const forgotSent = ref(false)
 const forgotError = ref('')
 
-const handleSubmit = async () => {
+// Email sin confirmar: se ofrece reenviar
+const unverifiedEmail = ref('')
+
+// Segundo paso (2FA)
+const challenge = ref('')
+const code = ref('')
+const useBackup = ref(false)
+
+const clearMessages = () => {
   error.value = ''
   canPay.value = false
+  unverifiedEmail.value = ''
+}
+
+const backToCredentials = () => {
+  challenge.value = ''
+  code.value = ''
+  useBackup.value = false
+}
+
+const showFailure = (result) => {
+  if (result.status === 429) {
+    error.value = t('security.tooMany')
+    return
+  }
+  if (result.error === 'email_not_verified') unverifiedEmail.value = result.email || email.value
+  canPay.value = result.canPay
+  error.value = result.error
+}
+
+const handleSubmit = async () => {
+  clearMessages()
 
   if (!email.value || !password.value) {
     error.value = t('auth.errorEmpty')
@@ -38,18 +70,37 @@ const handleSubmit = async () => {
   const result = await authStore.login(email.value, password.value)
 
   if (result.success) {
-    if (authStore.isSuperAdmin) {
-      router.push('/admin/tenants')
-    } else if (authStore.isAdminClient) {
-      // dueño multi-cuenta: siempre pasa por el selector de cuentas
-      router.push('/cuentas')
-    } else {
-      router.push('/')
-    }
+    router.push(homeRoute(authStore))
+  } else if (result.twoFactorRequired) {
+    challenge.value = result.challengeToken
   } else {
-    error.value = result.error
-    canPay.value = result.canPay
+    showFailure(result)
   }
+}
+
+const handleCode = async () => {
+  clearMessages()
+  const result = await authStore.verifyTwoFactor(challenge.value, code.value)
+  if (result.success) return router.push(homeRoute(authStore))
+  if (result.error === 'invalid_2fa_code') {
+    error.value = t('security.twoFactor.invalidCode')
+    code.value = ''
+  } else if (result.error === 'challenge_expired') {
+    backToCredentials()
+    error.value = t('security.twoFactor.expired')
+  } else if (result.status === 429) {
+    error.value = t('security.tooMany')
+  } else {
+    // p. ej. suscripción inactiva: se muestra el mismo aviso que en el primer paso
+    backToCredentials()
+    showFailure(result)
+  }
+}
+
+const toggleBackup = () => {
+  useBackup.value = !useBackup.value
+  code.value = ''
+  error.value = ''
 }
 
 const openForgot = () => {
@@ -69,8 +120,8 @@ const handleForgot = async () => {
   try {
     await api.post('/auth/forgot-password', { email: forgotEmail.value })
     forgotSent.value = true
-  } catch {
-    forgotError.value = t('common.error')
+  } catch (e) {
+    forgotError.value = e.response?.status === 429 ? t('security.tooMany') : t('common.error')
   } finally {
     forgotLoading.value = false
   }
@@ -103,7 +154,34 @@ const handleForgot = async () => {
       <div class="card auth-card">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">{{ t('auth.loginTitle') }}</h2>
 
-        <form @submit.prevent="handleSubmit" class="space-y-4">
+        <form v-if="challenge" @submit.prevent="handleCode" class="space-y-4">
+          <p class="text-sm text-gray-600 dark:text-gray-400">{{ useBackup ? t('security.twoFactor.backupPrompt') : t('security.twoFactor.loginPrompt') }}</p>
+          <div>
+            <label class="label" for="two-factor-code">{{ useBackup ? t('security.twoFactor.backupLabel') : t('security.twoFactor.codeLabel') }}</label>
+            <input
+              id="two-factor-code"
+              :key="useBackup ? 'backup' : 'totp'"
+              v-model="code"
+              v-focus
+              type="text"
+              :inputmode="useBackup ? 'text' : 'numeric'"
+              :autocomplete="useBackup ? 'off' : 'one-time-code'"
+              :maxlength="useBackup ? 14 : 7"
+              :placeholder="useBackup ? 'XXXXX-XXXXX' : '123456'"
+              class="input tracking-widest text-center"
+            />
+          </div>
+          <div v-if="error" role="alert" class="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-lg text-sm">{{ error }}</div>
+          <button type="submit" class="btn btn-primary w-full" :disabled="authStore.loading || !code.trim()">
+            {{ authStore.loading ? t('auth.entering') : t('security.twoFactor.verify') }}
+          </button>
+          <div class="flex flex-wrap justify-between gap-2">
+            <button type="button" class="text-sm auth-link" @click="backToCredentials(); error = ''">{{ t('common.back') }}</button>
+            <button type="button" class="text-sm auth-link" @click="toggleBackup">{{ useBackup ? t('security.twoFactor.useApp') : t('security.twoFactor.useBackup') }}</button>
+          </div>
+        </form>
+
+        <form v-else @submit.prevent="handleSubmit" class="space-y-4">
           <div>
             <label class="label">{{ t('auth.email') }}</label>
             <input
@@ -141,7 +219,12 @@ const handleForgot = async () => {
             </div>
           </div>
 
-          <div v-if="error && error === 'subscription_inactive'" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-2">
+          <div v-if="unverifiedEmail" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-3">
+            <p class="font-semibold text-yellow-800 dark:text-yellow-300">{{ t('security.verify.required') }}</p>
+            <p class="text-yellow-700 dark:text-yellow-400">{{ t('security.verify.requiredDesc') }}</p>
+            <ResendVerification :key="unverifiedEmail" :email="unverifiedEmail" :label="t('security.verify.resendEmail')" />
+          </div>
+          <div v-else-if="error && error === 'subscription_inactive'" class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg text-sm space-y-2">
             <p class="font-semibold text-yellow-800 dark:text-yellow-300">{{ t('auth.subscriptionInactive') }}</p>
             <p class="text-yellow-700 dark:text-yellow-400">{{ t('hero.stats.price') }}.</p>
             <template v-if="canPay">

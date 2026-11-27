@@ -564,7 +564,7 @@
     "companyPlaceholder": "Minha Agência",
     "yourName": "Seu Nome",
     "namePlaceholder": "João Silva",
-    "passwordMin": "Mínimo 6 caracteres",
+    "passwordMin": "Mínimo de 8 caracteres",
     "acceptTerms": "Li e aceito os",
     "termsOfService": "Termos de Serviço",
     "andThe": "e a",
@@ -573,7 +573,7 @@
     "creating": "Criando conta...",
     "createFreeAccount": "Criar Conta Gratuita",
     "requiredFields": "Por favor, preencha todos os campos",
-    "passwordTooShort": "A senha deve ter pelo menos 6 caracteres",
+    "passwordTooShort": "A senha deve ter pelo menos 8 caracteres",
     "acceptTermsError": "Você deve aceitar os termos e condições",
     "registerError": "Erro ao se registrar",
     "reset": {
@@ -584,7 +584,9 @@
       "canLogin": "Agora você pode entrar com sua nova senha.",
       "goToLogin": "Ir para o login",
       "passwordsNoMatch": "As senhas não coincidem",
-      "invalidLink": "O link é inválido ou expirou"
+      "invalidLink": "O link é inválido ou expirou",
+      "min": "Mínimo de 6 caracteres",
+      "tooShort": "A senha deve ter pelo menos 6 caracteres"
     }
   },
   "privacy": {
@@ -1969,6 +1971,62 @@
     "s5": {
       "title": "5. Contato",
       "desc": "Dúvidas sobre reembolsos? Escreva para support{'@'}leaddistro.site."
+    }
+  },
+  "security": {
+    "title": "Segurança",
+    "tooMany": "Muitas tentativas. Aguarde um pouco e tente novamente.",
+    "backToLogin": "Voltar para o login",
+    "retry": "Tentar novamente",
+    "verify": {
+      "checkTitle": "Verifique seu e-mail",
+      "sentTo": "Enviamos um link de confirmação para",
+      "checkDesc": "Abra-o para ativar sua conta. Ele expira em 24 horas. Se não encontrar, verifique a caixa de spam.",
+      "resend": "Reenviar",
+      "resendEmail": "Reenviar e-mail",
+      "resendLink": "Reenviar link",
+      "resendIn": "Você pode reenviar em {seconds}s",
+      "resent": "Se a conta estiver pendente de confirmação, enviamos um novo link.",
+      "required": "Confirme seu e-mail para entrar",
+      "requiredDesc": "Abra o link que enviamos quando você se cadastrou.",
+      "verifying": "Confirmando seu e-mail...",
+      "invalidTitle": "O link é inválido ou expirou",
+      "invalidDesc": "Digite seu e-mail e enviaremos um novo. Se você já confirmou a conta, faça login.",
+      "confirmedTitle": "E-mail confirmado"
+    },
+    "twoFactor": {
+      "desc": "Verificação em duas etapas: além da senha, um código de um app como Google Authenticator, Authy ou 1Password.",
+      "on": "Ativada",
+      "off": "Desativada",
+      "activate": "Ativar",
+      "deactivate": "Desativar",
+      "regenerate": "Gerar novos códigos de backup",
+      "scan": "1. Escaneie este código QR com seu app autenticador.",
+      "qrAlt": "Código QR para o app autenticador",
+      "manual": "Não consegue escanear? Digite esta chave manualmente:",
+      "codeLabel": "Código de 6 dígitos",
+      "codeOrBackup": "Código do app ou de backup",
+      "confirm": "Confirmar e ativar",
+      "codesTitle": "Códigos de backup",
+      "codesDesc": "Guarde-os em um lugar seguro: permitem entrar se você perder o telefone. Cada um funciona uma única vez e não serão mostrados novamente.",
+      "copy": "Copiar",
+      "copied": "Copiados",
+      "download": "Baixar .txt",
+      "saved": "Já os guardei",
+      "close": "Fechar",
+      "disableDesc": "Para desativar, digite sua senha e um código.",
+      "regenerateDesc": "Os códigos anteriores deixam de funcionar. Digite um código do seu app.",
+      "invalidCode": "O código não é válido.",
+      "invalidPassword": "A senha está incorreta.",
+      "loginPrompt": "Digite o código do seu app autenticador.",
+      "backupPrompt": "Digite um dos seus códigos de backup.",
+      "backupLabel": "Código de backup",
+      "useBackup": "Usar um código de backup",
+      "useApp": "Usar o app autenticador",
+      "verify": "Verificar",
+      "expired": "Passou muito tempo. Digite sua senha novamente.",
+      "adminWarning": "Ative a verificação em duas etapas para proteger a conta de administração.",
+      "adminAction": "Ir para o Perfil"
     }
   }
 }

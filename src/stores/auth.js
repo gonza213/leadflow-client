@@ -31,33 +31,51 @@ export const useAuthStore = defineStore('auth', () => {
   // El viewer es solo lectura
   const canEdit = computed(() => ['superadmin', 'adminclient', 'manager', 'seller'].includes(user.value?.role))
 
-  async function login(email, password) {
+  const startSession = ({ token: newToken, user: userData }) => {
+    token.value = newToken
+    user.value = userData
+
+    localStorage.setItem('token', newToken)
+    localStorage.setItem('user', JSON.stringify(userData))
+    setPaymentToken(null)
+  }
+
+  // Login, segundo paso y verificación de email responden igual: se interpretan acá
+  const authenticate = async (request) => {
     loading.value = true
     error.value = null
 
     try {
-      const response = await authApi.login(email, password)
-      const { token: newToken, user: userData } = response.data
-
-      token.value = newToken
-      user.value = userData
-
-      localStorage.setItem('token', newToken)
-      localStorage.setItem('user', JSON.stringify(userData))
-      setPaymentToken(null)
-
+      const { data } = await request()
+      if (data.twoFactorRequired) {
+        return { success: false, twoFactorRequired: true, challengeToken: data.challengeToken }
+      }
+      startSession(data)
       return { success: true }
     } catch (err) {
-      error.value = err.response?.data?.message || 'Error al iniciar sesión'
-      setPaymentToken(err.response?.data?.paymentToken || null)
+      const data = err.response?.data
+      error.value = data?.message || 'Error al iniciar sesión'
+      setPaymentToken(data?.paymentToken || null)
       return {
         success: false,
         error: error.value,
-        canPay: !!err.response?.data?.paymentToken
+        status: err.response?.status || null,
+        email: data?.email || null,
+        canPay: !!data?.paymentToken
       }
     } finally {
       loading.value = false
     }
+  }
+
+  const login = (email, password) => authenticate(() => authApi.login(email, password))
+  const verifyTwoFactor = (challengeToken, code) => authenticate(() => authApi.verifyTwoFactor(challengeToken, code))
+  const verifyEmail = (verificationToken) => authenticate(() => authApi.verifyEmail(verificationToken))
+
+  function setTwoFactorEnabled(enabled) {
+    if (!user.value) return
+    user.value = { ...user.value, twoFactorEnabled: enabled }
+    localStorage.setItem('user', JSON.stringify(user.value))
   }
 
   async function fetchUser() {
@@ -112,6 +130,9 @@ export const useAuthStore = defineStore('auth', () => {
     canDelete,
     canEdit,
     login,
+    verifyTwoFactor,
+    verifyEmail,
+    setTwoFactorEnabled,
     fetchUser,
     setActiveAccount,
     logout
