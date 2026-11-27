@@ -114,7 +114,7 @@ onMounted(() => {
                   <div class="text-xs text-gray-500">{{ t('billing.table.planStandard') }}</div>
                 </td>
                 <td class="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">
-                  ${{ payment.amount.toFixed(2) }} USD
+                  ${{ payment.amount.toFixed(2) }} {{ payment.currency || 'USD' }}
                 </td>
                 <td class="px-6 py-4 text-right">
                   <a 

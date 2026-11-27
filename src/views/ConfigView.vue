@@ -3,7 +3,8 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useConfigStore } from '../stores/config'
 import { useAuthStore } from '../stores/auth'
-import { buildSubscribeUrl } from '../services/subscribeUrl'
+import SubscribeActions from '../components/billing/SubscribeActions.vue'
+import PaddleCardButton from '../components/billing/PaddleCardButton.vue'
 import { useI18n } from 'vue-i18n'
 import { subscriptionApi } from '../services/api'
 import TeamsConfig from '../components/config/TeamsConfig.vue'
@@ -264,14 +265,12 @@ onMounted(async () => {
           <p class="text-sm text-blue-800 dark:text-blue-300">
             {{ subStatus === 'trial' ? t('subscription.trial_message') : t('subscription.inactive_message') }}
           </p>
-          <a
-            :href="buildSubscribeUrl(authStore.user?.email)"
-            target="_blank"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors"
-          >
-            {{ t('subscription.subscribe_button') }} →
-          </a>
+          <div class="text-blue-800 dark:text-blue-300">
+            <SubscribeActions />
+          </div>
         </div>
+
+        <PaddleCardButton v-if="subStatus === 'active'" />
 
         <!-- Cancelar (solo activo) -->
         <div v-if="subStatus === 'active'">

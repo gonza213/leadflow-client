@@ -6,6 +6,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const router = useRouter()
 
+// Corta en el PRIMER ":" (el resto del texto puede tener más)
+const head = (k) => t(k).split(':')[0]
+const rest = (k) => t(k).slice(t(k).indexOf(':') + 1)
+
 useHead({
   title: `${t('privacy.title')} | LeadDistro`,
   meta: [
@@ -36,10 +40,10 @@ useHead({
         <h2>{{ t('privacy.s1.title') }}</h2>
         <p>{{ t('privacy.s1.desc') }}</p>
         <ul>
-          <li><strong>{{ t('privacy.s1.l1').split(':')[0] }}:</strong>{{ t('privacy.s1.l1').split(':')[1] }}</li>
-          <li><strong>{{ t('privacy.s1.l2').split(':')[0] }}:</strong>{{ t('privacy.s1.l2').split(':')[1] }}</li>
-          <li><strong>{{ t('privacy.s1.l3').split(':')[0] }}:</strong>{{ t('privacy.s1.l3').split(':')[1] }}</li>
-          <li><strong>{{ t('privacy.s1.l4').split(':')[0] }}:</strong>{{ t('privacy.s1.l4').split(':')[1] }}</li>
+          <li><strong>{{ head('privacy.s1.l1') }}:</strong>{{ rest('privacy.s1.l1') }}</li>
+          <li><strong>{{ head('privacy.s1.l2') }}:</strong>{{ rest('privacy.s1.l2') }}</li>
+          <li><strong>{{ head('privacy.s1.l3') }}:</strong>{{ rest('privacy.s1.l3') }}</li>
+          <li><strong>{{ head('privacy.s1.l4') }}:</strong>{{ rest('privacy.s1.l4') }}</li>
         </ul>
       </section>
 
@@ -81,6 +85,7 @@ useHead({
           <li><strong>Vercel</strong> — {{ t('privacy.s5.l4').split('—')[1] }}</li>
           <li><strong>Koyeb</strong> — {{ t('privacy.s5.l5').split('—')[1] }}</li>
         </ul>
+        <p>{{ t('privacy.s5.payments') }}</p>
         <p>{{ t('privacy.s5.footer') }}</p>
       </section>
 
@@ -108,7 +113,7 @@ useHead({
 
       <section>
         <h2>{{ t('privacy.s9.title') }}</h2>
-        <p>{{ t('privacy.s9.desc') }} <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
+        <p>{{ t('privacy.s9.desc') }}</p>
       </section>
     </div>
   </div>

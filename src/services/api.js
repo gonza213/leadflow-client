@@ -174,6 +174,9 @@ const activeTenantId = () => {
 
 export const subscriptionApi = {
   verify: (tenantId) => api.post('/subscription/verify', { tenantId: tenantId || activeTenantId() }),
+  verifyPaddle: (transactionId) => api.post('/subscription/verify', { provider: 'paddle', transactionId }),
+  getCheckoutInfo: () => api.get('/subscription/checkout-info'),
+  paddlePortal: () => api.post('/subscription/paddle/portal'),
   cancel: () => api.post('/subscription/cancel', { tenantId: activeTenantId() }),
   getMyInvoices: () => api.get('/subscription/invoices', { params: { tenantId: activeTenantId() } })
 }

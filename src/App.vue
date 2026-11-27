@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const route = useRoute()
-import { buildSubscribeUrl } from './services/subscribeUrl'
+import SubscribeActions from './components/billing/SubscribeActions.vue'
 
 const authStore = useAuthStore()
 
@@ -54,11 +54,7 @@ const handleVerifyPayment = async () => {
               {{ t('trial.banner.expiresIn') }} <strong>{{ authStore.trialDaysLeft }} {{ authStore.trialDaysLeft === 1 ? t('trial.banner.day') : t('trial.banner.days') }}</strong>.
             </span>
             <span v-else>{{ t('trial.banner.expired') }}</span>
-            <a
-              :href="buildSubscribeUrl(authStore.user?.email)"
-              target="_blank"
-              :class="['underline font-bold', authStore.trialDaysLeft <= 2 ? 'text-white' : 'text-yellow-900']"
-            >{{ t('trial.banner.subscribe') }} →</a>
+            <SubscribeActions variant="inline" :label="t('trial.banner.subscribe')" />
             <button
               v-if="!verifySuccess"
               @click="handleVerifyPayment"

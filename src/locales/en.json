@@ -1,5 +1,6 @@
 {
   "nav": {
+    "refund": "Refund Policy",
     "features": "Features",
     "howItWorks": "How it works",
     "roles": "Roles",
@@ -48,6 +49,7 @@
     "tickets": "Tickets"
   },
   "auth": {
+    "refundPolicy": "Refund Policy",
     "login": "Login",
     "loginTitle": "Sign In",
     "register": "Create Account",
@@ -130,7 +132,7 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "updated": "Last updated: April 11, 2026",
+    "updated": "Last updated: November 26, 2026",
     "metaDescription": "Learn how LeadDistro protects your data and the privacy of your information and your leads' information.",
     "s1": {
       "title": "1. Information we collect",
@@ -162,6 +164,7 @@
       "l4": "Data is stored in MongoDB Atlas with automatic backups."
     },
     "s5": {
+      "payments": "Payments are processed by Paddle.com (international customers) and dLocalGo (Latin America). We do not store card data.",
       "title": "5. Third-party services",
       "desc": "LeadDistro uses the following service providers:",
       "l1": "MongoDB Atlas — data storage.",
@@ -190,16 +193,16 @@
     },
     "s9": {
       "title": "9. Contact",
-      "desc": "For inquiries about this privacy policy, contact us through support or visit www.leaddistro.site."
+      "desc": "For inquiries about this privacy policy, email support{'@'}leaddistro.site."
     }
   },
   "terms": {
     "title": "Terms of Service",
-    "updated": "Last updated: April 11, 2026",
+    "updated": "Last updated: November 26, 2026",
     "metaDescription": "Read the terms and conditions of use for the LeadDistro platform.",
     "s1": {
       "title": "1. Acceptance of terms",
-      "desc": "By creating an account and using LeadDistro, you accept these Terms of Service in their entirety. If you do not agree with any of these terms, you may not use the service."
+      "desc": "By creating an account and using LeadDistro, you accept these Terms of Service in their entirety. If you do not agree with any of these terms, you may not use the service. LeadDistro is operated by Gonzalo Vidal, sole proprietor, Argentina (support{'@'}leaddistro.site)."
     },
     "s2": {
       "title": "2. Description of service",
@@ -216,10 +219,10 @@
     },
     "s4": {
       "title": "4. Subscription and payments",
-      "p1": "Test period: By registering, you get a 7-day free trial without requiring a credit card. When the test period expires, the account remains inactive until a subscription is activated.",
-      "p2": "Monthly subscription: The subscription plan costs $25 USD per month. Payments are processed through dLocalGo.",
-      "p3": "Renewal: The subscription is automatically renewed each month through dLocalGo. You don't need to do anything to keep it active.",
-      "p4": "Refunds: We do not offer refunds for periods already used. If you cancel before expiration, you can use the service until the paid period expires."
+      "p1": "Free trial: When you sign up you get a 7-day free trial, no credit card required. When the trial ends, the account stays inactive until you activate a subscription.",
+      "p2": "Monthly subscription: The plan costs USD 25 per month. Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all orders placed outside Latin America; Paddle provides all customer service inquiries and handles returns for those orders. Customers in Latin America may pay through dLocalGo, our local payment processor.",
+      "p3": "Renewal: The subscription renews automatically every month until you cancel it. You can cancel at any time from your account.",
+      "p4": "Refunds: We offer a 14-day money-back guarantee on every payment. See our Refund Policy at www.leaddistro.site/refund."
     },
     "s5": {
       "title": "5. Acceptable use",
@@ -253,7 +256,7 @@
     },
     "s10": {
       "title": "10. Modifications",
-      "p1": "We may modify these terms at any time. We will notify you of significant changes via email at least 7 days in advance. Continued use of the service implies acceptance of the updated terms."
+      "desc": "We may modify these terms at any time. We will notify you of significant changes via email at least 7 days in advance. Continued use of the service implies acceptance of the updated terms."
     },
     "s11": {
       "title": "11. Applicable law",
@@ -261,7 +264,7 @@
     },
     "s12": {
       "title": "12. Contact",
-      "desc": "For inquiries about these terms, contact us through support or visit www.leaddistro.site."
+      "desc": "For inquiries about these terms, email support{'@'}leaddistro.site."
     }
   },
   "paymentSuccess": {
@@ -503,6 +506,7 @@
       ]
     },
     "pricing": {
+      "refundLink": "Refund policy: 14-day money-back guarantee",
       "tag": "Pricing",
       "title": "Simple and transparent",
       "subtitle": "A single plan, no annual contracts. Pay month to month and cancel whenever you want.",
@@ -539,7 +543,7 @@
         "cta": "Request setup"
       },
       "cta": "Start for free",
-      "note": "Have questions? Chat with us on WhatsApp and we will respond instantly."
+      "note": "Have questions? Email support{'@'}leaddistro.site."
     },
     "presence": {
       "tag": "EXCLUSIVE",
@@ -1777,5 +1781,39 @@
     "send": "Send",
     "thanks": "Thank you! We will contact you.",
     "sendError": "Could not send. Please try again."
+  },
+  "checkout": {
+    "payByCard": "Pay by card (USD)",
+    "otherInternational": "Outside Latin America? Pay with an international card",
+    "otherLocal": "In Latin America? Pay with local methods",
+    "updateCard": "Update card",
+    "error": "We could not open the checkout. Try again.",
+    "portalError": "We could not open the payment portal. Try again."
+  },
+  "refund": {
+    "title": "Refund Policy",
+    "updated": "Last updated: November 26, 2026",
+    "metaDescription": "LeadDistro refund policy: 14-day money-back guarantee.",
+    "s1": {
+      "title": "1. 14-day money-back guarantee",
+      "desc": "If you are not satisfied with LeadDistro, you can request a full refund within 14 days of your first payment or of any renewal payment. No questions asked."
+    },
+    "s2": {
+      "title": "2. How to request a refund",
+      "p1": "International customers (payments processed by Paddle): request your refund at paddle.net or by replying to your Paddle receipt email. You can also write to support{'@'}leaddistro.site and we will process it for you.",
+      "p2": "Customers in Latin America (payments processed by dLocalGo): write to support{'@'}leaddistro.site with the email of your account."
+    },
+    "s3": {
+      "title": "3. What happens after a refund",
+      "desc": "Refunds are issued to the original payment method. Once a refund is processed, the subscription for that period is canceled and access to the paid features ends."
+    },
+    "s4": {
+      "title": "4. Free trial",
+      "desc": "Every new account includes a 7-day free trial with no credit card required, so you can try LeadDistro before paying."
+    },
+    "s5": {
+      "title": "5. Contact",
+      "desc": "Questions about refunds? Email support{'@'}leaddistro.site."
+    }
   }
 }

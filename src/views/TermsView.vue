@@ -6,6 +6,10 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const router = useRouter()
 
+// Corta en el PRIMER ":" (el resto del texto puede tener más)
+const head = (k) => t(k).split(':')[0]
+const rest = (k) => t(k).slice(t(k).indexOf(':') + 1)
+
 useHead({
   title: `${t('terms.title')} | LeadDistro`,
   meta: [
@@ -56,10 +60,10 @@ useHead({
 
       <section>
         <h2>{{ t('terms.s4.title') }}</h2>
-        <p><strong>{{ t('terms.s4.p1').split(':')[0] }}:</strong>{{ t('terms.s4.p1').split(':')[1] }}</p>
-        <p><strong>{{ t('terms.s4.p2').split(':')[0] }}:</strong>{{ t('terms.s4.p2').split(':')[1] }}</p>
-        <p><strong>{{ t('terms.s4.p3').split(':')[0] }}:</strong>{{ t('terms.s4.p3').split(':')[1] }}</p>
-        <p><strong>{{ t('terms.s4.p4').split(':')[0] }}:</strong>{{ t('terms.s4.p4').split(':')[1] }}</p>
+        <p><strong>{{ head('terms.s4.p1') }}:</strong>{{ rest('terms.s4.p1') }}</p>
+        <p><strong>{{ head('terms.s4.p2') }}:</strong>{{ rest('terms.s4.p2') }}</p>
+        <p><strong>{{ head('terms.s4.p3') }}:</strong>{{ rest('terms.s4.p3') }}</p>
+        <p><strong>{{ head('terms.s4.p4') }}:</strong>{{ rest('terms.s4.p4') }}</p>
       </section>
 
       <section>
@@ -94,8 +98,8 @@ useHead({
 
       <section>
         <h2>{{ t('terms.s9.title') }}</h2>
-        <p><strong>{{ t('terms.s9.p1').split(':')[0] }}:</strong>{{ t('terms.s9.p1').split(':')[1] }}</p>
-        <p><strong>{{ t('terms.s9.p2').split(':')[0] }}:</strong>{{ t('terms.s9.p2').split(':')[1] }}</p>
+        <p><strong>{{ head('terms.s9.p1') }}:</strong>{{ rest('terms.s9.p1') }}</p>
+        <p><strong>{{ head('terms.s9.p2') }}:</strong>{{ rest('terms.s9.p2') }}</p>
         <p>{{ t('terms.s9.footer') }}</p>
       </section>
 
@@ -111,7 +115,7 @@ useHead({
 
       <section>
         <h2>{{ t('terms.s12.title') }}</h2>
-        <p>{{ t('terms.s12.desc') }} <a href="https://www.leaddistro.site" target="_blank">www.leaddistro.site</a>.</p>
+        <p>{{ t('terms.s12.desc') }}</p>
       </section>
     </div>
   </div>

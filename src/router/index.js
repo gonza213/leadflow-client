@@ -188,6 +188,12 @@ export const routes = [
     meta: { public: true }
   },
   {
+    path: '/refund',
+    name: 'Refund',
+    component: () => import('../views/RefundView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/blog',
     name: 'Blog',
     component: () => import('../views/BlogView.vue'),

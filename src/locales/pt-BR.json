@@ -89,6 +89,7 @@
     }
   },
   "nav": {
+    "refund": "Política de Reembolso",
     "features": "Funcionalidades",
     "howItWorks": "Como funciona",
     "roles": "Funções",
@@ -447,6 +448,7 @@
       "feature3": "Alertas de Vendedores Sobrecarregados"
     },
     "pricing": {
+      "refundLink": "Política de reembolso: garantia de devolução de 14 dias",
       "tag": "Preços",
       "title": "Simples e transparente",
       "subtitle": "Um único plano, sem contratos anuais. Você paga mês a mês e cancela quando quiser.",
@@ -484,7 +486,7 @@
         "cta": "Consultar setup"
       },
       "cta": "Começar grátis",
-      "note": "Tem dúvidas? Entre em contacto com o nosso suporte para receber ajuda imediata."
+      "note": "Tem dúvidas? Escreva para support{'@'}leaddistro.site."
     },
     "faq": {
       "tag": "Perguntas frequentes",
@@ -554,6 +556,7 @@
     "of": "de"
   },
   "auth": {
+    "refundPolicy": "Política de Reembolso",
     "noAccount": "Não tem uma conta?",
     "forgotPrompt": "Digite seu e-mail e enviaremos um link para recuperar sua senha.",
     "logout": "Sair",
@@ -600,7 +603,7 @@
   },
   "privacy": {
     "title": "Política de Privacidade",
-    "updated": "Última atualização: 11 de abril de 2026",
+    "updated": "Última atualização: 26 de novembro de 2026",
     "metaDescription": "Saiba como o LeadDistro protege seus dados e a privacidade de suas informações e as de seus leads.",
     "s1": {
       "title": "1. Informações que coletamos",
@@ -632,6 +635,7 @@
       "l4": "Os dados são armazenados no MongoDB Atlas com backups automáticos."
     },
     "s5": {
+      "payments": "Os pagamentos são processados pela Paddle.com (clientes internacionais) e pela dLocalGo (América Latina). Não armazenamos dados de cartão.",
       "title": "5. Serviços de terceiros",
       "desc": "O LeadDistro utiliza os seguintes prestadores de serviços:",
       "l1": "MongoDB Atlas — armazenamento de dados.",
@@ -660,16 +664,16 @@
     },
     "s9": {
       "title": "9. Contato",
-      "desc": "Para dúvidas sobre esta política de privacidade, contacte-nos através do suporte ou visite www.leaddistro.site."
+      "desc": "Para dúvidas sobre esta política de privacidade, escreva para support{'@'}leaddistro.site."
     }
   },
   "terms": {
     "title": "Termos de Serviço",
-    "updated": "Última atualização: 11 de abril de 2026",
+    "updated": "Última atualização: 26 de novembro de 2026",
     "metaDescription": "Leia os termos e condições de uso da plataforma LeadDistro.",
     "s1": {
       "title": "1. Aceitação dos termos",
-      "desc": "Ao criar uma conta e utilizar o LeadDistro, você aceita estes Termos de Serviço na íntegra. Se você não concordar com qualquer um destes termos, não poderá usar o serviço."
+      "desc": "Ao criar uma conta e utilizar o LeadDistro, você aceita estes Termos de Serviço na íntegra. Se você não concordar com qualquer um destes termos, não poderá usar o serviço. O LeadDistro é operado por Gonzalo Vidal, pessoa física, Argentina (support{'@'}leaddistro.site)."
     },
     "s2": {
       "title": "2. Descrição do serviço",
@@ -686,10 +690,10 @@
     },
     "s4": {
       "title": "4. Assinatura e pagamentos",
-      "p1": "Período de teste: Ao se registrar, você ganha 7 dias de teste gratuito sem a necessidade de cartão de crédito. Ao final do período de teste, a conta ficará inativa até que uma assinatura seja ativada.",
-      "p2": "Assinatura mensal: O plano de assinatura custa US$ 25 por mês. Os pagamentos são processados através do dLocalGo.",
-      "p3": "Renovação: A assinatura é renovada automaticamente todos os meses através do dLocalGo. Você não precisa fazer nada para mantê-la ativa.",
-      "p4": "Reembolsos: Não oferecemos reembolsos por períodos já utilizados. Se você cancelar antes do vencimento, poderá usar o serviço até que o período pago expire."
+      "p1": "Teste grátis: Ao se cadastrar, você tem 7 dias de teste grátis, sem cartão. Quando o teste termina, a conta fica inativa até que você ative uma assinatura.",
+      "p2": "Assinatura mensal: O plano custa USD 25 por mês. Nosso processo de compra é realizado pelo nosso revendedor online Paddle.com. A Paddle.com é o Merchant of Record de todos os pedidos feitos fora da América Latina; a Paddle atende às solicitações de suporte ao cliente e cuida das devoluções desses pedidos. Clientes da América Latina podem pagar pela dLocalGo, nosso processador de pagamentos local.",
+      "p3": "Renovação: A assinatura é renovada automaticamente todos os meses até que você a cancele. Você pode cancelar quando quiser pela sua conta.",
+      "p4": "Reembolsos: Oferecemos garantia de devolução de 14 dias em cada pagamento. Veja nossa Política de reembolso em www.leaddistro.site/refund."
     },
     "s5": {
       "title": "5. Uso aceitável",
@@ -731,7 +735,7 @@
     },
     "s12": {
       "title": "12. Contato",
-      "desc": "Para dúvidas sobre estes termos, contacte-nos através do WhatsApp +54 221 220 4194 ou visite www.leaddistro.site."
+      "desc": "Para dúvidas sobre estes termos, escreva para support{'@'}leaddistro.site."
     }
   },
   "paymentSuccess": {
@@ -1949,5 +1953,39 @@
     "send": "Enviar",
     "thanks": "Obrigado! Entraremos em contato.",
     "sendError": "Não foi possível enviar. Tente novamente."
+  },
+  "checkout": {
+    "payByCard": "Pagar com cartão (USD)",
+    "otherInternational": "Está fora da América Latina? Pague com cartão internacional",
+    "otherLocal": "Está na América Latina? Pague com meios locais",
+    "updateCard": "Atualizar cartão",
+    "error": "Não foi possível abrir o pagamento. Tente novamente.",
+    "portalError": "Não foi possível abrir o portal de pagamentos. Tente novamente."
+  },
+  "refund": {
+    "title": "Política de reembolso",
+    "updated": "Última atualização: 26 de novembro de 2026",
+    "metaDescription": "Política de reembolso do LeadDistro: garantia de devolução de 14 dias.",
+    "s1": {
+      "title": "1. Garantia de devolução de 14 dias",
+      "desc": "Se o LeadDistro não atender às suas expectativas, você pode pedir o reembolso total em até 14 dias após o primeiro pagamento ou qualquer renovação. Sem perguntas."
+    },
+    "s2": {
+      "title": "2. Como pedir um reembolso",
+      "p1": "Clientes internacionais (pagamentos processados pela Paddle): peça em paddle.net ou respondendo ao e-mail do recibo da Paddle. Você também pode escrever para support{'@'}leaddistro.site e nós cuidamos disso.",
+      "p2": "Clientes da América Latina (pagamentos processados pela dLocalGo): escreva para support{'@'}leaddistro.site com o e-mail da sua conta."
+    },
+    "s3": {
+      "title": "3. O que acontece depois do reembolso",
+      "desc": "O reembolso é feito no mesmo meio de pagamento. Depois de processado, a assinatura daquele período é cancelada e o acesso às funções pagas termina."
+    },
+    "s4": {
+      "title": "4. Teste grátis",
+      "desc": "Toda conta nova inclui 7 dias de teste grátis sem cartão, para você experimentar o LeadDistro antes de pagar."
+    },
+    "s5": {
+      "title": "5. Contato",
+      "desc": "Dúvidas sobre reembolsos? Escreva para support{'@'}leaddistro.site."
+    }
   }
 }

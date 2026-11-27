@@ -3,12 +3,12 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { authApi, subscriptionApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
-import { buildSubscribeUrl } from '../services/subscribeUrl'
+import SubscribeActions from '../components/billing/SubscribeActions.vue'
+import PaddleCardButton from '../components/billing/PaddleCardButton.vue'
 
 const { t, locale } = useI18n()
 
 const authStore = useAuthStore()
-const subscribeUrl = computed(() => buildSubscribeUrl(authStore.user?.email))
 
 const billing = ref(null)
 const loading = ref(true)
@@ -149,10 +149,9 @@ const handleCancel = async () => {
           {{ subStatus === 'trial' ? t('subscription.trial_message') : t('subscription.inactive_message') }}
         </p>
         <div class="flex flex-wrap items-center gap-3">
-          <a :href="subscribeUrl" target="_blank"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
-            {{ t('subscription.subscribe_button') }} →
-          </a>
+          <div class="text-blue-800 dark:text-blue-300">
+            <SubscribeActions />
+          </div>
           <button @click="handleVerify" :disabled="verifying"
             class="text-sm px-3 py-2 rounded-lg font-semibold border border-blue-400 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors disabled:opacity-50">
             {{ verifying ? t('trial.banner.verifying') : t('trial.banner.verifyBtn') }}
@@ -160,6 +159,8 @@ const handleCancel = async () => {
           <span v-if="verifyError" class="text-xs text-red-600 dark:text-red-400">{{ verifyError }}</span>
         </div>
       </div>
+
+      <PaddleCardButton v-if="subStatus === 'active'" />
 
       <!-- Cancelar (solo activo) -->
       <div v-if="subStatus === 'active'">
@@ -221,7 +222,7 @@ const handleCancel = async () => {
                   <div class="text-sm font-medium text-gray-900 dark:text-white">{{ t('billing.table.monthlySubscription') }}</div>
                   <div class="text-xs text-gray-500">{{ t('billing.table.planStandard') }}</div>
                 </td>
-                <td class="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">${{ payment.amount.toFixed(2) }} USD</td>
+                <td class="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">${{ payment.amount.toFixed(2) }} {{ payment.currency || 'USD' }}</td>
                 <td class="px-6 py-4 text-right">
                   <a v-if="payment.downloadUrl" :href="payment.downloadUrl" target="_blank"
                     class="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium">

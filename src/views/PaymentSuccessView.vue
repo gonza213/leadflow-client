@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { subscriptionApi } from '../services/api'
 import { useAuthStore } from '../stores/auth'
@@ -12,7 +12,30 @@ const authStore = useAuthStore()
 
 const status = ref('verifying') // verifying | success | error
 
+// Paddle puede tardar unos segundos en confirmar (402): se reintenta
+const RETRY_MS = 3000
+const MAX_RETRIES = 10
+let left = false
+onUnmounted(() => { left = true })
+
+const verifyPaddle = async (transactionId) => {
+  for (let attempt = 0; !left; attempt++) {
+    try {
+      await subscriptionApi.verifyPaddle(transactionId)
+      await authStore.fetchUser() // refresca el estado (saca el aviso de prueba)
+      status.value = 'success'
+      return
+    } catch (error) {
+      if (error.response?.status !== 402 || attempt >= MAX_RETRIES) break
+      await new Promise(resolve => setTimeout(resolve, RETRY_MS))
+    }
+  }
+  status.value = 'error'
+}
+
 onMounted(async () => {
+  const { provider, txn } = route.query
+  if (provider === 'paddle' && typeof txn === 'string') return verifyPaddle(txn)
   try {
     const tenantId = route.query.external_id || authStore.user?.tenant?.id
     if (!tenantId) {

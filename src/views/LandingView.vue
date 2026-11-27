@@ -983,6 +983,9 @@ onUnmounted(() => {
               {{ t('landing.pricing.cta') }}
             </button>
             <p class="pricing-trial">{{ t('landing.pricing.monthly.trialNote') }}</p>
+            <p class="pricing-trial">
+              <router-link to="/refund" class="pricing-refund">{{ t('landing.pricing.refundLink') }}</router-link>
+            </p>
           </div>
 
         </div>
@@ -1069,13 +1072,15 @@ onUnmounted(() => {
               <span class="fcol-title">{{ t('landing.footer.legal') }}</span>
               <button @click="router.push('/privacy')" class="footer-link-btn">{{ t('auth.privacyPolicy') }}</button>
               <button @click="router.push('/terms')" class="footer-link-btn">{{ t('auth.termsOfService') }}</button>
+              <router-link to="/refund" class="footer-link-btn">{{ t('auth.refundPolicy') }}</router-link>
             </div>
           </div>
         </div>
         <div class="footer-bottom">
           {{ t('landing.footer.rights') }} ·
           <button @click="router.push('/privacy')" class="footer-inline-link">{{ t('nav.privacy') }}</button> ·
-          <button @click="router.push('/terms')" class="footer-inline-link">{{ t('nav.terms') }}</button>
+          <button @click="router.push('/terms')" class="footer-inline-link">{{ t('nav.terms') }}</button> ·
+          <router-link to="/refund" class="footer-inline-link">{{ t('nav.refund') }}</router-link>
         </div>
       </div>
     </footer>
@@ -2000,6 +2005,7 @@ export default {
 .footer-bottom { border-top: 1px solid rgba(var(--ld-fg),0.05); padding-top: 20px; font-size: 0.78rem; color: var(--ld-faint); text-align: center; }
 .footer-inline-link { background: none; border: none; cursor: pointer; color: var(--ld-faint); font-size: 0.78rem; padding: 0; transition: color 0.2s; }
 .footer-inline-link:hover { color: var(--ld-muted); }
+.pricing-refund { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ===== CRM PROPIO ===== */
 .ldcrm-section { position: relative; overflow: hidden; }

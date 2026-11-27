@@ -27,7 +27,7 @@ export default defineConfig({
     formatting: 'minify',
     includedRoutes(paths) {
       // Pre-renderizar todas las rutas públicas + el blog (índice y cada artículo)
-      const publicRoutes = ['/landing', '/login', '/register', '/privacy', '/terms', '/payment-success', '/blog']
+      const publicRoutes = ['/landing', '/login', '/register', '/privacy', '/terms', '/refund', '/payment-success', '/blog']
       const staticPublic = paths.filter(p => publicRoutes.includes(p))
       // /blog/:slug es dinámica: no aparece en `paths`, la agregamos a mano
       return [...new Set([...staticPublic, ...blogRoutes])]
