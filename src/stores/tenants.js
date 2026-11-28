@@ -4,6 +4,8 @@ import { adminApi } from '../services/api'
 
 export const useTenantsStore = defineStore('tenants', () => {
   const tenants = ref([])
+  // Dueños registrados que todavía no tienen ninguna empresa
+  const ownersWithoutCompanies = ref([])
   const currentTenant = ref(null)
   const tenantUsers = ref([])
   const loading = ref(false)
@@ -16,6 +18,7 @@ export const useTenantsStore = defineStore('tenants', () => {
     try {
       const response = await adminApi.getTenants()
       tenants.value = response.data.tenants
+      ownersWithoutCompanies.value = response.data.ownersWithoutCompanies || []
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al cargar tenants'
     } finally {
@@ -159,6 +162,7 @@ export const useTenantsStore = defineStore('tenants', () => {
 
   return {
     tenants,
+    ownersWithoutCompanies,
     currentTenant,
     tenantUsers,
     loading,
