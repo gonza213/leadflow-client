@@ -153,6 +153,7 @@ export const configApi = {
 }
 
 export const adminApi = {
+  getTraffic: (days) => api.get('/admin/traffic', { params: { days } }),
   getTenants: () => api.get('/admin/tenants'),
   getTenant: (id) => api.get(`/admin/tenants/${id}`),
   createTenant: (data) => api.post('/admin/tenants', data),

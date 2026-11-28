@@ -67,7 +67,8 @@ const filteredMenuItems = computed(() => {
     return [
       { name: t('menu.tenants'), path: '/admin/tenants', icon: 'building' },
       { name: t('menu.subscriptions'), path: '/admin/subscriptions', icon: 'credit-card' },
-      { name: t('menu.tickets'), path: '/admin/tickets', icon: 'support' }
+      { name: t('menu.tickets'), path: '/admin/tickets', icon: 'support' },
+      { name: t('menu.traffic'), path: '/admin/traffic', icon: 'chart-bar' }
     ]
   }
 

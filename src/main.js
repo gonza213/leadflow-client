@@ -4,6 +4,7 @@ import i18n from './i18n'
 import App from './App.vue'
 import { routes } from './router'
 import { useAuthStore } from './stores/auth'
+import { captureFirstTouch, trackVisit } from './services/attribution'
 import './style.css'
 
 export const createApp = ViteSSG(
@@ -57,6 +58,12 @@ export const createApp = ViteSSG(
     // Cada cambio de ruta posterior se registra acá (la primera navegación se saltea para no duplicar).
     router.afterEach((to, from) => {
       if (from.matched.length && typeof window.fbq === 'function') window.fbq('track', 'PageView')
+    })
+
+    // Métricas de tráfico: de dónde llegan los visitantes (solo quien no inició sesión)
+    captureFirstTouch()
+    router.afterEach((to) => {
+      if (!useAuthStore().isAuthenticated) trackVisit(to.path)
     })
   }
 )

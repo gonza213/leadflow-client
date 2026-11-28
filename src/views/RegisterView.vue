@@ -1,4 +1,5 @@
 <script setup>
+import { getAttribution } from '../services/attribution'
 import { ref } from 'vue'
 import { useUiStore } from '../stores/ui'
 import { useI18n } from 'vue-i18n'
@@ -42,7 +43,8 @@ const handleSubmit = async () => {
       name: name.value,
       email: email.value,
       password: password.value,
-      locale: locale.value
+      locale: locale.value,
+      attribution: getAttribution()
     })
     sentTo.value = res.data.email
   } catch (e) {

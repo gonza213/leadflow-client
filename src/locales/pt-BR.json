@@ -135,7 +135,8 @@
     "support": "Suporte",
     "tenants": "Tenants",
     "subscriptions": "Assinaturas",
-    "tickets": "Tickets"
+    "tickets": "Tickets",
+    "traffic": "Tráfego"
   },
   "auth": {
     "login": "Entrar",
