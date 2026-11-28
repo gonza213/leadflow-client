@@ -4,7 +4,7 @@ import i18n from './i18n'
 import App from './App.vue'
 import { routes } from './router'
 import { useAuthStore } from './stores/auth'
-import { captureFirstTouch, trackVisit } from './services/attribution'
+import { captureFirstTouch, trackVisit, markInternal } from './services/attribution'
 import './style.css'
 
 export const createApp = ViteSSG(
@@ -63,7 +63,8 @@ export const createApp = ViteSSG(
     // Métricas de tráfico: de dónde llegan los visitantes (solo quien no inició sesión)
     captureFirstTouch()
     router.afterEach((to) => {
-      if (!useAuthStore().isAuthenticated) trackVisit(to.path)
+      if (useAuthStore().isAuthenticated) markInternal()
+      else trackVisit(to.path)
     })
   }
 )
