@@ -342,8 +342,8 @@ const formatDate = (date) => {
                           <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ formatDate(p.date) }}</span>
                           <span :class="['px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap', providerMeta(p.provider).cls]">{{ providerMeta(p.provider).label }}</span>
                           <span class="flex-1 min-w-0 font-mono text-[11px] text-gray-400 truncate">{{ p.externalId || '' }}</span>
-                          <a v-if="p.downloadUrl" :href="p.downloadUrl" target="_blank" rel="noopener" @click.stop class="font-semibold tabular-nums hover:underline" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</a>
-                          <span v-else class="font-semibold tabular-nums" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</span>
+                          <a v-if="p.downloadUrl" :href="p.downloadUrl" target="_blank" rel="noopener" @click.stop class="font-semibold tabular-nums text-gray-900 dark:text-white hover:underline">{{ formatMoney(p.amount, p.currency) }}</a>
+                          <span v-else class="font-semibold tabular-nums text-gray-900 dark:text-white">{{ formatMoney(p.amount, p.currency) }}</span>
                         </div>
                       </div>
                       <p v-else class="text-sm text-gray-500 dark:text-gray-400">Sin pagos.</p>
