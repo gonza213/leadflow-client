@@ -13,12 +13,10 @@ const stats = ref({
   monthly: 0,
   yearly: 0
 })
-// Pagos "manual" (activaciones a mano desde el admin) y últimos pagos con su cliente
-const manualStats = ref(null)
+// Últimos cobros reales con su cliente
 const recentPayments = ref([])
 const PROVIDER_META = {
   paddle: { label: 'Paddle', cls: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' },
-  manual: { label: 'Manual (admin)', cls: 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200' },
   dlocalgo: { label: 'dLocalGo (anterior)', cls: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' }
 }
 const providerMeta = (p) => PROVIDER_META[p] || { label: p, cls: 'bg-gray-100 text-gray-700' }
@@ -35,7 +33,6 @@ const fetchStats = async () => {
   try {
     const res = await adminApi.getRevenueStats()
     stats.value = res.data.stats
-    manualStats.value = res.data.manual || null
     recentPayments.value = res.data.recentPayments || []
   } catch (e) {
     console.error('Error fetching revenue stats:', e)
@@ -231,9 +228,6 @@ const formatDate = (date) => {
 
     <p class="text-xs text-gray-500 dark:text-gray-400 -mt-2">
       Los ingresos cuentan solo cobros reales de la pasarela (Paddle).
-      <template v-if="manualStats && manualStats.yearlyCount">
-        Aparte hay {{ manualStats.yearlyCount }} pago(s) manual(es) este año ({{ formatMoney(manualStats.yearly) }}), generados al activar cuentas a mano desde el admin: no es plata cobrada.
-      </template>
     </p>
 
     <!-- Últimos pagos -->
@@ -264,7 +258,7 @@ const formatDate = (date) => {
                 <span v-else class="text-gray-400">Sin cliente (borrado)</span>
               </td>
               <td class="px-6 py-3"><span :class="['px-2 py-0.5 rounded-full text-xs font-semibold', providerMeta(p.provider).cls]">{{ providerMeta(p.provider).label }}</span></td>
-              <td class="px-6 py-3 text-right font-semibold tabular-nums" :class="p.provider === 'manual' ? 'text-gray-400 line-through decoration-1' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</td>
+              <td class="px-6 py-3 text-right font-semibold tabular-nums text-gray-900 dark:text-white">{{ formatMoney(p.amount, p.currency) }}</td>
               <td class="px-6 py-3 font-mono text-xs text-gray-500 dark:text-gray-400 break-all">{{ p.externalId || '—' }}</td>
             </tr>
           </tbody>
@@ -348,8 +342,8 @@ const formatDate = (date) => {
                           <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ formatDate(p.date) }}</span>
                           <span :class="['px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap', providerMeta(p.provider).cls]">{{ providerMeta(p.provider).label }}</span>
                           <span class="flex-1 min-w-0 font-mono text-[11px] text-gray-400 truncate">{{ p.externalId || '' }}</span>
-                          <a v-if="p.downloadUrl" :href="p.downloadUrl" target="_blank" rel="noopener" @click.stop class="font-semibold tabular-nums hover:underline" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</a>
-                          <span v-else class="font-semibold tabular-nums" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</span>
+                          <a v-if="p.downloadUrl" :href="p.downloadUrl" target="_blank" rel="noopener" @click.stop class="font-semibold tabular-nums text-gray-900 dark:text-white hover:underline">{{ formatMoney(p.amount, p.currency) }}</a>
+                          <span v-else class="font-semibold tabular-nums text-gray-900 dark:text-white">{{ formatMoney(p.amount, p.currency) }}</span>
                         </div>
                       </div>
                       <p v-else class="text-sm text-gray-500 dark:text-gray-400">Sin pagos.</p>
