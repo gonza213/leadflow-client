@@ -170,6 +170,12 @@ export const routes = [
     meta: { requiresAuth: true, requiresSuperAdmin: true }
   },
   {
+    path: '/admin/traffic',
+    name: 'AdminTraffic',
+    component: () => import('../views/admin/AdminTrafficView.vue'),
+    meta: { requiresAuth: true, requiresSuperAdmin: true }
+  },
+  {
     path: '/admin/tickets',
     name: 'AdminTickets',
     component: () => import('../views/admin/AdminTicketsView.vue'),

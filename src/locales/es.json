@@ -46,7 +46,8 @@
     "support": "Soporte",
     "tenants": "Tenants",
     "subscriptions": "Suscripciones",
-    "tickets": "Tickets"
+    "tickets": "Tickets",
+    "traffic": "Tráfico"
   },
   "auth": {
     "refundPolicy": "Política de Reembolso",

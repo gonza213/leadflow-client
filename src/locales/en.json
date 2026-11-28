@@ -46,7 +46,8 @@
     "support": "Support",
     "tenants": "Tenants",
     "subscriptions": "Subscriptions",
-    "tickets": "Tickets"
+    "tickets": "Tickets",
+    "traffic": "Traffic"
   },
   "auth": {
     "refundPolicy": "Refund Policy",
