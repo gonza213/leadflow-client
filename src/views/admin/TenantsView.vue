@@ -69,8 +69,25 @@ const accounts = computed(() => {
     }
   }
 
+  // Dueños sin ninguna empresa: no salen de la lista de empresas, los manda aparte el server
+  for (const owner of tenantsStore.ownersWithoutCompanies) {
+    list.push({
+      key: `o-${owner._id}`,
+      type: 'owner',
+      id: owner._id,
+      name: owner.name,
+      email: owner.email,
+      status: owner.subscriptionStatus,
+      trialEndsAt: owner.trialEndsAt,
+      expiresAt: owner.subscriptionExpiresAt,
+      ownerCreatedAt: owner.createdAt,
+      tenants: []
+    })
+  }
+
   return list.map((acc) => {
     const created = acc.tenants.map((x) => new Date(x.createdAt).getTime()).filter(Boolean)
+    if (!created.length && acc.ownerCreatedAt) created.push(new Date(acc.ownerCreatedAt).getTime())
     return {
       ...acc,
       users: acc.tenants.reduce((sum, x) => sum + (x.userCount || 0), 0),
@@ -110,7 +127,7 @@ const stats = computed(() => {
   const s = { all: accounts.value.length, trial: 0, active: 0, lifetime: 0, expired: 0, disabled: 0 }
   for (const acc of accounts.value) {
     s[acc.plan]++
-    if (acc.activeCount === 0) s.disabled++
+    if (acc.tenants.length && acc.activeCount === 0) s.disabled++
   }
   return s
 })
@@ -138,7 +155,7 @@ const normalized = (s) => String(s || '').toLowerCase().normalize('NFD').replace
 const filtered = computed(() => {
   const q = normalized(search.value.trim())
   let list = accounts.value.filter((acc) => {
-    if (planFilter.value === 'disabled' && acc.activeCount !== 0) return false
+    if (planFilter.value === 'disabled' && (!acc.tenants.length || acc.activeCount !== 0)) return false
     if (!['all', 'disabled'].includes(planFilter.value) && acc.plan !== planFilter.value) return false
     if (!q) return true
     const haystack = [acc.name, acc.email, ...acc.tenants.flatMap((x) => [x.name, x.slug])].map(normalized).join(' ')
@@ -196,7 +213,9 @@ const toggleAccountActive = (acc) => {
 
 const deleteAccount = (acc) => {
   const msg = acc.type === 'owner'
-    ? `¿Eliminar al dueño "${acc.name}" y sus ${acc.tenants.length} empresa(s)? Se borran TODOS los datos (usuarios, leads, vendedores, configuración) y no se puede deshacer.`
+    ? (acc.tenants.length
+      ? `¿Eliminar al dueño "${acc.name}" y sus ${acc.tenants.length} empresa(s)? Se borran TODOS los datos (usuarios, leads, vendedores, configuración) y no se puede deshacer.`
+      : `¿Eliminar la cuenta de "${acc.name}" (${acc.email})? No tiene empresas. No se puede deshacer.`)
     : t('admin.tenants.deleteConfirm', { name: acc.name })
   if (!confirm(msg)) return
   return run(acc.key, () => (acc.type === 'owner' ? adminApi.deleteOwner(acc.id) : adminApi.deleteTenant(acc.id)), 'Error al eliminar')
@@ -205,10 +224,6 @@ const deleteAccount = (acc) => {
 const toggleTenantActive = (tenant) =>
   run(`t-${tenant._id}`, () => adminApi.updateTenant(tenant._id, { active: !tenant.active }), 'Error al actualizar la empresa')
 
-const deleteTenant = (tenant) => {
-  if (!confirm(t('admin.tenants.deleteConfirm', { name: tenant.name }))) return
-  return run(`t-${tenant._id}`, () => adminApi.deleteTenant(tenant._id), 'Error al eliminar la empresa')
-}
 
 const copyWebhook = async (tenant) => {
   try {
@@ -308,7 +323,7 @@ const handleCreateTenant = async (data) => {
         <!-- Fila de la cuenta -->
         <div
           class="grid grid-cols-[minmax(0,1fr)_44px] md:grid-cols-[minmax(0,2.4fr)_minmax(0,1.4fr)_90px_90px_110px_44px] gap-x-4 gap-y-2 items-center px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/30 cursor-pointer"
-          :class="{ 'opacity-60': acc.activeCount === 0 }"
+          :class="{ 'opacity-60': acc.tenants.length && acc.activeCount === 0 }"
           @click="toggleExpand(acc.key)"
         >
           <!-- Cuenta -->
@@ -324,7 +339,8 @@ const handleCreateTenant = async (data) => {
               <div class="flex items-center gap-2 min-w-0">
                 <span class="font-semibold text-gray-900 dark:text-white truncate">{{ acc.name }}</span>
                 <span v-if="acc.type === 'tenant'" class="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">clásica</span>
-                <span v-if="acc.activeCount === 0" class="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">desactivada</span>
+                <span v-if="acc.tenants.length && acc.activeCount === 0" class="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">desactivada</span>
+                <span v-if="!acc.tenants.length" class="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">sin empresas</span>
               </div>
               <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ acc.email }}</div>
             </div>
@@ -366,12 +382,12 @@ const handleCreateTenant = async (data) => {
               <button @click="toggleLifetime(acc)" class="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
                 {{ acc.status === 'lifetime' ? 'Quitar lifetime' : 'Dar lifetime (sin pago)' }}
               </button>
-              <button @click="toggleAccountActive(acc)" class="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <button v-if="acc.tenants.length" @click="toggleAccountActive(acc)" class="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">
                 {{ acc.activeCount === 0 ? 'Activar' : (acc.type === 'owner' ? 'Desactivar todas las empresas' : 'Desactivar') }}
               </button>
               <div class="my-1 border-t border-gray-100 dark:border-gray-700"></div>
               <button @click="deleteAccount(acc)" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30">
-                {{ acc.type === 'owner' ? 'Eliminar dueño y empresas' : 'Eliminar empresa' }}
+                {{ acc.type === 'owner' ? (acc.tenants.length ? 'Eliminar dueño y empresas' : 'Eliminar cuenta') : 'Eliminar empresa' }}
               </button>
             </div>
           </div>
@@ -379,6 +395,9 @@ const handleCreateTenant = async (data) => {
 
         <!-- Empresas de la cuenta -->
         <div v-if="expanded.has(acc.key)" class="bg-gray-50/70 dark:bg-gray-900/40 px-4 py-2">
+          <p v-if="!acc.tenants.length" class="py-2.5 md:pl-14 text-sm text-gray-500 dark:text-gray-400">
+            Se registró pero todavía no tiene ninguna empresa. Si es una cuenta de prueba, la podés eliminar desde el menú ⋯.
+          </p>
           <div
             v-for="tenant in acc.tenants"
             :key="tenant._id"
@@ -404,17 +423,7 @@ const handleCreateTenant = async (data) => {
               >
                 {{ tenant.active ? 'Desactivar' : 'Activar' }}
               </button>
-              <button
-                v-if="acc.type === 'owner'"
-                @click="deleteTenant(tenant)"
-                :disabled="busyKey === `t-${tenant._id}`"
-                class="p-1.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30"
-                title="Eliminar empresa"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
+              <!-- Sin borrado por empresa: una cuenta se elimina entera (dueño + empresas) desde el menú ⋯ -->
             </div>
           </div>
         </div>
