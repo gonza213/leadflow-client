@@ -34,6 +34,7 @@ const SOURCE_LABELS = {
   direct: 'Directo', unknown: 'Desconocido', google: 'Google', bing: 'Bing', duckduckgo: 'DuckDuckGo', yahoo: 'Yahoo',
   yandex: 'Yandex', ecosia: 'Ecosia', brave: 'Brave', facebook: 'Facebook', instagram: 'Instagram', x: 'X (Twitter)',
   linkedin: 'LinkedIn', youtube: 'YouTube', tiktok: 'TikTok', reddit: 'Reddit', whatsapp: 'WhatsApp', telegram: 'Telegram',
+  messenger: 'Messenger', audience_network: 'Audience Network',
   chatgpt: 'ChatGPT', perplexity: 'Perplexity', claude: 'Claude', gemini: 'Gemini', copilot: 'Copilot'
 }
 const MEDIUM_META = {
@@ -181,7 +182,11 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
         <!-- Fuentes -->
         <div class="card">
           <h2 class="font-semibold text-gray-900 dark:text-white mb-1">De dónde llegan</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Por tipo de canal y por sitio. Los anuncios con UTM (utm_source, utm_medium, utm_campaign) aparecen con su nombre.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+            Por tipo de canal y por sitio. Los clics de Facebook e Instagram se reconocen aunque la app no mande de dónde vienen.
+            Para ver cada campaña de Meta, en el anuncio agregá los parámetros de URL
+            <code v-pre class="font-mono text-[11px] text-gray-600 dark:text-gray-300 break-all">utm_source={{site_source_name}}&amp;utm_medium=paid_social&amp;utm_campaign={{campaign.name}}</code>.
+          </p>
 
           <div v-if="byMedium.length" class="mb-5">
             <div class="flex h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">

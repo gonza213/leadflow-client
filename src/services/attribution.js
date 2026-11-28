@@ -18,9 +18,13 @@ const externalReferrer = () => {
   }
 }
 
+// Identificadores de clic que agregan las plataformas (se manda solo cuál vino, no su valor)
+const CLICK_IDS = ['fbclid', 'gclid', 'gbraid', 'wbraid', 'msclkid', 'ttclid', 'li_fat_id']
+
 const currentTouch = () => {
   const q = new URLSearchParams(window.location.search)
   return {
+    click: CLICK_IDS.find((id) => q.has(id)) || '',
     referrer: externalReferrer(),
     utm_source: q.get('utm_source') || '',
     utm_medium: q.get('utm_medium') || '',
@@ -65,6 +69,7 @@ export const trackVisit = (path) => {
     referrer: touch.referrer,
     utm_source: touch.utm_source,
     utm_medium: touch.utm_medium,
-    utm_campaign: touch.utm_campaign
+    utm_campaign: touch.utm_campaign,
+    click: touch.click
   }).catch(() => { /* una métrica nunca debe molestar al visitante */ })
 }
