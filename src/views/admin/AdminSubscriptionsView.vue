@@ -102,6 +102,17 @@ const filteredSubscriptions = computed(() => {
   return subscriptions.value
 })
 
+// Filas desplegadas (empresas + historial de pagos de la cuenta)
+const expanded = ref(new Set())
+const toggleRow = (id) => {
+  const next = new Set(expanded.value)
+  next.has(id) ? next.delete(id) : next.add(id)
+  expanded.value = next
+}
+// Vencimiento que importa según el estado
+const expiryOf = (acc) => acc.subscriptionStatus === 'trial' ? acc.trialEndsAt : acc.subscriptionExpiresAt
+const isPast = (d) => d && new Date(d).getTime() < Date.now()
+
 const handleFilterChange = () => {
   fetchSubscriptions(1)
 }
@@ -264,42 +275,84 @@ const formatDate = (date) => {
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
-            <tr class="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-800">
-              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.tenant') }}</th>
-              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.status') }}</th>
-              <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.expiry') }}</th>
-              <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.users') }}</th>
-              <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.totalLeads') }}</th>
-              <th class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">{{ t('admin.subscriptions.table.createdAt') }}</th>
+            <tr class="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left">Cliente</th>
+              <th class="px-6 py-3 text-left">{{ t('admin.subscriptions.table.status') }}</th>
+              <th class="px-6 py-3 text-left">{{ t('admin.subscriptions.table.expiry') }}</th>
+              <th class="px-6 py-3 text-right">Empresas</th>
+              <th class="px-6 py-3 text-right">{{ t('admin.subscriptions.table.users') }}</th>
+              <th class="px-6 py-3 text-right">{{ t('admin.subscriptions.table.totalLeads') }}</th>
+              <th class="px-6 py-3 text-right">Cobrado</th>
+              <th class="px-6 py-3 text-right">{{ t('admin.subscriptions.table.createdAt') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-            <tr v-for="sub in filteredSubscriptions" :key="sub._id" class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-              <td class="px-6 py-4">
-                <div class="font-medium text-gray-900 dark:text-white">{{ sub.name }}</div>
-                <div class="text-xs text-gray-500">{{ sub.slug }}</div>
-                <div v-if="sub.ownerName" class="text-xs text-primary-600 dark:text-primary-400 mt-0.5">
-                  👤 {{ sub.ownerName }}
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span :class="['px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide', getStatusClass(sub.subscriptionStatus)]">
-                  {{ sub.subscriptionStatus }}
-                </span>
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">
-                {{ formatDate(sub.subscriptionExpiresAt) }}
-              </td>
-              <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">
-                {{ sub.userCount }}
-              </td>
-              <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">
-                {{ sub.leadCount }}
-              </td>
-              <td class="px-6 py-4 text-right text-sm text-gray-500">
-                {{ formatDate(sub.createdAt) }}
-              </td>
-            </tr>
+            <template v-for="acc in filteredSubscriptions" :key="acc.id">
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer" @click="toggleRow(acc.id)">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <svg class="w-4 h-4 shrink-0 text-gray-400 transition-transform" :class="{ 'rotate-90': expanded.has(acc.id) }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2">
+                        <span class="font-medium text-gray-900 dark:text-white">{{ acc.name }}</span>
+                        <span v-if="acc.type === 'tenant'" class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">clásica</span>
+                      </div>
+                      <div class="text-xs text-gray-500">{{ acc.type === 'owner' ? acc.email : acc.slug }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <span :class="['px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide', getStatusClass(acc.subscriptionStatus)]">
+                    {{ acc.subscriptionStatus }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm" :class="isPast(expiryOf(acc)) && acc.subscriptionStatus !== 'lifetime' ? 'text-red-500' : 'text-gray-600 dark:text-gray-400'">
+                  {{ acc.subscriptionStatus === 'lifetime' ? '—' : formatDate(expiryOf(acc)) }}
+                </td>
+                <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">{{ acc.companies.length }}</td>
+                <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">{{ acc.userCount }}</td>
+                <td class="px-6 py-4 text-right text-sm font-semibold text-gray-900 dark:text-white">{{ acc.leadCount }}</td>
+                <td class="px-6 py-4 text-right text-sm font-semibold" :class="acc.totalPaid ? 'text-gray-900 dark:text-white' : 'text-gray-400'">{{ formatMoney(acc.totalPaid) }}</td>
+                <td class="px-6 py-4 text-right text-sm text-gray-500">{{ formatDate(acc.createdAt) }}</td>
+              </tr>
+
+              <!-- Detalle: empresas + historial de pagos -->
+              <tr v-if="expanded.has(acc.id)" class="bg-gray-50/70 dark:bg-gray-900/40">
+                <td colspan="8" class="px-6 py-4">
+                  <div class="grid gap-6 lg:grid-cols-2">
+                    <div>
+                      <p class="text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">Empresas ({{ acc.companies.length }})</p>
+                      <div v-if="acc.companies.length" class="rounded-lg border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 bg-white dark:bg-gray-800/40">
+                        <div v-for="c in acc.companies" :key="c.id" class="flex items-center gap-3 px-3 py-2.5 text-sm">
+                          <span class="w-2 h-2 rounded-full shrink-0" :class="c.active ? 'bg-green-500' : 'bg-gray-400'"></span>
+                          <div class="min-w-0 flex-1">
+                            <router-link :to="`/admin/tenants/${c.id}`" class="font-medium text-gray-900 dark:text-white hover:underline" @click.stop>{{ c.name }}</router-link>
+                            <div class="text-xs text-gray-500 truncate">/{{ c.slug }} · alta {{ formatDate(c.createdAt) }}</div>
+                          </div>
+                          <div class="text-right text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{{ c.userCount }} usuarios · {{ c.leadCount }} leads</div>
+                        </div>
+                      </div>
+                      <p v-else class="text-sm text-gray-500 dark:text-gray-400">Todavía no creó ninguna empresa.</p>
+                    </div>
+
+                    <div>
+                      <p class="text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">Historial de pagos ({{ acc.payments.length }})</p>
+                      <div v-if="acc.payments.length" class="rounded-lg border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 bg-white dark:bg-gray-800/40">
+                        <div v-for="p in acc.payments" :key="p.id" class="flex items-center gap-3 px-3 py-2.5 text-sm">
+                          <span class="text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ formatDate(p.date) }}</span>
+                          <span :class="['px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap', providerMeta(p.provider).cls]">{{ providerMeta(p.provider).label }}</span>
+                          <span class="flex-1 min-w-0 font-mono text-[11px] text-gray-400 truncate">{{ p.externalId || '' }}</span>
+                          <a v-if="p.downloadUrl" :href="p.downloadUrl" target="_blank" rel="noopener" @click.stop class="font-semibold tabular-nums hover:underline" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</a>
+                          <span v-else class="font-semibold tabular-nums" :class="p.provider === 'manual' ? 'text-gray-400 line-through' : 'text-gray-900 dark:text-white'">{{ formatMoney(p.amount, p.currency) }}</span>
+                        </div>
+                      </div>
+                      <p v-else class="text-sm text-gray-500 dark:text-gray-400">Sin pagos.</p>
+                      <p v-if="acc.paddleSubscriptionId" class="mt-2 text-xs text-gray-500 dark:text-gray-400">Suscripción Paddle: <span class="font-mono">{{ acc.paddleSubscriptionId }}</span></p>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>

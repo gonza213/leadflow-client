@@ -34,6 +34,7 @@ const SOURCE_LABELS = {
   direct: 'Directo', unknown: 'Desconocido', google: 'Google', bing: 'Bing', duckduckgo: 'DuckDuckGo', yahoo: 'Yahoo',
   yandex: 'Yandex', ecosia: 'Ecosia', brave: 'Brave', facebook: 'Facebook', instagram: 'Instagram', x: 'X (Twitter)',
   linkedin: 'LinkedIn', youtube: 'YouTube', tiktok: 'TikTok', reddit: 'Reddit', whatsapp: 'WhatsApp', telegram: 'Telegram',
+  messenger: 'Messenger', audience_network: 'Audience Network',
   chatgpt: 'ChatGPT', perplexity: 'Perplexity', claude: 'Claude', gemini: 'Gemini', copilot: 'Copilot'
 }
 const MEDIUM_META = {
@@ -131,9 +132,9 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
         <!-- KPIs -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3">
-            <div class="text-xs text-gray-500 dark:text-gray-400">Visitas</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">Visitantes únicos</div>
             <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ fmt(totals.visits) }}</div>
-            <div class="text-xs text-gray-400">una por sesión</div>
+            <div class="text-xs text-gray-400">cada IP cuenta una sola vez</div>
           </div>
           <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3">
             <div class="text-xs text-gray-500 dark:text-gray-400">Registros</div>
@@ -143,33 +144,33 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
           <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3">
             <div class="text-xs text-gray-500 dark:text-gray-400">Conversión</div>
             <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ totals.conversion === null ? '—' : totals.conversion + '%' }}</div>
-            <div class="text-xs text-gray-400">registros / visitas</div>
+            <div class="text-xs text-gray-400">registros / visitantes</div>
           </div>
           <div class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 px-4 py-3">
             <div class="text-xs text-gray-500 dark:text-gray-400">Fuente principal</div>
             <div class="text-xl font-bold text-gray-900 dark:text-white mt-1 truncate">{{ topSource ? sourceLabel(topSource.source) : '—' }}</div>
-            <div class="text-xs text-gray-400">{{ topSource ? pct(topSource.visits, totals.visits) + '% de las visitas' : 'Todavía sin visitas' }}</div>
+            <div class="text-xs text-gray-400">{{ topSource ? pct(topSource.visits, totals.visits) + '% de los visitantes' : 'Todavía sin visitantes' }}</div>
           </div>
         </div>
 
         <!-- Evolución -->
         <div class="card">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-            <h2 class="font-semibold text-gray-900 dark:text-white">Visitas por {{ bars.length < series.length ? 'semana' : 'día' }}</h2>
+            <h2 class="font-semibold text-gray-900 dark:text-white">Visitantes por {{ bars.length < series.length ? 'semana' : 'día' }}</h2>
             <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-              <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-primary-300"></span>Visitas</span>
+              <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-sm bg-primary-300"></span>Visitantes</span>
               <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>Registros</span>
             </div>
           </div>
           <div v-if="totals.visits === 0 && totals.signups === 0" class="py-10 text-center text-sm text-gray-500 dark:text-gray-400">
-            Todavía no hay visitas registradas en este período.
+            Todavía no hay visitantes registrados en este período.
           </div>
-          <div v-else class="flex items-end gap-[3px] h-44" role="img" :aria-label="`Visitas de los últimos ${days} días`">
+          <div v-else class="flex items-end gap-[3px] h-44" role="img" :aria-label="`Visitantes de los últimos ${days} días`">
             <div v-for="(b, i) in bars" :key="i" class="group relative flex-1 h-full flex flex-col justify-end items-center min-w-0">
               <span v-if="b.signups" class="absolute -top-1 text-[10px] font-bold text-blue-600 dark:text-blue-400" :style="{ bottom: `calc(${(b.visits / maxBar) * 100}% + 4px)`, top: 'auto' }">{{ b.signups }}</span>
               <div class="w-full rounded-t bg-primary-300/90 group-hover:bg-primary-400 transition-colors" :style="{ height: Math.max(b.visits ? 3 : 0, (b.visits / maxBar) * 100) + '%' }"></div>
               <div class="pointer-events-none absolute bottom-full mb-6 hidden group-hover:block z-10 whitespace-nowrap rounded-lg bg-gray-900 px-2.5 py-1.5 text-xs text-white shadow-lg">
-                {{ b.label }} · {{ fmt(b.visits) }} visitas<template v-if="b.signups"> · {{ b.signups }} registro(s)</template>
+                {{ b.label }} · {{ fmt(b.visits) }} visitantes<template v-if="b.signups"> · {{ b.signups }} registro(s)</template>
               </div>
             </div>
           </div>
@@ -181,7 +182,11 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
         <!-- Fuentes -->
         <div class="card">
           <h2 class="font-semibold text-gray-900 dark:text-white mb-1">De dónde llegan</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Por tipo de canal y por sitio. Los anuncios con UTM (utm_source, utm_medium, utm_campaign) aparecen con su nombre.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
+            Por tipo de canal y por sitio. Los clics de Facebook e Instagram se reconocen aunque la app no mande de dónde vienen.
+            Para ver cada campaña de Meta, en el anuncio agregá los parámetros de URL
+            <code v-pre class="font-mono text-[11px] text-gray-600 dark:text-gray-300 break-all">utm_source={{site_source_name}}&amp;utm_medium=paid_social&amp;utm_campaign={{campaign.name}}</code>.
+          </p>
 
           <div v-if="byMedium.length" class="mb-5">
             <div class="flex h-3 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
@@ -200,7 +205,7 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
                 <tr class="text-left text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                   <th class="py-2 pr-3 font-medium">Fuente</th>
                   <th class="py-2 pr-3 font-medium">Canal</th>
-                  <th class="py-2 pr-3 font-medium text-right">Visitas</th>
+                  <th class="py-2 pr-3 font-medium text-right">Visitantes</th>
                   <th class="py-2 pr-3 font-medium w-40"></th>
                   <th class="py-2 pr-3 font-medium text-right">Registros</th>
                   <th class="py-2 font-medium text-right">Conversión</th>
@@ -275,8 +280,9 @@ const maxBar = computed(() => Math.max(1, ...bars.value.map((b) => b.visits)))
         </div>
 
         <p class="text-xs text-gray-400">
-          Se cuenta una visita por sesión de quien no inició sesión, sin cookies ni IP. Los bots se descartan.
-          Los registros anteriores a esta función figuran con fuente "Desconocido".
+          Cada IP cuenta una sola vez, con la fuente de su primera visita, aunque vuelva otro día o entre desde incógnito.
+          La IP no se guarda: se usa un código irreversible. No cuentan los bots, las pantallas de acceso ni los navegadores
+          donde alguien inició sesión (vos o tus clientes). Los registros anteriores a esta función figuran como "Desconocido".
         </p>
       </div>
     </template>
